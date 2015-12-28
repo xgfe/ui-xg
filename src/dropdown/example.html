@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="fuguDropdown">
+<head>
+    <meta charset="UTF-8">
+    <title>fugu-dropdown</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./dropdown.css"/>
+</head>
+<body ng-controller="dropdownCtrl">
+
+<div class="container">
+    <fugu-dropdown btn-value="{{currentUser.name}}">
+        <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
+    </fugu-dropdown>
+</div>
+
+<script src="../../lib/angular/angular.min.js"></script>
+<script src="./dropdown.js"></script>
+<script>
+    var app = angular.module('fuguDropdown',['ui.fugu.dropdown']);
+    app.controller('dropdownCtrl',['$scope', function ($scope) {
+        $scope.list = [{
+            id:1,name:'Jerry'
+        },{
+            id:2,name:'Test'
+        },{
+            id:3,name:'multidropdownmultidropdown'
+        },{
+            id:4,name:'meituan'
+        }];
+        $scope.currentUser = {id:1,name:'Jerry'};
+        $scope.selectItem = function (item) {
+            $scope.currentUser = item;
+        }
+
+    }]);
+</script>
+</body>
+</html>
