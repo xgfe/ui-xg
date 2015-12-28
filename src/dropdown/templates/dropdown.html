@@ -1,0 +1,6 @@
+<div class="dropdown" ng-class="{true:multiColClass}[count>colsNum]">
+    <button type="button" ng-click="toggleDropdown($event)" class="btn btn-sm btn-primary dropdown-toggle">
+        {{btnValue}}&nbsp;<span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" ng-transclude></ul>
+</div>
