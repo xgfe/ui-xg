@@ -4,10 +4,7 @@
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown',[
-    'template/dropdown/fugu-dropdown.html',
-    'template/dropdown/fugu-dropdown-choices.html'
-])
+angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
     colsNum: 3, //多列数目
     multiColClass: 'fugu-dropdown' //控制多列显示的calss
@@ -52,7 +49,7 @@ angular.module('ui.fugu.dropdown',[
 .directive('fuguDropdown',function () {
     return {
         restrict: 'E',
-        templateUrl:'template/dropdown/fugu-dropdown.html',
+        templateUrl:'templates/dropdown.html',
         replace:true,
         transclude:true,
         scope:{
@@ -70,7 +67,7 @@ angular.module('ui.fugu.dropdown',[
 .directive('fuguDropdownChoices',function () {
     return {
         restrict: 'E',
-        templateUrl:'template/dropdown/fugu-dropdown-choices.html',
+        templateUrl:'templates/dropdown-choices.html',
         require:'^fuguDropdown',
         replace:true,
         transclude:true,
@@ -80,22 +77,3 @@ angular.module('ui.fugu.dropdown',[
         }
     }
 });
-
-angular.module('template/dropdown/fugu-dropdown.html', []).run(['$templateCache', function($templateCache) {
-    $templateCache.put('template/dropdown/fugu-dropdown.html',
-        '<div class="dropdown" ng-class="{true:multiColClass}[count>colsNum]">'+
-        '<button type="button" ng-click="toggleDropdown($event)" class="btn btn-sm btn-primary dropdown-toggle">'+
-        '<span ng-bind="btnValue"></span>&nbsp;<span class="caret"></span>'+
-        '</button>'+
-        '<ul class="dropdown-menu" ng-transclude>'+
-        '</ul>'+
-        '</div>'
-    );
-}]);
-angular.module('template/dropdown/fugu-dropdown-choices.html', []).run(['$templateCache', function($templateCache) {
-    $templateCache.put('template/dropdown/fugu-dropdown-choices.html',
-        '<li>'+
-        '<a href="javascript:;" ng-click="select()" ng-transclude></a>'+
-        '</li>'
-    );
-}]);

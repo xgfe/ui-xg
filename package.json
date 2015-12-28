@@ -1,0 +1,24 @@
+{
+  "name": "angular-ui-fugu",
+  "version": "0.0.1",
+  "description": "UI Fugu ",
+  "main": "ui-fugu.js",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@git.sankuai.com/~yangjiyuan/angular-ui-fugu.git"
+  },
+  "keywords": [
+    "UI"
+  ],
+  "author": "YangJiyuan<yangjiyuan@meituan.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "angular": "^1.4.8",
+    "angular-mocks": "^1.4.8",
+    "angular-sanitize": "^1.4.8",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.16",
+    "karma-jasmine": "^0.3.6",
+    "karma-junit-reporter": "^0.3.8"
+  }
+}
