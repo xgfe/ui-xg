@@ -7,60 +7,98 @@
 angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
     colsNum: 3, //多列数目
+    openClass:'open', //打开dropdown的calss
     multiColClass: 'fugu-dropdown' //控制多列显示的calss
 })
-.controller('fuguDropdownCtrl',['$scope','$element','$document','fuguDropdownConfig', function ($scope,$element,$document,fuguDropdownConfig) {
-    $scope.colsNum = fuguDropdownConfig.colsNum;
-    $scope.multiColClass = fuguDropdownConfig.multiColClass;
+.service('fuguDropdownService', ['$document', '$rootScope', function($document, $rootScope) {
+    var openScope = null;
+    this.open = function(dropdownScope) {
+        if (!openScope) {
+            $document.on('click', closeDropdown);
+        }
+        if (openScope && openScope !== dropdownScope) {
+            openScope.isOpen = false;
+        }
+        openScope = dropdownScope;
+    };
+
+    this.close = function(dropdownScope) {
+        if (openScope === dropdownScope) {
+            openScope = null;
+            $document.off('click', closeDropdown);
+        }
+    };
+
+    var closeDropdown = function(evt) {
+        if (!openScope) { return; }
+        var toggleElement = openScope.getToggleElement();
+        if (evt && toggleElement && toggleElement[0].contains(evt.target)) {
+            return;
+        }
+        openScope.isOpen = false;
+        openScope.$apply();
+    };
+
+}])
+.controller('fuguDropdownCtrl',['$scope','$rootScope','$element','$attrs','$parse','$document','fuguDropdownConfig','fuguDropdownService', function ($scope,$rootScope,$element,$attrs,$parse,$document,fuguDropdownConfig,fuguDropdownService) {
+    function initConfig(){
+        $scope.colsNum = fuguDropdownConfig.colsNum;
+        $scope.openClass = fuguDropdownConfig.openClass;
+        $scope.multiColClass = fuguDropdownConfig.multiColClass;
+    }
+    var _this = this;
+
     $scope.toggleDropdown = function (event) {
-        if(event){
-            event.stopPropagation();
-        }
-        $scope.isOpen = !$scope.isOpen;
-        if($scope.isOpen){
-            $scope.openDropdown();
-        }else{
-            $scope.closeDropdown();
+        event.preventDefault();
+        if (!$scope.isDisabled) {
+            _this.toggle();
         }
     };
-    var hasBind = false;
-    $scope.openDropdown = function(){
-        $element.addClass('open');
-        $scope.isOpen = true;
-        if(!hasBind){
-            $document.on('click', $scope.closeDropdown);
-            hasBind = true;
-        }
+    this.toggle = function(open) {
+        return $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
     };
-    $scope.closeDropdown = function(){
-        $element.removeClass('open');
-        $scope.isOpen = false;
-        if(hasBind){
-            $document.off('click', $scope.closeDropdown);
-            hasBind = false;
+    this.isOpen = function() {
+        return $scope.isOpen;
+    };
+    this.init = function () {
+        initConfig();
+        $scope.isDisabled = $scope.isDisabled || !!$element.attr('disabled') || $element.hasClass('disabled');
+    };
+
+    $scope.$watch('isOpen', function(isOpen) {
+        if (isOpen) {
+            fuguDropdownService.open($scope);
+        } else {
+            fuguDropdownService.close($scope);
         }
+    });
+    $scope.getToggleElement = function () {
+        return $element.find('.dropdown-toggle');
     };
     $scope.count = 0;
     this.addChild = function () {
         $scope.count ++;
-    }
+    };
 
+    $scope.$on('$locationChangeSuccess', function() {
+        $scope.isOpen = false;
+    });
 }])
 .directive('fuguDropdown',function () {
     return {
         restrict: 'E',
         templateUrl:'templates/dropdown.html',
         replace:true,
+        require:'^fuguDropdown',
         transclude:true,
         scope:{
             isOpen:'=?',
-            btnValue:'@'
+            isDisabled:'=?ngDisabled',
+            btnValue:'@?'
         },
         controller:'fuguDropdownCtrl',
-        link: function (scope) {
-            if(scope.isOpen){
-                scope.openDropdown();
-            }
+        link: function (scope,el,attrs,fuguDropdownCtrl) {
+            fuguDropdownCtrl.init();
         }
     }
 })
