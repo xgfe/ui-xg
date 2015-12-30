@@ -14,7 +14,16 @@
         <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
     </fugu-dropdown>
 </div>
+<fugu-dropdown btn-value="第二项" is-open="status.isOpen" ng-disabled="status.isDisabled">
+    <fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>
+    <fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>
+    <fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>
+</fugu-dropdown>
+<input type="checkbox" ng-model="status.isOpen"/>{{status.isOpen}}
+<input type="checkbox" ng-model="status.isDisabled"/>{{status.isDisabled}}
+<button type="button" ng-click="doClick($event)">点击</button>
 
+<script src="../../lib/jquery/dist/jquery.min.js"></script>
 <script src="../../lib/angular/angular.min.js"></script>
 <script src="./dropdown.js"></script>
 <script>
@@ -29,6 +38,15 @@
         },{
             id:4,name:'meituan'
         }];
+        $scope.status = {
+            isOpen:true,
+            isDisabled:true
+        }
+        $scope.doClick = function (evt) {
+            evt.stopPropagation();
+//            alert('点击')
+            $scope.status.isOpen = !$scope.status.isOpen
+        }
         $scope.currentUser = {id:1,name:'Jerry'};
         $scope.selectItem = function (item) {
             $scope.currentUser = item;
