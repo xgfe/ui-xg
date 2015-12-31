@@ -1,9 +1,12 @@
 {
   "env":{
-    "browser": true
+    "browser": true,
+    "jasmine":true,
+    "node":true
   },
   "globals": {
-    "angular": true
+    "angular": true,
+    "inject": true
   },
   "rules": {
     "comma-dangle": [2, "never"],
