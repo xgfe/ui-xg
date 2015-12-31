@@ -22,6 +22,11 @@ module.exports = function(config) {
       'test-lib/matchers.js',
       'src/**/*.js'
     ],
+    plugins : [
+      'karma-junit-reporter',
+      'karma-chrome-launcher',
+      'karma-jasmine'
+    ],
 
 
     // list of files to exclude

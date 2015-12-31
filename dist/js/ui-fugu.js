@@ -1,3 +1,10 @@
+/*
+ * angular-ui-fugu
+ * Version: 0.0.1 - 2015-12-31
+ * License: ISC
+ */
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.dropdown"]);
+angular.module("ui.fugu.tpls", ["dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html"]);
 /**
  * dropdown
  * 多列下拉按钮组指令
@@ -116,3 +123,18 @@ angular.module('ui.fugu.dropdown',[])
         }
     }
 });
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-transclude></ul>"+
+    "</div>");
+}]);

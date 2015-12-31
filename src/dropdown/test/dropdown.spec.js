@@ -3,8 +3,8 @@ describe('fugu-dropdown', function () {
     var compile, scope,rootScope, document, dropdownConfig, element;
 
     beforeEach(module('ui.fugu.dropdown'));
-    beforeEach(module('templates/dropdown.html'));
-    beforeEach(module('templates/dropdown-choices.html'));
+    beforeEach(module('dropdown/templates/dropdown.html'));
+    beforeEach(module('dropdown/templates/dropdown-choices.html'));
 
     beforeEach(inject(function( $compile, $rootScope, $document, fuguDropdownConfig) {
         compile = $compile;
