@@ -49,7 +49,6 @@ gulp.task('karma',['html2js'], function (done) {
 gulp.task('html2js', function () {
     return gulp.src(config.src + '/*/templates/*.html')
         .pipe(html2js({
-            useUglify:true,
             moduleName:function(filename,subpath){
                 return subpath.replace(/^src\//,'');
             },
