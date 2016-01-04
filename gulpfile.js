@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     rimraf = require('gulp-rimraf'),
+    replace = require('gulp-replace'),
     karmaServer = require('karma').Server;
 
 var config = {
@@ -178,6 +179,24 @@ gulp.task('uglify',['concat'], function () {
 gulp.task('clean', function() {
     return gulp.src(config.dist, { read: false })
         .pipe(rimraf());
+});
+/**
+ * 自动构建README
+ */
+gulp.task('readme',['modules'], function () {
+    var directives = config.modules.map(function (module) {
+        return '- ['+module.name+'](./src/'+module.name+'/example.html)';
+    }).join('\n');
+    var data = {
+        filename:config.pkg.name,
+        directives:directives
+    };
+    gulp.src('tasks/README.tpl')
+        .pipe(replace(/<%([^%>]+)%>/g, function (m,$1) {
+            return data[$1.trim()];
+        }))
+        .pipe(rename({extname: '.md'}))
+        .pipe(gulp.dest('./'));
 });
 gulp.task('test',['html2js','karma']);
 gulp.task('build',['clean','eslint','concat','uglify']);
