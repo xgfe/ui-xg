@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-04
+ * Version: 0.0.1 - 2016-01-05
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.dropdown","ui.fugu.pager"]);
@@ -125,8 +125,8 @@ angular.module('ui.fugu.dropdown',[])
 });
 angular.module('ui.fugu.pager',[])
 .constant('fuguPagerConfig', {
-    itemsPerPage: 20, //默认每页数目为10
-    maxSize:5, //默认分页显示数目为5
+    itemsPerPage: 20, //默认每页数目为20
+    maxSize:5, //默认分页最大显示数目为5
     firstText:'首页',
     lastText:'尾页',
     previousText:'上一页',

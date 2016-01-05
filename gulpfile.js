@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     _ = require('./tasks/util'),
-    html2js = require('gulp-ng-html2js'),
+    html2js = require('gulp-angular-html2js'),
     eslint = require('gulp-eslint'),
     concat = require('gulp-concat'),
     insert = require('gulp-insert'),
@@ -199,5 +199,5 @@ gulp.task('readme',['modules'], function () {
         .pipe(gulp.dest('./'));
 });
 gulp.task('test',['html2js','karma']);
-gulp.task('build',['clean','eslint','concat','uglify']);
+gulp.task('build',['clean','eslint','concat','uglify','readme']);
 gulp.task('default',['test','build']);
