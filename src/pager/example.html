@@ -13,6 +13,7 @@
     <br/>
     <fugu-pager page-no="pages.pageNo" total-items="pages.totalCount" first-text="First" last-text="Last" page-changed="changePage"></fugu-pager>
     <br/>
+    <pre>currentPageNo is : {{pages.pageNo}}</pre>
     <label for="setPage">设置页码:</label><input id="setPage" type="number" min="1" ng-change="setPageNo(pages.pageNo)" ng-model="pages.pageNo"/>
 </div>
 

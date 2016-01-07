@@ -94,10 +94,10 @@ angular.module('ui.fugu.pager',[])
             resetPageList();
         }
         $scope.currentPage = value;
+        $scope.pageNo = value+1;
         if ($scope.pages[$scope.currentPage - pageOffset]) {
             $scope.pages[$scope.currentPage - pageOffset].active = true;
         }
-        $scope.$emit("pager:pageIndexChanged", $scope.pages[$scope.currentPage - pageOffset]);
         var fn;
         if(angular.isDefined($scope.pageChanged) && oldPage !== $scope.currentPage){
             fn = $scope.pageChanged();
