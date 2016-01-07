@@ -125,6 +125,19 @@ describe('fugu-dropdown', function () {
         expect(getPaginationBarSize()).toBe(7);
     });
 
+    it('should change "page-no" in scope when "page-no" attr has changed', function() {
+        var el = "<fugu-pager total-items='total' page-no='pageNo'></fugu-pager>";
+        scope.total = 50;
+        scope.pageNo = 1;
+        element = compile(el)(scope);
+        scope.$apply();
+        expect(getPaginationEl(2)).toHaveClass('active');
+        clickPaginationEl(-3);
+        expect(getPaginationEl(3)).toHaveClass('active');
+        expect(scope.pageNo).toBe(2);
+    });
+
+
     it('use custom text on button', function() {
         var el = "<fugu-pager total-items='total' page-no='pageNo' first-text='{{firstText}}' last-text='Last' previous-text='Previous' next-text='Next'></fugu-pager>";
         scope.total = 50;
