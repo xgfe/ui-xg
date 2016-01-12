@@ -5,66 +5,67 @@
  * Date:2015-01-11
  */
 angular.module('ui.fugu.alert',[])
-.constant('fuguAlertConfig', {
-    hasIcon: false //是否图标显示
-})
-.controller('fuguAlertCtrl',['$scope','$element','$attrs','fuguAlertConfig', '$timeout', function ($scope,$element,$attrs,fuguAlertConfig,$timeout) {
+//.constant('fuguAlertConfig', {
+//    hasIcon: true //是否图标显示
+//})
+.controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
+
+    //指令初始化
     function initConfig(){
-        $scope.hasIcon = fuguAlertConfig.hasIcon;
-        $scope.closable = !!$attrs.close;
+        $scope.closeable = !!$attrs.close;
+        $scope.defaultclose = false;
+    }
+    initConfig();
+
+    //判断是否有关闭参数
+    if($attrs.close == 'true'){
+        $scope.close = function(){
+            $scope.defaultclose = true;
+        }
     }
 
-    $scope.toggleDropdown = function (event) {
-        event.preventDefault();
-        if (!$scope.isDisabled) {
-            _this.toggle();
+    //判断是否显示图标
+    if($scope.hasIcon) {
+        var type = angular.isDefined($attrs.type)? $interpolate($attrs.type)($scope.$parent): null;
+        switch(type){
+            case 'danger':
+                $scope.iconClass = 'remove-sign';
+                break;
+            case 'success':
+                $scope.iconClass = 'ok-sign';
+                break;
+            case 'info':
+                $scope.iconClass = 'info-sign';
+                break;
+            default:
+                $scope.iconClass = 'exclamation-sign';
+                break;
         }
-    };
-    this.toggle = function(open) {
-        var result = $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
-        return result;
-    };
-    this.isOpen = function() {
-        return $scope.isOpen;
-    };
-    this.init = function () {
-        initConfig();
-        $scope.isDisabled = $scope.isDisabled || !!$element.attr('disabled') || $element.hasClass('disabled');
-    };
+    }
 
-    $scope.$watch('isOpen', function(isOpen) {
-        if (isOpen) {
-            fuguDropdownService.open($scope);
-        } else {
-            fuguDropdownService.close($scope);
-        }
-    });
-    $scope.getToggleElement = function () {
-        return $element.find('.dropdown-toggle');
-    };
-    $scope.count = 0;
-    this.addChild = function () {
-        $scope.count ++;
-    };
-
-    $scope.$on('$locationChangeSuccess', function() {
-        $scope.isOpen = false;
-    });
+    //判断是否有时间参数
+    var dismissOnTimeout = angular.isDefined($attrs.dismissOnTimeout)?
+        $interpolate($attrs.dismissOnTimeout)($scope.$parent): null;
+    if(dismissOnTimeout) {
+        $timeout(function(){
+            $scope.close();
+        },parseInt(dismissOnTimeout, 10))
+    }
 }])
 .directive('fuguAlert',function () {
     return {
         restrict: 'E',
-        templateUrl:'templates/alert.html',
+        templateUrl: function(element, attrs){
+            return attrs.templateUrl || 'templates/alert.html';
+        },
         replace:true,
-        //require:'^fuguDropdown',
         transclude:true,
         scope:{
             type:'@',
-            close : '@'
+            close : '&',
+            closeText : '@',
+            hasIcon : '@'
         },
-        controller:'fuguAlertCtrl',
-        //link: function (scope,el,attrs,fuguAlertCtrl) {
-        //    fuguAlertCtrl.init();
-        //}
+        controller:'fuguAlertCtrl'
     }
 });

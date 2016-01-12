@@ -1,57 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="fuguDropdown">
+<html lang="en" ng-app="fuguAlert">
 <head>
     <meta charset="UTF-8">
     <title>fugu-dropdown</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="./dropdown.css"/>
+    <link rel="stylesheet" href="./alert.css"/>
 </head>
-<body ng-controller="dropdownCtrl">
+<body ng-controller="alertCtrl">
 
-<div class="container">
-    <fugu-dropdown btn-value="{{currentUser.name}}">
-        <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
-    </fugu-dropdown>
-</div>
-<fugu-dropdown btn-value="第二项" is-open="status.isOpen" ng-disabled="status.isDisabled">
-    <fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>
-    <fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>
-    <fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>
-</fugu-dropdown>
-<input type="checkbox" ng-model="status.isOpen"/>{{status.isOpen}}
-<input type="checkbox" ng-model="status.isDisabled"/>{{status.isDisabled}}
-<button type="button" ng-click="doClick($event)">点击</button>
+<fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
+<fugu-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</fugu-alert>
+<fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</fugu-alert>
+<fugu-alert type="warning" close="true">取消图标</fugu-alert>
+<button ng-click="addAlert()">点击添加</button>
+
 
 <script src="../../lib/jquery/dist/jquery.min.js"></script>
 <script src="../../lib/angular/angular.min.js"></script>
-<script src="./dropdown.js"></script>
+<script src="alert.js"></script>
 <script>
-    var app = angular.module('fuguDropdown',['ui.fugu.dropdown']);
-    app.controller('dropdownCtrl',['$scope', function ($scope) {
-        $scope.list = [{
-            id:1,name:'Jerry'
-        },{
-            id:2,name:'Test'
-        },{
-            id:3,name:'multidropdownmultidropdown'
-        },{
-            id:4,name:'meituan'
-        }];
-        $scope.status = {
-            isOpen:true,
-            isDisabled:true
+    var app = angular.module('fuguAlert',['ui.fugu.alert']);
+    app.controller('alertCtrl',['$scope', function ($scope) {
+        $scope.isIcon = false;
+        $scope.alerts = [
+            { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+            { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
+            { type: 'warning', msg: 'FBI Warning! Manong would ignore anything about warning.' },
+            { type: 'info', msg: 'I know that you wouldn\'t see this line.' }
+        ];
+        $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+        };
+        $scope.addAlert = function(){
+            $scope.alerts.push({msg:"this is a new alert."});
         }
-        $scope.doClick = function (evt) {
-            evt.stopPropagation();
-//            alert('点击')
-            $scope.status.isOpen = !$scope.status.isOpen
-        }
-        $scope.currentUser = {id:1,name:'Jerry'};
-        $scope.selectItem = function (item) {
-            $scope.currentUser = item;
-        }
-
     }]);
 </script>
 </body>
