@@ -3,8 +3,79 @@
  * Version: 0.0.1 - 2016-01-13
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.dropdown","ui.fugu.pager"]);
-angular.module("ui.fugu.tpls", ["dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.dropdown","ui.fugu.pager"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html"]);
+/**
+ * alert
+ * 警告提示指令
+ * Author:heqingyang@meituan.com
+ * Date:2015-01-11
+ */
+angular.module('ui.fugu.alert',[])
+//.constant('fuguAlertConfig', {
+//    hasIcon: true //是否图标显示
+//})
+.controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
+
+    //指令初始化
+    function initConfig(){
+        $scope.closeable = !!$attrs.close;
+        $scope.defaultclose = false;
+    }
+    initConfig();
+
+    //判断是否有关闭参数
+    if($attrs.close == 'true'){
+        $scope.close = function(){
+            $scope.defaultclose = true;
+        }
+    }
+
+    //判断是否显示图标
+    if($scope.hasIcon) {
+        var type = angular.isDefined($attrs.type)? $interpolate($attrs.type)($scope.$parent): null;
+        switch(type){
+            case 'danger':
+                $scope.iconClass = 'remove-sign';
+                break;
+            case 'success':
+                $scope.iconClass = 'ok-sign';
+                break;
+            case 'info':
+                $scope.iconClass = 'info-sign';
+                break;
+            default:
+                $scope.iconClass = 'exclamation-sign';
+                break;
+        }
+    }
+
+    //判断是否有时间参数
+    var dismissOnTimeout = angular.isDefined($attrs.dismissOnTimeout)?
+        $interpolate($attrs.dismissOnTimeout)($scope.$parent): null;
+    if(dismissOnTimeout) {
+        $timeout(function(){
+            $scope.close();
+        },parseInt(dismissOnTimeout, 10))
+    }
+}])
+.directive('fuguAlert',function () {
+    return {
+        restrict: 'E',
+        templateUrl: function(element, attrs){
+            return attrs.templateUrl || 'templates/alert.html';
+        },
+        replace:true,
+        transclude:true,
+        scope:{
+            type:'@',
+            close : '&',
+            closeText : '@',
+            hasIcon : '@'
+        },
+        controller:'fuguAlertCtrl'
+    }
+});
 /**
  * dropdown
  * 多列下拉按钮组指令
@@ -298,6 +369,19 @@ angular.module('ui.fugu.pager',[])
         }
     }
 });
+angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/alert.html",
+    "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
+    "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
+    "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
+    "    </div>"+
+    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"close({$event: $event})\">"+
+    "        <span ng-if=\"!closeText\">&times;</span>"+
+    "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
+    "    </button>"+
+    "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
+    "</div>");
+}]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
     "<li>"+

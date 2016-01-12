@@ -1,30 +1,21 @@
 /*!
- fugu-dropdown.css
+ fugu-alert.scss
  Version: 0.0.1
- Author: yangjiyuan@meituan.com
+ Author: heqingyang@meituan.com
  */
-.fugu-dropdown{
-    & > .dropdown-menu{
-        width: 420px;
-        z-index: 1010;
-        margin-bottom: 30px;
-        li{
-            width: 33.33333333%;
-            float: left;
-            border-right: 1px solid #eaeff0;
-            padding-right: 10px;
-            padding-left: 10px;
-            max-width: 160px;
-        }
-        a{
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            padding-left: 0;
-            padding-right: 0;
-            &:hover{
-                background: #ddd;
-            }
-        }
+.fugu-alert{
+    .alert-icon{
+        float: left;
+    }
+    .alert-icon-span{
+        position: relative;
+        top: 2px;
+    }
+    .cancel-text{
+        font-size: 20px;
+    }
+    .show-icon{
+        padding-left: 20px;
     }
 }
 //简单兼容移动端样式
