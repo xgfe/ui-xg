@@ -1,0 +1,43 @@
+/*!
+ fugu-dropdown.css
+ Version: 0.0.1
+ Author: yangjiyuan@meituan.com
+ */
+.fugu-dropdown{
+    & > .dropdown-menu{
+        width: 420px;
+        z-index: 1010;
+        margin-bottom: 30px;
+        li{
+            width: 33.33333333%;
+            float: left;
+            border-right: 1px solid #eaeff0;
+            padding-right: 10px;
+            padding-left: 10px;
+            max-width: 160px;
+        }
+        a{
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            padding-left: 0;
+            padding-right: 0;
+            &:hover{
+                background: #ddd;
+            }
+        }
+    }
+}
+//简单兼容移动端样式
+@media screen and (max-width: 767px) {
+    .fugu-dropdown{
+        & > .dropdown-menu{
+            width: 250px;
+            li{
+                width: 50%;
+            }
+        }
+    }
+    .fugu-dropdown.open{
+        width: 100%;
+    }
+}
