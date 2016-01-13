@@ -5,11 +5,9 @@
  */
 .fugu-dropdown{
     & > .dropdown-menu{
-        width: 420px;
         z-index: 1010;
         margin-bottom: 30px;
         li{
-            width: 33.33333333%;
             float: left;
             border-right: 1px solid #eaeff0;
             padding-right: 10px;

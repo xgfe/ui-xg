@@ -28,9 +28,16 @@
 <script src="./dropdown.js"></script>
 <script>
     var app = angular.module('fuguDropdown',['ui.fugu.dropdown']);
+    app.config(['fuguDropdownProvider', function (fuguDropdownProvider) {
+        fuguDropdownProvider.setColsNum(3);
+    }]);
     app.controller('dropdownCtrl',['$scope', function ($scope) {
         $scope.list = [{
             id:1,name:'Jerry'
+        },{
+            id:2,name:'Test'
+        },{
+            id:2,name:'Test'
         },{
             id:2,name:'Test'
         },{
@@ -41,12 +48,12 @@
         $scope.status = {
             isOpen:true,
             isDisabled:true
-        }
+        };
         $scope.doClick = function (evt) {
             evt.stopPropagation();
 //            alert('点击')
             $scope.status.isOpen = !$scope.status.isOpen
-        }
+        };
         $scope.currentUser = {id:1,name:'Jerry'};
         $scope.selectItem = function (item) {
             $scope.currentUser = item;
