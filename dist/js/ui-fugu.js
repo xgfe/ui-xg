@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-05
+ * Version: 0.0.1 - 2016-01-13
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.dropdown","ui.fugu.pager"]);
@@ -13,9 +13,22 @@ angular.module("ui.fugu.tpls", ["dropdown/templates/dropdown-choices.html","drop
  */
 angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
-    colsNum: 3, //多列数目
+    eachItemWidth: 120, //每一个项目的宽度
     openClass:'open', //打开dropdown的calss
     multiColClass: 'fugu-dropdown' //控制多列显示的calss
+})
+.provider('fuguDropdown', function () {
+    var _colsNum = 3;
+    this.setColsNum = function (num) {
+        _colsNum = num || 3;
+    };
+    this.$get  = function () {
+        return {
+            getColsNum: function () {
+                return _colsNum;
+            }
+        }
+    }
 })
 .service('fuguDropdownService', ['$document', function($document) {
     var openScope = null;
@@ -47,12 +60,12 @@ angular.module('ui.fugu.dropdown',[])
     }
 
 }])
-.controller('fuguDropdownCtrl',['$scope','$rootScope','$element','$attrs','$parse','$document','fuguDropdownConfig','fuguDropdownService', function ($scope,$rootScope,$element,$attrs,$parse,$document,fuguDropdownConfig,fuguDropdownService) {
-    function initConfig(){
-        $scope.colsNum = fuguDropdownConfig.colsNum;
-        $scope.openClass = fuguDropdownConfig.openClass;
-        $scope.multiColClass = fuguDropdownConfig.multiColClass;
-    }
+.controller('fuguDropdownCtrl',['$scope','$rootScope','$element','fuguDropdownConfig','fuguDropdownService','fuguDropdown', function ($scope,$rootScope,$element,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
+    $scope.colsNum = fuguDropdownProvider.getColsNum();
+    $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
+    $scope.openClass = fuguDropdownConfig.openClass;
+    $scope.multiColClass = fuguDropdownConfig.multiColClass;
+
     var _this = this;
 
     $scope.toggleDropdown = function (event) {
@@ -69,7 +82,6 @@ angular.module('ui.fugu.dropdown',[])
         return $scope.isOpen;
     };
     this.init = function () {
-        initConfig();
         $scope.isDisabled = $scope.isDisabled || !!$element.attr('disabled') || $element.hasClass('disabled');
     };
 
@@ -86,6 +98,9 @@ angular.module('ui.fugu.dropdown',[])
     $scope.count = 0;
     this.addChild = function () {
         $scope.count ++;
+        if($scope.count>$scope.colsNum){
+            $element.find('.dropdown-menu > li').css('width',100/$scope.colsNum+'%');
+        }
     };
 
     $scope.$on('$locationChangeSuccess', function() {
@@ -219,10 +234,10 @@ angular.module('ui.fugu.pager',[])
             resetPageList();
         }
         $scope.currentPage = value;
+        $scope.pageNo = value+1;
         if ($scope.pages[$scope.currentPage - pageOffset]) {
             $scope.pages[$scope.currentPage - pageOffset].active = true;
         }
-        $scope.$emit("pager:pageIndexChanged", $scope.pages[$scope.currentPage - pageOffset]);
         var fn;
         if(angular.isDefined($scope.pageChanged) && oldPage !== $scope.currentPage){
             fn = $scope.pageChanged();
@@ -295,7 +310,7 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
     "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
     "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-transclude></ul>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
     "</div>");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){

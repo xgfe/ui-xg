@@ -2,5 +2,5 @@
     <button type="button" ng-click="toggleDropdown($event)" ng-disabled="isDisabled" class="btn btn-sm btn-primary dropdown-toggle">
         {{btnValue}}&nbsp;<span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" ng-transclude></ul>
+    <ul class="dropdown-menu" ng-style="{width:count>colsNum?colsNum*eachItemWidth:'auto'}" ng-transclude></ul>
 </div>

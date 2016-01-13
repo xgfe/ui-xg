@@ -1,18 +1,28 @@
 describe('fugu-dropdown', function () {
 
-    var compile, scope,rootScope, document, dropdownConfig, element;
-
-    beforeEach(module('ui.fugu.dropdown'));
-    beforeEach(module('dropdown/templates/dropdown.html'));
-    beforeEach(module('dropdown/templates/dropdown-choices.html'));
-
-    beforeEach(inject(function( $compile, $rootScope, $document, fuguDropdownConfig) {
-        compile = $compile;
-        scope = $rootScope.$new();
-        rootScope = $rootScope;
-        document = $document;
-        dropdownConfig = fuguDropdownConfig;
-    }));
+    var compile, // 编译模板
+        scope, // 新创建的scope，编译的html所在的scope
+        rootScope,
+        document,
+        dropdownConfig, //dropdown的常量配置
+        element,    //指令DOM结点
+        dropdownProvider,   //provider配置
+        fuguDropdownProvider; //provider获取
+    beforeEach(function () {
+        module('ui.fugu.dropdown', ['fuguDropdownProvider',function (fuguDropdownProvider) {
+            dropdownProvider = fuguDropdownProvider;
+        }]);
+        module('dropdown/templates/dropdown.html');
+        module('dropdown/templates/dropdown-choices.html');
+        inject(function( $compile, $rootScope, $document, fuguDropdownConfig,fuguDropdown) {
+            compile = $compile;
+            scope = $rootScope.$new();
+            rootScope = $rootScope;
+            document = $document;
+            dropdownConfig = fuguDropdownConfig;
+            fuguDropdownProvider = fuguDropdown
+        })
+    });
     afterEach(function() {
         element.remove();
     });
@@ -161,6 +171,31 @@ describe('fugu-dropdown', function () {
             var ele = compile(html)(scope);
             scope.$apply();
             expect(ele).toHaveClass(dropdownConfig.multiColClass);
+        });
+        it('dropdown list width shoule be 3*dropdownConfig.eachItemWidth', function () {
+            var html = '<fugu-dropdown btn-value="第二项">'+
+                '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
+                '</fugu-dropdown>';
+            var ele = compile(html)(scope);
+            scope.$apply();
+            expect(ele.find('.dropdown-menu').css('width')).toBe(fuguDropdownProvider.getColsNum() * dropdownConfig.eachItemWidth + 'px');
+        });
+        it('should not have multi col class when set colsNum to be 5', function () {
+            dropdownProvider.setColsNum(5);
+            var html = '<fugu-dropdown btn-value="第二项">'+
+                '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
+                '</fugu-dropdown>';
+            var ele = compile(html)(scope);
+            scope.$apply();
+            expect(ele).not.toHaveClass(dropdownConfig.multiColClass);
         });
     });
 });
