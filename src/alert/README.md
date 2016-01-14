@@ -9,6 +9,6 @@ This directive can be used both to generate alerts from static and dynamic model
 
 - `dismiss-on-timeout` *(Default: `none`)* - Takes the number of milliseconds that specify the timeout duration, after which the alert will be closed. This attribute requires the presence of the `close` attribute.
 
-- `template-url` *(Default: `uib/template/alert/alert.html`)* - Add the ability to override the template used in the component.
+- `template-url` *(Default: `alert/templates/alert.html`)* - Add the ability to override the template used in the component.
 
 - `type` *(Default: `warning`)* - Defines the type of the alert. 
