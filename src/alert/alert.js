@@ -14,6 +14,7 @@ angular.module('ui.fugu.alert',[])
     function initConfig(){
         $scope.closeable = !!$attrs.close;
         $scope.defaultclose = false;
+        $scope.hasIcon = $attrs.hasIcon&&$attrs.hasIcon=="true";
     }
     initConfig();
 
@@ -64,8 +65,8 @@ angular.module('ui.fugu.alert',[])
             type:'@',
             close : '&',
             closeText : '@',
-            hasIcon : '@'
         },
-        controller:'fuguAlertCtrl'
+        controller:'fuguAlertCtrl',
+        controllerAs: 'alert'
     }
 });
