@@ -12,13 +12,19 @@
 <fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
 <fugu-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</fugu-alert>
 <fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</fugu-alert>
-<fugu-alert type="warning" close="true">取消图标</fugu-alert>
+<fugu-alert type="warning" close="false">取消图标</fugu-alert>
+<fugu-alert template-url="alert.html">A happy alert!</fugu-alert>
 <button ng-click="addAlert()">点击添加</button>
 
 
 <script src="../../lib/jquery/dist/jquery.min.js"></script>
 <script src="../../lib/angular/angular.min.js"></script>
 <script src="alert.js"></script>
+<script type="text/ng-template" id="alert.html">
+    <div class="alert" style="background-color:#fa39c3;color:white" role="alert">
+        <div ng-transclude></div>
+    </div>
+</script>
 <script>
     var app = angular.module('fuguAlert',['ui.fugu.alert']);
     app.controller('alertCtrl',['$scope', function ($scope) {
