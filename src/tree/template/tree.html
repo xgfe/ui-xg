@@ -1,0 +1,9 @@
+<div class="tree">
+    {{clickNode}}
+    <ol ng-show="node && node.length > 0 && !collapsed" class="tree-content">
+        <li ng-repeat="n in node">
+            <tree-node nodes="n" ng-if="n.nodes && n.nodes.length > 0" ng-model="n"></tree-node>
+            <tree-node nodes="n" ng-if="!n.nodes || n.nodes.length == 0"></tree-node>
+        </li>
+    </ol>
+</div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>fugu-tree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="tree.css"/>
+</head>
+<body ng-controller="testCtrl">
+    <select  class="form-control dis-inb w-80" ng-model="obj.hour" ng-change="checkHour(flse)">
+        <option value="0">结束</option>
+        <option ng-repeat="et in hours track by $index" value="{{et}}">{{et}}</option>
+    </select>
+
+</body>
+<script src="../../lib/jquery/dist/jquery.min.js"></script>
+<script src="../../lib/angular/angular.min.js"></script>
+<script>
+    var app = angular.module('app',[]);
+    app.controller('testCtrl', ['$scope', function($scope){
+        $scope.obj = {
+            day: 1,
+            hour:0
+        };
+        $scope.hours = ['00','01','02','03'];
+        $scope.checkHour = function(){
+            debugger;
+            $scope.obj.hour = '0';
+        }
+    }]);
+</script>
+</html>
