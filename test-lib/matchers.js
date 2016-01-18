@@ -52,6 +52,24 @@ beforeEach(function() {
           return result;
         }
       }
+    },
+    toHaveAttr: function toHaveAttr() {
+      return {
+        compare: function (el, actual, expected) {
+          var attr = $(el[0]).attr(actual);
+          var addendum = expected !== undefined ? ' with value \'' + expected + '\'' : '';
+          var result = {
+            pass: attr === expected
+          };
+          if (result.pass) {
+            result.message = 'Expected element to have attribute \'' + actual + '\'' + addendum;
+          } else {
+            result.message = 'Expected element not to have attribute \'' + actual + '\'' + addendum + ', but had \'' + attr + '\'';
+          }
+
+          return result;
+        }
+      }
     }
   });
 });
