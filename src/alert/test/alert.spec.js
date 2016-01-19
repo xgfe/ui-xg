@@ -15,7 +15,7 @@ describe('fugu-alert', function () {
         element = angular.element(
             '<div>' +
             '<fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}"' +
-            'close="removeAlert($index)" has-icon="true">{{alert.msg}}' +
+            'close="true" close-func="removeAlert($index)" has-icon="true">{{alert.msg}}' +
             '</fugu-alert>' +
             '</div>');
 
@@ -91,24 +91,24 @@ describe('fugu-alert', function () {
     });
 
     it('should show the alert content', function() {
-        var alerts = createAlerts();
+        var alerts = createAlerts(), i ,n;
 
-        for (var i = 0, n = alerts.length; i < n; i++) {
+        for (i = 0, n = alerts.length; i < n; i++) {
             expect(findContent(i).text()).toBe(scope.alerts[i].msg);
         }
     });
 
     it('should show close buttons and have the dismissible class', function() {
-        var alerts = createAlerts();
+        var alerts = createAlerts(), i, n;
 
-        for (var i = 0, n = alerts.length; i < n; i++) {
+        for (i = 0, n = alerts.length; i < n; i++) {
             expect(findCloseButton(i).css('display')).not.toBe('none');
             expect(alerts.eq(i)).toHaveClass('alert-dismissible');
         }
     });
 
     it('should fire callback when closed', function() {
-        var alerts = createAlerts();
+        createAlerts();
 
         scope.$apply(function() {
             scope.removeAlert = jasmine.createSpy();
@@ -136,7 +136,7 @@ describe('fugu-alert', function () {
 
     it('should close automatically if dismiss-on-timeout is defined on the element', function() {
         scope.removeAlert = jasmine.createSpy();
-        $compile('<fugu-alert close="removeAlert()" dismiss-on-timeout="500">Default alert!</fugu-alert>')(scope);
+        $compile('<fugu-alert close="true" close-func="removeAlert()" dismiss-on-timeout="500">Default alert!</fugu-alert>')(scope);
         scope.$digest();
 
         $timeout.flush();
@@ -146,7 +146,7 @@ describe('fugu-alert', function () {
     it('should not close immediately with a dynamic dismiss-on-timeout', function() {
         scope.removeAlert = jasmine.createSpy();
         scope.dismissTime = 500;
-        $compile('<fugu-alert close="removeAlert()" dismiss-on-timeout="{{dismissTime}}">Default alert!</fugu-alert>')(scope);
+        $compile('<fugu-alert close="true" close-func="removeAlert()" dismiss-on-timeout="{{dismissTime}}">Default alert!</fugu-alert>')(scope);
         scope.$digest();
 
         $timeout.flush(100);
@@ -178,7 +178,7 @@ describe('fugu-alert', function () {
     });
 
     it('should support icons', function() {
-        var alerts = createAlerts();
+        createAlerts();
 
         expect(findIcon(0)).toHaveClass('glyphicon-ok-sign');
         expect(findIcon(1)).toHaveClass('glyphicon-remove-sign');

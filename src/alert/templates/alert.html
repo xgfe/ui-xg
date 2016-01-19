@@ -2,7 +2,7 @@
     <div ng-show="hasIcon" class="alert-icon">
         <span class="alert-icon-span glyphicon" ng-class="'glyphicon-'+iconClass"></span>
     </div>
-    <button ng-show="closeable" type="button" class="close" ng-click="close({$event: $event})">
+    <button ng-show="closeable" type="button" class="close" ng-click="closeFunc({$event: $event})">
         <span ng-if="!closeText">&times;</span>
         <span class="cancel-text" ng-if="closeText">{{closeText}}</span>
     </button>
