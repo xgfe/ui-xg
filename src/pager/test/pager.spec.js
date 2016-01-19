@@ -1,4 +1,4 @@
-describe('fugu-dropdown', function () {
+describe('fugu-pager', function () {
 
     var compile, scope, pagerConfig, element;
 
@@ -36,7 +36,7 @@ describe('fugu-dropdown', function () {
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
-        scope.$apply();
+        scope.$digest();
     }
 
     it('has a "pagination" css class', function() {
