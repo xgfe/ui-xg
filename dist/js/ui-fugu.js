@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-13
+ * Version: 0.0.1 - 2016-01-19
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.dropdown","ui.fugu.pager"]);
@@ -12,41 +12,41 @@ angular.module("ui.fugu.tpls", ["alert/templates/alert.html","dropdown/templates
  * Date:2015-01-11
  */
 angular.module('ui.fugu.alert',[])
-//.constant('fuguAlertConfig', {
-//    hasIcon: true //是否图标显示
-//})
 .controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
 
     //指令初始化
     function initConfig(){
-        $scope.closeable = !!$attrs.close;
+        if($scope.close&&($scope.close=="true"||$scope.close=="1")) {$scope.closeable=true;}
+        else {$scope.closeable = false;}
         $scope.defaultclose = false;
+        $scope.hasIcon = $attrs.hasIcon&&$attrs.hasIcon=="true";
     }
     initConfig();
 
-    //判断是否有关闭参数
-    if($attrs.close == 'true'){
-        $scope.close = function(){
+    //添加默认close方法
+    if(!$attrs.closeFunc){
+        $scope.closeFunc = function(){
             $scope.defaultclose = true;
         }
     }
 
     //判断是否显示图标
+    var type = angular.isDefined($attrs.type)? $interpolate($attrs.type)($scope.$parent): null;
+
     if($scope.hasIcon) {
-        var type = angular.isDefined($attrs.type)? $interpolate($attrs.type)($scope.$parent): null;
-        switch(type){
-            case 'danger':
-                $scope.iconClass = 'remove-sign';
-                break;
-            case 'success':
-                $scope.iconClass = 'ok-sign';
-                break;
-            case 'info':
-                $scope.iconClass = 'info-sign';
-                break;
-            default:
-                $scope.iconClass = 'exclamation-sign';
-                break;
+    switch(type){
+        case 'danger':
+            $scope.iconClass = 'remove-sign';
+            break;
+        case 'success':
+            $scope.iconClass = 'ok-sign';
+            break;
+        case 'info':
+            $scope.iconClass = 'info-sign';
+            break;
+        default:
+            $scope.iconClass = 'exclamation-sign';
+            break;
         }
     }
 
@@ -55,7 +55,7 @@ angular.module('ui.fugu.alert',[])
         $interpolate($attrs.dismissOnTimeout)($scope.$parent): null;
     if(dismissOnTimeout) {
         $timeout(function(){
-            $scope.close();
+            $scope.closeFunc();
         },parseInt(dismissOnTimeout, 10))
     }
 }])
@@ -69,11 +69,12 @@ angular.module('ui.fugu.alert',[])
         transclude:true,
         scope:{
             type:'@',
-            close : '&',
-            closeText : '@',
-            hasIcon : '@'
+            close : '@',
+            closeFunc : '&',
+            closeText : '@'
         },
-        controller:'fuguAlertCtrl'
+        controller:'fuguAlertCtrl',
+        controllerAs: 'alert'
     }
 });
 /**
@@ -375,7 +376,7 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
     "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
     "    </div>"+
-    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"close({$event: $event})\">"+
+    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"closeFunc({$event: $event})\">"+
     "        <span ng-if=\"!closeText\">&times;</span>"+
     "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
     "    </button>"+
