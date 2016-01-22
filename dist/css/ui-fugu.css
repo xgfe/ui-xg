@@ -102,6 +102,36 @@
   margin-right: -6px;
   margin-left: 6px; }
 
+/*!
+ fugu-dropdown.css
+ Version: 0.0.1
+ Author: yangjiyuan@meituan.com
+ */
+.fugu-dropdown > .dropdown-menu {
+  z-index: 1010;
+  margin-bottom: 30px; }
+  .fugu-dropdown > .dropdown-menu li {
+    float: left;
+    border-right: 1px solid #eaeff0;
+    padding-right: 10px;
+    padding-left: 10px;
+    max-width: 160px; }
+  .fugu-dropdown > .dropdown-menu a {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding-left: 0;
+    padding-right: 0; }
+    .fugu-dropdown > .dropdown-menu a:hover {
+      background: #ddd; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown > .dropdown-menu {
+    width: 250px; }
+    .fugu-dropdown > .dropdown-menu li {
+      width: 50%; }
+  .fugu-dropdown.open {
+    width: 100%; } }
+
 .tree {
   -moz-user-select: -moz-none;
   -webkit-user-select: none;
@@ -142,33 +172,3 @@ ol {
 
 .v-m {
   vertical-align: middle; }
-
-/*!
- fugu-dropdown.css
- Version: 0.0.1
- Author: yangjiyuan@meituan.com
- */
-.fugu-dropdown > .dropdown-menu {
-  z-index: 1010;
-  margin-bottom: 30px; }
-  .fugu-dropdown > .dropdown-menu li {
-    float: left;
-    border-right: 1px solid #eaeff0;
-    padding-right: 10px;
-    padding-left: 10px;
-    max-width: 160px; }
-  .fugu-dropdown > .dropdown-menu a {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    padding-left: 0;
-    padding-right: 0; }
-    .fugu-dropdown > .dropdown-menu a:hover {
-      background: #ddd; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown > .dropdown-menu {
-    width: 250px; }
-    .fugu-dropdown > .dropdown-menu li {
-      width: 50%; }
-  .fugu-dropdown.open {
-    width: 100%; } }
