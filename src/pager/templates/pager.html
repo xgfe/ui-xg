@@ -1,18 +1,18 @@
 <ul class="pagination pagination-sm m-t-none m-b-none">
     <li ng-class="{disabled: isFirst()}">
-        <a href="javascript:void(0)" ng-click="first()">{{firstText}}</a>
+        <a href="javascript:void(0)" ng-click="first()">{{getText('first')}}</a>
     </li>
     <li ng-class="{disabled: isFirst()}">
-        <a href="javascript:void(0)" ng-click="previous()">{{previousText}}</a>
+        <a href="javascript:void(0)" ng-click="previous()">{{getText('previous')}}</a>
     </li>
     <li ng-repeat="page in pages track by $index" ng-class="{active: page.active}">
         <a href="javascript:void(0)" ng-click="selectPage(page.pageIndex)">{{page.pageIndex + 1}}</a>
     </li>
     <li ng-class="{disabled: isLast()}">
-        <a href="javascript:void(0)" ng-click="next()">{{nextText}}</a>
+        <a href="javascript:void(0)" ng-click="next()">{{getText('next')}}</a>
     </li>
     <li ng-class="{disabled: isLast()}">
-        <a href="javascript:void(0)" ng-click="last()">{{lastText}}</a>
+        <a href="javascript:void(0)" ng-click="last()">{{getText('last')}}</a>
     </li>
     <li class="disabled">
         <a href="javascript:void(0)">共{{totalPages}}页 / {{totalItems}}条</a>

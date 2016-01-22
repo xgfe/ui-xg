@@ -7,18 +7,17 @@ angular.module('ui.fugu.pager',[])
     previousText:'上一页',
     nextText:'下一页'
 })
-.controller('fuguPagerCtrl',['$scope','fuguPagerConfig', function ($scope,fuguPagerConfig) {
+.controller('fuguPagerCtrl',['$scope', function ($scope) {
 
     var pageOffset = 0,
         initialized = false;
 
-    this.init = function () {
+    this.init = function (fuguPagerConfig) {
         $scope.itemsPerPage = $scope.itemsPerPage || fuguPagerConfig.itemsPerPage;
         $scope.maxSize = $scope.maxSize || fuguPagerConfig.maxSize;
-        $scope.firstText = $scope.firstText || fuguPagerConfig.firstText;
-        $scope.lastText = $scope.lastText || fuguPagerConfig.lastText;
-        $scope.previousText = $scope.previousText || fuguPagerConfig.previousText;
-        $scope.nextText = $scope.nextText || fuguPagerConfig.nextText;
+        $scope.getText = function (key){
+            return $scope[key + 'Text'] || fuguPagerConfig[key + 'Text'];
+        };
     };
 
     $scope.pages = [];
@@ -135,7 +134,7 @@ angular.module('ui.fugu.pager',[])
         this.selectPage($scope.currentPage + 1);
     };
 }])
-.directive('fuguPager', function () {
+.directive('fuguPager', ['fuguPagerConfig', function (fuguPagerConfig) {
     return {
         restrict: 'E',
         templateUrl:'templates/pager.html',
@@ -154,7 +153,7 @@ angular.module('ui.fugu.pager',[])
         },
         controller:'fuguPagerCtrl',
         link: function (scope,el,attrs,fuguPagerCtrl) {
-            fuguPagerCtrl.init();
+            fuguPagerCtrl.init(fuguPagerConfig);
         }
     }
-});
+}]);

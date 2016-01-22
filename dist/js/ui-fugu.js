@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-19
+ * Version: 0.0.1 - 2016-01-22
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.tree"]);
@@ -340,18 +340,17 @@ angular.module('ui.fugu.pager',[])
     previousText:'上一页',
     nextText:'下一页'
 })
-.controller('fuguPagerCtrl',['$scope','fuguPagerConfig', function ($scope,fuguPagerConfig) {
+.controller('fuguPagerCtrl',['$scope', function ($scope) {
 
     var pageOffset = 0,
         initialized = false;
 
-    this.init = function () {
+    this.init = function (fuguPagerConfig) {
         $scope.itemsPerPage = $scope.itemsPerPage || fuguPagerConfig.itemsPerPage;
         $scope.maxSize = $scope.maxSize || fuguPagerConfig.maxSize;
-        $scope.firstText = $scope.firstText || fuguPagerConfig.firstText;
-        $scope.lastText = $scope.lastText || fuguPagerConfig.lastText;
-        $scope.previousText = $scope.previousText || fuguPagerConfig.previousText;
-        $scope.nextText = $scope.nextText || fuguPagerConfig.nextText;
+        $scope.getText = function (key){
+            return $scope[key + 'Text'] || fuguPagerConfig[key + 'Text'];
+        };
     };
 
     $scope.pages = [];
@@ -468,7 +467,7 @@ angular.module('ui.fugu.pager',[])
         this.selectPage($scope.currentPage + 1);
     };
 }])
-.directive('fuguPager', function () {
+.directive('fuguPager', ['fuguPagerConfig', function (fuguPagerConfig) {
     return {
         restrict: 'E',
         templateUrl:'templates/pager.html',
@@ -487,10 +486,10 @@ angular.module('ui.fugu.pager',[])
         },
         controller:'fuguPagerCtrl',
         link: function (scope,el,attrs,fuguPagerCtrl) {
-            fuguPagerCtrl.init();
+            fuguPagerCtrl.init(fuguPagerConfig);
         }
     }
-});
+}]);
 /**
  * ngCheckboxTree Module
  *
@@ -751,10 +750,6 @@ angular.module('ui.fugu.tree',[])
     }]);
 
 
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
@@ -767,6 +762,10 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    </button>"+
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
+}]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
@@ -787,19 +786,19 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     $templateCache.put("templates/pager.html",
     "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
     "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{firstText}}</a>"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
     "    </li>"+
     "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{previousText}}</a>"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
     "    </li>"+
     "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
     "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
     "    </li>"+
     "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{nextText}}</a>"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
     "    </li>"+
     "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{lastText}}</a>"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
     "    </li>"+
     "    <li class=\"disabled\">"+
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
