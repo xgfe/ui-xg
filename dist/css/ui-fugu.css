@@ -102,6 +102,15 @@
   margin-right: -6px;
   margin-left: 6px; }
 
+li {
+  padding-bottom: 50px; }
+
+li p {
+  font-weight: bold; }
+
+li span {
+  display: block; }
+
 /*!
  fugu-dropdown.css
  Version: 0.0.1
