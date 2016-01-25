@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="fuguButtonGroup">
+<head>
+    <meta charset="UTF-8">
+    <title>fugu-button</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="buttonGroup.css"/>
+</head>
+<body ng-controller="buttonGroupCtrl">
+    <ol>
+        <li>
+            <p>设置ng-model(必须),默认类型,则每个子元素&lt;button&gt;必须设置btn-radio属性</p>
+            <span>ng-model:{{radioModel}}</span>
+            <fugu-button-group ng-model="radioModel">
+                <button btn-radio="'man'">男</button>
+                <button btn-radio="'woman'">女</button>
+            </fugu-button-group>
+        </li>
+        <li>
+            <p>设置ng-model(必须),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key</p>
+            <span>ng-model:{{checkModel}}</span>
+            <fugu-button-group ng-model="checkModel" type="checkbox">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+        </li>
+        <li>
+            <div>设置ng-model(必须),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>size设置为larger|default|small|x-small</p></div>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="large">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="small">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+        </li>
+        <li>
+            <div>设置ng-model(必须),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>show-class设置为danger | warning | default | success | info ｜ primary</p></div>
+            <fugu-button-group ng-model="checkModel" type="checkbox" show-class="danger">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" show-class="warning">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="small" show-class="default">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="success">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="info">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="primary">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+        </li>
+        <li>
+            <div>设置ng-model(必须),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>disabled设置为true | false,默认为false</p></div>
+            <fugu-button-group ng-model="checkModel" type="checkbox" disabled="true">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <fugu-button-group ng-model="checkModel" type="checkbox">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+        </li>
+        <li>
+            <div>设置ng-model(必须),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>checkboxTrue和checkboxFalse设置选中(不选)状态对应ng-model的值。默认为true｜false</p></div>
+            <span>原始值ng-model对应值:{{checkModel}}</span>
+            <fugu-button-group ng-model="checkModel" type="checkbox">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+            <span>设置checkboxTrue和checkboxFalse后ng-model对应值:{{checkModelVal}}</span>
+            <fugu-button-group ng-model="checkModelVal" type="checkbox" checkbox-true="1" checkbox-false="0">
+                <button btn-checkbox="music">音乐</button>
+                <button btn-checkbox="running">跑步</button>
+                <button btn-checkbox="football">足球</button>
+            </fugu-button-group>
+        </li>
+    </ol>
+<script src="../../lib/jquery/dist/jquery.min.js"></script>
+<script src="../../lib/angular1.2/angular.js"></script>
+<script src="buttonGroup.js"></script>
+<script>
+var app = angular.module('fuguButtonGroup',['ui.fugu.buttonGroup']);
+app.controller('buttonGroupCtrl',['$scope', function ($scope) {
+    $scope.radioModel = 'man';
+    $scope.checkModel = {
+        'music' : true,
+        'running' : true,
+        'football' : false
+    };
+    $scope.checkModelVal = {
+        'music' : 1,
+        'running' : 0,
+        'football' : 0
+    };
+}]);
+</script>
+</body>
+</html>
