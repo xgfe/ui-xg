@@ -32,8 +32,8 @@ config.getBanner = function(){
 gulp.task('eslint', function () {
     gulp.src(['gulpfile.js','tasks/util.js',config.src+ '/**/*.js'])
         .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
+        .pipe(eslint.formatEach())
+        .pipe(eslint.failOnError());
 });
 /**
  * karma 执行测试用例，可单独测试某一个模块
