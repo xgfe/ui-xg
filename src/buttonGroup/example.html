@@ -13,7 +13,7 @@
             <p>设置ng-model(必须),默认类型,则每个子元素&lt;button&gt;必须设置btn-radio属性</p>
             <span>ng-model:{{radioModel}}</span>
             <fugu-button-group ng-model="radioModel">
-                <button btn-radio="'man'">男</button>
+                <button>男</button>
                 <button btn-radio="'woman'">女</button>
             </fugu-button-group>
         </li>
@@ -61,22 +61,22 @@
                 <button btn-checkbox="running">跑步</button>
                 <button btn-checkbox="football">足球</button>
             </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="small" show-class="default">
+            <fugu-button-group ng-model="checkModel" type="checkbox"  show-class="default">
                 <button btn-checkbox="music">音乐</button>
                 <button btn-checkbox="running">跑步</button>
                 <button btn-checkbox="football">足球</button>
             </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="success">
+            <fugu-button-group ng-model="checkModel" type="checkbox" show-class="success">
                 <button btn-checkbox="music">音乐</button>
                 <button btn-checkbox="running">跑步</button>
                 <button btn-checkbox="football">足球</button>
             </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="info">
+            <fugu-button-group ng-model="checkModel" type="checkbox"  show-class="info">
                 <button btn-checkbox="music">音乐</button>
                 <button btn-checkbox="running">跑步</button>
                 <button btn-checkbox="football">足球</button>
             </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="'x-small'" show-class="primary">
+            <fugu-button-group ng-model="checkModel" type="checkbox" show-class="primary">
                 <button btn-checkbox="music">音乐</button>
                 <button btn-checkbox="running">跑步</button>
                 <button btn-checkbox="football">足球</button>
@@ -110,9 +110,14 @@
                 <button btn-checkbox="football">足球</button>
             </fugu-button-group>
         </li>
+        <li>
+            <fugu-button-group>
+                <button>1</button>
+            </fugu-button-group>
+        </li>
     </ol>
 <script src="../../lib/jquery/dist/jquery.min.js"></script>
-<script src="../../lib/angular1.2/angular.js"></script>
+<script src="../../lib/angular/angular.js"></script>
 <script src="buttonGroup.js"></script>
 <script>
 var app = angular.module('fuguButtonGroup',['ui.fugu.buttonGroup']);
