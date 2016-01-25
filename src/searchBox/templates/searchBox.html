@@ -1,0 +1,6 @@
+<div ng-class="{'input-group':showBtn}">
+    <input type="text" class="input-sm form-control" ng-keyup="keyUpToSearch($event)" placeholder="{{placeholder}}" ng-model="searchBox.query">
+    <span class="input-group-btn" ng-if="showBtn">
+        <button class="btn btn-sm btn-default" type="button" ng-click="doSearch()">{{getText()}}</button>
+    </span>
+</div>

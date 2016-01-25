@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="fuguSearchBox">
+<head>
+    <meta charset="UTF-8">
+    <title>fugu-searchBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.min.css"/>
+</head>
+<body ng-controller="searchBoxCtrl">
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <fugu-search-box ng-model="query" show-btn="showButton" search="doSearch()" placeholder="按照文件名搜索内容"></fugu-search-box>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            Query:{{query}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-default" type="button" ng-click="toggleButton()">toggleButton</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../lib/jquery/dist/jquery.min.js"></script>
+<script src="../../lib/angular/angular.min.js"></script>
+<script src="./searchBox.js"></script>
+<script>
+    var app = angular.module('fuguSearchBox',['ui.fugu.searchBox']);
+    app.controller('searchBoxCtrl',['$scope', function ($scope) {
+        $scope.showButton = false;
+        $scope.text = 'search';
+        $scope.query = 'asd';
+        $scope.toggleButton = function () {
+            $scope.showButton = !$scope.showButton;
+        };
+        $scope.doSearch = function () {
+            console.log($scope.query)
+        }
+    }]);
+</script>
+</body>
+</html>
