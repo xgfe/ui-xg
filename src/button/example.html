@@ -36,27 +36,27 @@
     <fugu-button loading="loading" text="'被控制loading效果'"></fugu-button>
     <p>icon设置按钮图标，默认无</p>
     <fugu-button icon="'plus'" text="'add'" size="'x-small'"></fugu-button>
-</body>
-<script src="../../lib/jquery/dist/jquery.min.js"></script>
-<script src="../../lib/angular/angular.min.js"></script>
-<script src="button.js"></script>
-<script>
-    var app = angular.module('fuguButton',['ui.fugu.button']);
-    app.controller('buttonCtrl',['$scope', function ($scope) {
-        $scope.btnClass = 'primary';
-        $scope.formContent = '表单内容';
-        $scope.submit = "Submit";
-        $scope.reset = "Reset";
+    <script src="../../lib/jquery/dist/jquery.min.js"></script>
+    <script src="../../lib/angular/angular.min.js"></script>
+    <script src="button.js"></script>
+    <script>
+        var app = angular.module('fuguButton',['ui.fugu.button']);
+        app.controller('buttonCtrl',['$scope', function ($scope) {
+            $scope.btnClass = 'primary';
+            $scope.formContent = '表单内容';
+            $scope.submit = "Submit";
+            $scope.reset = "Reset";
 
-        $scope.loading = false;
-        $scope.clickFn = function(){
-            $scope.loading = !$scope.loading;
-        };
-        $scope.submitFn = function(){
-            alert('submit');
-        };
-        $scope.classArr = ['danger', 'warning' , 'default' , 'success' , 'info' , 'primary', 'link'];
-        $scope.sizeArr = ['x-small', 'small' , 'large'];
-    }]);
-</script>
+            $scope.loading = false;
+            $scope.clickFn = function(){
+                $scope.loading = !$scope.loading;
+            };
+            $scope.submitFn = function(){
+                alert('submit');
+            };
+            $scope.classArr = ['danger', 'warning' , 'default' , 'success' , 'info' , 'primary', 'link'];
+            $scope.sizeArr = ['x-small', 'small' , 'large'];
+        }]);
+    </script>
+</body>
 </html>
