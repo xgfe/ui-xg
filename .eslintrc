@@ -7,7 +7,9 @@
   },
   "globals": {
     "angular": true,
-    "inject": true
+    "inject": true,
+    "jQuery":true,
+    "$":true
   },
   "rules": {
     "no-func-assign":0,

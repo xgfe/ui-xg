@@ -3,8 +3,8 @@
  * Version: 0.0.1 - 2016-01-25
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html"]);
 /**
  * alert
  * 警告提示指令
@@ -641,6 +641,76 @@ angular.module('ui.fugu.pager',[])
     }
 }]);
 /**
+ * searchBox
+ * 搜索框
+ * Author:yangjiyuan@meituan.com
+ * Date:2016-1-25
+ */
+angular.module('ui.fugu.searchBox',[])
+.constant('fuguSearchBoxConfig', {
+    btnText: '搜索', // 默认搜索按钮文本
+    showBtn: true   // 默认显示按钮
+})
+.controller('fuguSearchBoxCtrl',['$scope','$attrs','fuguSearchBoxConfig', function ($scope,$attrs,fuguSearchBoxConfig) {
+    var ngModelCtrl = { $setViewValue: angular.noop };
+    $scope.searchBox = {};
+    this.init = function (_ngModelCtrl) {
+        if(_ngModelCtrl){
+            ngModelCtrl = _ngModelCtrl;
+        }
+        ngModelCtrl.$render = this.render;
+        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : fuguSearchBoxConfig.showBtn;
+    };
+    var btnText;
+    $scope.getText = function () {
+        if(btnText){
+            return btnText;
+        }
+        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : fuguSearchBoxConfig.btnText;
+        return btnText;
+    };
+    $scope.$watch('searchBox.query', function (val) {
+        ngModelCtrl.$setViewValue(val);
+        ngModelCtrl.$render();
+    });
+    $scope.keyUpToSearch = function (evt) {
+        if (evt && evt.keyCode === 13) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            $scope.doSearch();
+        }
+    };
+    $scope.doSearch = function () {
+        if(angular.isDefined($scope.search) && typeof $scope.search === 'function'){
+            $scope.search();
+        }
+    };
+    this.render = function() {
+        if(ngModelCtrl.$viewValue){
+            $scope.searchBox.query = ngModelCtrl.$viewValue;
+        }
+    };
+}])
+.directive('fuguSearchBox',function () {
+    return {
+        restrict: 'E',
+        templateUrl:'templates/searchBox.html',
+        replace:true,
+        require:['fuguSearchBox', '?ngModel'],
+        scope:{
+            btnText:'@?',
+            showBtn:'=?',
+            placeholder:'@?',
+            search:'&?'
+        },
+        controller:'fuguSearchBoxCtrl',
+        link: function (scope,el,attrs,ctrls) {
+            var searchBoxCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+            searchBoxCtrl.init(ngModelCtrl);
+        }
+    }
+});
+/**
  * ngCheckboxTree Module
  *
  */
@@ -913,12 +983,6 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
-}]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
@@ -960,4 +1024,20 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
+angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/searchBox.html",
+    "<div ng-class=\"{'input-group':showBtn}\">"+
+    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
+    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
+    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
+    "    </span>"+
+    "</div>"+
+    "");
 }]);
