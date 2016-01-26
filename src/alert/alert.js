@@ -7,6 +7,8 @@
 angular.module('ui.fugu.alert',[])
 .controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
 
+        var test;
+
     //指令初始化
     function initConfig(){
         if($scope.close&&($scope.close=="true"||$scope.close=="1")) {$scope.closeable=true;}
