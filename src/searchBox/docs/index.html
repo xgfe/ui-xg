@@ -1,0 +1,8 @@
+<div ng-controller="searchBoxDemoCtrl">
+    <fugu-search-box ng-model="query" show-btn="showButton" btn-text="Search" search="doSearch()" placeholder="按照文件名搜索内容"></fugu-search-box>
+    <br/>
+    <fugu-search-box ng-model="query" search="doSearch()"></fugu-search-box>
+    <hr/>
+    <pre>Query:{{query}}</pre>
+    <button class="btn btn-default" type="button" ng-click="toggleButton()">toggleButton</button>
+</div>
