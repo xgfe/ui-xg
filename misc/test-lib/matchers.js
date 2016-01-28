@@ -2,7 +2,7 @@
 // https://github.com/angular/angular.js/blob/master/test/matchers.js
 beforeEach(function() {
   jasmine.addMatchers({
-    toHaveClass: function(util, customEqualityTesters) {
+    toHaveClass: function() {
       return {
         compare: function(actual, expected) {
           var result = {
@@ -19,7 +19,7 @@ beforeEach(function() {
         }
       }
     },
-    toBeHidden: function(util, customEqualityTesters) {
+    toBeHidden: function() {
       return {
         compare: function(actual) {
           var result = {
@@ -36,7 +36,7 @@ beforeEach(function() {
         }
       }
     },
-    toHaveFocus: function(util, customEqualityTesters) {
+    toHaveFocus: function() {
       return {
         compare: function(actual) {
           var result = {
@@ -57,7 +57,7 @@ beforeEach(function() {
       return {
         compare: function (el, actual, expected) {
           var attr = $(el[0]).attr(actual);
-          var addendum = expected !== undefined ? ' with value \'' + expected + '\'' : '';
+          var addendum = typeof expected !== 'undefined' ? ' with value \'' + expected + '\'' : '';
           var result = {
             pass: attr === expected
           };
