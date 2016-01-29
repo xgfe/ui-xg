@@ -186,7 +186,7 @@ gulp.task('concat:css',['sass'], function () {
     .pipe(concat(config.filename + '.css'))
     .pipe(gulp.dest('./'+config.dist+'/css/'));
 });
-gulp.task('concat:js',['modules','eslint'], function () {
+gulp.task('concat:js',['modules'], function () {
     function getFileMapping(){
         var mapping = [];
         config.modules.forEach(function (module) {
@@ -261,7 +261,8 @@ gulp.task('copy',['concat:css','concat:js'], function () {
         .pipe(gulp.dest(config.dist+'/docs/fonts'));
 });
 // 自动构建API网站
-gulp.task('docs',['modules','copy'], function () {
+gulp.task('docs',['copy'], function () {
+    _.mkdir('dist/docs/partials/api');
     var docPath = config.dist+'/docs/',
         tplPath = 'misc/tpl/';
     var moduleNames=[],template,code;
