@@ -50,6 +50,7 @@ exports.setLabel = function (content) {
     html += '</td>';
     return html;
 };
+exports.mkdir = fs.mkdirSync;
 
 exports.deploy = function () {
     if(hasPagesBranch()){
@@ -64,7 +65,7 @@ exports.deploy = function () {
             spawnSync('git', ['add','.']);
             spawnSync('git', ['commit','-m',msg]);
             //spawnSync('git', ['push','--force','origin','gh-pages']);
-            console.log(msg);
+            //console.log(msg);
             //spawnSync('git', ['checkout','master']);
             //spawnSync('git',['branch','-D','gh-pages']);
         });
