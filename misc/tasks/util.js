@@ -17,6 +17,7 @@ exports.matchFile =  function (blobstr,options) {
     return glob.sync(blobstr, options);
 };
 exports.isExists = fs.existsSync;
+exports.readDir = fs.readdirSync;
 exports.readFile = function (filePath) {
     if(fs.existsSync(filePath)){
         return fs.readFileSync(filePath,'utf-8').toString();
@@ -48,6 +49,40 @@ exports.formatCode = function (col,code){
     return code;
 };
 exports.mkdir = fs.mkdirSync;
+exports.createModuleFiles = function (module) {
+    var modulePath = process.cwd()+'/src/'+module,template;
+    if(exports.isExists(modulePath)){
+        exports.log('[INFO]:'+module+' exists\n');
+        return;
+    }
+    var data = {
+        module:module,
+        humpModule:module[0].toUpperCase()+module.slice(1),
+        dashModule:module.replace(/[A-Z]/g,function(m){return '-'+m.toLowerCase()}),
+        date:exports.formateDate()
+    };
+    exports.mkdir(modulePath);
+    template = exports.readFile(__dirname+'/module.js.tpl');
+    exports.writeFile(modulePath+'/'+module+'.js',replaceTemplate(template));
+    exports.mkdir(modulePath+'/docs');
+    template = exports.readFile(__dirname+'/docs-index.html.tpl');
+    exports.writeFile(modulePath+'/docs/index.html',replaceTemplate(template));
+    template = exports.readFile(__dirname+'/docs-script.js.tpl');
+    exports.writeFile(modulePath+'/docs/script.js',replaceTemplate(template));
+    template = exports.readFile(__dirname+'/docs-readme.md.tpl');
+    exports.writeFile(modulePath+'/docs/readme.md',replaceTemplate(template));
+    exports.mkdir(modulePath+'/templates');
+    exports.writeFile(modulePath+'/templates/'+module+'.html','<div></div>');
+    exports.mkdir(modulePath+'/test');
+    template = exports.readFile(__dirname+'/test.js.tpl');
+    exports.writeFile(modulePath+'/test/'+module+'.spec.js',replaceTemplate(template));
+    function replaceTemplate(template){
+        var reg = /<%([^%>]+)%>/g;
+        return template.replace(reg, function (m,$1) {
+            return data[$1.trim()];
+        });
+    }
+};
 
 exports.deploy = function () {
     if(hasPagesBranch()){
@@ -85,4 +120,7 @@ exports.deploy = function () {
         return 'Site updated: '+year + '-' + addZero(month) + '-' + addZero(day)+' '+
             addZero(hour)+':'+addZero(min)+':'+addZero(seconds);
     }
+};
+exports.log = function(msg) {
+    process.stdout.write(msg+'\n');
 };
