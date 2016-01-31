@@ -104,29 +104,45 @@ function findModule(name) {
 function getDocsReadme(name){
     var path = config.src+'/'+name+'/docs/readme.md';
     var content = _.readFile(path,'utf-8');
+    var argumentBlock = false;
     renderer.heading = function (text, level) {
-        if(level === 1){
-            return '<h1 class="heading-directive-name">'+text+'</h1>';
+        if(level === 2 && text.toLowerCase() === 'arguments'){
+            argumentBlock = true;
+            return '<h2>'+text+'</h2>';
         }
-        var escapedText = text.toLowerCase();
-        return '<h' + level + ' class="heading-'+escapedText+'">' +
-            text + '</h' + level + '>';
+        if(argumentBlock){
+            argumentBlock = false;
+        }
+        return '<h' + level + '>' + text + '</h' + level + '>';
     };
-    renderer.table = function (header,body) {
-        header = header.replace(/ style="text\-align:center"/g,'');
-        body = body.replace(/ style="text\-align:center"/g,'');
-        return '<table class="table table-striped table-bordered">'+header+body+'</table>';
-    };
-    var count=-2;
-    renderer.tablecell = function (content,flags) {
-        count++;
-        if(flags.header){
-            return '<th>'+content+'</th>';
+    var table = '<table class="table table-striped table-bordered">',
+        thead = '<tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr>',
+        tbody = '';
+    table += thead+tbody;
+    renderer.list = function( body,  ordered){
+        var code = body.split('\n').join(''),ul_match,li_match,
+            ul_reg = /<li>([\w\(\)]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
+            li_reg = /<li>(\w+)[:：](.+?)<\/li>/g,
+            tr = '',cols = {};
+        if(argumentBlock && body.match('<ul>')){
+            while((ul_match = ul_reg.exec(code))){
+                tr += '<tr>';
+                tr += '<td>'+ul_match[1]+'</td>';
+
+                while((li_match = li_reg.exec(ul_match[3]))){
+                    cols[li_match[1]] = _.formatCode(li_match[1],li_match[2]);
+                }
+                tr += '<td>'+(cols.type?cols.type:'')+'</td>';
+                tr += '<td>'+(cols.default?cols.default:'')+'</td>';
+                tr += '<td>'+ul_match[2]+'</td>';
+                tr += '</tr>';
+                tbody += tr;
+                tr = '';
+            }
+            table += tbody+'</table>';
+            return table;
         }
-        if(count % 4 === 0){
-            return _.setLabel(content);
-        }
-        return '<td>'+content+'</td>';
+        return ordered?'<ol>'+body+'</ol>':'<ul>'+body+'</ul>'
     };
     marked.setOptions({
         highlight: function (code) {
