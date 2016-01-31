@@ -347,6 +347,15 @@ function createPartial(module,docPath){
     }
     _.writeFile(docPath+'partials/api/'+module.name+'.html',code);
 }
+// 脚手架
+gulp.task('create', function () {
+    var newModules = process.argv.slice(3).map(function (argv) {
+        return argv.slice(1);
+    });
+    newModules.forEach(function (module) {
+        _.createModuleFiles(module);
+    });
+});
 gulp.task('test',['html2js','karma']);
 gulp.task('build',['clean','eslint','concat:css','concat:js','uglify','readme']);
 gulp.task('default',['test'], function () {
