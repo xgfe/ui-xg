@@ -26,29 +26,26 @@ exports.readFile = function (filePath) {
 exports.writeFile = function (filePath,data) {
     return fs.writeFileSync(filePath,data,'utf-8');
 };
-exports.setLabel = function (content) {
-    if(!content){
-        return '<td>'+content+'</td>';
+exports.formatCode = function (col,code){
+    col = col.toLowerCase();
+    code = code.toLowerCase();
+    var code_reg = /<code>(\w+)<\/code>/,
+        match,result='';
+    if(col === 'type'){
+        code.split('|').forEach(function (type) {
+            type = type.trim();
+            if(type){
+                match = type.match(code_reg);
+                if(match && match[1]){
+                    result += '<label class="label label-default label-'+match[1]+'">'+match[1]+'</label>&nbsp;';
+                }else{
+                    result += '<label class="label label-default label-'+type+'">'+type+'</label>&nbsp;';
+                }
+            }
+        });
+        return result;
     }
-    var labels = content.split(',');
-    var html = '<td>',type;
-    var mapping = {
-        'string':'primary',
-        'number':'success',
-        'function':'info',
-        'boolean':'warning'
-    };
-    labels.forEach(function (label) {
-        label = label.trim();
-        if(mapping[label]){
-            type = mapping[label];
-        }else{
-            type = 'default';
-        }
-        html += '<label class="label label-'+type+'">'+label+'</label>&nbsp;';
-    });
-    html += '</td>';
-    return html;
+    return code;
 };
 exports.mkdir = fs.mkdirSync;
 
