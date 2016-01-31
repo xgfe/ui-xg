@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-28
+ * Version: 0.0.1 - 2016-01-31
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.tree"]);
@@ -287,12 +287,17 @@ angular.module('ui.fugu.buttonGroup', [])
             transclude:true,
             controller: 'buttonGroupController',
             link: function (scope, element, attrs, ngModelCtrl) {
-                var _scope = scope;
+                var _scope = scope,
+                    o, i;
                 scope.modelObj = angular.copy(scope.$parent.$eval(scope.ngModel));  // 复制获取元素的model
                 if(scope.type === 'radio'){   //radio类型
+
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
                         angular.forEach(scope.buttons, function(val){
+                            if(!val.btnRadio){  // 没有设置btn-radio,使用元素的text作为默认值
+                                val.btnRadio = val.value;
+                            }
                             // 判断按钮组是否选中:btn-radio设置model值
                             if(angular.equals(ngModelCtrl.$modelValue, val.btnRadio)){
                                 val.active = 'active';
@@ -315,7 +320,19 @@ angular.module('ui.fugu.buttonGroup', [])
                 }else{    // checkbox类型
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
-                        angular.forEach(scope.buttons, function(val){
+                        angular.forEach(scope.buttons, function(val, idx){
+                            i = 0;
+                            if(!val.btnCheckbox){  // 没有设置值,则使用对应ng-model的key作为默认值
+                                for(o in scope.modelObj){
+                                    if(i === idx){
+                                        val.btnCheckbox = o;
+                                        break;
+                                    }else{
+                                        i++;
+                                    }
+                                }
+                            }
+
                             // 判断给定当前checkbox状态是否选中model的值(btn-checkbox对应model中的值是否为true)
                             // btn-checkbox值的设置为ng-model对应对象的key
                             if(angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)){
@@ -339,7 +356,6 @@ angular.module('ui.fugu.buttonGroup', [])
                         }else{
                             scope.modelObj[btn.btnCheckbox] = _scope.checkboxTrue; //修改选中状态:不选->选中,对应model值
                         }
-
                         ngModelCtrl.$setViewValue(scope.modelObj);  // 修改model
                         ngModelCtrl.$render();
                     };
@@ -987,6 +1003,12 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
     "<li>"+
@@ -1000,12 +1022,6 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
     "    </button>"+
     "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
-    "</div>");
-}]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){

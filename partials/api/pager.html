@@ -1,20 +1,16 @@
-<h1 class="heading-directive-name">pager</h1><h2 class="heading-description">Description</h2><p>search box directive.</p>
-<h2 class="heading-usage">Usage</h2><pre><code class="lang-javascript"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-search-box</span> [<span class="hljs-attr">ng-model</span>=<span class="hljs-string">"string"</span><span class="hljs-string">]</span>
-    <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"test"</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-search-box</span>&gt;</span>
-</code></pre>
-<h2 class="heading-restrict">Restrict</h2><ul>
-<li>&#39;AE&#39;</li>
-</ul>
-<h2 class="heading-arguments">Arguments</h2><table class="table table-striped table-bordered"><tr>
-<th>Param</th><th>Type</th><th>Default</th><th>Details</th></tr>
-<tr>
-<td>showBtn(optional)</td><td><label class="label label-success">number</label>&nbsp;</td><td><code>true</code></td><td>是否展示搜索按钮</td></tr>
-<tr>
-<td>btnText(optional)</td><td><label class="label label-primary">string</label>&nbsp;</td><td><code>&quot;搜索&quot;</code></td><td>展示搜索按钮的话，指定按钮上的文本</td></tr>
-<tr>
-<td>search(optional)</td><td><label class="label label-info">function</label>&nbsp;</td><td><code>none</code></td><td>在搜索框中回车键或者点击搜索按钮之后触发</td></tr>
-</table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+<h1>pager</h1><h2>Description</h2><p>分页器组件</p>
+<h2>Usage</h2><pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-pager</span> <span class="hljs-attr">total-items</span>=<span class="hljs-string">"number"</span>
+    <span class="hljs-attr">page-no</span>=<span class="hljs-string">"number"</span>        
+    [<span class="hljs-attr">items-per-page</span>=<span class="hljs-string">"number"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">max-size</span>=<span class="hljs-string">"number"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">first-text</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">last-text</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">previous-text</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">next-text</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">page-changed</span>=<span class="hljs-string">"function"</span>&gt;</span>]
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-pager</span>&gt;</span></span>
+</code></pre><h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>totalItems</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td></td><td>条目总数</td></tr><tr><td>pageNo</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td></td><td>当前页码</td></tr><tr><td>itemsPerPage(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>20</code></td><td>每一页的数量</td></tr><tr><td>maxSize(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>5</code></td><td>分页器展示页码的最大数量</td></tr><tr><td>firstText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;首页&quot;</code></td><td>首页按钮文本         </td></tr><tr><td>lastText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;尾页&quot;</code></td><td>尾页按钮文本         </td></tr><tr><td>previousText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;上一页&quot;</code></td><td>上一页按钮文本         </td></tr><tr><td>nextText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;下一页&quot;</code>            </td><td>下一页按钮文本         </td></tr><tr><td>pageChanged(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>切换页码的时候触发的函数</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -31,7 +27,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-pager</span> <span class="hljs-attr">page-no</span>=<span class="hljs-string">"pages.pageNo"</span> <span class="hljs-attr">total-items</span>=<span class="hljs-string">"pages.totalCount"</span> <span class="hljs-attr">first-text</span>=<span class="hljs-string">"First"</span> <span class="hljs-attr">last-text</span>=<span class="hljs-string">"Last"</span> <span class="hljs-attr">page-changed</span>=<span class="hljs-string">"changePage"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-pager</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>currentPageNo is : </span><span class="hljs-template-variable">{{pages.pageNo}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>currentPageNo is : </span><span class="hljs-template-variable"><span>&#123;&#123;</span>pages.pageNo&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"setPage"</span>&gt;</span>设置页码:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"setPage"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">min</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">ng-change</span>=<span class="hljs-string">"setPageNo(pages.pageNo)"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"pages.pageNo"</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>

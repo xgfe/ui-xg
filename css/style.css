@@ -178,3 +178,23 @@ aside.app-aside:before{
 [ui-view].ng-leave {
     display: none;
 }
+.label-function{
+    background-color: #5bc0de;
+}
+.label-string{
+    background-color: #337ab7;
+}
+.label-boolean{
+    background-color: #f0ad4e;
+}
+.label-number{
+    background-color: #5cb85c;
+}
+.label-array{
+    background-color: #d9534f;
+}
+#codeTabPabels pre code{
+    overflow-x: auto;
+    white-space: pre;
+    word-wrap: normal;
+}

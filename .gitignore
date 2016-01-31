@@ -66,3 +66,5 @@ Temporary Items
 .svn/wc.db
 # 忽略生成的.html.js文件
 *.html.js
+# 忽略dist下的文档
+dist/docs

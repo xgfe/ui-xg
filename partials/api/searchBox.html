@@ -1,24 +1,13 @@
-<h1 class="heading-directive-name">searchBox</h1><h2 class="heading-description">Description</h2><p>search box directive.</p>
-<h2 class="heading-usage">Usage</h2><pre><code class="lang-javascript"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-search-box</span> [<span class="hljs-attr">ng-model</span>=<span class="hljs-string">"string"</span><span class="hljs-string">]</span>
-    <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"test"</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-search-box</span>&gt;</span>
+<h1>searchBox</h1><h2>Description</h2><p>搜索框组件，主要封装搜索框的搜索事件。</p>
+<h2>Usage</h2><pre><code class="lang-javascript"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-search-box</span> [<span class="hljs-attr">ng-model</span>=<span class="hljs-string">"string"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">placeholder</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">show-btn</span>=<span class="hljs-string">"boolean"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">btn-text</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">search</span>=<span class="hljs-string">"function"</span>&gt;</span>]
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-search-box</span>&gt;</span></span>
 </code></pre>
-<h2 class="heading-restrict">Restrict</h2><ul>
-<li>&#39;AE&#39;</li>
-</ul>
-<h2 class="heading-arguments">Arguments</h2><table class="table table-striped table-bordered"><tr>
-<th>Param</th><th>Type</th><th>Default</th><th>Details</th></tr>
-<tr>
-<td>ngModel</td><td><label class="label label-primary">string</label>&nbsp;<label class="label label-info">function</label>&nbsp;</td><td><code>none</code></td><td>绑定数据</td></tr>
-<tr>
-<td>placeholder(optional)</td><td><label class="label label-primary">string</label>&nbsp;</td><td><code>none</code></td><td>搜索框的placeholder</td></tr>
-<tr>
-<td>showBtn(optional)</td><td><label class="label label-warning">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否展示搜索按钮</td></tr>
-<tr>
-<td>btnText(optional)</td><td><label class="label label-primary">string</label>&nbsp;</td><td><code>&quot;搜索&quot;</code></td><td>展示搜索按钮的话，指定按钮上的文本</td></tr>
-<tr>
-<td>search(optional)</td><td><label class="label label-info">function</label>&nbsp;</td><td><code>none</code></td><td>在搜索框中回车键或者点击搜索按钮之后触发</td></tr>
-</table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>绑定数据</td></tr><tr><td>placeholder(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>搜索框的placeholder</td></tr><tr><td>showBtn(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示搜索按钮</td></tr><tr><td>btnText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;搜索&quot;</code></td><td>展示搜索按钮的话，指定按钮上的文本         </td></tr><tr><td>search(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>在搜索框中回车键或者点击搜索按钮之后触发的函数</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -35,7 +24,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-search-box</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"query"</span> <span class="hljs-attr">search</span>=<span class="hljs-string">"doSearch()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-search-box</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>Query:</span><span class="hljs-template-variable">{{query}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>Query:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>query&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"toggleButton()"</span>&gt;</span>toggleButton<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
