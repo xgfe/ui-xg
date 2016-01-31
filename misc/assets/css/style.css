@@ -193,3 +193,8 @@ aside.app-aside:before{
 .label-array{
     background-color: #d9534f;
 }
+#codeTabPabels pre code{
+    overflow-x: auto;
+    white-space: pre;
+    word-wrap: normal;
+}

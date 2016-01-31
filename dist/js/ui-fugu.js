@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-01-25
+ * Version: 0.0.1 - 2016-01-31
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.tree"]);
@@ -1046,12 +1046,6 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
-}]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
 }]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",

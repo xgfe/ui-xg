@@ -1,10 +1,10 @@
 # angular-ui-fugu - AngularJS directives 
 
 ## directives
-- [alert](./src/alert/example.html)
-- [button](./src/button/example.html)
-- [buttonGroup](./src/buttonGroup/example.html)
-- [dropdown](./src/dropdown/example.html)
-- [pager](./src/pager/example.html)
-- [searchBox](./src/searchBox/example.html)
-- [tree](./src/tree/example.html)
+- [alert](./src/alert/docs)
+- [button](./src/button/docs)
+- [buttonGroup](./src/buttonGroup/docs)
+- [dropdown](./src/dropdown/docs)
+- [pager](./src/pager/docs)
+- [searchBox](./src/searchBox/docs)
+- [tree](./src/tree/docs)
