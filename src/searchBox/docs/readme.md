@@ -1,12 +1,15 @@
 # searchBox
 ## Description
-search box directive.
+搜索框组件，主要封装搜索框的搜索事件。
 
 ## Usage
 
 ``` javascript
 <fugu-search-box [ng-model="string"]
-    placeholder="test">
+    [placeholder="{{string}}"]
+    [show-btn="boolean"]
+    [btn-text="{{string}}"]
+    [search="function">]
     </fugu-search-box>
 ```
 ## Restrict
@@ -14,10 +17,15 @@ search box directive.
 
 ## Arguments
 
-|  Param      |         Type        | Default|Details|
-| ------------- |:-------------------:|:--:|:--:|
-|  ngModel       | string,function |`none`|绑定数据|
-|  placeholder(optional)      | string |`none`|搜索框的placeholder|
-|  showBtn(optional)       | boolean |`true`|是否展示搜索按钮|
-|  btnText(optional)       | string |`"搜索"`|展示搜索按钮的话，指定按钮上的文本|
-|  search(optional)       | function |`none`|在搜索框中回车键或者点击搜索按钮之后触发|
+- ngModel:绑定数据
+    - type:`string`
+- placeholder(optional):搜索框的placeholder
+    - type:`string`
+- showBtn(optional):是否显示搜索按钮
+    - type:`boolean`
+    - default:`true`
+- btnText(optional):展示搜索按钮的话，指定按钮上的文本
+    - type:`string`
+    - default:`"搜索"`
+- search(optional):在搜索框中回车键或者点击搜索按钮之后触发的函数
+    - type:`function`

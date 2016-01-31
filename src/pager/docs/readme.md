@@ -1,21 +1,47 @@
 # pager
 ## Description
-search box directive.
+分页器组件
 
 ## Usage
 
-``` javascript
-<fugu-search-box [ng-model="string"]
-    placeholder="test">
-    </fugu-search-box>
+```
+<fugu-pager total-items="number"
+    page-no="number"
+    [items-per-page="number"]
+    [max-size="number"]
+    [first-text="{{string}}"]
+    [last-text="{{string}}"]
+    [previous-text="{{string}}"]
+    [next-text="{{string}}"]
+    [page-changed="function">]
+    </fugu-pager>
 ```
 ## Restrict
-- 'AE'
+- 'E'
 
 ## Arguments
 
-|  Param      |         Type        | Default|Details|
-| ------------- |:-------------------:|:--:|:--:|
-|  showBtn(optional)       | number |`true`|是否展示搜索按钮|
-|  btnText(optional)       | string |`"搜索"`|展示搜索按钮的话，指定按钮上的文本|
-|  search(optional)       | function |`none`|在搜索框中回车键或者点击搜索按钮之后触发|
+- totalItems:条目总数
+    - type:`number`
+- pageNo:当前页码
+    - type:`number`
+- itemsPerPage(optional):每一页的数量
+    - type:`number`
+    - default:`20`
+- maxSize(optional):分页器展示页码的最大数量
+    - type:`number`
+    - default:`5`
+- firstText(optional):首页按钮文本
+    - type:`string`
+    - default:`"首页"`
+- lastText(optional):尾页按钮文本
+    - type:`string`
+    - default:`"尾页"`
+- previousText(optional):上一页按钮文本
+    - type:`string`
+    - default:`"上一页"`
+- nextText(optional):下一页按钮文本
+    - type:`string`
+    - default:`"下一页"`
+- pageChanged(optional):切换页码的时候触发的函数
+    - type:`function`

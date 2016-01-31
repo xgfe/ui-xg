@@ -123,12 +123,13 @@ function getDocsReadme(name){
         var code = body.split('\n').join(''),ul_match,li_match,
             ul_reg = /<li>([\w\(\)]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
             li_reg = /<li>(\w+)[:：](.+?)<\/li>/g,
-            tr = '',cols = {};
+            tr = '',cols;
         if(argumentBlock && body.match('<ul>')){
             while((ul_match = ul_reg.exec(code))){
                 tr += '<tr>';
                 tr += '<td>'+ul_match[1]+'</td>';
 
+                cols = {};
                 while((li_match = li_reg.exec(ul_match[3]))){
                     cols[li_match[1]] = _.formatCode(li_match[1],li_match[2]);
                 }
@@ -146,7 +147,9 @@ function getDocsReadme(name){
     };
     marked.setOptions({
         highlight: function (code) {
-            return highlight.highlightAuto(code).value;
+            return highlight.highlightAuto(code).value.replace(/{{(.+?)}}/g, function (m,$1) {
+                return '<span>&#123;&#123;</span>'+$1+'&#125;&#125;';
+            });
         }
     });
     return marked(content,{
@@ -252,7 +255,7 @@ gulp.task('clean', function() {
  */
 gulp.task('readme',['modules'], function () {
     var directives = config.modules.map(function (module) {
-        return '- ['+module.name+'](./src/'+module.name+'/example.html)';
+        return '- ['+module.name+'](./src/'+module.name+'/docs)';
     }).join('\n');
     var data = {
         filename:config.pkg.name,
@@ -278,9 +281,11 @@ gulp.task('copy',['concat:css','concat:js'], function () {
 });
 // 自动构建API网站
 gulp.task('docs',['copy'], function () {
-    _.mkdir('dist/docs/partials/api');
     var docPath = config.dist+'/docs/',
         tplPath = 'misc/tpl/';
+    if(!_.isExists(docPath+'partials/api')){
+        _.mkdir(docPath+'partials/api');
+    }
     var moduleNames=[],template,code;
     config.modules.forEach(function (module) {
         // 构建组件文档页面
@@ -319,7 +324,9 @@ function createPartial(module,docPath){
         data = {};
     var example_code_tpl = _.readFile('misc/tpl/code-example.html.tpl');
     var template = ejs.compile(example_code_tpl);
-    var html_code = highlight.highlightAuto(html).value;
+    var html_code = highlight.highlightAuto(html).value.replace(/{{(.+?)}}/g, function (m,$1) {
+        return '<span>&#123;&#123;</span>'+$1+'&#125;&#125;';
+    });
     var js_code = highlight.highlightAuto(js).value;
     var css_code = highlight.highlightAuto(css).value;
     data.html = html_code || '';

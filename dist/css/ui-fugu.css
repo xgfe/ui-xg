@@ -24,15 +24,6 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
-li {
-  padding-bottom: 50px; }
-
-li p {
-  font-weight: bold; }
-
-li span {
-  display: block; }
-
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -110,6 +101,15 @@ li span {
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
+
+li {
+  padding-bottom: 50px; }
+
+li p {
+  font-weight: bold; }
+
+li span {
+  display: block; }
 
 /*!
  fugu-dropdown.css
