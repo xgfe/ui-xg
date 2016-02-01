@@ -1,0 +1,8 @@
+<div class="tree">
+    <ol ng-show="nodes && nodes.length > 0 && !collapsedAll" class="tree-content">
+        <li ng-repeat="node in nodes">
+            <tree-node  data-node="node" ng-if="node.children && node.children.length > 0"></tree-node>
+            <tree-node data-node="node" ng-if="!node.children || node.children.length == 0"></tree-node>
+        </li>
+    </ol>
+</div>
