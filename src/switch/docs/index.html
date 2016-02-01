@@ -1,0 +1,19 @@
+<div ng-controller="switchDemoCtrl">
+    <p>Normal</p>
+    <fugu-switch ng-model="checked"></fugu-switch>
+    <input type="checkbox" ng-model="checked"/>checked:{{checked}}
+    <p>Disabled</p>
+    <fugu-switch ng-model="open" ng-disabled="isDisabled"></fugu-switch>
+    <p>Size</p>
+    <fugu-switch ng-model="checked" size="sm"></fugu-switch>
+    <fugu-switch ng-model="checked" type="success"></fugu-switch>
+    <fugu-switch ng-model="checked" size="lg"></fugu-switch>
+    <p>Type</p>
+    <fugu-switch ng-model="open"></fugu-switch>
+    <fugu-switch ng-model="open" type="primary"></fugu-switch>
+    <fugu-switch ng-model="open" type="success"></fugu-switch>
+    <fugu-switch ng-model="open" type="error"></fugu-switch>
+    <fugu-switch ng-model="open" type="info"></fugu-switch>
+    <p>Changed</p>
+    <fugu-switch ng-model="open" on-change="statusChange()" type="success"></fugu-switch>
+</div>

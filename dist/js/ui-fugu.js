@@ -3,8 +3,8 @@
  * Version: 0.0.1 - 2016-02-01
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -727,6 +727,61 @@ angular.module('ui.fugu.searchBox',[])
     }
 });
 /**
+ * switch
+ * 开关
+ * Author:yangjiyuan@meituan.com
+ * Date:2016-1-31
+ */
+angular.module('ui.fugu.switch', [])
+    .constant('fuguSwitchConfig', {
+        type: 'default',
+        size: 'md',
+        isDisabled: false
+    })
+    .controller('fuguSwitchCtrl', ['$scope', '$attrs','fuguSwitchConfig', function ($scope, $attrs,fuguSwitchConfig) {
+        var ngModelCtrl = {$setViewValue: angular.noop};
+        $scope.switchObj = {};
+        this.init = function (_ngModelCtrl) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            $scope.switchObj.isDisabled = getAttrValue('ngDisabled','isDisabled');
+            $scope.switchObj.type = $scope.type || fuguSwitchConfig.type;
+            $scope.switchObj.size = $scope.size || fuguSwitchConfig.size;
+        };
+        $scope.$watch('switchObj.query', function (val,old) {
+            ngModelCtrl.$setViewValue(val);
+            ngModelCtrl.$render();
+            if(val !== old && $scope.onChange){
+                $scope.onChange();
+            }
+        });
+        this.render = function () {
+            $scope.switchObj.query = ngModelCtrl.$viewValue;
+        };
+        function getAttrValue(attributeValue,defaultValue) {
+            var val = $scope.$parent.$eval($attrs[attributeValue]);   //变量解析
+            return val ? val : fuguSwitchConfig[defaultValue||attributeValue];
+        }
+    }])
+    .directive('fuguSwitch', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/switch.html',
+            replace: true,
+            require: ['fuguSwitch', 'ngModel'],
+            scope: {
+                type:'@?',
+                size:'@?',
+                onChange:'&?'
+            },
+            controller: 'fuguSwitchCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var switchCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+                switchCtrl.init(ngModelCtrl);
+            }
+        }
+    });
+/**
  * tree
  * 树形菜单指令
  * Author:penglu02@meituan.com
@@ -1014,12 +1069,6 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
-}]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
     "<li>"+
@@ -1058,6 +1107,12 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "    </li>"+
     "</ul>");
 }]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",
     "<div ng-class=\"{'input-group':showBtn}\">"+
@@ -1067,6 +1122,13 @@ angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",fu
     "    </span>"+
     "</div>"+
     "");
+}]);
+angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/switch.html",
+    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
+    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
+    "    <i></i>"+
+    "</label>");
 }]);
 angular.module("tree/templates/tree-node.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/tree-node.html",

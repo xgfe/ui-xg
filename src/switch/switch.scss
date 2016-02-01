@@ -1,0 +1,83 @@
+$fugu-switch-width:40px;
+$fugu-switch-height:25px;
+//type colors
+$type-map: (default: #777,
+        primary: #337ab7,
+        success:#5cb85c,
+        info: #5bc0de,
+        error:#d9534f);
+// size
+$size-map: (sm, 35px,20px),
+        (md, $fugu-switch-width,$fugu-switch-height),
+        (lg, 50px, 30px);
+
+@mixin autoprefixer($property,$value){
+    -webkit-#{$property}: $value;
+    -moz-#{$property}: $value;
+    #{$property}: $value;
+}
+.fugu-switch{
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: $fugu-switch-width;
+    height: $fugu-switch-height;
+    border-radius: 1000px;
+    background-color: #777;
+    margin: 0;
+    & input{
+        position: absolute;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+    & input:checked + i:before {
+        top: 50%;
+        bottom: 50%;
+        left: 50%;
+        right: 5px;
+        border-width: 0;
+    }
+    & i:before {
+        content: "";
+        position: absolute;
+        background-color: #fff;
+        top: -1px;
+        bottom: -1px;
+        left: -1px;
+        right: -1px;
+        border: 1px solid #f0f0f0;
+        border-radius: 1000px;
+        @include autoprefixer(transition,all 0.2s);
+    }
+    & input:checked + i:after {
+        margin-left: $fugu-switch-width - $fugu-switch-height + 1;
+    }
+    & i:after {
+        content: "";
+        position: absolute;
+        background-color: #fff;
+        width: $fugu-switch-height - 2;
+        top: 1px;
+        bottom: 1px;
+        border-radius: 50%;
+        @include autoprefixer(transition,margin-left 0.3s);
+        @include autoprefixer(box-shadow,1px 1px 3px rgba(0,0,0,0.25));
+    }
+}
+@each $type, $color in $type-map {
+    .fugu-switch-#{$type}{
+        background-color: $color;
+    }
+}
+@each $size, $width, $height in $size-map {
+    .fugu-switch-#{$size}{
+        width: $width;
+        height: $height;
+        & input:checked + i:after {
+            margin-left: $width - $height+1;
+        }
+        & i:after{
+            width: $height - 2;
+        }
+    }
+}
