@@ -7,4 +7,5 @@
 - [dropdown](./src/dropdown/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
+- [switch](./src/switch/docs)
 - [tree](./src/tree/docs)
