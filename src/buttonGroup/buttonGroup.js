@@ -80,7 +80,7 @@ angular.module('ui.fugu.buttonGroup', [])
             restrict: 'AE',
             replace: true,
             scope: {
-                ngModel: '='
+                ngModel: '@'
             },
             require: '^ngModel',
             templateUrl: 'templates/buttonGroup.html',
