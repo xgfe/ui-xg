@@ -1,0 +1,10 @@
+.treeDemo  > li{
+    list-style-type: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    border: 1px dotted #ddd;
+}
+.treeDemo  > li > p{
+    margin-left:20px;
+}

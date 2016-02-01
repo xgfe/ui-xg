@@ -788,29 +788,29 @@ angular.module('ui.fugu.switch', [])
  * Date:2016-01-28
  */
 angular.module('ui.fugu.tree', [])
-    .constant('treeConfig', {
+    .constant('fuguTreeConfig', {
         showIcon: true,
         checkable: true,
         collapsedAll: false,
         editable: false
     })
-    .controller('treeController', ['$scope', '$element', '$attrs', 'treeConfig', function ($scope, $element, $attrs, treeConfig) {
+    .controller('treeController', ['$scope', '$element', '$attrs', 'fuguTreeConfig', function ($scope, $element, $attrs, fuguTreeConfig) {
         this.checkedNodes = {}; // 选中节点集合
         // 变量初始化,如果没有设置,则使用默认值
-        this.showIcon = angular.isDefined($scope.showIcon) ? $scope.showIcon : treeConfig.showIcon;
-        this.checkable = angular.isDefined($scope.checkable) ? $scope.checkable : treeConfig.checkable;
-        this.collapsedAll = angular.isDefined($scope.collapsedAll) ? $scope.collapsedAll : treeConfig.collapsedAll;
-        this.editable = angular.isDefined($scope.editable) ? $scope.editable : treeConfig.editable;
+        this.showIcon = angular.isDefined($scope.showIcon) ? $scope.showIcon : fuguTreeConfig.showIcon;
+        this.checkable = angular.isDefined($scope.checkable) ? $scope.checkable : fuguTreeConfig.checkable;
+        this.expandAll = angular.isDefined($scope.expandAll) ? !$scope.expandAll : fuguTreeConfig.collapsedAll;
+        this.editable = angular.isDefined($scope.editable) ? $scope.editable : fuguTreeConfig.editable;
         $scope.nodes = $scope.$parent.$eval($attrs.ngModel);  // 获取ng-model绑定节点对象
 
     }])
-    .directive('tree', ['treeConfig', '$parse', function () {
+    .directive('fuguTree', ['fuguTreeConfig', '$parse', function () {
         return {
             restrict: 'AE',
             scope: {
                 showIcon: '=?',
                 checkable: '=?',
-                collapsedAll: '=?',
+                expandAll: '=?',
                 editable: '=?',
                 onClick: '&?',
                 onCheckChange: '&?'
@@ -1032,7 +1032,7 @@ angular.module('ui.fugu.tree', [])
                 node: '='
             },
             replace: true,
-            require: ['^tree'],
+            require: ['^fuguTree'],
             templateUrl: 'templates/tree-node.html',
             controller: 'treeNodeController',
             link: function (scope, element, attrs, ctrls) {
@@ -1040,8 +1040,9 @@ angular.module('ui.fugu.tree', [])
                     htmlTpl = null;
                 scope.treeCtrl = ctrls[0];  // 保存树ctrl
                 scope.ele = element;  // 保存节点元素
-                scope.collapsed = scope.treeCtrl.collapsedAll;  // 文件夹展开|收起标识
+                scope.collapsed = scope.treeCtrl.expandAll;  // 文件夹展开|收起标识
                 scope.showIcon = scope.treeCtrl.showIcon;  // 是否显示图标标识
+                scope.checkable = scope.treeCtrl.checkable;  // 是否勾选标识
 
                 // 动态插入子节点
                 if (scope.node.children && scope.node.children.length > 0) {
@@ -1082,6 +1083,12 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
     "    </button>"+
     "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
+}]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
