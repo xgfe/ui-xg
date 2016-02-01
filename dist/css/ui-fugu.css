@@ -24,6 +24,15 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
+li {
+  padding-bottom: 50px; }
+
+li p {
+  font-weight: bold; }
+
+li span {
+  display: block; }
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -102,15 +111,6 @@
   margin-right: -6px;
   margin-left: 6px; }
 
-li {
-  padding-bottom: 50px; }
-
-li p {
-  font-weight: bold; }
-
-li span {
-  display: block; }
-
 /*!
  fugu-dropdown.css
  Version: 0.0.1
@@ -150,34 +150,25 @@ li span {
   font-size: 13px;
   color: #555;
   text-decoration: none; }
-
-ol, li {
-  list-style-type: none;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0; }
-
-ol {
-  padding-left: 20px; }
-
-.cur {
-  cursor: pointer;
-  position: relative; }
-
-.cur > span {
-  padding-right: 2px; }
-
-.nopadder {
-  padding: 0; }
-
-.p-30 {
-  padding-left: 30px; }
-
-.m-10-neg {
-  margin-right: -10px; }
-
-.w-400 {
-  width: 400px; }
-
-.v-m {
-  vertical-align: middle; }
+  .tree ol, .tree li {
+    list-style-type: none;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .tree ol {
+    padding-left: 20px; }
+  .tree .cur {
+    cursor: pointer;
+    position: relative; }
+  .tree .cur > span {
+    padding-right: 2px; }
+  .tree .nopadder {
+    padding: 0; }
+  .tree .m-30 {
+    margin-left: 30px; }
+  .tree .m-10-neg {
+    margin-right: -10px; }
+  .tree .w-400 {
+    width: 400px; }
+  .tree .v-m {
+    vertical-align: middle; }
