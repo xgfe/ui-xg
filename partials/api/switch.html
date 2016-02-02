@@ -1,0 +1,94 @@
+<h1>switch</h1><h2>Description</h2><p>开关组件，用于开启某些状态的地方。</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"boolean"</span>
+    [<span class="hljs-attr">size</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">type</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span><span class="hljs-string">]</span>
+    [<span class="hljs-attr">on-change</span>=<span class="hljs-string">"function"</span><span class="hljs-string">]</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span></span>
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td></td><td>绑定数据，必须赋值</td></tr><tr><td>size(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;md&quot;</code></td><td>大小。可取值<code>sm</code>,<code>md</code>,<code>lg</code></td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;default&quot;</code></td><td>开关类型。可取值<code>default</code>,<code>primary</code>,<code>success</code>,<code>info</code>,<code>error</code></td></tr><tr><td>onChange(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>开关按钮绑定的数据变化之后触发的函数</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"switchDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Normal<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checked"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checked"</span>/&gt;</span>checked:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>checked&#125;&#125;</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Disabled<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">ng-disabled</span>=<span class="hljs-string">"isDisabled"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Size<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checked"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"sm"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checked"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checked"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"lg"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Type<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"primary"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"error"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"info"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Changed<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">on-change</span>=<span class="hljs-string">"statusChange()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'switchDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.open = false;
+    $scope.checked = true;
+    $scope.isDisabled = true;
+    $scope.statusChange = function () {
+        console.log(<span class="hljs-string">'changed'</span>);
+    };
+}]);</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><div class="example"><div ng-controller="switchDemoCtrl">
+    <p>Normal</p>
+    <fugu-switch ng-model="checked"></fugu-switch>
+    <input type="checkbox" ng-model="checked"/>checked:{{checked}}
+    <p>Disabled</p>
+    <fugu-switch ng-model="open" ng-disabled="isDisabled"></fugu-switch>
+    <p>Size</p>
+    <fugu-switch ng-model="checked" size="sm"></fugu-switch>
+    <fugu-switch ng-model="checked" type="success"></fugu-switch>
+    <fugu-switch ng-model="checked" size="lg"></fugu-switch>
+    <p>Type</p>
+    <fugu-switch ng-model="open"></fugu-switch>
+    <fugu-switch ng-model="open" type="primary"></fugu-switch>
+    <fugu-switch ng-model="open" type="success"></fugu-switch>
+    <fugu-switch ng-model="open" type="error"></fugu-switch>
+    <fugu-switch ng-model="open" type="info"></fugu-switch>
+    <p>Changed</p>
+    <fugu-switch ng-model="open" on-change="statusChange()" type="success"></fugu-switch>
+</div></div><script>angular.module('fuguDemo').controller('switchDemoCtrl',['$scope', function ($scope) {
+    $scope.open = false;
+    $scope.checked = true;
+    $scope.isDisabled = true;
+    $scope.statusChange = function () {
+        console.log('changed');
+    };
+}]);</script>

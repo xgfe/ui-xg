@@ -26,6 +26,8 @@ define([
             
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
+                $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
+            
                 $stateProvider.state('app.api.tree',{url: "/tree",templateUrl: 'partials/api/tree.html'});
             
         
