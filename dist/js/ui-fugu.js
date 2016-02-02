@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-02-01
+ * Version: 0.0.1 - 2016-02-02
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.tree"]);
@@ -1070,27 +1070,6 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
-}]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
-    "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
-    "</div>");
-}]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
-}]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
     "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
@@ -1129,6 +1108,21 @@ angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",fu
     "    </span>"+
     "</div>"+
     "");
+}]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
 }]);
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/switch.html",
