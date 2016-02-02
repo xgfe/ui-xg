@@ -127,7 +127,7 @@ angular.module('ui.fugu.tree', [])
                         parentFlag = true;
                         break;
                     } else {
-                        targetParentScope = targetParentScope.$parent.$parent;   //获取父scope
+                        targetParentScope = targetParentScope.$parent ? targetParentScope.$parent.$parent : targetParentScope.$parent;   //获取父scope
                     }
                 }
             }
