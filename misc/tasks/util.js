@@ -1,7 +1,5 @@
 var glob = require("glob"),
-    fs = require('fs'),
-    vfs = require('vinyl-fs'),
-    spawnSync = require('child_process').spawnSync;
+    fs = require('fs');
 
 exports.formateDate = function () {
     var d = new Date(),
@@ -84,43 +82,6 @@ exports.createModuleFiles = function (module) {
     }
 };
 
-exports.deploy = function () {
-    if(hasPagesBranch()){
-        spawnSync('git',['branch','-D','gh-pages']);
-    }
-    spawnSync('git', ['checkout','--orphan','gh-pages']);
-    vfs.src('dist/docs/**/*')
-        .pipe(vfs.dest('.'))
-        .on('end',function(){
-            var msg = formatCommitMsg();
-            spawnSync('git', ['rm','-rf','.']);
-            spawnSync('git', ['add','.']);
-            spawnSync('git', ['commit','-m',msg]);
-            //spawnSync('git', ['push','--force','origin','gh-pages']);
-            //console.log(msg);
-            //spawnSync('git', ['checkout','master']);
-            //spawnSync('git',['branch','-D','gh-pages']);
-        });
-
-    function hasPagesBranch(){
-        var branchs = spawnSync('git',['branch']).stdout.toString().split('\n');
-        var reg = /\bgh\-pages$/;
-        return branchs.some(function(branch){
-            return branch && reg.test(branch);
-        });
-    }
-    function formatCommitMsg(){
-        var d = new Date(),
-            year = d.getFullYear(),
-            month = d.getMonth()+1,
-            day = d.getDate(),
-            hour = d.getHours(),
-            min = d.getMinutes(),
-            seconds = d.getSeconds();
-        return 'Site updated: '+year + '-' + addZero(month) + '-' + addZero(day)+' '+
-            addZero(hour)+':'+addZero(min)+':'+addZero(seconds);
-    }
-};
 exports.log = function(msg) {
     process.stdout.write(msg+'\n');
 };

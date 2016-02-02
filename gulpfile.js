@@ -14,8 +14,7 @@ var gulp = require('gulp'),
     marked = require('marked'),
     renderer = new marked.Renderer(),
     highlight = require('highlight.js'),
-    ejs = require('ejs'),
-    execSync = require('child_process').execSync;
+    ejs = require('ejs');
 
 var config = {
     modules: [],
@@ -307,14 +306,6 @@ gulp.task('docs',['copy'], function () {
     var firstModule = config.modules.length?config.modules[0].name:'';
     code = ejs.render(template, {module:firstModule});
     _.writeFile(docPath+'partials/app.html',code);
-});
-// 预览文档网站
-gulp.task('preview', function () {
-    execSync('node node_modules/.bin/http-server '+config.dist+'/docs -p 9001 -o -c -1');
-});
-// 部署文章网站
-gulp.task('deploy', function () {
-    _.deploy();
 });
 function createPartial(module,docPath){
     var code = module.docs.md,
