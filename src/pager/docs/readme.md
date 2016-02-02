@@ -13,7 +13,7 @@
     [last-text="{{string}}"]
     [previous-text="{{string}}"]
     [next-text="{{string}}"]
-    [page-changed="function">]
+    [page-changed="function"]>
     </fugu-pager>
 ```
 ## Restrict

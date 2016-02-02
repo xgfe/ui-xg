@@ -9,7 +9,7 @@
     [placeholder="{{string}}"]
     [show-btn="boolean"]
     [btn-text="{{string}}"]
-    [search="function">]
+    [search="function"]>
     </fugu-search-box>
 ```
 ## Restrict

@@ -8,7 +8,7 @@
 <fugu-switch ng-model="boolean"
     [size="{{string}}"]
     [type="{{string}}"]
-    [on-change="function">]
+    [on-change="function"]>
     </fugu-switch>
 ```
 ## Restrict
