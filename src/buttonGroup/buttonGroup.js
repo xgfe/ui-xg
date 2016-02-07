@@ -32,6 +32,7 @@ angular.module('ui.fugu.buttonGroup', [])
             }
         }
 
+        $scope.buttonGroup = {};
         $scope.buttons = childElements;
         $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
         $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
@@ -89,22 +90,26 @@ angular.module('ui.fugu.buttonGroup', [])
             link: function (scope, element, attrs, ngModelCtrl) {
                 var _scope = scope,
                     o, i;
-                scope.modelObj = angular.copy(scope.$parent.$eval(scope.ngModel));  // 复制获取元素的model
                 if(scope.type === 'radio'){   //radio类型
 
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;  // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val){
                             if(!val.btnRadio){  // 没有设置btn-radio,使用元素的text作为默认值
                                 val.btnRadio = val.value;
                             }
+
                             // 判断按钮组是否选中:btn-radio设置model值
-                            if(angular.equals(ngModelCtrl.$modelValue, val.btnRadio)){
+                            if(angular.equals(ngModelCtrl.$viewValue, val.btnRadio)){
                                 val.active = 'active';
                             }else{
                                 val.active = '';
                             }
                         });
+
                     };
 
                     // 按钮点击事件:修改model,实现ui->model
@@ -120,6 +125,9 @@ angular.module('ui.fugu.buttonGroup', [])
                 }else{    // checkbox类型
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;   // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val, idx){
                             i = 0;
                             if(!val.btnCheckbox){  // 没有设置值,则使用对应ng-model的key作为默认值
@@ -138,6 +146,7 @@ angular.module('ui.fugu.buttonGroup', [])
                             if(angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)){
                                 val.active = 'active';
                             }else{
+                                val.active = '';
                                 val.active = '';
                             }
                         });
