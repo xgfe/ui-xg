@@ -1,0 +1,32 @@
+<div ng-controller="buttonDemoCtrl" class="buttonDemo">
+    <p>不设置任何参数</p>
+    <fugu-button></fugu-button>
+    <p>text设置按钮显示文本,默认为Button</p>
+    <fugu-button text="text"></fugu-button>
+    <p>type设置按钮类型:button(按钮)、submit(提交)、reset(重置)。区别:form 表单中,submit会自动提交;reset重置表单内容.默认为button</p>
+    <form ng-submit="submitFn();">
+        <input ng-model="formContent">:{{clickText}}
+        <fugu-button ng-repeat="type in typeArr" type="type" text="type"></fugu-button>
+    </form>
+    <p>btnClass设置按钮样式:danger | warning | default | success | info ｜ primary | link,默认为default</p>
+    <fugu-button ng-repeat="c in classArr" text="c" btnClass="c"></fugu-button>
+    <p>size设置按钮大小:x-small | small | default | large,默认为default</p>
+    <fugu-button ng-repeat="s in sizeArr" text="s" btnClass="s"></fugu-button>
+    <fugu-button btnClass="'success'" text="'传递字串设置size'" size="'x-small'"></fugu-button>
+    <p>block设置按钮是否全部平铺父元素:true|false,默认为false</p>
+    <fugu-button block="block" text="'block'"></fugu-button>
+    <p>active设置按钮是否选中状态:true|false,默认为false</p>
+    <fugu-button active="activeTrue" text="'active'"></fugu-button>
+    <fugu-button active="activeFalse" text="'noActive'"></fugu-button>
+    <p>disabled设置按钮是否不可用:true|false,默认为false</p>
+    <fugu-button disabled="disabledTrue" text="'disabled'"></fugu-button>
+    <fugu-button disabled="disabledFalse" text="'noDisabled'"></fugu-button>
+    <p>loading设置按钮显示加载效果:true|false,默认为false，设置为加载状态，则默认不可用</p>
+    <fugu-button loading="loadingTrue" text="'loading'"></fugu-button>
+    <fugu-button loading="loadingFalse" text="'noLoading'"></fugu-button>
+    <p>click事件</p>
+    <fugu-button text="'click事件'" click="clickFn()"></fugu-button>
+    <fugu-button loading="loading" text="'被控制loading效果'"></fugu-button>
+    <p>icon设置按钮图标，默认无</p>
+    <fugu-button icon="icon" text="'add'" size="'x-small'"></fugu-button>
+</div>

@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-02-02
+ * Version: 0.0.1 - 2016-02-07
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.tree"]);
@@ -232,6 +232,7 @@ angular.module('ui.fugu.buttonGroup', [])
             }
         }
 
+        $scope.buttonGroup = {};
         $scope.buttons = childElements;
         $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
         $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
@@ -289,22 +290,26 @@ angular.module('ui.fugu.buttonGroup', [])
             link: function (scope, element, attrs, ngModelCtrl) {
                 var _scope = scope,
                     o, i;
-                scope.modelObj = angular.copy(scope.$parent.$eval(scope.ngModel));  // 复制获取元素的model
                 if(scope.type === 'radio'){   //radio类型
 
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;  // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val){
                             if(!val.btnRadio){  // 没有设置btn-radio,使用元素的text作为默认值
                                 val.btnRadio = val.value;
                             }
+
                             // 判断按钮组是否选中:btn-radio设置model值
-                            if(angular.equals(ngModelCtrl.$modelValue, val.btnRadio)){
+                            if(angular.equals(ngModelCtrl.$viewValue, val.btnRadio)){
                                 val.active = 'active';
                             }else{
                                 val.active = '';
                             }
                         });
+
                     };
 
                     // 按钮点击事件:修改model,实现ui->model
@@ -320,6 +325,9 @@ angular.module('ui.fugu.buttonGroup', [])
                 }else{    // checkbox类型
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;   // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val, idx){
                             i = 0;
                             if(!val.btnCheckbox){  // 没有设置值,则使用对应ng-model的key作为默认值
@@ -338,6 +346,7 @@ angular.module('ui.fugu.buttonGroup', [])
                             if(angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)){
                                 val.active = 'active';
                             }else{
+                                val.active = '';
                                 val.active = '';
                             }
                         });
@@ -1070,36 +1079,11 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
-
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
-}]);
-
-angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/pager.html",
-    "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
-    "    </li>"+
-    "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
-    "    </li>"+
-    "    <li class=\"disabled\">"+
-    "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
-    "    </li>"+
-    "</ul>");
 }]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",
@@ -1126,12 +1110,28 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
     "</div>");
 }]);
-angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/switch.html",
-    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
-    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
-    "    <i></i>"+
-    "</label>");
+angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/pager.html",
+    "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
+    "    <li ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
+    "    </li>"+
+    "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
+    "    </li>"+
+    "    <li class=\"disabled\">"+
+    "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
+    "    </li>"+
+    "</ul>");
 }]);
 angular.module("tree/templates/tree-node.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/tree-node.html",
@@ -1171,4 +1171,11 @@ angular.module("tree/templates/tree.html",[]).run(["$templateCache",function($te
     "        </li>"+
     "    </ol>"+
     "</div>");
+}]);
+angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/switch.html",
+    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
+    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
+    "    <i></i>"+
+    "</label>");
 }]);
