@@ -8,4 +8,6 @@
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
 - [switch](./src/switch/docs)
+- [timepanel](./src/timepanel/docs)
+- [timepicker](./src/timepicker/docs)
 - [tree](./src/tree/docs)

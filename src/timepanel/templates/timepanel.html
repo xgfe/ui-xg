@@ -1,0 +1,26 @@
+<div class="fugu-timepanel">
+    <div class="fugu-timepanel-col">
+        <div class="fugu-timepanel-top" ng-click="decrease('hour',23)">{{hour | smallerValue:23:hourStep}}</div>
+        <div class="fugu-timepanel-middle clearfix">
+            <input class="fugu-timepanel-input" type="text" ng-change="changeInputValue('hour',23)" ng-model="hour" placeholder="HH"/>
+            <span class="fugu-timepanel-label">时</span>
+        </div>
+        <div class="fugu-timepanel-bottom" ng-click="increase('hour',23)">{{hour | largerValue:23:hourStep}}</div>
+    </div>
+    <div class="fugu-timepanel-col">
+        <div class="fugu-timepanel-top" ng-click="decrease('minute',59)">{{minute | smallerValue:59:minuteStep}}</div>
+        <div class="fugu-timepanel-middle clearfix">
+            <input class="fugu-timepanel-input" type="text" ng-change="changeInputValue('minute',59)" ng-model="minute" placeholder="MM"/>
+            <span class="fugu-timepanel-label">分</span>
+        </div>
+        <div class="fugu-timepanel-bottom" ng-click="increase('minute',59)">{{minute | largerValue:59:minuteStep}}</div>
+    </div>
+    <div class="fugu-timepanel-col" ng-show="showSeconds">
+        <div class="fugu-timepanel-top" ng-click="decrease('second',59)">{{second | smallerValue:59:secondStep}}</div>
+        <div class="fugu-timepanel-middle clearfix">
+            <input class="fugu-timepanel-input" type="text" ng-change="changeInputValue('second',59)" ng-model="second" placeholder="SS"/>
+            <span class="fugu-timepanel-label">秒</span>
+        </div>
+        <div class="fugu-timepanel-bottom" ng-click="increase('second',59)">{{second | largerValue:59:secondStep}}</div>
+    </div>
+</div>
