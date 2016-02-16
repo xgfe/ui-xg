@@ -28,6 +28,10 @@ define([
             
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
             
+                $stateProvider.state('app.api.timepanel',{url: "/timepanel",templateUrl: 'partials/api/timepanel.html'});
+            
+                $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
+            
                 $stateProvider.state('app.api.tree',{url: "/tree",templateUrl: 'partials/api/tree.html'});
             
         

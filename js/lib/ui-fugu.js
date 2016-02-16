@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-02-02
+ * Version: 0.0.1 - 2016-02-16
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepanel","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepanel/templates/timepanel.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -232,6 +232,7 @@ angular.module('ui.fugu.buttonGroup', [])
             }
         }
 
+        $scope.buttonGroup = {};
         $scope.buttons = childElements;
         $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
         $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
@@ -289,22 +290,26 @@ angular.module('ui.fugu.buttonGroup', [])
             link: function (scope, element, attrs, ngModelCtrl) {
                 var _scope = scope,
                     o, i;
-                scope.modelObj = angular.copy(scope.$parent.$eval(scope.ngModel));  // 复制获取元素的model
                 if(scope.type === 'radio'){   //radio类型
 
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;  // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val){
                             if(!val.btnRadio){  // 没有设置btn-radio,使用元素的text作为默认值
                                 val.btnRadio = val.value;
                             }
+
                             // 判断按钮组是否选中:btn-radio设置model值
-                            if(angular.equals(ngModelCtrl.$modelValue, val.btnRadio)){
+                            if(angular.equals(ngModelCtrl.$viewValue, val.btnRadio)){
                                 val.active = 'active';
                             }else{
                                 val.active = '';
                             }
                         });
+
                     };
 
                     // 按钮点击事件:修改model,实现ui->model
@@ -320,6 +325,9 @@ angular.module('ui.fugu.buttonGroup', [])
                 }else{    // checkbox类型
                     // model的render事件:model->ui
                     ngModelCtrl.$render = function(){   // 重写render方法
+                        if(ngModelCtrl.$viewValue){
+                            scope.modelObj = ngModelCtrl.$viewValue;   // 获取元素的model
+                        }
                         angular.forEach(scope.buttons, function(val, idx){
                             i = 0;
                             if(!val.btnCheckbox){  // 没有设置值,则使用对应ng-model的key作为默认值
@@ -338,6 +346,7 @@ angular.module('ui.fugu.buttonGroup', [])
                             if(angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)){
                                 val.active = 'active';
                             }else{
+                                val.active = '';
                                 val.active = '';
                             }
                         });
@@ -782,6 +791,324 @@ angular.module('ui.fugu.switch', [])
         }
     });
 /**
+ * timepanel
+ * timepanel directive
+ * Author: yangjiyuan@meituan.com
+ * Date:2016-02-15
+ */
+angular.module('ui.fugu.timepanel', [])
+    .constant('fuguTimepanelConfig', {
+        hourStep: 1,
+        minuteStep: 1,
+        secondStep: 1,
+        showSeconds: true,
+        mousewheel: true,
+        arrowkeys: true
+    })
+    .filter('smallerValue', function () {
+        return function (input, maxValue, step) {
+            input = parseInt(input, 10) - parseInt(step, 10);
+            if (input < 0) {
+                input = maxValue;
+            }
+            if (input < 10) {
+                input = '0' + input;
+            }
+            return input;
+        }
+    })
+    .filter('largerValue', function () {
+        return function (input, maxValue, step) {
+            input = parseInt(input, 10) + parseInt(step, 10);
+            if (input > maxValue) {
+                input = 0;
+            }
+            if (input < 10) {
+                input = '0' + input
+            }
+            return input;
+        }
+    })
+    .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
+        var ngModelCtrl = {$setViewValue: angular.noop};
+        var selected = new Date();
+
+        this.init = function (_ngModelCtrl, inputs) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            ngModelCtrl.$formatters.unshift(function (modelValue) {
+                return modelValue ? new Date(modelValue) : null;
+            });
+            //$scope.$$postDigest(function(){}); // 如果showSeconds用的是ng-if，此时second还没有插入DOM，无法获取元素和绑定事件
+            var hoursInputEl = inputs.eq(0),
+                minutesInputEl = inputs.eq(1),
+                secondsInputEl = inputs.eq(2);
+            hoursInputEl.on('focus', function () {
+                hoursInputEl[0].select();
+            });
+            minutesInputEl.on('focus', function () {
+                minutesInputEl[0].select();
+            });
+            secondsInputEl.on('focus', function () {
+                secondsInputEl[0].select();
+            });
+
+            var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : timepanelConfig.mousewheel;
+            if (mousewheel) {
+                this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+            }
+            var arrowkeys = angular.isDefined($attrs.arrowkeys) ? $scope.$parent.$eval($attrs.arrowkeys) : timepanelConfig.arrowkeys;
+            if (arrowkeys) {
+                this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+            }
+        };
+
+        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
+        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
+        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
+        $scope.showSeconds = timepanelConfig.showSeconds;
+        if ($attrs.showSeconds) {
+            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                $scope.showSeconds = !!value;
+            });
+        }
+        $scope.decrease = function (type, maxValue) {
+            $scope[type] = smallerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+            changeHandler();
+        };
+        $scope.increase = function (type, maxValue) {
+            $scope[type] = largerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+            changeHandler();
+        };
+        $scope.changeInputValue = function (type, maxValue) {
+            if (isNaN($scope[type])) {
+                return;
+            }
+            $scope[type] = parseInt($scope[type], 10);
+            if ($scope[type] < 0) {
+                $scope[type] = 0;
+            }
+            if ($scope[type] > maxValue) {
+                $scope[type] = maxValue;
+            }
+            $scope[type] = addZero($scope[type]);
+            changeHandler();
+        };
+        this.render = function () {
+            var date = ngModelCtrl.$viewValue;
+
+            if (isNaN(date)) {
+                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            } else {
+                if (date) {
+                    selected = date;
+                }
+                $scope.hour = ngModelCtrl.$modelValue ? addZero(selected.getHours()) : null;
+                $scope.minute = ngModelCtrl.$modelValue ? addZero(selected.getMinutes()) : null;
+                $scope.second = ngModelCtrl.$modelValue ? addZero(selected.getSeconds()) : null;
+            }
+        };
+        this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+            var isScrollingUp = function (e) {
+                if (e.originalEvent) {
+                    e = e.originalEvent;
+                }
+                var delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
+                return e.detail || delta > 0;
+            };
+
+            hoursInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour', 23) : $scope.decrease('hour', 23));
+                e.preventDefault();
+            });
+
+            minutesInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute', 59) : $scope.decrease('minute', 59));
+                e.preventDefault();
+            });
+
+            secondsInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('second', 59) : $scope.decrease('second', 59));
+                e.preventDefault();
+            });
+        };
+
+        this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour', 23));
+            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute', 59));
+            secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
+        };
+        function changeHandler() {
+            var dt = new Date();
+            dt.setHours($scope.hour);
+            dt.setMinutes($scope.minute);
+            dt.setSeconds($scope.second);
+            if ($scope.onChange) {
+                var fn = $scope.onChange();
+                if (angular.isFunction(fn)) {
+                    fn(dt);
+                }
+            }
+            ngModelCtrl.$setViewValue(dt);
+            ngModelCtrl.$render();
+        }
+
+        function arrowkeyEventHandler(type, maxValue) {
+            return function (e) {
+                if (e.which === 38) { // up
+                    e.preventDefault();
+                    $scope.increase(type, maxValue);
+                    $scope.$apply();
+                } else if (e.which === 40) { // down
+                    e.preventDefault();
+                    $scope.decrease(type, maxValue);
+                    $scope.$apply();
+                }
+            }
+        }
+
+        function addZero(value) {
+            return value > 9 ? value : '0' + value;
+        }
+    }])
+    .directive('fuguTimepanel', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/timepanel.html',
+            replace: true,
+            require: ['fuguTimepanel', 'ngModel'],
+            scope: {
+                onChange: '&'
+            },
+            controller: 'fuguTimepanelCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+                timepanelCtrl.init(ngModelCtrl, el.find('input'));
+            }
+        }
+    });
+/**
+ * timepicker
+ * timepicker directive
+ * Author: yangjiyuan@meituan.com
+ * Date:2016-02-15
+ */
+angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
+    .constant('fuguTimepickerConfig', {
+        hourStep: 1,
+        minuteStep: 1,
+        secondStep: 1,
+        format:'HH:mm:ss'
+    })
+    .service('fuguTimepickerService', ['$document', function($document) {
+        var openScope = null;
+        this.open = function(timepickerScope) {
+            if (!openScope) {
+                $document.on('click', closeTimepicker);
+            }
+            if (openScope && openScope !== timepickerScope) {
+                openScope.showTimepanel = false;
+            }
+            openScope = timepickerScope;
+        };
+
+        this.close = function(timepickerScope) {
+            if (openScope === timepickerScope) {
+                openScope = null;
+                $document.off('click', closeTimepicker);
+            }
+        };
+
+        function closeTimepicker(evt) {
+            if (!openScope) { return; }
+            var panelElement = openScope.getTimepanelElement();
+            var toggleElement = openScope.getToggleElement();
+            if(panelElement && panelElement[0].contains(evt.target) ||
+                toggleElement && toggleElement[0].contains(evt.target)){
+                return;
+            }
+            openScope.showTimepanel = false;
+            openScope.$apply();
+        }
+
+    }])
+    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter', function($scope, $element, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter) {
+        var ngModelCtrl = { $setViewValue: angular.noop };
+        this.init = function (_ngModelCtrl) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            ngModelCtrl.$formatters.unshift(function(modelValue) {
+                return modelValue ? new Date(modelValue) : null;
+            });
+            $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
+            $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
+            $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
+        };
+        var _this = this;
+        $scope.showTimepanel = false;
+        this.toggle = function(open) {
+            $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
+        };
+        this.showTimepanel = function() {
+            return $scope.showTimepanel;
+        };
+        var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+        this.render = function () {
+            var date = ngModelCtrl.$viewValue;
+            if (isNaN(date)) {
+                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            } else if(date){
+                $scope.selectedTime = date;
+                $scope.inputValue = dateFilter(date,format);
+            }
+        };
+        // 这里使用onChange，而不是watch selectedTime属性，因为watch的话，会出现循环赋值，待解决
+        $scope.changeTime = function (time) {
+            ngModelCtrl.$setViewValue(time);
+            ngModelCtrl.$render();
+        };
+        $scope.toggleTimepanel = function (evt) {
+            $element.find('input')[0].blur();
+            evt.preventDefault();
+            if (!$scope.isDisabled) {
+                _this.toggle();
+            }
+        };
+        $scope.getTimepanelElement = function () {
+            return $element.find('.fugu-timepanel');
+        };
+        $scope.getToggleElement = function () {
+            return $element.find('.input-group');
+        };
+        $scope.$watch('showTimepanel', function(showTimepanel) {
+            if (showTimepanel) {
+                fuguTimepickerService.open($scope);
+            } else {
+                fuguTimepickerService.close($scope);
+            }
+        });
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.showTimepanel = false;
+        });
+    }])
+    .directive('fuguTimepicker', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/timepicker.html',
+            replace: true,
+            require: ['fuguTimepicker','ngModel'],
+            scope: {
+                isDisabled:'=?ngDisabled',
+                placeholder:'@'
+            },
+            controller: 'fuguTimepickerCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var timepickerCtrl = ctrls[0],ngModelCtrl = ctrls[1];
+                timepickerCtrl.init(ngModelCtrl);
+            }
+        }
+    });
+/**
  * tree
  * 树形菜单指令
  * Author:penglu02@meituan.com
@@ -910,7 +1237,7 @@ angular.module('ui.fugu.tree', [])
                         parentFlag = true;
                         break;
                     } else {
-                        targetParentScope = targetParentScope.$parent.$parent;   //获取父scope
+                        targetParentScope = targetParentScope.$parent ? targetParentScope.$parent.$parent : targetParentScope.$parent;   //获取父scope
                     }
                 }
             }
@@ -1066,9 +1393,40 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
+}]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
+angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/searchBox.html",
+    "<div ng-class=\"{'input-group':showBtn}\">"+
+    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
+    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
+    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
+    "    </span>"+
+    "</div>"+
+    "");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
@@ -1093,43 +1451,57 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "    </li>"+
     "</ul>");
 }]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
-}]);
-angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/searchBox.html",
-    "<div ng-class=\"{'input-group':showBtn}\">"+
-    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
-    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
-    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
-    "    </span>"+
-    "</div>"+
-    "");
-}]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
-}]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
-    "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
-    "</div>");
-}]);
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/switch.html",
     "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
     "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
+}]);
+angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepanel.html",
+    "<div class=\"fugu-timepanel\">"+
+    "    <div class=\"fugu-timepanel-col\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('hour',23)\">{{hour | smallerValue:23:hourStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
+    "            <span class=\"fugu-timepanel-label\">时</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('hour',23)\">{{hour | largerValue:23:hourStep}}</div>"+
+    "    </div>"+
+    "    <div class=\"fugu-timepanel-col\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('minute',59)\">{{minute | smallerValue:59:minuteStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
+    "            <span class=\"fugu-timepanel-label\">分</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('minute',59)\">{{minute | largerValue:59:minuteStep}}</div>"+
+    "    </div>"+
+    "    <div class=\"fugu-timepanel-col\" ng-show=\"showSeconds\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('second',59)\">{{second | smallerValue:59:secondStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
+    "            <span class=\"fugu-timepanel-label\">秒</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
+    "    </div>"+
+    "</div>"+
+    "");
+}]);
+angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker.html",
+    "<div class=\"fugu-timepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "                <i class=\"glyphicon glyphicon-time\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "</div>"+
+    "");
 }]);
 angular.module("tree/templates/tree-node.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/tree-node.html",
