@@ -65,6 +65,7 @@ Temporary Items
 .svn
 .svn/wc.db
 # 忽略生成的.html.js文件
+/src/*/example.html
 *.html.js
 # 开发模式下忽略文档
 dist/docs
