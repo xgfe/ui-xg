@@ -1,10 +1,10 @@
 <aside class="app-aside">
     <ul>
         <li class="active">
-            <a href="javascript:;">开发者文档</a>
+            <a href="javascript:;">开始使用</a>
         </li>
     </ul>
 </aside>
 <article class="app-content">
-    <h1>Coming soon...</h1>
+    <%-appContent%>
 </article>

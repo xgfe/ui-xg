@@ -306,6 +306,31 @@ gulp.task('docs',['copy'], function () {
     var firstModule = config.modules.length?config.modules[0].name:'';
     code = ejs.render(template, {module:firstModule});
     _.writeFile(docPath+'partials/app.html',code);
+
+    // 没有docs目录的话，生成
+    if(!_.isExists(docPath+'partials/docs')){
+        _.mkdir(docPath+'partials/docs');
+    }
+    // 构建组件文档编写规范
+    template = _.readFile(tplPath+'start.html.tpl');
+    var docsContent = _.readFile('docs/start.md');
+    var appContent = marked(docsContent);
+    code = ejs.render(template, {appContent:appContent});
+    _.writeFile(docPath+'partials/docs/start.html',code);
+
+    // 构建开发者文档和组件文档编写规范
+    template = _.readFile(tplPath+'guideDocs.html.tpl');
+    docsContent = _.readFile('docs/guide.md');
+    appContent = marked(docsContent);
+    code = ejs.render(template, {appContent:appContent});
+    _.writeFile(docPath+'partials/docs/guide.html',code);
+
+    // 构建组件文档编写规范
+    docsContent = _.readFile('docs/directive-docs.md');
+    appContent = marked(docsContent);
+    code = ejs.render(template, {appContent:appContent});
+    _.writeFile(docPath+'partials/docs/directiveDocs.html',code);
+
 });
 function createPartial(module,docPath){
     var code = module.docs.md,

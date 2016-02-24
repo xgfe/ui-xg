@@ -7,6 +7,8 @@
   },
   "globals": {
     "angular": true,
+    "define":true,
+    "require":true,
     "inject": true,
     "jQuery":true,
     "$":true
