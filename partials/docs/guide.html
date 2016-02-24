@@ -1,0 +1,76 @@
+<aside class="app-aside">
+    <ul>
+        <li ui-sref-active="active"  title="开发者文档">
+            <a ui-sref="app.guide">开发者文档</a>
+        </li>
+        <li ui-sref-active="active" title="组件文档编写规范">
+            <a ui-sref="app.directiveDocs">组件文档编写规范</a>
+        </li>
+    </ul>
+</aside>
+<article class="app-content">
+    <h1 id="-">开发者文档</h1>
+<h2 id="-">安装</h2>
+<ol>
+<li>克隆仓库 <code>git clone https://github.com/xgfe/angular-ui-fugu.git</code></li>
+<li>安装依赖包 <code>cd angular-ui-fugu &amp;&amp; npm install</code></li>
+</ol>
+<h2 id="-">依赖</h2>
+<ol>
+<li>Node : v0.12.7 或更高（不超过4.0）</li>
+<li>Gulp : v3.8.11 或更高，允许 <code>npm install gulp -g</code> 进行安装</li>
+<li>sass : v3.4.15 ，使用sass作为css预编译工具</li>
+<li>angular : v1.2.25</li>
+<li>bootstrap : v3.3.6</li>
+</ol>
+<h2 id="-">目录结构说明</h2>
+<pre><code>├─ dist/              生成目录，包括js和css文件
+  ├─ js/              最终生成的js文件，包括压缩和未压缩版
+  ├─ css/             最终生成的css文件，包括压缩和未压缩版
+├─ docs/              使用文档以及开发者文档等
+  ├─ guide<span class="hljs-selector-class">.md</span>         开发者文档 
+  ├─ start<span class="hljs-selector-class">.md</span>         使用文档
+├─ lib/               依赖的框架，包括angular，jquery和bootstrap
+  ├─ angular/
+  ├─ bootstrap/
+├─ misc/              和gulp构建相关或文档平台构建相关的文件
+├─ src/               所有组件的源码
+  ├─ foo/             以foo示例
+    ├─ test/          测试相关文件
+    ├─ docs/          文档相关的文件
+      ├─ readme<span class="hljs-selector-class">.md</span>    组件使用介绍文档
+      ├─ index<span class="hljs-selector-class">.html</span>   组件示例的html文件
+      ├─ script<span class="hljs-selector-class">.js</span>    组件示例的js文件
+      ├─ style<span class="hljs-selector-class">.css</span>    组件示例使用的额外样式
+    ├─ templates/     组件DOM模板
+    ├─ foo<span class="hljs-selector-class">.js</span>         组件主要的控制文件
+    ├─ foo<span class="hljs-selector-class">.scss</span>       组件的样式
+├─ <span class="hljs-selector-class">.eslintrc</span>          Eslint配置文件
+├─ <span class="hljs-selector-class">.gitignore</span>         
+├─ <span class="hljs-selector-class">.htmlhintrc</span>        xg-htmlhint配置文件
+├─ gulpfile<span class="hljs-selector-class">.js</span>        gulp构建文件
+├─ karma<span class="hljs-selector-class">.conf</span><span class="hljs-selector-class">.js</span>      karma配置
+├─ package<span class="hljs-selector-class">.json</span>     
+├─ README.md
+</code></pre><h2 id="-">新增组件</h2>
+<ol>
+<li>运行<code>gulp create -bar</code>创建组件的基础脚手架，可同时创建多个，如<code>gulp create -a -b</code></li>
+<li>在<code>src/bar</code>目录下开发新的组件，组件命名为<code>ui.fugu.bar</code>，每一个组件是一个单独的模块，组件的依赖关系通过angular的模块依赖实现。每一个组件的<code>restrict</code>选项必须有<code>E</code>属性，即组件可以作为标签使用</li>
+<li>完成组件的基本功能之后在<code>src/bar/test</code>目录下生成的测试文件<code>bar.spec.js</code>中完成测试</li>
+<li>在<code>src/bar/docs</code>目录下生成的文件中完成文档编写，具体编写规范参考<a ui-sref="app.directiveDocs" href="directive-docs.md">组件文档编写规范</a><ul>
+<li><code>readme.md</code>：组件说明文件</li>
+<li><code>script.js</code>：示例的js代码，在其中编写展示组件功能的代码</li>
+<li><code>index.html</code>：组件示例的html代码</li>
+<li><code>style.css</code>：默认没有生成，如果在示例中需要有额外的css样式，可以创建该文件并添加样式</li>
+</ul>
+</li>
+<li>在项目根目录下执行<code>gulp</code>即可对所有组件进行测试并在<code>dist</code>目录下构建最终的文件。其他相关task如下<ul>
+<li><code>gulp test</code>：执行测试命令，测试使用的是<code>karma+jasmine</code></li>
+<li><code>gulp build</code>：建议在测试通过之后执行，用于构建最终的js和css文件</li>
+<li><code>gulp clean</code>：清空构建目录</li>
+</ul>
+</li>
+<li><code>gulp</code>命令执行没有问题并生成最终的文件之后可以再执行<code>gulp docs</code>生成文档网站，<code>gulp docs</code>并不在<code>gulp</code>命令中执行，需要单独执行。生成的文档平台在<code>dist/docs</code>目录下，该目录并不被提交，主要用于展示文档网站</li>
+</ol>
+
+</article>

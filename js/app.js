@@ -24,11 +24,15 @@ define([
             })
             .state('app.start',{
                 url: "/start",
-                templateUrl: 'partials/start.html'
+                templateUrl: 'partials/docs/start.html'
             })
             .state('app.guide',{
                 url: "/guide",
-                templateUrl: 'partials/guide.html'
+                templateUrl: 'partials/docs/guide.html'
+            })
+            .state('app.directiveDocs',{
+                url: "/directiveDocs",
+                templateUrl: 'partials/docs/directiveDocs.html'
             })
             .state('app.api',{
                 url: "/api",

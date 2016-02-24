@@ -1,0 +1,49 @@
+<h1>calendar</h1><h2>Description</h2><p>calendar directive.</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="hljs-section">&lt;fugu-calendar&gt;</span>
+<span class="hljs-section">&lt;/fugu-calendar&gt;</span>
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"calendarDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-calendar</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-calendar</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+
+}]);</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><div class="example"><div ng-controller="calendarDemoCtrl">
+    <fugu-calendar></fugu-calendar>
+</div></div><script>angular.module('fuguDemo').controller('calendarDemoCtrl',['$scope', function ($scope) {
+
+}]);</script>
