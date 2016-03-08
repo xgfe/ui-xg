@@ -66,7 +66,7 @@ Restrict部分标识如何定义一个指令作为标签使用。其中包括以
 
 以下是button组件的文档以供参考（其中例如`Description`等标题必须用二级标题）：
 
-	```
+	
 	# button
 	## Description
 	按钮组件,可以展示不同样式和功能作用的按钮。
@@ -119,6 +119,6 @@ Restrict部分标识如何定义一个指令作为标签使用。其中包括以
 	    - default:`false`
 	- click(optional):点击按钮时触发的事件
 	    - type:`function`
-	```
+	
 
 
