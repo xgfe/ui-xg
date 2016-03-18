@@ -1,7 +1,7 @@
 # timepanel
 ## Description
 
-时间选择面板，在<a ui-sref="app.api.canlender" href="../../canlender/docs/readme.md">canlender</a>和<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">timepicker</a>中有使用
+时间选择面板，在<a ui-sref="app.api.calendar" href="../../calendar/docs/readme.md">calendar</a>和<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">timepicker</a>中有使用
 
 ## Usage
 
