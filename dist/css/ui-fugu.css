@@ -1,3 +1,29 @@
+/*!
+ fugu-alert.scss
+ Version: 0.0.1
+ Author: heqingyang@meituan.com
+ */
+.fugu-alert .alert-icon {
+  float: left; }
+
+.fugu-alert .alert-icon-span {
+  position: relative;
+  top: 2px; }
+
+.fugu-alert .cancel-text {
+  font-size: 20px; }
+
+.fugu-alert .show-icon {
+  padding-left: 20px; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown > .dropdown-menu {
+    width: 250px; }
+    .fugu-dropdown > .dropdown-menu li {
+      width: 50%; }
+  .fugu-dropdown.open {
+    width: 100%; } }
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -76,32 +102,6 @@
   margin-right: -6px;
   margin-left: 6px; }
 
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-alert .alert-icon {
-  float: left; }
-
-.fugu-alert .alert-icon-span {
-  position: relative;
-  top: 2px; }
-
-.fugu-alert .cancel-text {
-  font-size: 20px; }
-
-.fugu-alert .show-icon {
-  padding-left: 20px; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown > .dropdown-menu {
-    width: 250px; }
-    .fugu-dropdown > .dropdown-menu li {
-      width: 50%; }
-  .fugu-dropdown.open {
-    width: 100%; } }
-
 
 /*!
  fugu-dropdown.css
@@ -132,6 +132,149 @@
       width: 50%; }
   .fugu-dropdown.open {
     width: 100%; } }
+
+.fugu-calendar {
+  display: inline-block;
+  border-radius: 3px;
+  color: #666;
+  cursor: default;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  white-space: normal;
+  -webkit-appearance: none; }
+  .fugu-calendar .fugu-cal-month {
+    line-height: 20px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    height: 22px;
+    position: relative;
+    padding-top: 17px;
+    padding-bottom: 5px;
+    box-sizing: content-box; }
+  .fugu-calendar .fugu-cal-month-name {
+    font-size: 15px;
+    font-weight: 400; }
+  .fugu-calendar .fugu-cal-pre-button,
+  .fugu-calendar .fugu-cal-next-button {
+    cursor: pointer;
+    position: absolute;
+    top: 17px;
+    width: 30px;
+    height: 42px;
+    background-position: 11.5px 4px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .fugu-calendar .fugu-cal-pre-button {
+    left: 17px; }
+  .fugu-calendar .fugu-cal-next-button {
+    right: 17px; }
+  .fugu-calendar .fugu-cal-header {
+    margin: 0 17px;
+    height: auto;
+    font-size: 14px;
+    line-height: 1; }
+    .fugu-calendar .fugu-cal-header > div {
+      width: 32px;
+      float: left;
+      text-align: center;
+      height: 19px;
+      color: #666;
+      border-bottom: #cecece 1px solid;
+      margin-bottom: 7px; }
+  .fugu-calendar .fugu-cal-body {
+    margin: 0 17px; }
+  .fugu-calendar .fugu-cal-row {
+    height: 24px;
+    line-height: 24px;
+    clear: both; }
+    .fugu-calendar .fugu-cal-row > div {
+      float: left;
+      text-align: center;
+      height: 100%;
+      width: 32px; }
+  .fugu-calendar .fugu-cal-day {
+    margin: 1px 1px 0 0;
+    cursor: pointer;
+    font-size: 12px;
+    color: #666;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .fugu-calendar .fugu-cal-day-today {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #3498db;
+    border-radius: 6px; }
+  .fugu-calendar .fugu-cal-weekday {
+    color: #3498db;
+    font-weight: 700; }
+  .fugu-calendar .fugu-cal-day:hover,
+  .fugu-calendar .fugu-cal-select {
+    border: none;
+    color: #fff;
+    background: #27ae60;
+    border-radius: 6px; }
+  .fugu-calendar .fugu-cal-outside {
+    font-weight: 400;
+    color: #bbb; }
+  .fugu-calendar .fugu-cal-day-disabled {
+    cursor: not-allowed;
+    color: #bbb; }
+    .fugu-calendar .fugu-cal-day-disabled:hover {
+      border: none;
+      color: #bbb;
+      background: none; }
+  .fugu-calendar .fugu-cal-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #444;
+    margin: 4px 17px;
+    padding-top: 2px;
+    cursor: pointer; }
+  .fugu-calendar .fugu-cal-time {
+    padding: 2px 4px; }
+    .fugu-calendar .fugu-cal-time:hover {
+      text-decoration: underline;
+      color: #3498db; }
+  .fugu-calendar .fugu-cal-today-btn {
+    padding: 3px 0;
+    font-size: 14px;
+    font-weight: 700; }
+    .fugu-calendar .fugu-cal-today-btn:hover {
+      background: #eee;
+      border-radius: 5px; }
+  .fugu-calendar .fugu-cal-panel-time {
+    padding: 10px 30px; }
+    .fugu-calendar .fugu-cal-panel-time .btn-group {
+      display: block; }
+    .fugu-calendar .fugu-cal-panel-time button {
+      outline: none;
+      width: 33.333%; }
+  .fugu-calendar .fugu-timepanel {
+    border: none; }
+  .fugu-calendar .fugu-cal-month-table {
+    margin-bottom: 20px; }
+  .fugu-calendar .fugu-cal-month-item {
+    padding: 5px;
+    border: 1px solid #ddd;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer; }
+    .fugu-calendar .fugu-cal-month-item:hover {
+      background: #74BCEC; }
+  .fugu-calendar .fugu-cal-year-item {
+    padding: 5px 20px; }
+  .fugu-calendar .fugu-cal-month-select {
+    background: #3498db;
+    color: #fff; }
+    .fugu-calendar .fugu-cal-month-select:hover {
+      background: #3498db; }
 
 .fugu-switch {
   cursor: pointer;

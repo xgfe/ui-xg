@@ -103,7 +103,7 @@ angular.module('ui.fugu.timepanel', [])
             changeHandler();
         };
         this.render = function () {
-            var date = ngModelCtrl.$viewValue;
+            var date = ngModelCtrl.$modelValue;
 
             if (isNaN(date)) {
                 $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
