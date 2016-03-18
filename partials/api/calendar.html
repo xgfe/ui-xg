@@ -1,9 +1,17 @@
-<h1>calendar</h1><h2>Description</h2><p>calendar directive.</p>
-<h2>Usage</h2><pre><code class="lang-html"><span class="hljs-section">&lt;fugu-calendar&gt;</span>
-<span class="hljs-section">&lt;/fugu-calendar&gt;</span>
+<h1>calendar</h1><h2>Description</h2><p>日历组件,可以选择日期，依赖于组件<a ui-sref="app.api.timepanel" href="../../timepanel/docs/readme.md">timepanel</a></p>
+<h2>Usage</h2><pre><code class="lang-html">&lt;fugu-calendar ng-model=<span class="hljs-string">"date"</span>
+    [ <span class="hljs-built_in">min</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"date"</span> ]
+    [ <span class="hljs-built_in">max</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"date"</span> ]
+    [ show-<span class="hljs-built_in">time</span>=<span class="hljs-string">"boolean"</span> ]
+    [ starting-day=<span class="hljs-string">"number"</span> ]
+    [ exceptions=<span class="hljs-string">"array"</span>&gt;
+&lt;/fugu-calendar&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;E&#39;</li>
-</ul><h2>Arguments</h2><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Provider</h2><ul><li>fuguCanlendarProvider：配置calendar相关的设置</li>
+<li>methods<ul><li><code>setFormats(format[,val])</code>：设置日期,周末等显示内容,具体参看<a href="https://code.angularjs.org/1.3.20/docs/api/ng/service/$locale">$locale</a>相关API.</li>
+</ul></li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>绑定数据</td></tr><tr><td>minDate(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可显示的最大日期,比这个日期小的无法选择</td></tr><tr><td>maxDate(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可显示的最大日期,比这个日期大的无法选择</td></tr><tr><td>showTime(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示时间选择</td></tr><tr><td>startingDay(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>0</code>(周日)</td><td>每一周的开始天,0-周日,1-周一...以此类推</td></tr><tr><td>exceptions(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;<label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>禁用日期内的例外日期,日期对象或者日期对象数组</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -15,15 +23,35 @@
 <div class="tab-content" id="codeTabPabels">
     
     <div class="tab-pane active" id="index_html">
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"calendarDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-calendar</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-calendar</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<pre><code>&lt;<span class="hljs-keyword">div</span> ng-controller=<span class="hljs-string">"calendarDemoCtrl"</span>&gt;
+    &lt;fugu-calendar <span class="hljs-built_in">min</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"minDate"</span> <span class="hljs-built_in">max</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"maxDate"</span> ng-model=<span class="hljs-string">"date"</span> exceptions=<span class="hljs-string">"exceptions"</span>&gt;&lt;/fugu-calendar&gt;
+    &lt;pre&gt;<span>&#123;&#123;</span><span class="hljs-built_in">date</span> | <span class="hljs-built_in">date</span>:<span class="hljs-string">'yyyy-MM-dd hh:mm:ss'</span>&#125;&#125;&lt;/pre&gt;
+&lt;/<span class="hljs-keyword">div</span>&gt;</code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguCanlenderProvider'</span>, <span class="hljs-keyword">function</span> (fuguCanlenderProvider) {
+    fuguCanlenderProvider.setFormats(<span class="hljs-string">'SHORTDAY'</span>,[<span class="hljs-string">'日'</span>,<span class="hljs-string">'一'</span>,<span class="hljs-string">'二'</span>,<span class="hljs-string">'三'</span>,<span class="hljs-string">'四'</span>,<span class="hljs-string">'五'</span>,<span class="hljs-string">'六'</span>])
+}]);
+angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.date = new Date();
 
+    $scope.minDate = new Date();
+    $scope.minDate.setDate(<span class="hljs-number">15</span>); // 本月<span class="hljs-number">15</span>号之前的日期不可选
+
+    $scope.maxDate = new Date();
+    $scope.maxDate.setYear(<span class="hljs-number">2017</span>); // <span class="hljs-number">2017</span>年之后的不可选
+
+    // 设置两个例外的日期
+    var dt1 = new Date();
+    dt1.setMonth($scope.date.getMonth());
+    dt1.setDate(<span class="hljs-number">5</span>);
+    var dt2 = new Date();
+    dt2.setFullYear(<span class="hljs-number">2017</span>);
+    dt2.setMonth($scope.date.getMonth()+<span class="hljs-number">1</span>);
+    dt2.setDate(<span class="hljs-number">5</span>);
+    $scope.exceptions = [dt1,dt2];
 }]);</code></pre>
     </div>
     
@@ -43,7 +71,27 @@
         });
     });
 </script></div><div class="example"><div ng-controller="calendarDemoCtrl">
-    <fugu-calendar></fugu-calendar>
-</div></div><script>angular.module('fuguDemo').controller('calendarDemoCtrl',['$scope', function ($scope) {
+    <fugu-calendar min-date="minDate" max-date="maxDate" ng-model="date" exceptions="exceptions"></fugu-calendar>
+    <pre>{{date | date:'yyyy-MM-dd hh:mm:ss'}}</pre>
+</div></div><script>angular.module('fuguDemo').config(['fuguCanlenderProvider', function (fuguCanlenderProvider) {
+    fuguCanlenderProvider.setFormats('SHORTDAY',['日','一','二','三','四','五','六'])
+}]);
+angular.module('fuguDemo').controller('calendarDemoCtrl',['$scope', function ($scope) {
+    $scope.date = new Date();
 
+    $scope.minDate = new Date();
+    $scope.minDate.setDate(15); // 本月15号之前的日期不可选
+
+    $scope.maxDate = new Date();
+    $scope.maxDate.setYear(2017); // 2017年之后的不可选
+
+    // 设置两个例外的日期
+    var dt1 = new Date();
+    dt1.setMonth($scope.date.getMonth());
+    dt1.setDate(5);
+    var dt2 = new Date();
+    dt2.setFullYear(2017);
+    dt2.setMonth($scope.date.getMonth()+1);
+    dt2.setDate(5);
+    $scope.exceptions = [dt1,dt2];
 }]);</script>

@@ -20,6 +20,10 @@ define([
             
                 $stateProvider.state('app.api.buttonGroup',{url: "/buttonGroup",templateUrl: 'partials/api/buttonGroup.html'});
             
+                $stateProvider.state('app.api.timepanel',{url: "/timepanel",templateUrl: 'partials/api/timepanel.html'});
+            
+                $stateProvider.state('app.api.calendar',{url: "/calendar",templateUrl: 'partials/api/calendar.html'});
+            
                 $stateProvider.state('app.api.dropdown',{url: "/dropdown",templateUrl: 'partials/api/dropdown.html'});
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
@@ -27,8 +31,6 @@ define([
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
-            
-                $stateProvider.state('app.api.timepanel',{url: "/timepanel",templateUrl: 'partials/api/timepanel.html'});
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             

@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-02-24
+ * Version: 0.0.1 - 2016-03-18
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepanel","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepanel/templates/timepanel.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -373,6 +373,585 @@ angular.module('ui.fugu.buttonGroup', [])
         }
     }]);
 
+/**
+ * timepanel
+ * timepanel directive
+ * Author: yangjiyuan@meituan.com
+ * Date:2016-02-15
+ */
+angular.module('ui.fugu.timepanel', [])
+    .constant('fuguTimepanelConfig', {
+        hourStep: 1,
+        minuteStep: 1,
+        secondStep: 1,
+        showSeconds: true,
+        mousewheel: true,
+        arrowkeys: true
+    })
+    .filter('smallerValue', function () {
+        return function (input, maxValue, step) {
+            input = parseInt(input, 10) - parseInt(step, 10);
+            if (input < 0) {
+                input = maxValue;
+            }
+            if (input < 10) {
+                input = '0' + input;
+            }
+            return input;
+        }
+    })
+    .filter('largerValue', function () {
+        return function (input, maxValue, step) {
+            input = parseInt(input, 10) + parseInt(step, 10);
+            if (input > maxValue) {
+                input = 0;
+            }
+            if (input < 10) {
+                input = '0' + input
+            }
+            return input;
+        }
+    })
+    .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
+        var ngModelCtrl = {$setViewValue: angular.noop};
+        var selected = new Date();
+
+        this.init = function (_ngModelCtrl, inputs) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            ngModelCtrl.$formatters.unshift(function (modelValue) {
+                return modelValue ? new Date(modelValue) : null;
+            });
+            //$scope.$$postDigest(function(){}); // 如果showSeconds用的是ng-if，此时second还没有插入DOM，无法获取元素和绑定事件
+            var hoursInputEl = inputs.eq(0),
+                minutesInputEl = inputs.eq(1),
+                secondsInputEl = inputs.eq(2);
+            hoursInputEl.on('focus', function () {
+                hoursInputEl[0].select();
+            });
+            minutesInputEl.on('focus', function () {
+                minutesInputEl[0].select();
+            });
+            secondsInputEl.on('focus', function () {
+                secondsInputEl[0].select();
+            });
+
+            var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : timepanelConfig.mousewheel;
+            if (mousewheel) {
+                this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+            }
+            var arrowkeys = angular.isDefined($attrs.arrowkeys) ? $scope.$parent.$eval($attrs.arrowkeys) : timepanelConfig.arrowkeys;
+            if (arrowkeys) {
+                this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+            }
+        };
+
+        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
+        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
+        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
+        $scope.showSeconds = timepanelConfig.showSeconds;
+        if ($attrs.showSeconds) {
+            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                $scope.showSeconds = !!value;
+            });
+        }
+        $scope.decrease = function (type, maxValue) {
+            $scope[type] = smallerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+            changeHandler();
+        };
+        $scope.increase = function (type, maxValue) {
+            $scope[type] = largerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+            changeHandler();
+        };
+        $scope.changeInputValue = function (type, maxValue) {
+            if (isNaN($scope[type])) {
+                return;
+            }
+            $scope[type] = parseInt($scope[type], 10);
+            if ($scope[type] < 0) {
+                $scope[type] = 0;
+            }
+            if ($scope[type] > maxValue) {
+                $scope[type] = maxValue;
+            }
+            $scope[type] = addZero($scope[type]);
+            changeHandler();
+        };
+        this.render = function () {
+            var date = ngModelCtrl.$modelValue;
+
+            if (isNaN(date)) {
+                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            } else {
+                if (date) {
+                    selected = date;
+                }
+                $scope.hour = ngModelCtrl.$modelValue ? addZero(selected.getHours()) : null;
+                $scope.minute = ngModelCtrl.$modelValue ? addZero(selected.getMinutes()) : null;
+                $scope.second = ngModelCtrl.$modelValue ? addZero(selected.getSeconds()) : null;
+            }
+        };
+        this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+            var isScrollingUp = function (e) {
+                if (e.originalEvent) {
+                    e = e.originalEvent;
+                }
+                var delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
+                return e.detail || delta > 0;
+            };
+
+            hoursInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour', 23) : $scope.decrease('hour', 23));
+                e.preventDefault();
+            });
+
+            minutesInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute', 59) : $scope.decrease('minute', 59));
+                e.preventDefault();
+            });
+
+            secondsInputEl.bind('mousewheel wheel', function (e) {
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('second', 59) : $scope.decrease('second', 59));
+                e.preventDefault();
+            });
+        };
+
+        this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour', 23));
+            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute', 59));
+            secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
+        };
+        function changeHandler() {
+            var dt = new Date();
+            dt.setHours($scope.hour);
+            dt.setMinutes($scope.minute);
+            dt.setSeconds($scope.second);
+            if ($scope.onChange) {
+                var fn = $scope.onChange();
+                if (angular.isFunction(fn)) {
+                    fn(dt);
+                }
+            }
+            ngModelCtrl.$setViewValue(dt);
+            ngModelCtrl.$render();
+        }
+
+        function arrowkeyEventHandler(type, maxValue) {
+            return function (e) {
+                if (e.which === 38) { // up
+                    e.preventDefault();
+                    $scope.increase(type, maxValue);
+                    $scope.$apply();
+                } else if (e.which === 40) { // down
+                    e.preventDefault();
+                    $scope.decrease(type, maxValue);
+                    $scope.$apply();
+                }
+            }
+        }
+
+        function addZero(value) {
+            return value > 9 ? value : '0' + value;
+        }
+    }])
+    .directive('fuguTimepanel', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/timepanel.html',
+            replace: true,
+            require: ['fuguTimepanel', 'ngModel'],
+            scope: {
+                onChange: '&'
+            },
+            controller: 'fuguTimepanelCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+                timepanelCtrl.init(ngModelCtrl, el.find('input'));
+            }
+        }
+    });
+/**
+ * calendar
+ * calendar directive
+ * Author: yangjiyuan@meituan.com
+ * Date:2016-02-14
+ */
+angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
+    .constant('fuguCalendarConfig',{
+        startingDay:0, // 一周的开始天,0-周日,1-周一,以此类推
+        showTime:true, // 是否显示时间选择
+        minDate: null, // 最小可选日期
+        maxDate: null, // 最大可选日期
+        exceptions:[]  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
+    })
+    .provider('fuguCanlendar', function () {
+        var FORMATS = {};
+        this.setFormats = function (formats,subFormats) {
+            if(subFormats){
+                FORMATS[formats] = subFormats;
+            }else{
+                FORMATS = formats;
+            }
+        };
+
+        this.$get  = ['$locale','$log',function ($locale,$log) {
+            return {
+                getFormats: function () {
+                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS)
+                    if(!angular.isArray(FORMATS.SHORTMONTH) ||
+                        FORMATS.SHORTMONTH.length!=12 ||
+                        !angular.isArray(FORMATS.MONTH) ||
+                        FORMATS.MONTH.length!=12 ||
+                        !angular.isArray(FORMATS.SHORTDAY) ||
+                        FORMATS.SHORTDAY.length!=7
+                    ){
+                        $log.warn('invalid date time formats');
+                        FORMATS = $locale.DATETIME_FORMATS;
+                    }
+                    return FORMATS;
+                }
+            }
+        }]
+    })
+    .controller('fuguCalendarCtrl', ['$scope', '$attrs','$log','fuguCanlendar','fuguCalendarConfig',
+        function ($scope, $attrs,$log,fuguCanlendarProvider,calendarConfig) {
+        var FORMATS = fuguCanlendarProvider.getFormats();
+        var MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31]; //每个月的天数,2月会根据闰年调整
+        var ngModelCtrl = {$setViewValue: angular.noop};
+
+        $scope.FORMATS = FORMATS;
+        $scope.panels = {
+            year:false,
+            month:false,
+            day:true,
+            time:false
+        };
+        var self = this;
+        angular.forEach(['startingDay','minDate','maxDate','exceptions'], function(key) {
+            self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+        });
+        $scope.showTime = angular.isDefined($attrs.showTime) ?
+            $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
+
+
+        if(self.startingDay > 6 || self.startingDay <0){
+            self.startingDay = calendarConfig.startingDay;
+        }
+
+        $scope.dayNames = dayNames(this.startingDay);
+        $scope.allDays = [];
+        this.init = function (_ngModelCtrl) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            ngModelCtrl.$formatters.unshift(function (modelValue) {
+                return modelValue ? new Date(modelValue) : null;
+            });
+        };
+        this.render = function () {
+            var date = ngModelCtrl.$modelValue;
+            if (isNaN(date)) {
+                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            } else {
+                $scope.selectDate = ngModelCtrl.$modelValue;
+
+                $scope.currentYear = $scope.selectDate.getFullYear();
+                $scope.currentMonth = $scope.selectDate.getMonth();
+                $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
+
+                $scope.allDays = getDays($scope.selectDate);
+            }
+        };
+        // 选择某一个面板
+        $scope.selectPanel = function (panel) {
+            angular.forEach($scope.panels, function (a,i) {
+                $scope.panels[i] = false;
+            });
+            $scope.panels[panel] = true;
+        };
+        // 切换上一个月
+        $scope.prevMonth = function () {
+            if($scope.currentMonth === 0){
+                $scope.currentYear -= 1;
+                $scope.currentMonth = 11;
+            }else {
+                $scope.currentMonth -= 1;
+            }
+            buildDayPanel();
+        };
+        // 切换到下一个月
+        $scope.nextMonth = function () {
+            if($scope.currentMonth === 11){
+                $scope.currentYear += 1;
+                $scope.currentMonth = 0;
+            }else {
+                $scope.currentMonth += 1;
+            }
+            buildDayPanel();
+        };
+        // 选择日期
+        $scope.selectDayHandler = function (day) {
+            if(day.isDisabled){
+                return;
+            }
+            $scope.selectDate.setFullYear(day.year);
+            $scope.selectDate.setMonth(day.month);
+            $scope.selectDate.setDate(day.day);
+            if(!day.inMonth){
+                if(day.isNext){
+                    $scope.nextMonth();
+                }else{
+                    $scope.prevMonth();
+                }
+            }
+            $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
+            fireRender();
+        };
+        // 选择今天
+        $scope.chooseToday = function () {
+            var today = splitDate(new Date());
+
+            $scope.selectDate.setFullYear(today.year);
+            $scope.selectDate.setMonth(today.month);
+            $scope.selectDate.setDate(today.day);
+
+            $scope.currentYear = today.year;
+            $scope.currentMonth = today.month;
+            $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
+
+            buildDayPanel();
+            fireRender();
+        };
+        var cacheTime;
+        // 点击时间进入选择时间面板
+        $scope.selectTimePanelHandler = function () {
+            $scope.selectPanel('time');
+            cacheTime = angular.copy($scope.selectDate);
+        };
+
+        // 时间面板返回
+        $scope.timePanelBack = function () {
+            $scope.selectDate = cacheTime;
+            $scope.selectPanel('day');
+        };
+        // 确定选择时间
+        $scope.timePanelOk = function () {
+            $scope.selectPanel('day');
+            fireRender();
+        };
+        // 选择此刻
+        $scope.timePanelSelectNow = function () {
+            var dt = new Date();
+            var date = angular.copy($scope.selectDate);
+            date.setHours(dt.getHours());
+            date.setMinutes(dt.getMinutes());
+            date.setSeconds(dt.getSeconds());
+            $scope.selectDate = date;
+        };
+        // 获取所有月份,分4列
+        $scope.allMonths = (function(){
+            var res = [],
+                MONTHS  = FORMATS.MONTH,
+                temp = [];
+            for(var i= 0,len=MONTHS.length;i<len;i++){
+                if(temp.length>=3){
+                    res.push(temp);
+                    temp = [];
+                }
+                temp.push({
+                    name:MONTHS[i],
+                    index:i
+                });
+            }
+            res.push(temp);
+            return res;
+        })();
+        // 在月份视图显示某一月份
+        $scope.chooseMonthHandler = function (month) {
+            $scope.currentMonth = month;
+            buildDayPanel();
+            $scope.selectPanel('day');
+        };
+
+        $scope.allYears = [];
+        $scope.selectYearPanelHandler = function () {
+            $scope.selectPanel('year');
+            var year = $scope.currentYear;
+            $scope.allYears = getYears(year);
+        };
+        // 获取上一个12年
+        $scope.prev12Years = function () {
+            var year = $scope.allYears[0][0]-8;
+            $scope.allYears = getYears(year);
+        };
+        // 获取下一个12年
+        $scope.next12Years = function () {
+            var year = $scope.allYears[3][2]+5;
+            $scope.allYears = getYears(year);
+        };
+        // 在月份视图显示某一月份
+        $scope.chooseYearHandler = function (year) {
+            $scope.currentYear = year;
+            buildDayPanel();
+            $scope.selectPanel('month');
+        };
+
+        function fireRender(){
+            ngModelCtrl.$setViewValue($scope.selectDate);
+        }
+
+        // 根据年,月构建日视图
+        function buildDayPanel(){
+            var date = createDate($scope.currentYear,$scope.currentMonth);
+            $scope.allDays = getDays(date);
+        }
+        // 获取所有的最近的12年
+        function getYears(year){
+            var res = [],temp = [];
+            for(var i=-4;i<8;i++){
+                if(temp.length>=3){
+                    res.push(temp);
+                    temp = [];
+                }
+                temp.push(year + i);
+            }
+            res.push(temp);
+            return res;
+        }
+
+        // 获取周一到周日的名字
+        function dayNames(startingDay){
+            var shortDays = angular.copy(FORMATS.SHORTDAY).map(function (day) {
+                return day
+            });
+            var delDays = shortDays.splice(0,startingDay);
+            return shortDays.concat(delDays);
+        }
+        // 根据日期获取当月的所有日期
+        function getDays(date){
+            var dayRows = [];
+            var currentYear = date.getFullYear();
+            var currentMonth = date.getMonth();
+            // 添加当月之前的天数
+            var firstDayOfMonth = createDate(currentYear,currentMonth,1);
+            var day =  firstDayOfMonth.getDay();
+            var len = day>=self.startingDay?day-self.startingDay:(7-self.startingDay+day);
+            for(var i= 0;i<len;i++){
+                pushDay(dayRows,dayBefore(firstDayOfMonth,len-i));
+            }
+            // 添加本月的天
+            var lastDayOfMonth = getLastDayOfMonth(currentYear,currentMonth);
+            var tempDay;
+            for(var j= 1;j<=lastDayOfMonth;j++){
+                tempDay = createDate(currentYear,currentMonth,j);
+                pushDay(dayRows,tempDay);
+            }
+            // 补全本月之后的天
+            len = 7 - dayRows[dayRows.length-1].length;
+            for(var k=1;k<=len;k++){
+                pushDay(dayRows,dayAfter(tempDay,k));
+            }
+            return dayRows;
+        }
+        // 存储计算出的日期
+        function pushDay(dayRows,date){
+            var hasInsert = false;
+            angular.forEach(dayRows, function (row) {
+                if(row && row.length<7){
+                    row.push(formatDate(date));
+                    hasInsert = true;
+                }
+            });
+            if(hasInsert){
+                return;
+            }
+            dayRows.push([formatDate(date)]);
+        }
+        // 根据日期date获取gapDay之后的日期
+        function dayAfter(date,gapDay){
+            gapDay = gapDay || 1;
+            var time = date.getTime();
+            time += gapDay * 24 * 60 * 60 * 1000;
+            return new Date(time);
+        }
+        // 根据日期date获取gapDay之前几天的日期
+        function dayBefore(date,gapDay){
+            gapDay = gapDay || 1;
+            var time = date.getTime();
+            time -= gapDay * 24 * 60 * 60 * 1000;
+            return new Date(time);
+        }
+        //获取一个月里最后一天是几号
+        function getLastDayOfMonth(year,month){
+            var months = MONTH_DAYS.slice(0);
+            if(year % 100===0 && year % 400===0 || year % 100 !==0&& year % 4===0){
+                months[1] = 29;
+            }
+            return months[month];
+        }
+        //创建日期
+        function createDate(year, month, day){
+            var date = new Date();
+            date.setFullYear(year);
+            date.setMonth(month || 0);
+            date.setDate(day || 1);
+            return date;
+        }
+        //对日期进行格式化
+        function formatDate(date){
+            var tempDate = splitDate(date);
+            var selectedDt = splitDate($scope.selectDate);
+            var today = splitDate(new Date());
+            var isToday =tempDate.year===today.year&&tempDate.month===today.month&&tempDate.day===today.day;
+            var isSelected =tempDate.year===selectedDt.year&&tempDate.month===selectedDt.month
+                &&tempDate.day===selectedDt.day;
+            var isDisabled = (self.minDate && date.getTime()<self.minDate.getTime() && !isExceptionDay(date))
+                || (self.maxDate && date.getTime()>self.maxDate.getTime() && !isExceptionDay(date));
+            var day = date.getDay();
+            return {
+                date:date,
+                year:tempDate.year,
+                month:tempDate.month,
+                day:tempDate.day,
+                isWeekend:day===0||day===6,
+                isToday:isToday,
+                inMonth:tempDate.month===$scope.currentMonth,
+                isNext:tempDate.month>$scope.currentMonth,
+                isSelected:isSelected,
+                isDisabled:isDisabled,
+                index:tempDate.year+'-'+tempDate.month+'-'+tempDate.day
+            }
+        }
+        function isExceptionDay(date){
+            self.exceptions = [].concat(self.exceptions);
+            var day1,day2 = splitDate(date);
+            return self.exceptions.some(function (excepDay) {
+                day1 = splitDate(excepDay);
+                return day1.year === day2.year&&day1.month === day2.month&&day1.day === day2.day;
+            });
+        }
+        function splitDate(date){
+            return {
+                year:date.getFullYear(),
+                month:date.getMonth(),
+                day:date.getDate()
+            }
+        }
+    }])
+    .directive('fuguCalendar', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/calendar.html',
+            replace: true,
+            require: ['fuguCalendar','ngModel'],
+            scope: {},
+            controller: 'fuguCalendarCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var calendarCtrl = ctrls[0],
+                    ngModelCtrl = ctrls[1];
+                calendarCtrl.init(ngModelCtrl);
+            }
+        }
+    });
 /**
  * dropdown
  * 多列下拉按钮组指令
@@ -791,203 +1370,6 @@ angular.module('ui.fugu.switch', [])
         }
     });
 /**
- * timepanel
- * timepanel directive
- * Author: yangjiyuan@meituan.com
- * Date:2016-02-15
- */
-angular.module('ui.fugu.timepanel', [])
-    .constant('fuguTimepanelConfig', {
-        hourStep: 1,
-        minuteStep: 1,
-        secondStep: 1,
-        showSeconds: true,
-        mousewheel: true,
-        arrowkeys: true
-    })
-    .filter('smallerValue', function () {
-        return function (input, maxValue, step) {
-            input = parseInt(input, 10) - parseInt(step, 10);
-            if (input < 0) {
-                input = maxValue;
-            }
-            if (input < 10) {
-                input = '0' + input;
-            }
-            return input;
-        }
-    })
-    .filter('largerValue', function () {
-        return function (input, maxValue, step) {
-            input = parseInt(input, 10) + parseInt(step, 10);
-            if (input > maxValue) {
-                input = 0;
-            }
-            if (input < 10) {
-                input = '0' + input
-            }
-            return input;
-        }
-    })
-    .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
-        var ngModelCtrl = {$setViewValue: angular.noop};
-        var selected = new Date();
-
-        this.init = function (_ngModelCtrl, inputs) {
-            ngModelCtrl = _ngModelCtrl;
-            ngModelCtrl.$render = this.render;
-            ngModelCtrl.$formatters.unshift(function (modelValue) {
-                return modelValue ? new Date(modelValue) : null;
-            });
-            //$scope.$$postDigest(function(){}); // 如果showSeconds用的是ng-if，此时second还没有插入DOM，无法获取元素和绑定事件
-            var hoursInputEl = inputs.eq(0),
-                minutesInputEl = inputs.eq(1),
-                secondsInputEl = inputs.eq(2);
-            hoursInputEl.on('focus', function () {
-                hoursInputEl[0].select();
-            });
-            minutesInputEl.on('focus', function () {
-                minutesInputEl[0].select();
-            });
-            secondsInputEl.on('focus', function () {
-                secondsInputEl[0].select();
-            });
-
-            var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : timepanelConfig.mousewheel;
-            if (mousewheel) {
-                this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
-            }
-            var arrowkeys = angular.isDefined($attrs.arrowkeys) ? $scope.$parent.$eval($attrs.arrowkeys) : timepanelConfig.arrowkeys;
-            if (arrowkeys) {
-                this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
-            }
-        };
-
-        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
-        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
-        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
-        $scope.showSeconds = timepanelConfig.showSeconds;
-        if ($attrs.showSeconds) {
-            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
-                $scope.showSeconds = !!value;
-            });
-        }
-        $scope.decrease = function (type, maxValue) {
-            $scope[type] = smallerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
-            changeHandler();
-        };
-        $scope.increase = function (type, maxValue) {
-            $scope[type] = largerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
-            changeHandler();
-        };
-        $scope.changeInputValue = function (type, maxValue) {
-            if (isNaN($scope[type])) {
-                return;
-            }
-            $scope[type] = parseInt($scope[type], 10);
-            if ($scope[type] < 0) {
-                $scope[type] = 0;
-            }
-            if ($scope[type] > maxValue) {
-                $scope[type] = maxValue;
-            }
-            $scope[type] = addZero($scope[type]);
-            changeHandler();
-        };
-        this.render = function () {
-            var date = ngModelCtrl.$viewValue;
-
-            if (isNaN(date)) {
-                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-            } else {
-                if (date) {
-                    selected = date;
-                }
-                $scope.hour = ngModelCtrl.$modelValue ? addZero(selected.getHours()) : null;
-                $scope.minute = ngModelCtrl.$modelValue ? addZero(selected.getMinutes()) : null;
-                $scope.second = ngModelCtrl.$modelValue ? addZero(selected.getSeconds()) : null;
-            }
-        };
-        this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            var isScrollingUp = function (e) {
-                if (e.originalEvent) {
-                    e = e.originalEvent;
-                }
-                var delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
-                return e.detail || delta > 0;
-            };
-
-            hoursInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour', 23) : $scope.decrease('hour', 23));
-                e.preventDefault();
-            });
-
-            minutesInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute', 59) : $scope.decrease('minute', 59));
-                e.preventDefault();
-            });
-
-            secondsInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('second', 59) : $scope.decrease('second', 59));
-                e.preventDefault();
-            });
-        };
-
-        this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour', 23));
-            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute', 59));
-            secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
-        };
-        function changeHandler() {
-            var dt = new Date();
-            dt.setHours($scope.hour);
-            dt.setMinutes($scope.minute);
-            dt.setSeconds($scope.second);
-            if ($scope.onChange) {
-                var fn = $scope.onChange();
-                if (angular.isFunction(fn)) {
-                    fn(dt);
-                }
-            }
-            ngModelCtrl.$setViewValue(dt);
-            ngModelCtrl.$render();
-        }
-
-        function arrowkeyEventHandler(type, maxValue) {
-            return function (e) {
-                if (e.which === 38) { // up
-                    e.preventDefault();
-                    $scope.increase(type, maxValue);
-                    $scope.$apply();
-                } else if (e.which === 40) { // down
-                    e.preventDefault();
-                    $scope.decrease(type, maxValue);
-                    $scope.$apply();
-                }
-            }
-        }
-
-        function addZero(value) {
-            return value > 9 ? value : '0' + value;
-        }
-    }])
-    .directive('fuguTimepanel', function () {
-        return {
-            restrict: 'AE',
-            templateUrl: 'templates/timepanel.html',
-            replace: true,
-            require: ['fuguTimepanel', 'ngModel'],
-            scope: {
-                onChange: '&'
-            },
-            controller: 'fuguTimepanelCtrl',
-            link: function (scope, el, attrs, ctrls) {
-                var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-                timepanelCtrl.init(ngModelCtrl, el.find('input'));
-            }
-        }
-    });
-/**
  * timepicker
  * timepicker directive
  * Author: yangjiyuan@meituan.com
@@ -1380,10 +1762,6 @@ angular.module('ui.fugu.tree', [])
             }
         }
     }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
@@ -1397,10 +1775,95 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
+angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/calendar.html",
+    "<div class=\"fugu-calendar\">"+
+    "    <div class=\"fugu-cal-panel-day\" ng-if=\"panels.day\">"+
+    "        <div class=\"fugu-cal-month\">"+
+    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>"+
+    "            <span class=\"fugu-cal-month-name\">"+
+    "                <a href=\"javascript:;\" ng-click=\"selectPanel('month')\">{{FORMATS.SHORTMONTH[currentMonth]}}</a>"+
+    "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
+    "            </span>"+
+    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>"+
+    "        </div>"+
+    "        <div class=\"fugu-cal-header clearfix\">"+
+    "            <div ng-repeat=\"day in dayNames track by $index\">{{day}}</div>"+
+    "        </div>"+
+    "        <div class=\"fugu-cal-body\">"+
+    "            <div class=\"fugu-cal-row\" ng-repeat=\"row in allDays\">"+
+    "                <div ng-class=\"{'fugu-cal-select':day.index===currentDay,'fugu-cal-outside':!day.inMonth,'fugu-cal-weekday':day.isWeekend,'fugu-cal-day-today':day.isToday,'fugu-cal-day-disabled':day.isDisabled}\""+
+    "                     class=\"fugu-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">"+
+    "                    <span class=\"fugu-cal-day-inner\">{{day.day}}</span>"+
+    "                </div>"+
+    "            </div>"+
+    "        </div>"+
+    "        <div class=\"fugu-cal-footer\">"+
+    "            <div class=\"fugu-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">"+
+    "                <span class=\"glyphicon glyphicon-time\"></span>"+
+    "                {{selectDate | date:'shortTime'}}"+
+    "            </div>"+
+    "            <div class=\"fugu-cal-today-btn\" ng-click=\"chooseToday()\">Today</div>"+
+    "        </div>"+
+    "    </div>"+
+    "    <div class=\"fugu-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+
+    "        <fugu-timepanel ng-model=\"selectDate\"></fugu-timepanel>"+
+    "        <div class=\"btn-group clearfix\">"+
+    "            <button class=\"btn btn-sm btn-default fugu-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>"+
+    "            <button class=\"btn btn-sm btn-default fugu-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>"+
+    "            <button class=\"btn btn-sm btn-default fugu-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>"+
+    "        </div>"+
+    "    </div>"+
+    "    <div class=\"fugu-cal-panel-month\" ng-show=\"panels.month\">"+
+    "        <div class=\"fugu-cal-month\">"+
+    "            <span class=\"fugu-cal-month-name\">"+
+    "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
+    "            </span>"+
+    "        </div>"+
+    "        <div class=\"fugu-cal-body\">"+
+    "            <table class=\"fugu-cal-month-table\">"+
+    "                <tr ng-repeat=\"monthRow in allMonths\">"+
+    "                    <td class=\"fugu-cal-month-item\""+
+    "                        ng-repeat=\"month in monthRow\""+
+    "                        ng-click=\"chooseMonthHandler(month.index)\""+
+    "                        ng-class=\"{'fugu-cal-month-select':month.index === currentMonth}\">"+
+    "                        <span class=\"fugu-cal-month-inner\">{{month.name}}</span>"+
+    "                    </td>"+
+    "                </tr>"+
+    "            </table>"+
+    "        </div>"+
+    "    </div>"+
+    "    <div class=\"fugu-cal-panel-year\" ng-show=\"panels.year\">"+
+    "        <div class=\"fugu-cal-month\">"+
+    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>"+
+    "            <span class=\"fugu-cal-month-name\">"+
+    "                <a href=\"javascript:;\">{{allYears[0][0]}}-{{allYears[3][2]}}</a>"+
+    "            </span>"+
+    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>"+
+    "        </div>"+
+    "        <div class=\"fugu-cal-body\">"+
+    "            <table class=\"fugu-cal-month-table\">"+
+    "                <tr ng-repeat=\"yearRow in allYears track by $index\">"+
+    "                    <td class=\"fugu-cal-month-item fugu-cal-year-item\""+
+    "                        ng-repeat=\"year in yearRow track by $index\""+
+    "                        ng-click=\"chooseYearHandler(year)\""+
+    "                        ng-class=\"{'fugu-cal-month-select':year === currentYear}\">"+
+    "                        <span class=\"fugu-cal-month-inner\">{{year}}</span>"+
+    "                    </td>"+
+    "                </tr>"+
+    "            </table>"+
+    "        </div>"+
+    "    </div>"+
     "</div>");
 }]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
@@ -1417,13 +1880,6 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "    </button>"+
     "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
     "</div>");
-}]);
-angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/switch.html",
-    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
-    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
-    "    <i></i>"+
-    "</label>");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
@@ -1457,6 +1913,13 @@ angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",fu
     "    </span>"+
     "</div>"+
     "");
+}]);
+angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/switch.html",
+    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
+    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
+    "    <i></i>"+
+    "</label>");
 }]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",

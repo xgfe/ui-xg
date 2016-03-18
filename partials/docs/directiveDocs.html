@@ -10,5 +10,106 @@
 </aside>
 <article class="app-content">
     <h1 id="-">组件文档编写规范</h1>
+<p>为了便于使用者了解组件功能以及使用方法，组件必须有相应的文档解释功能和方法。组件文档包括以下几个部分：</p>
+<h2 id="description">Description</h2>
+<p>描述部分简单介绍组件的功能和特点。</p>
+<h2 id="usage">Usage</h2>
+<p>用法部分介绍组件的使用规范，主要包括两个部分：组件的名称以及属性。具体格式如下：</p>
+<pre><code>&lt;fugu-<span class="hljs-built_in">name</span> attr1=<span class="hljs-string">"type"</span>
+    [attr2=<span class="hljs-string">"type"</span>]
+&lt;/fugu-<span class="hljs-built_in">name</span>&gt;
+</code></pre><p>其中，必填属性直接写出，所有非必填的属性由中括号<code>[]</code>注明。同时标注出每个属性的取值类型。</p>
+<p><strong>组件名称为<code>fugu-组件名称</code>，组件属性为驼峰式命名，如<code>fooBar</code>而不是<code>foo-bar</code>。</strong></p>
+<h2 id="restrict">Restrict</h2>
+<p>Restrict部分标识如何定义一个指令作为标签使用。其中包括以下四种取值：</p>
+<ul>
+<li><code>A</code>：允许作为一个属性。</li>
+<li><code>E</code>：允许作为一个元素。</li>
+<li><code>C</code>：作为一个类名。</li>
+<li><code>M</code>：作为一个注释。</li>
+</ul>
+<p><strong>可以结合以上的任意值来放松限制，例如<code>AE</code>等</strong></p>
+<h2 id="arguments">Arguments</h2>
+<p>在Arguments部分，详细解释每个属性的作用。其中包括以下四个部分：</p>
+<ul>
+<li><code>Param</code>：属性名称。驼峰式命名。</li>
+<li><code>Type</code>：属性取值格式。</li>
+<li><code>Default</code>：属性的默认值。</li>
+<li><code>Detail</code>：解释每个属性的具体含义。</li>
+</ul>
+<p>按照下面的格式进行描述：</p>
+<pre><code>-<span class="ruby"> Param(optional)<span class="hljs-symbol">:Detail</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`Type`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`Defailt`</span></span>
+</code></pre><p>需要注意以下的几点：</p>
+<ul>
+<li>类型字段必须用<strong>小写</strong>。</li>
+<li>如果该属性为为必填属性，需要在括号中添加<code>optional</code>标记为可选。</li>
+<li>如果某个属性允许多种类型同时存在，需要用<code>|</code>将<code>Type</code>进行分隔。例如属性既支持<code>string</code>又支持<code>function</code>，则需要备注<code>- type:`function`|`string` </code>。</li>
+</ul>
+<p>如下面的demo所示：</p>
+<pre><code>-<span class="ruby"> text(optional)<span class="hljs-symbol">:</span>指定按钮显示文本,默认显示<span class="hljs-string">`button`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`Button`</span></span>
+</code></pre><h2 id="example">Example</h2>
+<p>实例部分包括两个部分：</p>
+<ul>
+<li>一部分是示例文件，一般包括一个<code>index.html</code>和<code>script.js</code>，如果需要设置样式的话还有样式文件<code>style.css</code>。</li>
+<li>另外一部分是生成的<code>demo</code>，在<code>demo</code>中显示该组件的具体功能。</li>
+</ul>
+<h1 id="demo">Demo</h1>
+<p>以下是button组件的文档以供参考（其中例如<code>Description</code>等标题必须用二级标题）：</p>
+<pre><code># button
+## Description
+按钮组件,可以展示不同样式和功能作用的按钮。
 
+## Usage
+
+``` javascript
+&lt;fugu-button text="string"
+    [ type="string" ]
+    [ btnClass="string" ]
+    [ size="string" ]
+    [ block="boolean" ]
+    [ loading="boolean" ]
+    [ disabled="boolean" ]
+    [ icon="boolean" ]
+    [ active="boolean" ]
+    [ click="function" ] &gt;
+&lt;/fugu-button&gt;
+```
+## Restrict
+-<span class="ruby"> <span class="hljs-string">'AE'</span>
+</span>
+## Arguments
+
+-<span class="ruby"> text(optional)<span class="hljs-symbol">:</span>指定按钮显示文本,默认显示<span class="hljs-string">`button`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`Button`</span>
+</span>-<span class="ruby"> type(optional)<span class="hljs-symbol">:</span>指定按钮样式,可取值<span class="hljs-string">`button`</span>、<span class="hljs-string">`reset`</span>、<span class="hljs-string">`submit`</span>,默认为<span class="hljs-string">`button`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`button`</span>
+</span>-<span class="ruby"> btnClass(optional)<span class="hljs-symbol">:</span>设置按钮样式,可取值<span class="hljs-string">`danger`</span>、<span class="hljs-string">`warning`</span>、<span class="hljs-string">`default`</span>、<span class="hljs-string">`success`</span>、<span class="hljs-string">`info`</span>、<span class="hljs-string">`primary`</span>,默认显示<span class="hljs-string">`default`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`default`</span>
+</span>-<span class="ruby"> size(optional)<span class="hljs-symbol">:</span>设置按钮大小,可取值<span class="hljs-string">`x-small`</span>、<span class="hljs-string">`small`</span>、<span class="hljs-string">`default`</span>、<span class="hljs-string">`large`</span>,默认<span class="hljs-string">`default`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`default`</span>
+</span>-<span class="ruby"> block(optional)<span class="hljs-symbol">:</span>设置按钮是否全部填充父元素,默认为否
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`boolean`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`false`</span>
+</span>-<span class="ruby"> loading(optional)<span class="hljs-symbol">:</span>设置是否显示按钮加载效果,默认不显示
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`boolean`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`false`</span>
+</span>-<span class="ruby"> disabled(optional)<span class="hljs-symbol">:</span>设置按钮是否不可用,默认可用
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`boolean`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`false`</span>
+</span>-<span class="ruby"> icon(optional)<span class="hljs-symbol">:</span>设置按钮图标(参考bootstrap),默认不显示
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`string`</span>
+</span>-<span class="ruby"> active(optional)<span class="hljs-symbol">:</span>设置按钮是否为激活(选中)状态,默认为非激活状态
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`boolean`</span>
+</span>    -<span class="ruby"> <span class="hljs-symbol">default:</span><span class="hljs-string">`false`</span>
+</span>-<span class="ruby"> click(optional)<span class="hljs-symbol">:</span>点击按钮时触发的事件
+</span>    -<span class="ruby"> <span class="hljs-symbol">type:</span><span class="hljs-string">`function`</span></span>
+</code></pre>
 </article>
