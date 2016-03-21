@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="Demo">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="tree.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../lib/bootstrap/dist/css/bootstrap.css">
+    <script src="../../lib/jquery/dist/jquery.min.js"></script>
+    <script src="../../lib/angular/angular.js"></script>
+    <script src="tree.js"></script>
+    <script>
+        angular.module('Demo', ['ui.fugu.tree']);
+        angular.module('Demo').controller('treeDemoCtrl',['$scope', function ($scope) {
+            $scope.nodes = [
+                {label: '省份', children: [
+                    {label: '陕西', children:[
+                        {label: '汉中'},
+                        {label: '勉县'},
+                        {label: '咸阳'}
+                    ]},
+                    {label: '北京', children:[
+                        {label: '朝阳'},
+                        {label: '昌平'},
+                        {label: '顺义'}
+                    ]},
+                    {label: '浙江', children:[
+                        {label: '宁波'},
+                        {label: '杭州'},
+                        {label: '嘉兴'}
+                    ]}
+                ]}
+            ];
+            $scope.expandAll = false;
+            $scope.checkable = false;
+            $scope.showIcon = false;
+            $scope.clickFn = function(data){
+                $scope.clickData = data;
+            };
+            $scope.checkChangeFn = function(data){
+                $scope.selectData = data;
+            };
+
+            $scope.expandNodes = [{label: '陕西'}];
+        }]);
+    </script>
+</head>
+<body>
+<div ng-controller="treeDemoCtrl">
+    <!--<ul class="treeDemo">-->
+        <!--<li>-->
+            <!--<p>ng-model绑定数据:数据有格式要求</p>-->
+            <!--<fugu-tree ng-model="nodes"></fugu-tree>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<p>show-icon设置是否显示图标</p>-->
+            <!--<fugu-tree show-icon="showIcon" ng-model="nodes"></fugu-tree>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<p>checkable设置是否可勾选</p>-->
+            <!--<fugu-tree checkable="checkable" ng-model="nodes"></fugu-tree>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<p>expand-all设置是否展开</p>-->
+            <!--<fugu-tree expand-all="expandAll" ng-model="nodes"></fugu-tree>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<p>on-click和on-check-change事件</p>-->
+            <!--<fugu-tree on-click="clickFn" on-check-change="checkChangeFn" ng-model="nodes"></fugu-tree>-->
+            <!--<div ng-if="selectData">selectData:<pre>{{selectData | json}}</pre></div>-->
+            <!--<div ng-if="clickData">clickData:<pre>{{clickData | json}}</pre></div>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <fugu-tree ng-model="nodes"></fugu-tree>
+    <fugu-tree ng-model="nodes" show-icon="false"></fugu-tree>
+    <fugu-tree ng-model="nodes" show-icon="false" checkable="false"></fugu-tree>
+    <fugu-tree ng-model="nodes" show-icon="false" expand-all="false"></fugu-tree>
+</div>
+</body>
+</html>

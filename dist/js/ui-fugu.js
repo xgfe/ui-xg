@@ -1649,14 +1649,40 @@ angular.module('ui.fugu.tree', [])
         editable: false
     })
     .controller('treeController', ['$scope', '$element', '$attrs', 'fuguTreeConfig', function ($scope, $element, $attrs, fuguTreeConfig) {
+        var flag = true;
         this.checkedNodes = {}; // 选中节点集合
         // 变量初始化,如果没有设置,则使用默认值
         this.showIcon = angular.isDefined($scope.showIcon) ? $scope.showIcon : fuguTreeConfig.showIcon;
         this.checkable = angular.isDefined($scope.checkable) ? $scope.checkable : fuguTreeConfig.checkable;
         this.expandAll = angular.isDefined($scope.expandAll) ? !$scope.expandAll : fuguTreeConfig.collapsedAll;
         this.editable = angular.isDefined($scope.editable) ? $scope.editable : fuguTreeConfig.editable;
-        $scope.nodes = $scope.$parent.$eval($attrs.ngModel);  // 获取ng-model绑定节点对象
+        $scope.nodes = checkNodesStyle($scope.$parent.$eval($attrs.ngModel)) ? $scope.$parent.$eval($attrs.ngModel) : [];  // 获取ng-model绑定节点对象
 
+        /**
+         *  检查传递的树结构数组是否正确,如果结构正确返回true否则返回false
+         * @param {array} nodes ngModel绑定树结构数组对象
+         */
+        function checkNodesStyle(nodes){
+            var i = 0;
+            if(nodes instanceof Array){
+                for(i=0; i<nodes.length; i++){
+                    if(!nodes[i].label){
+                        flag = false;
+                    }else{
+                        if(nodes[i].children && nodes[i].children.length > 0){
+                            return checkNodesStyle(nodes[i].children);
+                        }else{
+                            if(Object.getOwnPropertyNames(nodes[i]).length > 1){
+                                flag = false;
+                            }
+                         }
+                    }
+                }
+                return flag;
+            }else{
+                return false;  // 非对象格式
+            }
+        }
     }])
     .directive('fuguTree', ['fuguTreeConfig', '$parse', function () {
         return {
@@ -1689,7 +1715,7 @@ angular.module('ui.fugu.tree', [])
                  * 捕获check改变事件，绑定事件处理
                  */
                 scope.$on('on-check', function(e, data){
-                    if (angular.isDefined(clickFn)) {
+                    if (angular.isDefined(checkFn)) {
                         checkFn(data);
                     }
                 });
@@ -1907,6 +1933,10 @@ angular.module('ui.fugu.tree', [])
             }
         }
     }]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
@@ -2069,6 +2099,21 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
 }]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",
