@@ -24,6 +24,8 @@ define([
             
                 $stateProvider.state('app.api.calendar',{url: "/calendar",templateUrl: 'partials/api/calendar.html'});
             
+                $stateProvider.state('app.api.datepicker',{url: "/datepicker",templateUrl: 'partials/api/datepicker.html'});
+            
                 $stateProvider.state('app.api.dropdown',{url: "/dropdown",templateUrl: 'partials/api/dropdown.html'});
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});

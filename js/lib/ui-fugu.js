@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-03-18
+ * Version: 0.0.1 - 2016-03-21
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -414,7 +414,6 @@ angular.module('ui.fugu.timepanel', [])
     })
     .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
         var ngModelCtrl = {$setViewValue: angular.noop};
-        var selected = new Date();
 
         this.init = function (_ngModelCtrl, inputs) {
             ngModelCtrl = _ngModelCtrl;
@@ -483,12 +482,9 @@ angular.module('ui.fugu.timepanel', [])
             if (isNaN(date)) {
                 $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
             } else {
-                if (date) {
-                    selected = date;
-                }
-                $scope.hour = ngModelCtrl.$modelValue ? addZero(selected.getHours()) : null;
-                $scope.minute = ngModelCtrl.$modelValue ? addZero(selected.getMinutes()) : null;
-                $scope.second = ngModelCtrl.$modelValue ? addZero(selected.getSeconds()) : null;
+                $scope.hour = date ? addZero(date.getHours()) : null;
+                $scope.minute = date ? addZero(date.getMinutes()) : null;
+                $scope.second = date ? addZero(date.getSeconds()) : null;
             }
         };
         this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
@@ -522,7 +518,7 @@ angular.module('ui.fugu.timepanel', [])
             secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
         };
         function changeHandler() {
-            var dt = new Date();
+            var dt = angular.copy(ngModelCtrl.$modelValue);
             dt.setHours($scope.hour);
             dt.setMinutes($scope.minute);
             dt.setSeconds($scope.second);
@@ -649,8 +645,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         };
         this.render = function () {
             var date = ngModelCtrl.$modelValue;
-            if (isNaN(date)) {
-                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            if (isNaN(date) || !date) {
+                $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
             } else {
                 $scope.selectDate = ngModelCtrl.$modelValue;
 
@@ -730,7 +726,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
 
         // 时间面板返回
         $scope.timePanelBack = function () {
-            $scope.selectDate = cacheTime;
+            $scope.selectDate = angular.copy(cacheTime);
             $scope.selectPanel('day');
         };
         // 确定选择时间
@@ -796,7 +792,12 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         };
 
         function fireRender(){
+            var fn = $scope.onChange();
+            if(fn && angular.isFunction(fn)){
+                fn($scope.selectDate);
+            }
             ngModelCtrl.$setViewValue($scope.selectDate);
+            ngModelCtrl.$render();
         }
 
         // 根据年,月构建日视图
@@ -943,12 +944,156 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             templateUrl: 'templates/calendar.html',
             replace: true,
             require: ['fuguCalendar','ngModel'],
-            scope: {},
+            scope: {
+                onChange:'&'
+            },
             controller: 'fuguCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var calendarCtrl = ctrls[0],
                     ngModelCtrl = ctrls[1];
                 calendarCtrl.init(ngModelCtrl);
+            }
+        }
+    });
+/**
+ * datepicker
+ * datepicker directive
+ * Author: yjy972080142@gmail.com
+ * Date:2016-03-21
+ */
+angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
+    .constant('fuguDatepickerConfig',{
+        minDate: null, // 最小可选日期
+        maxDate: null, // 最大可选日期
+        exceptions:[],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
+        format:'yyyy-MM-dd hh:mm:ss a' // 日期格式化
+    })
+    .service('fuguDatepickerService', ['$document', function($document) {
+        var openScope = null;
+        this.open = function(datepickerScope) {
+            if (!openScope) {
+                $document.on('click', closeDatepicker);
+            }
+            if (openScope && openScope !== datepickerScope) {
+                openScope.showCalendar = false;
+            }
+            openScope = datepickerScope;
+        };
+
+        this.close = function(datepickerScope) {
+            if (openScope === datepickerScope) {
+                openScope = null;
+                $document.off('click', closeDatepicker);
+            }
+        };
+
+        function closeDatepicker(evt) {
+            if (!openScope) { return; }
+            var panelElement = openScope.getCanledarElement();
+            var toggleElement = openScope.getToggleElement();
+            if(panelElement && panelElement[0].contains(evt.target) ||
+                toggleElement && toggleElement[0].contains(evt.target) ||
+                angular.element(evt.target).hasClass('fugu-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
+                angular.element(evt.target).hasClass('fugu-cal-day')
+            ){
+                return;
+            }
+            openScope.showCalendar = false;
+            openScope.$apply();
+        }
+
+    }])
+    .controller('fuguDatepickerCtrl', ['$scope', '$element','$attrs','$log','dateFilter','fuguDatepickerService','fuguDatepickerConfig',
+        function ($scope,$element, $attrs,$log,dateFilter,fuguDatepickerService,fuguDatepickerConfig) {
+        var ngModelCtrl = {$setViewValue: angular.noop};
+        var self = this;
+        this.init = function (_ngModelCtrl) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            ngModelCtrl.$formatters.unshift(function (modelValue) {
+                return modelValue ? new Date(modelValue) : null;
+            });
+        };
+        $scope.showCalendar = false;
+        this.toggle = function(open) {
+            $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
+        };
+        this.showCalendar = function() {
+            return $scope.showCalendar;
+        };
+        angular.forEach(['minDate','maxDate','exceptions','clearBtn'], function(key) {
+            $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
+        });
+        var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : fuguDatepickerConfig.format;
+
+        this.render = function () {
+            var date = ngModelCtrl.$modelValue;
+            if (isNaN(date)) {
+                $log.error('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            } else {
+                $scope.selectDate = ngModelCtrl.$modelValue;
+                $scope.inputValue = dateFilter(date,format);
+            }
+        };
+        // 显示隐藏日历
+        $scope.toggleCalendarHandler  = function (evt) {
+            $element.find('input')[0].blur();
+            if(evt){
+                evt.preventDefault();
+            }
+            if (!$scope.isDisabled) {
+                self.toggle();
+            }
+        };
+
+        // 获取日历面板和被点击的元素
+        $scope.getCanledarElement = function () {
+            return $element.find('.fugu-calendar');
+        };
+        $scope.getToggleElement = function () {
+            return $element.find('.input-group');
+        };
+        // 清除日期
+        $scope.clearDateHandler = function () {
+            $scope.inputValue = null;
+            $scope.selectDate = null;
+            ngModelCtrl.$setViewValue(null);
+            ngModelCtrl.$render();
+        };
+        $scope.$watch('showCalendar', function(showCalendar) {
+            if (showCalendar) {
+                fuguDatepickerService.open($scope);
+            } else {
+                fuguDatepickerService.close($scope);
+            }
+        });
+        // 选择日期
+        $scope.changeDateHandler = function (date) {
+            $scope.inputValue = dateFilter(date,format);
+            $scope.selectDate = date;
+            ngModelCtrl.$setViewValue(date);
+            ngModelCtrl.$render();
+        };
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.showCalendar = false;
+        });
+
+    }])
+    .directive('fuguDatepicker', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/datepicker.html',
+            replace: true,
+            require: ['fuguDatepicker','ngModel'],
+            scope: {
+                placeholder:'@',
+                isDisabled:'=?ngDisabled'
+            },
+            controller: 'fuguDatepickerCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var datepickerCtrl = ctrls[0],
+                    ngModelCtrl = ctrls[1];
+                datepickerCtrl.init(ngModelCtrl);
             }
         }
     });
@@ -1775,20 +1920,20 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
     "<div class=\"fugu-calendar\">"+
-    "    <div class=\"fugu-cal-panel-day\" ng-if=\"panels.day\">"+
+    "    <div class=\"fugu-cal-panel-day\" ng-show=\"panels.day\">"+
     "        <div class=\"fugu-cal-month\">"+
     "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>"+
     "            <span class=\"fugu-cal-month-name\">"+
@@ -1865,6 +2010,27 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "        </div>"+
     "    </div>"+
     "</div>");
+}]);
+angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/datepicker.html",
+    "<div class=\"fugu-datepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-remove\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-calendar class=\"fugu-datepicker-cal-bottom\" ng-model=\"selectDate\" ng-show=\"showCalendar\" on-change=\"changeDateHandler\""+
+    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
+    "</div>"+
+    "");
 }]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
