@@ -1,0 +1,16 @@
+<div ng-controller="datepickerDemoCtrl">
+    <div class="row">
+        <div class="col-md-6">
+            <fugu-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
+                             placeholder="选择日期" format="'yyyy-MM-dd hh:mm:ss a'" min-date="minDate" exceptions="exceptions"></fugu-datepicker>
+        </div>
+        <div class="col-md-4">
+            <pre>{{date | date:'yyyy:MM:dd hh:mm:ss a'}}</pre>
+        </div>
+        <div class="col-md-2">
+            <label for="disabled">isDisabled:</label>
+            <input type="checkbox" id="disabled" ng-model="isDisabled">
+        </div>
+    </div>
+
+</div>

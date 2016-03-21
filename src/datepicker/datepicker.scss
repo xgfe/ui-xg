@@ -1,0 +1,48 @@
+$arrow-right:9px;
+$arrow-top:-6px;
+.fugu-datepicker{
+    position: relative;
+    display: inline-block;
+
+    .fugu-calendar{
+        position: absolute;
+        right: 0;
+        top: 37px;
+        z-index: 1000;
+        overflow: visible;
+        &:before{
+            border-left: 7px solid rgba(0, 0, 0, 0);
+            border-right: 7px solid rgba(0, 0, 0, 0);
+            content: "";
+            display: inline-block;
+            position: absolute;
+            border-bottom: - $arrow-top + 1 solid #ddd;
+        }
+        &:after{
+            position: absolute;
+            border-left: - $arrow-top solid rgba(0, 0, 0, 0);
+            border-right: - $arrow-top solid rgba(0, 0, 0, 0);
+            content: "";
+            display: inline-block;
+            border-bottom: - $arrow-top solid #fff;
+        }
+    }
+    .fugu-datepicker-cal-bottom{
+        &:before{
+            right: $arrow-right;
+            top: $arrow-top - 1;
+        }
+        &:after{
+            top: $arrow-top;
+            right: $arrow-right + 1;
+        }
+    }
+
+    button:focus{
+        outline:0;
+    }
+    .fugu-datepicker-remove{
+        border-radius: 0;
+        border-left: 0;
+    }
+}
