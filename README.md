@@ -6,6 +6,7 @@
 - [buttonGroup](./src/buttonGroup/docs)
 - [timepanel](./src/timepanel/docs)
 - [calendar](./src/calendar/docs)
+- [datepicker](./src/datepicker/docs)
 - [dropdown](./src/dropdown/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)

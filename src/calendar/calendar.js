@@ -77,8 +77,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         };
         this.render = function () {
             var date = ngModelCtrl.$modelValue;
-            if (isNaN(date)) {
-                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+            if (isNaN(date) || !date) {
+                $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
             } else {
                 $scope.selectDate = ngModelCtrl.$modelValue;
 
@@ -158,7 +158,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
 
         // 时间面板返回
         $scope.timePanelBack = function () {
-            $scope.selectDate = cacheTime;
+            $scope.selectDate = angular.copy(cacheTime);
             $scope.selectPanel('day');
         };
         // 确定选择时间
@@ -224,7 +224,12 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         };
 
         function fireRender(){
+            var fn = $scope.onChange();
+            if(fn && angular.isFunction(fn)){
+                fn($scope.selectDate);
+            }
             ngModelCtrl.$setViewValue($scope.selectDate);
+            ngModelCtrl.$render();
         }
 
         // 根据年,月构建日视图
@@ -371,7 +376,9 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             templateUrl: 'templates/calendar.html',
             replace: true,
             require: ['fuguCalendar','ngModel'],
-            scope: {},
+            scope: {
+                onChange:'&'
+            },
             controller: 'fuguCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var calendarCtrl = ctrls[0],

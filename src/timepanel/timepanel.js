@@ -39,7 +39,6 @@ angular.module('ui.fugu.timepanel', [])
     })
     .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
         var ngModelCtrl = {$setViewValue: angular.noop};
-        var selected = new Date();
 
         this.init = function (_ngModelCtrl, inputs) {
             ngModelCtrl = _ngModelCtrl;
@@ -108,12 +107,9 @@ angular.module('ui.fugu.timepanel', [])
             if (isNaN(date)) {
                 $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
             } else {
-                if (date) {
-                    selected = date;
-                }
-                $scope.hour = ngModelCtrl.$modelValue ? addZero(selected.getHours()) : null;
-                $scope.minute = ngModelCtrl.$modelValue ? addZero(selected.getMinutes()) : null;
-                $scope.second = ngModelCtrl.$modelValue ? addZero(selected.getSeconds()) : null;
+                $scope.hour = date ? addZero(date.getHours()) : null;
+                $scope.minute = date ? addZero(date.getMinutes()) : null;
+                $scope.second = date ? addZero(date.getSeconds()) : null;
             }
         };
         this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
@@ -147,7 +143,7 @@ angular.module('ui.fugu.timepanel', [])
             secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
         };
         function changeHandler() {
-            var dt = new Date();
+            var dt = angular.copy(ngModelCtrl.$modelValue);
             dt.setHours($scope.hour);
             dt.setMinutes($scope.minute);
             dt.setSeconds($scope.second);
