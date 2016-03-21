@@ -22,7 +22,7 @@
 ## Arguments
 
 - ngModel:设置按钮组绑定选中(`radio:string|checkbox:object`)数据对象,如果type为`radio`,则该取值对应设置的`btnRadio`,与ngModel值相同的btnRadio被选中,按钮间切换选择同事修改ngModel绑定数据;如果type为`checkbox`,则ngModel是一个对象,其键(key)是所有对应的子button的`btnCheckbox`值,而值(value)则是`checkboxFalse|checkboxTrue`(boolean类型)对应的值,`checkboxTrue`表示key对应button被选中,`checkboxTrue`则表示不选.如果不设置程序会报错.
-    - type:`string|object`
+    - type:`string`|`object`
 - type(optional):指定按钮组类型,取值`radio(单选)`或者`checkbox(多选)`,默认为`radio`
     - type:`string`
     - default:`radio`
@@ -36,10 +36,10 @@
     - type:`string`
     - default:`default`
 - checkboxFalse(optional):`checkbox`类型,设置子button不选时ngModel设置对象,对应的value值,默认为`false`
-    - type:`string｜boolean`
+    - type:`string`｜`boolean`
     - default:`false`
 - checkboxTrue(optional):`checkbox`类型,设置子button选中时ngModel设置对象,对应的value值,默认为`true`
-    - type:`string｜boolean`
+    - type:`string`｜`boolean`
     - default:`true`
 - btnCheckbox(optional):`设置在子元素button上`,主要用来选中|不选,设置对应ngModel的key值.如果不设置,则取button显示文本作为默认值.
     - type:`string`

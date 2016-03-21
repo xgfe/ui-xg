@@ -12,14 +12,40 @@ angular.module('ui.fugu.tree', [])
         editable: false
     })
     .controller('treeController', ['$scope', '$element', '$attrs', 'fuguTreeConfig', function ($scope, $element, $attrs, fuguTreeConfig) {
+        var flag = true;
         this.checkedNodes = {}; // 选中节点集合
         // 变量初始化,如果没有设置,则使用默认值
         this.showIcon = angular.isDefined($scope.showIcon) ? $scope.showIcon : fuguTreeConfig.showIcon;
         this.checkable = angular.isDefined($scope.checkable) ? $scope.checkable : fuguTreeConfig.checkable;
         this.expandAll = angular.isDefined($scope.expandAll) ? !$scope.expandAll : fuguTreeConfig.collapsedAll;
         this.editable = angular.isDefined($scope.editable) ? $scope.editable : fuguTreeConfig.editable;
-        $scope.nodes = $scope.$parent.$eval($attrs.ngModel);  // 获取ng-model绑定节点对象
+        $scope.nodes = checkNodesStyle($scope.$parent.$eval($attrs.ngModel)) ? $scope.$parent.$eval($attrs.ngModel) : [];  // 获取ng-model绑定节点对象
 
+        /**
+         *  检查传递的树结构数组是否正确,如果结构正确返回true否则返回false
+         * @param {array} nodes ngModel绑定树结构数组对象
+         */
+        function checkNodesStyle(nodes){
+            var i = 0;
+            if(nodes instanceof Array){
+                for(i=0; i<nodes.length; i++){
+                    if(!nodes[i].label){
+                        flag = false;
+                    }else{
+                        if(nodes[i].children && nodes[i].children.length > 0){
+                            return checkNodesStyle(nodes[i].children);
+                        }else{
+                            if(Object.getOwnPropertyNames(nodes[i]).length > 1){
+                                flag = false;
+                            }
+                         }
+                    }
+                }
+                return flag;
+            }else{
+                return false;  // 非对象格式
+            }
+        }
     }])
     .directive('fuguTree', ['fuguTreeConfig', '$parse', function () {
         return {
@@ -52,7 +78,7 @@ angular.module('ui.fugu.tree', [])
                  * 捕获check改变事件，绑定事件处理
                  */
                 scope.$on('on-check', function(e, data){
-                    if (angular.isDefined(clickFn)) {
+                    if (angular.isDefined(checkFn)) {
                         checkFn(data);
                     }
                 });

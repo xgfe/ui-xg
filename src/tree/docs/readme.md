@@ -26,7 +26,7 @@
 - checkable(optional):是否显示勾选框,默认显示
     - type:`boolean`
     - default:`true`
-- expandAll(optional):是否展开树,默认展开
+- expandAll(optional):是否展开树,默认展开,当点击树节点时
     - type:`boolean`
     - default:`true`
 - onClick(optional):点击树节点名称时触发的事件,同时可以派发出一个参数data(表示点击节点)
