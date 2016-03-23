@@ -10,6 +10,7 @@
 - [dropdown](./src/dropdown/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
+- [sortable](./src/sortable/docs)
 - [switch](./src/switch/docs)
 - [timepicker](./src/timepicker/docs)
 - [tree](./src/tree/docs)
