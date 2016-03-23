@@ -1,0 +1,146 @@
+<h1>sortable</h1><h2>Description</h2><p>排序指令,可以对列表进行排序</p>
+<h2>Usage</h2><pre><code class="lang-html">&lt;<span class="hljs-selector-tag">ul</span> fugu-sortable=<span class="hljs-string">"array"</span>&gt;
+    &lt;<span class="hljs-selector-tag">li</span> ng-repeat=<span class="hljs-string">"item in array"</span>&gt;your <span class="hljs-selector-tag">html</span> <span class="hljs-selector-tag">code</span> here&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>fuguSortable</td><td><label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>需要被排序的数组,建议和repeat的数组保持一致</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"sortableDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-5"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group"</span> <span class="hljs-attr">fugu-sortable</span>=<span class="hljs-string">"mockList"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group-item m-b-md"</span>
+                    <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in mockList track by $index"</span>
+                    <span class="hljs-attr">ng-class</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{'bg-primary':item.id===1,'item-large':item.id===2}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.name}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-2"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"addItem()"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-sm btn-success"</span>&gt;</span>添加<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-5"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable">{{mockList | json}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'sortableDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.mockList = [{
+        name:<span class="hljs-string">'List Item -- 1'</span>,
+        id:<span class="hljs-number">1</span>
+    },{
+        name:<span class="hljs-string">'List Item -- 2'</span>,
+        id:<span class="hljs-number">2</span>
+    },{
+        name:<span class="hljs-string">'List Item -- 3'</span>,
+        id:<span class="hljs-number">3</span>
+    },{
+        name:<span class="hljs-string">'List Item -- 4'</span>,
+        id:<span class="hljs-number">4</span>
+    }];
+    $scope.addItem = function () {
+        $scope.mockList.push({
+            name:<span class="hljs-string">'List Item -- '</span>+($scope.mockList.length+<span class="hljs-number">1</span>),
+            id:$scope.mockList.length+<span class="hljs-number">1</span>
+        });
+    }
+}]);</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-selector-class">.bg-primary</span>{
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#7266ba</span>;
+    <span class="hljs-attribute">color</span>: <span class="hljs-number">#f4f3f9</span>;
+}
+<span class="hljs-selector-class">.item-large</span>{
+    <span class="hljs-attribute">padding-top</span>: <span class="hljs-number">15px</span>;
+    <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">15px</span>;
+}
+<span class="hljs-selector-class">.m-b-md</span>{
+    <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">10px</span>;
+}</code></pre>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><style>.bg-primary{
+    background-color: #7266ba;
+    color: #f4f3f9;
+}
+.item-large{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.m-b-md{
+    margin-bottom: 10px;
+}</style><div class="example"><div ng-controller="sortableDemoCtrl">
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group" fugu-sortable="mockList">
+                <li class="list-group-item m-b-md"
+                    ng-repeat="item in mockList track by $index"
+                    ng-class="{'bg-primary':item.id===1,'item-large':item.id===2}">
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <button type="button" ng-click="addItem()" class="btn btn-sm btn-success">添加</button>
+        </div>
+        <div class="col-md-5">
+            <pre>{{mockList | json}}</pre>
+        </div>
+    </div>
+
+</div></div><script>angular.module('fuguDemo').controller('sortableDemoCtrl',['$scope', function ($scope) {
+    $scope.mockList = [{
+        name:'List Item -- 1',
+        id:1
+    },{
+        name:'List Item -- 2',
+        id:2
+    },{
+        name:'List Item -- 3',
+        id:3
+    },{
+        name:'List Item -- 4',
+        id:4
+    }];
+    $scope.addItem = function () {
+        $scope.mockList.push({
+            name:'List Item -- '+($scope.mockList.length+1),
+            id:$scope.mockList.length+1
+        });
+    }
+}]);</script>
