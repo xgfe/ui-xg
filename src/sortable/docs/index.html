@@ -1,0 +1,20 @@
+<div ng-controller="sortableDemoCtrl">
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group" fugu-sortable="mockList">
+                <li class="list-group-item m-b-md"
+                    ng-repeat="item in mockList track by $index"
+                    ng-class="{'bg-primary':item.id===1,'item-large':item.id===2}">
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <button type="button" ng-click="addItem()" class="btn btn-sm btn-success">添加</button>
+        </div>
+        <div class="col-md-5">
+            <pre>{{mockList | json}}</pre>
+        </div>
+    </div>
+
+</div>
