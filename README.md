@@ -8,6 +8,7 @@
 - [calendar](./src/calendar/docs)
 - [datepicker](./src/datepicker/docs)
 - [dropdown](./src/dropdown/docs)
+- [modal](./src/modal/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
 - [sortable](./src/sortable/docs)

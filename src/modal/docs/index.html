@@ -1,0 +1,33 @@
+<div ng-controller="modalDemoCtrl">
+    <button class="btn btn-default" ng-click="open()">Open me!</button>
+    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+    <pre>{{items | json}}</pre>
+    <script type="text/ng-template" id="modalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+            <button type="button" ng-click="openAnother()" class="btn btn-primary btn-sm">Open another</button>
+        </div>
+        <div class="modal-body">
+            <ul class="list-group" fugu-sortable="items">
+                <li class="list-group-item m-b-md" ng-repeat="item in items"
+                    ng-click="selected.item = item">
+                    <span ng-show="selected.item === item" class="badge bg-primary">&nbsp;</span>
+                    {{ item }}
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="anotherModal.html">
+        <div class="modal-body">{{modalBodyText}}</div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+        </div>
+    </script>
+</div>

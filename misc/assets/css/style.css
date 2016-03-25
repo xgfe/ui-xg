@@ -90,6 +90,7 @@ aside.app-aside:before{
 .app-content{
     padding:8px 40px 40px;
     margin-left: 200px;
+    overflow: hidden;
 }
 .app-content .example{
     border: 1px solid #ddd;
