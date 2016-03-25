@@ -1,10 +1,11 @@
-<h1>sortable</h1><h2>Description</h2><p>排序指令,可以对列表进行排序</p>
+<h1>sortable</h1><h2>Description</h2><p>排序指令,可以对列表进行排序,目前sortable的使用局限性较大,只能对<code>ngRepeat</code>进行排序!</p>
 <h2>Usage</h2><pre><code class="lang-html">&lt;<span class="hljs-selector-tag">ul</span> fugu-sortable=<span class="hljs-string">"array"</span>&gt;
-    &lt;<span class="hljs-selector-tag">li</span> ng-repeat=<span class="hljs-string">"item in array"</span>&gt;your <span class="hljs-selector-tag">html</span> <span class="hljs-selector-tag">code</span> here&lt;/li&gt;
+    &lt;<span class="hljs-selector-tag">li</span> ng-repeat=<span class="hljs-string">"item in array track by $index"</span>&gt;your <span class="hljs-selector-tag">html</span> <span class="hljs-selector-tag">code</span> here&lt;/li&gt;
 &lt;/ul&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>fuguSortable</td><td><label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>需要被排序的数组,建议和repeat的数组保持一致</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Notes</h2><p><strong>在列表循环的时候如果使用<code>ngRepeat</code>指令,必须指定tracking,如<code>item in list track by $index</code>,不然可能会出现问题</strong></p>
+<h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>fuguSortable</td><td><label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>需要被排序的数组,建议和repeat的数组保持一致</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
