@@ -226,12 +226,12 @@ gulp.task('concat:js',['modules'], function () {
  * 压缩js和css
  */
 gulp.task('uglify',['concat:css','concat:js'], function () {
-    gulp.src(config.dist+'/css/*.css')
+    gulp.src([config.dist+'/css/*.css','!'+config.dist+'/css/*.min.css'])
         .pipe(nano())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(config.dist+'/css'));
 
-    return gulp.src(config.dist+'/js/*.js')
+    return gulp.src([config.dist+'/js/*.js','!'+config.dist+'/js/*.min.js'])
         .pipe(uglify({
             output:{
                 comments: function (comments,token) {
@@ -268,13 +268,32 @@ gulp.task('readme',['modules'], function () {
         .pipe(gulp.dest('./'));
 });
 // 复制静态文件
-gulp.task('copy',['concat:css','concat:js'], function () {
-    gulp.src(['misc/assets/**/*','misc/index.html'])
+gulp.task('copy',['uglify'], function () {
+    // copy assets
+    gulp.src(['misc/assets/**/*.html','misc/index.html'])
         .pipe(gulp.dest(config.dist+'/docs'));
-    gulp.src(['lib/angular/angular.min.js','lib/jquery/dist/jquery.min.js',config.dist+'/js/'+config.filename+'.js'])
+
+    gulp.src(['misc/assets/js/*.js'])
+        .pipe(gulp.dest(config.dist+'/docs/js'));
+
+    gulp.src(['misc/assets/js/lib/require.min.js'])
         .pipe(gulp.dest(config.dist+'/docs/js/lib'));
-    gulp.src(['lib/bootstrap/dist/css/bootstrap.min.css',config.dist+'/css/'+config.filename+'.css'])
+
+    // copy angular and jquery
+    gulp.src(['lib/angular/angular.min.js','lib/jquery/dist/jquery.min.js'])
+        .pipe(gulp.dest(config.dist+'/docs/js/lib'));
+
+    // combine js files
+    gulp.src(['misc/assets/js/lib/*','!misc/assets/js/lib/require.min.js',config.dist+'/js/'+config.filename+'.min.js'])
+        .pipe(concat('lib-comb.js'))
+        .pipe(gulp.dest(config.dist+'/docs/js/lib'));
+
+    // combine css files
+    gulp.src(['lib/bootstrap/dist/css/bootstrap.min.css','misc/assets/css/github.css',config.dist+'/css/'+config.filename+'.min.css','misc/assets/css/style.css'])
+        .pipe(concat('style.css'))
         .pipe(gulp.dest(config.dist+'/docs/css'));
+
+    // copy font files
     return gulp.src(['lib/bootstrap/dist/fonts/*'])
         .pipe(gulp.dest(config.dist+'/docs/fonts'));
 });
