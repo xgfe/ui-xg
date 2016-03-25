@@ -11,7 +11,7 @@
         </div>
         <div class="modal-body">
             <ul class="list-group" fugu-sortable="items">
-                <li class="list-group-item m-b-md" ng-repeat="item in items"
+                <li class="list-group-item m-b-md" ng-repeat="item in items track by $index"
                     ng-click="selected.item = item">
                     <span ng-show="selected.item === item" class="badge bg-primary">&nbsp;</span>
                     {{ item }}

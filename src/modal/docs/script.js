@@ -9,14 +9,17 @@ angular.module('fuguDemo').controller('modalDemoCtrl',['$scope','$log','$fgModal
             size: size,
             resolve: {
                 items: function () {
-                    return $scope.items;
+                    return {
+                        items:$scope.items,
+                        selected:$scope.selected
+                    };
                 }
             }
         });
 
         modalInstance.result.then(function (result) {
             $scope.items = result.items;
-            $scope.selected = result.selectedItem;
+            $scope.selected = result.selected;
         }, function () {
             $log.info('Modal dismissed at: ' + new Date());
         });
@@ -24,9 +27,9 @@ angular.module('fuguDemo').controller('modalDemoCtrl',['$scope','$log','$fgModal
 }]);
 angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalInstance','items','$fgModal',function ($scope, $fgModalInstance, items,$fgModal) {
 
-    $scope.items = angular.copy(items);
+    $scope.items = angular.copy(items.items);
     $scope.selected = {
-        item: $scope.items[0]
+        item: items.selected
     };
 
     $scope.openAnother = function () {
@@ -45,7 +48,7 @@ angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalIn
     $scope.ok = function () {
         $fgModalInstance.close({
             items:$scope.items,
-            selectedItem:$scope.selected.item
+            selected:$scope.selected.item
         });
     };
 
