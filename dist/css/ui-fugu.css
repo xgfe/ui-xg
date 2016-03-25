@@ -103,6 +103,41 @@
   margin-left: 6px; }
 
 
+.fugu-datepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-datepicker .fugu-calendar {
+    position: absolute;
+    right: 0;
+    top: 37px;
+    z-index: 1000;
+    overflow: visible; }
+    .fugu-datepicker .fugu-calendar:before {
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      content: "";
+      display: inline-block;
+      position: absolute;
+      border-bottom: 7px solid #ddd; }
+    .fugu-datepicker .fugu-calendar:after {
+      position: absolute;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      content: "";
+      display: inline-block;
+      border-bottom: 6px solid #fff; }
+  .fugu-datepicker .fugu-datepicker-cal-bottom:before {
+    right: 9px;
+    top: -7px; }
+  .fugu-datepicker .fugu-datepicker-cal-bottom:after {
+    top: -6px;
+    right: 10px; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
 .fugu-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -246,41 +281,6 @@
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
 
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker .fugu-calendar {
-    position: absolute;
-    right: 0;
-    top: 37px;
-    z-index: 1000;
-    overflow: visible; }
-    .fugu-datepicker .fugu-calendar:before {
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      content: "";
-      display: inline-block;
-      position: absolute;
-      border-bottom: 7px solid #ddd; }
-    .fugu-datepicker .fugu-calendar:after {
-      position: absolute;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      content: "";
-      display: inline-block;
-      border-bottom: 6px solid #fff; }
-  .fugu-datepicker .fugu-datepicker-cal-bottom:before {
-    right: 9px;
-    top: -7px; }
-  .fugu-datepicker .fugu-datepicker-cal-bottom:after {
-    top: -6px;
-    right: 10px; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
 /*!
  fugu-dropdown.css
  Version: 0.0.1
@@ -302,32 +302,6 @@
     padding-right: 0; }
     .fugu-dropdown > .dropdown-menu a:hover {
       background: #ddd; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown > .dropdown-menu {
-    width: 250px; }
-    .fugu-dropdown > .dropdown-menu li {
-      width: 50%; }
-  .fugu-dropdown.open {
-    width: 100%; } }
-
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-alert .alert-icon {
-  float: left; }
-
-.fugu-alert .alert-icon-span {
-  position: relative;
-  top: 2px; }
-
-.fugu-alert .cancel-text {
-  font-size: 20px; }
-
-.fugu-alert .show-icon {
-  padding-left: 20px; }
 
 @media screen and (max-width: 767px) {
   .fugu-dropdown > .dropdown-menu {

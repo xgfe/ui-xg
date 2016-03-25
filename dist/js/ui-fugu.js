@@ -3,13 +3,8 @@
  * Version: 0.0.1 - 2016-03-25
  * License: ISC
  */
-<<<<<<< HEAD
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
-=======
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","notification/templates/alert.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
->>>>>>> feat(notification): add notification
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -1236,7 +1231,6 @@ angular.module('ui.fugu.dropdown',[])
     }
 });
 /**
-<<<<<<< HEAD
  * modal
  * modal directive
  * 不太会写,基本是照搬的 ui-bootstrap v0.12.1 https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js
@@ -1729,7 +1723,9 @@ angular.module('ui.fugu.modal', [])
                 };
             }];
     });
-=======
+
+
+/**
  * notification
  * 通知指令
  * Author:penglu02@meituan.com
@@ -1974,9 +1970,6 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             }
         ]
     }]);
->>>>>>> feat(notification): add notification
-
-
 angular.module('ui.fugu.pager',[])
 .constant('fuguPagerConfig', {
     itemsPerPage: 20, //默认每页数目为20
@@ -2973,21 +2966,6 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
-}]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
-    "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
-    "</div>");
-}]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
     "<div class=\"fugu-datepicker\">"+
@@ -3009,6 +2987,21 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "</div>"+
     "");
 }]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
+}]);
 angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/backdrop.html",
     "<div class=\"modal-backdrop fade {{ backdropClass }}\""+
@@ -3023,19 +3016,6 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    <div class=\"modal-dialog\" ng-class=\"{'modal-sm': size == 'sm', 'modal-lg': size == 'lg'}\">"+
     "        <div class=\"modal-content\" fugu-modal-transclude></div>"+
     "    </div>"+
-    "</div>");
-}]);
-angular.module("notification/templates/alert.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/alert.html",
-    "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
-    "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
-    "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
-    "    </div>"+
-    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"closeFunc({$event: $event})\">"+
-    "        <span ng-if=\"!closeText\">&times;</span>"+
-    "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
-    "    </button>"+
-    "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
 angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
