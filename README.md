@@ -9,6 +9,7 @@
 - [datepicker](./src/datepicker/docs)
 - [dropdown](./src/dropdown/docs)
 - [modal](./src/modal/docs)
+- [notification](./src/notification/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
 - [sortable](./src/sortable/docs)

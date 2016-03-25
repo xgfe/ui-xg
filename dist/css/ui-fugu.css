@@ -311,6 +311,46 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
+/*!
+ fugu-alert.scss
+ Version: 0.0.1
+ Author: heqingyang@meituan.com
+ */
+.fugu-alert .alert-icon {
+  float: left; }
+
+.fugu-alert .alert-icon-span {
+  position: relative;
+  top: 2px; }
+
+.fugu-alert .cancel-text {
+  font-size: 20px; }
+
+.fugu-alert .show-icon {
+  padding-left: 20px; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown > .dropdown-menu {
+    width: 250px; }
+    .fugu-dropdown > .dropdown-menu li {
+      width: 50%; }
+  .fugu-dropdown.open {
+    width: 100%; } }
+
+.notice-item {
+  width: 250px; }
+
+.notice-container {
+  width: 260px;
+  padding: 5px;
+  padding-bottom: 0;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  background-color: transparent;
+  max-height: 100%;
+  overflow-y: scroll; }
+
 .fugu-switch {
   cursor: pointer;
   position: relative;

@@ -1,0 +1,10 @@
+<div ng-show="!defaultclose" class="alert fugu-alert" ng-class="['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]" role="alert">
+    <div ng-show="hasIcon" class="alert-icon">
+        <span class="alert-icon-span glyphicon" ng-class="'glyphicon-'+iconClass"></span>
+    </div>
+    <button ng-show="closeable" type="button" class="close" ng-click="closeFunc({$event: $event})">
+        <span ng-if="!closeText">&times;</span>
+        <span class="cancel-text" ng-if="closeText">{{closeText}}</span>
+    </button>
+    <div ng-class="[hasIcon?'show-icon' : null]" ng-transclude></div>
+</div>
