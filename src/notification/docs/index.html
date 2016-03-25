@@ -1,8 +1,8 @@
 <div ng-controller="notificationDemoCtrl">
     <div id="notice" fugu-notice limit-num="5"></div>
-    <button ng-click="addNotice()">添加通知</button>
-    <button ng-click="addNotice('error')">error</button>
-    <button ng-click="addNotice('info')">info</button>
-    <button ng-click="addNotice('success')">success</button>
-    <button ng-click="addNotice('warning')">warning</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="addNotice()">添加通知</button>
+    <button type="button" class="btn btn-sm btn-danger" ng-click="addNotice('error')">error</button>
+    <button type="button" class="btn btn-sm btn-info" ng-click="addNotice('info')">info</button>
+    <button type="button" class="btn btn-sm btn-success" ng-click="addNotice('success')">success</button>
+    <button type="button" class="btn btn-sm btn-warning" ng-click="addNotice('warning')">warning</button>
 </div>
