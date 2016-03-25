@@ -106,11 +106,11 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
     });
 </script></div><div class="example"><div ng-controller="notificationDemoCtrl">
     <div id="notice" fugu-notice limit-num="5"></div>
-    <button ng-click="addNotice()">添加通知</button>
-    <button ng-click="addNotice('error')">error</button>
-    <button ng-click="addNotice('info')">info</button>
-    <button ng-click="addNotice('success')">success</button>
-    <button ng-click="addNotice('warning')">warning</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="addNotice()">添加通知</button>
+    <button type="button" class="btn btn-sm btn-danger" ng-click="addNotice('error')">error</button>
+    <button type="button" class="btn btn-sm btn-info" ng-click="addNotice('info')">info</button>
+    <button type="button" class="btn btn-sm btn-success" ng-click="addNotice('success')">success</button>
+    <button type="button" class="btn btn-sm btn-warning" ng-click="addNotice('warning')">warning</button>
 </div></div><script>angular.module('fuguDemo').config(['notificationProvider', function (notificationProvider   ) {
     notificationProvider.globalDurationTime(5000); //统一设置5秒后关闭
     notificationProvider.globalDisableCloseBtn(true); //统一设置不显示关闭标签
