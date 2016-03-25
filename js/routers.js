@@ -30,6 +30,8 @@ define([
             
                 $stateProvider.state('app.api.modal',{url: "/modal",templateUrl: 'partials/api/modal.html'});
             
+                $stateProvider.state('app.api.notification',{url: "/notification",templateUrl: 'partials/api/notification.html'});
+            
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
             
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
