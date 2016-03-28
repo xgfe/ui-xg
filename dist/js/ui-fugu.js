@@ -2875,15 +2875,15 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
+}]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
@@ -3097,21 +3097,6 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "</div>"+
     "");
 }]);
-angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepicker.html",
-    "<div class=\"fugu-timepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
-    "                <i class=\"glyphicon glyphicon-time\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "    </div>"+
-    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
-    "</div>"+
-    "");
-}]);
 angular.module("tree/templates/tree-node.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/tree-node.html",
     "<div>"+
@@ -3150,4 +3135,19 @@ angular.module("tree/templates/tree.html",[]).run(["$templateCache",function($te
     "        </li>"+
     "    </ol>"+
     "</div>");
+}]);
+angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker.html",
+    "<div class=\"fugu-timepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "                <i class=\"glyphicon glyphicon-time\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "</div>"+
+    "");
 }]);
