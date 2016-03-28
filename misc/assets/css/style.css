@@ -11,13 +11,17 @@ html,body,#app{
 .app-home{
     padding: 50px 100px;
     font-size: 30px;
-    text-align: left;
     text-shadow: 0 1px 0 rgba(0,0,0,.15);
     color:  #666;
     background: linear-gradient(to top, #DDD 0%,rgba(225,225,225,0) 21%,rgba(235,235,235,0) 81%,#EEE 100%);
     -webkit-flex-grow: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
+    background: #fff;
+    text-align: center;
+    padding-top:15px;
+    padding-bottom: 20px;
+    margin-top: -50px;
 }
 .app-home h1{
     font-size: 90px;
@@ -105,8 +109,8 @@ aside.app-aside:before{
     border-top-right-radius: 0;
 }
 .app-footer{
-    height: 80px;
-    background: #555;
+    min-height: 40px;
+    background: #222;
     padding-top: 12px;
     color: #ccc;
     padding-left: 100px;
@@ -195,4 +199,62 @@ aside.app-aside:before{
     overflow-x: auto;
     white-space: pre;
     word-wrap: normal;
+}
+.app-main .a-link {
+    color: #333;
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    font-size: 30px;
+    text-decoration: none;
+    border-bottom: 1px dashed #333;
+}
+.app-main a.a-link:hover {
+    border-bottom: 1px solid #333;
+}
+ .app-home .link-btn{
+    border-color: #222;
+    color: #222;
+}
+.app-home .link-btn:visited{
+    border-color: #222;
+    color: #222;
+}
+.app-home .link-btn:hover{
+    background-color: #222;
+    color: white;
+}
+.app-home .link-btn:active{
+    background-color: #222;
+    color: white;
+}
+.app-home .link-btn:focus{
+    background-color: #222;
+    color: white;
+}
+.table-display {
+    display: table;
+    width: 100%;
+}
+.app-wrapper {
+    background: #fff;
+    margin-left: -100px;
+    margin-right: -100px;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.app-home h1 {
+    padding-bottom: 50px;
+    text-shadow: 9px 10px 16px #666;
+    font-weight: 600;
+    line-height: 30px;
+    opacity: 0.9;
+    color: #222;
+}
+.app-home h2 {
+    font-weight: 100;
+    font-size: 22px;
+    color: #333;
+}
+.padder-t-s {
+    padding-top: 13px;
 }
