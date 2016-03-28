@@ -1,6 +1,3 @@
-@import "bootstrap.min.css";
-@import "ui-fugu.min.css";
-@import "github.css";
 html,body,#app{
     height: 100%;
 }
