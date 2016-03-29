@@ -4,7 +4,7 @@
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/alert.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -16,10 +16,9 @@ angular.module('ui.fugu.alert',[])
 
     //指令初始化
     function initConfig(){
-        if($scope.close&&($scope.close=="true"||$scope.close=="1")) {$scope.closeable=true;}
-        else {$scope.closeable = false;}
+        $scope.closeable = ($scope.close&&($scope.close=="true"||$scope.close=="1"))?true:false;
         $scope.defaultclose = false;
-        $scope.hasIcon = $attrs.hasIcon&&$attrs.hasIcon=="true";
+        $scope.hasIcon = ($scope.hasIcon&&($scope.hasIcon=="true"||$scope.hasIcon=="1"))?true:false;
     }
     initConfig();
 
@@ -71,7 +70,8 @@ angular.module('ui.fugu.alert',[])
             type:'@',
             close : '@',
             closeFunc : '&',
-            closeText : '@'
+            closeText : '@',
+            hasIcon : '@'
         },
         controller:'fuguAlertCtrl',
         controllerAs: 'alert'
@@ -2879,18 +2879,20 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     "        <span ng-if=\"!closeText\">&times;</span>"+
     "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
     "    </button>"+
-    "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
+    "    <!--<div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>-->"+
+    "    <div ng-class=\"{true:'show-icon' ,false: null}[hasIcon]\" ng-transclude></div>"+
+    ""+
     "</div>");
+}]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
-}]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
@@ -3025,19 +3027,6 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    </div>"+
     "</div>");
 }]);
-angular.module("notification/templates/alert.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/alert.html",
-    "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
-    "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
-    "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
-    "    </div>"+
-    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"closeFunc({$event: $event})\">"+
-    "        <span ng-if=\"!closeText\">&times;</span>"+
-    "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
-    "    </button>"+
-    "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
-    "</div>");
-}]);
 angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/notification.html",
     "<div class=\"notice-container\">"+
@@ -3087,21 +3076,6 @@ angular.module("switch/templates/switch.html",[]).run(["$templateCache",function
     "    <i></i>"+
     "</label>");
 }]);
-angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepicker.html",
-    "<div class=\"fugu-timepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
-    "                <i class=\"glyphicon glyphicon-time\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "    </div>"+
-    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
-    "</div>"+
-    "");
-}]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",
     "<div class=\"fugu-timepanel\">"+
@@ -3129,6 +3103,21 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "        </div>"+
     "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
     "    </div>"+
+    "</div>"+
+    "");
+}]);
+angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker.html",
+    "<div class=\"fugu-timepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "                <i class=\"glyphicon glyphicon-time\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
     "</div>"+
     "");
 }]);

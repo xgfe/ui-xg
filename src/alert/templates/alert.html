@@ -6,5 +6,7 @@
         <span ng-if="!closeText">&times;</span>
         <span class="cancel-text" ng-if="closeText">{{closeText}}</span>
     </button>
-    <div ng-class="[hasIcon?'show-icon' : null]" ng-transclude></div>
+    <!--<div ng-class="[hasIcon?'show-icon' : null]" ng-transclude></div>-->
+    <div ng-class="{true:'show-icon' ,false: null}[hasIcon]" ng-transclude></div>
+
 </div>

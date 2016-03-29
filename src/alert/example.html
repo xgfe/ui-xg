@@ -11,12 +11,17 @@
 
 <fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
 <fugu-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</fugu-alert>
-<fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</fugu-alert>
+<fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="false">替换关闭按钮文案</fugu-alert>
 <fugu-alert type="warning" close="false">取消图标</fugu-alert>
 <fugu-alert type="warning" close="{{boolean}}">布尔取值为{{boolean}}</fugu-alert>
 <fugu-alert template-url="alert.html">A happy alert!</fugu-alert>
 
+<fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="{{isIcon}}">替换关闭按钮文案</fugu-alert>
+
+
+
 <button ng-click="addAlert()">点击添加</button>
+<button ng-click="changeIcon()">更改图标</button>
 
 
 <script src="../../lib/jquery/dist/jquery.min.js"></script>
@@ -30,8 +35,8 @@
 <script>
     var app = angular.module('fuguAlert',['ui.fugu.alert']);
     app.controller('alertCtrl',['$scope', function ($scope) {
-        $scope.isIcon = false;
-        $scope.boolean = true;
+        $scope.isIcon = true;
+        $scope.boolean = false;
         $scope.alerts = [
             { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
             { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
@@ -43,6 +48,9 @@
         };
         $scope.addAlert = function(){
             $scope.alerts.push({msg:"this is a new alert."});
+        }
+        $scope.changeIcon = function(){
+            $scope.isIcon = !$scope.isIcon;
         }
     }]);
 </script>
