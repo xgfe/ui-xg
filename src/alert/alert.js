@@ -7,14 +7,11 @@
 angular.module('ui.fugu.alert',[])
 .controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
 
-        var test;
-
     //指令初始化
     function initConfig(){
-        if($scope.close&&($scope.close=="true"||$scope.close=="1")) {$scope.closeable=true;}
-        else {$scope.closeable = false;}
+        $scope.closeable = ($scope.close&&($scope.close=="true"||$scope.close=="1"))?true:false;
         $scope.defaultclose = false;
-        $scope.hasIcon = $attrs.hasIcon&&$attrs.hasIcon=="true";
+        $scope.hasIcon = ($scope.hasIcon&&($scope.hasIcon=="true"||$scope.hasIcon=="1"))?true:false;
     }
     initConfig();
 
@@ -66,7 +63,8 @@ angular.module('ui.fugu.alert',[])
             type:'@',
             close : '@',
             closeFunc : '&',
-            closeText : '@'
+            closeText : '@',
+            hasIcon : '@'
         },
         controller:'fuguAlertCtrl',
         controllerAs: 'alert'
