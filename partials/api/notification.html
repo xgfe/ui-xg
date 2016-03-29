@@ -1,6 +1,6 @@
-<h1>notification</h1><h2>Description</h2><p>消息通知组件。全局组件(一个项目使用一个,在index.html中使用),可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示.</p>
-<h2>Usage</h2><pre><code>1. 在index.html页面引入指令:<span class="hljs-tag">&lt;<span class="hljs-name">tag</span> <span class="hljs-attr">fugu-notice</span> [<span class="hljs-attr">limitNum</span>=<span class="hljs-string">"number"</span><span class="hljs-string">]</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">tag</span>&gt;</span>.
-2. 在需要使用通知页面对应controller中注入notification(provider),通过使用notification上方法进行调用.
+<h1>notification</h1><h2>Description</h2><p>消息通知组件。全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示.</p>
+<h2>Usage</h2><pre><code>在需要使用通知页面对应<span class="hljs-selector-tag">controller</span>中注入<span class="hljs-selector-tag">notification</span>(provider),通过使用<span class="hljs-selector-tag">notification</span>上方法进行调用.
+<span class="hljs-selector-tag">angular</span><span class="hljs-selector-class">.module</span>(<span class="hljs-string">'XXXXApp'</span>)<span class="hljs-selector-class">.controller</span>(<span class="hljs-string">'YYYYCtrl'</span>,[<span class="hljs-string">'notification'</span>, function (notification) {}])
 </code></pre><h2>notification</h2><ul><li>inject: controller中注入</li>
 <li>methods<ul><li><code>warning(text, config)</code>: 显示警告通知,text为提示内容,config为当前显示通知配置项.</li>
 <li><code>error(text, config)</code>: 显示错误通知,text为提示内容,config为当前显示通知配置项.</li>
@@ -17,8 +17,9 @@
 <li>methods<ul><li><code>globalDurationTime(number|object)</code>: 设置通知显示时间,默认为-1表示一直显示.number表示设置显示时间(毫秒),则所有类型统一设置;object格式为<code>{error:number,info:number,warning:number,success:number}</code>,也可以只设置某几个属性.</li>
 <li><code>globalDisableCloseBtn(boolean)</code>: 设置是否显示关闭图标,默认为true表示显示.</li>
 <li><code>globalUnique</code>: 设置相同通知是否可以重复显示,默认为true表示不重复(唯一).</li>
+<li><code>globalLimitNum</code>: 设置通知限制显示条数,默认为-1表示不限制.</li>
 </ul></li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>limitNum</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td></td><td>如果一直不关闭可显示通知数,默认可无限量显示.</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -31,7 +32,6 @@
     
     <div class="tab-pane active" id="index_html">
 <pre><code>&lt;div ng-controller=<span class="hljs-string">"notificationDemoCtrl"</span>&gt;
-    &lt;div id=<span class="hljs-string">"notice"</span> fugu-notice limit-num=<span class="hljs-string">"5"</span>&gt;&lt;/div&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-sm btn-default"</span> ng-click=<span class="hljs-string">"addNotice()"</span>&gt;添加通知&lt;/button&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-sm btn-danger"</span> ng-click=<span class="hljs-string">"addNotice('error')"</span>&gt;error&lt;/button&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-sm btn-info"</span> ng-click=<span class="hljs-string">"addNotice('info')"</span>&gt;info&lt;/button&gt;
@@ -46,6 +46,7 @@
     notificationProvider.globalDurationTime(<span class="hljs-number">5000</span>)<span class="hljs-comment">; //统一设置5秒后关闭</span>
     notificationProvider.globalDisableCloseBtn(true)<span class="hljs-comment">; //统一设置不显示关闭标签</span>
     notificationProvider.globalUnique(false)<span class="hljs-comment">; //统一设置通知可重复显示</span>
+    notificationProvider.globalLimitNum(<span class="hljs-number">5</span>)<span class="hljs-comment">; //统一设置最多显示5条通知</span>
 }])<span class="hljs-comment">;</span>
 angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'notificationDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'notification'</span>, function ($scope, notification) {
     $scope.notifications = [
@@ -68,7 +69,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
                 <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
             <span class="hljs-keyword">case</span> <span class="hljs-string">'warning'</span>:
                 config.variables = {name: <span class="hljs-string">'penglu'</span>, email: <span class="hljs-string">'rabbit_pl@126.com'</span>}<span class="hljs-comment">;  // 设置模版</span>
-                notification.warning(<span class="hljs-string">'warning - author:{{name}},email:{{email}}'</span>, config)<span class="hljs-comment">;</span>
+                notification.warning(<span class="hljs-string">'warning - limitNum:2,author:{{name}},email:{{email}}'</span>, config)<span class="hljs-comment">;</span>
                 <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
             <span class="hljs-keyword">case</span> <span class="hljs-string">'error'</span>:
                 config.duration = <span class="hljs-number">1000</span><span class="hljs-comment">; //一直显示</span>
@@ -105,7 +106,6 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
         });
     });
 </script></div><div class="example"><div ng-controller="notificationDemoCtrl">
-    <div id="notice" fugu-notice limit-num="5"></div>
     <button type="button" class="btn btn-sm btn-default" ng-click="addNotice()">添加通知</button>
     <button type="button" class="btn btn-sm btn-danger" ng-click="addNotice('error')">error</button>
     <button type="button" class="btn btn-sm btn-info" ng-click="addNotice('info')">info</button>
@@ -115,6 +115,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
     notificationProvider.globalDurationTime(5000); //统一设置5秒后关闭
     notificationProvider.globalDisableCloseBtn(true); //统一设置不显示关闭标签
     notificationProvider.globalUnique(false); //统一设置通知可重复显示
+    notificationProvider.globalLimitNum(5); //统一设置最多显示5条通知
 }]);
 angular.module('fuguDemo').controller('notificationDemoCtrl',['$scope', 'notification', function ($scope, notification) {
     $scope.notifications = [
@@ -137,7 +138,7 @@ angular.module('fuguDemo').controller('notificationDemoCtrl',['$scope', 'notific
                 break;
             case 'warning':
                 config.variables = {name: 'penglu', email: 'rabbit_pl@126.com'};  // 设置模版
-                notification.warning('warning - author:{{name}},email:{{email}}', config);
+                notification.warning('warning - limitNum:2,author:{{name}},email:{{email}}', config);
                 break;
             case 'error':
                 config.duration = 1000; //一直显示
