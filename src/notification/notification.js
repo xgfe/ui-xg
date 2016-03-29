@@ -5,12 +5,19 @@
  * Date:2016-03-22
  */
 angular.module('ui.fugu.notification', ['ui.fugu.alert'])
-    .service('notificationServices', ['$sce', '$interval', '$interpolate', function($sce, $interval, $interpolate){
+    .service('notificationServices', ['$sce', '$interval', '$interpolate', '$document', '$compile', '$rootScope', function($sce, $interval, $interpolate, $document, $compile, $rootScope){
         var self = this;
         this.directive = {};
 
-        this.initDirective = function (limitNum) {
-            this.directive.limitNum = limitNum;
+        function initNotification(){
+            var body = $document.find('body').eq(0),
+                noticeScope = $rootScope.$new(true),
+                noticeEle = angular.element('<div fugu-notice></div>');
+            body.append($compile(noticeEle)(noticeScope));
+        }
+        initNotification();  // 初始化组件
+
+        this.initDirective = function () {
             this.directive.notifications = [];
             return this.directive;
         };
@@ -56,8 +63,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             }
 
             // 如果有长度限制，则移除超过长度的
-            if(angular.isDefined(this.directive.limitNum)){
-                var diff = notifications.length - (this.directive.limitNum - 1);
+            if(this.limitNum !== -1){
+                var diff = notifications.length - (this.limitNum - 1);
                 if(diff > 0){
                     notifications.splice(0, diff);
                 }
@@ -80,15 +87,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
         }
     }])
     .controller('notificationController', ['$scope', '$interval', 'notification', 'notificationServices', function($scope, $interval, notification, notificationServices){
-        notificationServices.initDirective($scope.limitNum);
+        notificationServices.initDirective();
         $scope.notifications = notificationServices.directive.notifications;
-
-        $scope.$watch('limitNum', function(limitNum){
-            var directive = notificationServices.directive;
-            if(angular.isDefined(limitNum) && angular.isDefined(directive)){
-                directive.limitNum = limitNum;
-            }
-        });
 
         $scope.closeFn = function(notification){
             notificationServices.deleteNotifications(notification);
@@ -98,15 +98,12 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
         return {
             restrict: 'A',
             replace: false,
-            scope: {
-                limitNum: '='
-            },
+            scope: {},
             templateUrl: 'templates/notification.html',
             controller: 'notificationController'
         }
     }])
     .provider('notification', [function(){
-
         // private variables
         var _types = {
                 success: null,
@@ -116,7 +113,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             },
             _unique = true,
             _disableCloseBtn = false,
-            _disableIcon = false;
+            _disableIcon = false,
+            _limitNum = -1; // 默认不限制显示条数
 
 
         // this绑定的方法是可以在注入之前进行调用设置
@@ -174,6 +172,13 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             return this;
         };
 
+        this.globalLimitNum = function(limitNum) {
+            if(limitNum > 0){
+                _limitNum = limitNum;
+            }
+            return this;
+        };
+
 
         // $get方法返回的内容,注入的时候可以获取
         this.$get = [
@@ -185,6 +190,7 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             'notificationServices',
             function ($rootScope, $interpolate, $sce, $filter, $interval, notificationServices) {
                 notificationServices.unique = _unique;  //根据当前配置，设置显示的唯一性(统一)
+                notificationServices.limitNum = _limitNum;  //根据当前配置，设置显示条数限制
 
                 function sendNotification(text, config, type) {
                     var _config = config || {}, notification, addNotification;
@@ -241,5 +247,5 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
                     common: common
                 };
             }
-        ]
+        ];
     }]);

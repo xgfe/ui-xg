@@ -102,6 +102,7 @@
   margin-right: -6px;
   margin-left: 6px; }
 
+
 .fugu-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -244,7 +245,6 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
-
 
 .fugu-datepicker {
   position: relative;
