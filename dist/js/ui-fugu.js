@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-03-28
+ * Version: 0.0.1 - 2016-03-29
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/alert.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -1732,12 +1732,19 @@ angular.module('ui.fugu.modal', [])
  * Date:2016-03-22
  */
 angular.module('ui.fugu.notification', ['ui.fugu.alert'])
-    .service('notificationServices', ['$sce', '$interval', '$interpolate', function($sce, $interval, $interpolate){
+    .service('notificationServices', ['$sce', '$interval', '$interpolate', '$document', '$compile', '$rootScope', function($sce, $interval, $interpolate, $document, $compile, $rootScope){
         var self = this;
         this.directive = {};
 
-        this.initDirective = function (limitNum) {
-            this.directive.limitNum = limitNum;
+        function initNotification(){
+            var body = $document.find('body').eq(0),
+                noticeScope = $rootScope.$new(true),
+                noticeEle = angular.element('<div fugu-notice></div>');
+            body.append($compile(noticeEle)(noticeScope));
+        }
+        initNotification();  // 初始化组件
+
+        this.initDirective = function () {
             this.directive.notifications = [];
             return this.directive;
         };
@@ -1783,8 +1790,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             }
 
             // 如果有长度限制，则移除超过长度的
-            if(angular.isDefined(this.directive.limitNum)){
-                var diff = notifications.length - (this.directive.limitNum - 1);
+            if(this.limitNum !== -1){
+                var diff = notifications.length - (this.limitNum - 1);
                 if(diff > 0){
                     notifications.splice(0, diff);
                 }
@@ -1807,15 +1814,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
         }
     }])
     .controller('notificationController', ['$scope', '$interval', 'notification', 'notificationServices', function($scope, $interval, notification, notificationServices){
-        notificationServices.initDirective($scope.limitNum);
+        notificationServices.initDirective();
         $scope.notifications = notificationServices.directive.notifications;
-
-        $scope.$watch('limitNum', function(limitNum){
-            var directive = notificationServices.directive;
-            if(angular.isDefined(limitNum) && angular.isDefined(directive)){
-                directive.limitNum = limitNum;
-            }
-        });
 
         $scope.closeFn = function(notification){
             notificationServices.deleteNotifications(notification);
@@ -1825,15 +1825,12 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
         return {
             restrict: 'A',
             replace: false,
-            scope: {
-                limitNum: '='
-            },
+            scope: {},
             templateUrl: 'templates/notification.html',
             controller: 'notificationController'
         }
     }])
     .provider('notification', [function(){
-
         // private variables
         var _types = {
                 success: null,
@@ -1843,7 +1840,8 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             },
             _unique = true,
             _disableCloseBtn = false,
-            _disableIcon = false;
+            _disableIcon = false,
+            _limitNum = -1; // 默认不限制显示条数
 
 
         // this绑定的方法是可以在注入之前进行调用设置
@@ -1901,6 +1899,13 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             return this;
         };
 
+        this.globalLimitNum = function(limitNum) {
+            if(limitNum > 0){
+                _limitNum = limitNum;
+            }
+            return this;
+        };
+
 
         // $get方法返回的内容,注入的时候可以获取
         this.$get = [
@@ -1912,6 +1917,7 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
             'notificationServices',
             function ($rootScope, $interpolate, $sce, $filter, $interval, notificationServices) {
                 notificationServices.unique = _unique;  //根据当前配置，设置显示的唯一性(统一)
+                notificationServices.limitNum = _limitNum;  //根据当前配置，设置显示条数限制
 
                 function sendNotification(text, config, type) {
                     var _config = config || {}, notification, addNotification;
@@ -1968,8 +1974,9 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
                     common: common
                 };
             }
-        ]
+        ];
     }]);
+
 angular.module('ui.fugu.pager',[])
 .constant('fuguPagerConfig', {
     itemsPerPage: 20, //默认每页数目为20
@@ -2881,6 +2888,10 @@ angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
     "<div class=\"fugu-calendar\">"+
@@ -2962,10 +2973,6 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
     "<div class=\"fugu-datepicker\">"+
@@ -2987,6 +2994,21 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "</div>"+
     "");
 }]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
+}]);
 angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/backdrop.html",
     "<div class=\"modal-backdrop fade {{ backdropClass }}\""+
@@ -3003,19 +3025,17 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    </div>"+
     "</div>");
 }]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
-}]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+angular.module("notification/templates/alert.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/alert.html",
+    "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
+    "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
+    "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
+    "    </div>"+
+    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"closeFunc({$event: $event})\">"+
+    "        <span ng-if=\"!closeText\">&times;</span>"+
+    "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
     "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "    <div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>"+
     "</div>");
 }]);
 angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
@@ -3066,6 +3086,21 @@ angular.module("switch/templates/switch.html",[]).run(["$templateCache",function
     "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
+}]);
+angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker.html",
+    "<div class=\"fugu-timepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "                <i class=\"glyphicon glyphicon-time\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "</div>"+
+    "");
 }]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",
@@ -3135,19 +3170,4 @@ angular.module("tree/templates/tree.html",[]).run(["$templateCache",function($te
     "        </li>"+
     "    </ol>"+
     "</div>");
-}]);
-angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepicker.html",
-    "<div class=\"fugu-timepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
-    "                <i class=\"glyphicon glyphicon-time\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "    </div>"+
-    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
-    "</div>"+
-    "");
 }]);

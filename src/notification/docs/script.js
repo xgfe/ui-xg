@@ -2,6 +2,7 @@ angular.module('fuguDemo').config(['notificationProvider', function (notificatio
     notificationProvider.globalDurationTime(5000); //统一设置5秒后关闭
     notificationProvider.globalDisableCloseBtn(true); //统一设置不显示关闭标签
     notificationProvider.globalUnique(false); //统一设置通知可重复显示
+    notificationProvider.globalLimitNum(5); //统一设置最多显示5条通知
 }]);
 angular.module('fuguDemo').controller('notificationDemoCtrl',['$scope', 'notification', function ($scope, notification) {
     $scope.notifications = [
@@ -24,7 +25,7 @@ angular.module('fuguDemo').controller('notificationDemoCtrl',['$scope', 'notific
                 break;
             case 'warning':
                 config.variables = {name: 'penglu', email: 'rabbit_pl@126.com'};  // 设置模版
-                notification.warning('warning - author:{{name}},email:{{email}}', config);
+                notification.warning('warning - limitNum:2,author:{{name}},email:{{email}}', config);
                 break;
             case 'error':
                 config.duration = 1000; //一直显示
