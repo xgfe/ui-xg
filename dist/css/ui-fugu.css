@@ -1,29 +1,3 @@
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-alert .alert-icon {
-  float: left; }
-
-.fugu-alert .alert-icon-span {
-  position: relative;
-  top: 2px; }
-
-.fugu-alert .cancel-text {
-  font-size: 20px; }
-
-.fugu-alert .show-icon {
-  padding-left: 20px; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown > .dropdown-menu {
-    width: 250px; }
-    .fugu-dropdown > .dropdown-menu li {
-      width: 50%; }
-  .fugu-dropdown.open {
-    width: 100%; } }
-
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -101,6 +75,32 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
+
+/*!
+ fugu-alert.scss
+ Version: 0.0.1
+ Author: heqingyang@meituan.com
+ */
+.fugu-alert .alert-icon {
+  float: left; }
+
+.fugu-alert .alert-icon-span {
+  position: relative;
+  top: 2px; }
+
+.fugu-alert .cancel-text {
+  font-size: 20px; }
+
+.fugu-alert .show-icon {
+  padding-left: 20px; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown > .dropdown-menu {
+    width: 250px; }
+    .fugu-dropdown > .dropdown-menu li {
+      width: 50%; }
+  .fugu-dropdown.open {
+    width: 100%; } }
 
 
 .fugu-calendar {
