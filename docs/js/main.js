@@ -1,8 +1,8 @@
 require.config({
     urlArgs: '2016011903',
     paths: {
-        'jquery':'lib/jquery.min',
-        'angular': 'lib/angular.min',
+        'jquery':'lib/jquery.min.js',
+        'angular': 'lib/angular.min.js',
         'lib': 'lib/lib-comb'
     },
     shim:{

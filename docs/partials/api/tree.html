@@ -1,0 +1,180 @@
+<h1>tree</h1><h2>Description</h2><p>树组件,可以用于以层级的形式展示数据,也可以用于选择数据。</p>
+<h2>Usage</h2><pre><code class="lang-javascript">&lt;fugu-tree ng-model=<span class="hljs-string">"array"</span>
+    [ show-icon=<span class="hljs-string">"boolean"</span> ]
+    [ checkable=<span class="hljs-string">"boolean"</span> ]
+    [ expand-all=<span class="hljs-string">"boolean"</span> ]
+    [ on-click=<span class="hljs-string">"function"</span> ]
+    [ on-check-change=<span class="hljs-string">"function"</span> ] &gt;
+&lt;/fugu-tree&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>绑定tree展示和操作数据,具有特定格式<code>[{label: &#39;省份&#39;, children: []}]</code>,其中如果是叶子节点,<code>children</code>为空,可以省略,如果不为空其内容也是上述格式.</td></tr><tr><td>showIcon(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示文件夹|文件图标,默认显示</td></tr><tr><td>checkable(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示勾选框,默认显示</td></tr><tr><td>expandAll(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否展开树,默认展开,当点击树节点时</td></tr><tr><td>onClick(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>点击树节点名称时触发的事件,同时可以派发出一个参数data(表示点击节点)</td></tr><tr><td>onCheckChange(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>勾选|取消勾选时触发的事件,同时可以派发出一个参数data(表示选中节点集)</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"treeDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"treeDemo"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model绑定数据:数据有格式要求<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-tree</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"nodes"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-tree</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>show-icon设置是否显示图标<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-tree</span> <span class="hljs-attr">show-icon</span>=<span class="hljs-string">"showIcon"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"nodes"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-tree</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>checkable设置是否可勾选<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-tree</span> <span class="hljs-attr">checkable</span>=<span class="hljs-string">"checkable"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"nodes"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-tree</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>expand-all设置是否展开<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-tree</span> <span class="hljs-attr">expand-all</span>=<span class="hljs-string">"expandAll"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"nodes"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-tree</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>on-click和on-check-change事件<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-tree</span> <span class="hljs-attr">on-click</span>=<span class="hljs-string">"clickFn"</span> <span class="hljs-attr">on-check-change</span>=<span class="hljs-string">"checkChangeFn"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"nodes"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-tree</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-if</span>=<span class="hljs-string">"selectData"</span>&gt;</span>selectData:<span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>selectData | json&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-if</span>=<span class="hljs-string">"clickData"</span>&gt;</span>clickData:<span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>clickData | json&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'treeDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.nodes = [
+        {label: <span class="hljs-string">'省份'</span>, children: [
+            {label: <span class="hljs-string">'陕西'</span>, children:[
+                {label: <span class="hljs-string">'汉中'</span>},
+                {label: <span class="hljs-string">'勉县'</span>},
+                {label: <span class="hljs-string">'咸阳'</span>}
+            ]},
+            {label: <span class="hljs-string">'北京'</span>, children:[
+                {label: <span class="hljs-string">'朝阳'</span>},
+                {label: <span class="hljs-string">'昌平'</span>},
+                {label: <span class="hljs-string">'顺义'</span>}
+            ]},
+            {label: <span class="hljs-string">'浙江'</span>, children:[
+                {label: <span class="hljs-string">'宁波'</span>},
+                {label: <span class="hljs-string">'杭州'</span>},
+                {label: <span class="hljs-string">'嘉兴'</span>}
+            ]}
+        ]}
+    ];
+    $scope.expandAll = false;
+    $scope.checkable = false;
+    $scope.showIcon = false;
+    $scope.clickFn = function(data){
+        $scope.clickData = data;
+    };
+    $scope.checkChangeFn = function(data){
+        $scope.selectData = data;
+    };
+}]);
+</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-selector-class">.treeDemo</span>  &gt; <span class="hljs-selector-tag">li</span>{
+    <span class="hljs-attribute">list-style-type</span>: none;
+    <span class="hljs-attribute">padding-bottom</span>: <span class="hljs-number">10px</span>;
+    <span class="hljs-attribute">padding-top</span>: <span class="hljs-number">10px</span>;
+    <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">20px</span>;
+    <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> dotted <span class="hljs-number">#ddd</span>;
+}
+<span class="hljs-selector-class">.treeDemo</span>  &gt; <span class="hljs-selector-tag">li</span> &gt; <span class="hljs-selector-tag">p</span>{
+    <span class="hljs-attribute">margin-left</span>:<span class="hljs-number">20px</span>;
+}</code></pre>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><style>.treeDemo  > li{
+    list-style-type: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    margin-bottom: 20px;
+    border: 1px dotted #ddd;
+}
+.treeDemo  > li > p{
+    margin-left:20px;
+}</style><div class="example"><div ng-controller="treeDemoCtrl">
+    <ul class="treeDemo">
+        <li>
+            <p>ng-model绑定数据:数据有格式要求</p>
+            <fugu-tree ng-model="nodes"></fugu-tree>
+        </li>
+        <li>
+            <p>show-icon设置是否显示图标</p>
+            <fugu-tree show-icon="showIcon" ng-model="nodes"></fugu-tree>
+        </li>
+        <li>
+            <p>checkable设置是否可勾选</p>
+            <fugu-tree checkable="checkable" ng-model="nodes"></fugu-tree>
+        </li>
+        <li>
+            <p>expand-all设置是否展开</p>
+            <fugu-tree expand-all="expandAll" ng-model="nodes"></fugu-tree>
+        </li>
+        <li>
+            <p>on-click和on-check-change事件</p>
+            <fugu-tree on-click="clickFn" on-check-change="checkChangeFn" ng-model="nodes"></fugu-tree>
+            <div ng-if="selectData">selectData:<pre>{{selectData | json}}</pre></div>
+            <div ng-if="clickData">clickData:<pre>{{clickData | json}}</pre></div>
+        </li>
+    </ul>
+</div></div><script>angular.module('fuguDemo').controller('treeDemoCtrl',['$scope', function ($scope) {
+    $scope.nodes = [
+        {label: '省份', children: [
+            {label: '陕西', children:[
+                {label: '汉中'},
+                {label: '勉县'},
+                {label: '咸阳'}
+            ]},
+            {label: '北京', children:[
+                {label: '朝阳'},
+                {label: '昌平'},
+                {label: '顺义'}
+            ]},
+            {label: '浙江', children:[
+                {label: '宁波'},
+                {label: '杭州'},
+                {label: '嘉兴'}
+            ]}
+        ]}
+    ];
+    $scope.expandAll = false;
+    $scope.checkable = false;
+    $scope.showIcon = false;
+    $scope.clickFn = function(data){
+        $scope.clickData = data;
+    };
+    $scope.checkChangeFn = function(data){
+        $scope.selectData = data;
+    };
+}]);
+</script>
