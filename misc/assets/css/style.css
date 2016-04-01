@@ -254,7 +254,7 @@ aside.app-aside:before{
     color: #333;
 }
 .padder-t-s {
-    padding-top: 13px;
+    padding-top: 0px;
 }
 .text-gradient {
     display: inline-block;
