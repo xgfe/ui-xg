@@ -6,11 +6,56 @@
     </ul>
 </aside>
 <article class="app-content">
-    <h1 id="-">开始使用</h1>
+    <h2 id="-">依赖</h2>
+<p>本组件的开发主要依赖于以下几个库:</p>
+<ul>
+<li>Angular JS(v1.2.25): 组件库只支持1.2.25版本的AngularJs。</li>
+<li>Bootstrap(v3.3.6): 支持组件库样式设计。</li>
+</ul>
+<h2 id="-">下载</h2>
+<p>组建代码主要有两种形式:压缩(主要使用,存在于构建后的dist目录下)和未压缩(用于开发,存在于src目录下)。以上所有代码都可以<a href="">下载</a>。</p>
+<p>想要了解更多内容,请看<a href="http://xgfe.github.io/angular-ui-fugu/#/app/api/alert">组件</a>和<a href="http://xgfe.github.io/angular-ui-fugu/#/app/guide">开发者文档</a></p>
 <h2 id="-">安装</h2>
-<pre><code>npm <span class="hljs-keyword">install</span> angular-ui-fugu <span class="hljs-comment">--save</span>
-</code></pre><h2 id="-">使用</h2>
-<pre><code><span class="hljs-keyword">var</span> app = angular.<span class="hljs-built_in">module</span>(<span class="hljs-string">'myApp'</span>,[<span class="hljs-string">'ui.fugu'</span>]);
-</code></pre><p>Coming soon...</p>
+<ul>
+<li>使用npm安装: <code>npm install angular-ui-fugu</code></li>
+</ul>
+<h2 id="-">使用</h2>
+<ul>
+<li><p>文件引入</p>
+<ul>
+<li>angular.min.js</li>
+<li>bootstrap.css    </li>
+<li>ui.fugu.min.css</li>
+<li><p>ui.fugu.min.js</p>
+<p><strong>angular和bootstrap文件的引入要在fugu文件引入之前</strong></p>
+</li>
+</ul>
+</li>
+<li>具体使用</li>
+</ul>
+<pre><code><span class="hljs-comment">/**
+ * js文件
+ */</span>
+angular.module(<span class="hljs-symbol">'myAp</span>p',[<span class="hljs-symbol">'ui</span>.fugu']);  <span class="hljs-comment">// 组件依赖注入</span>
+<span class="hljs-comment">// 以alert使用为例</span>
+angular.module(<span class="hljs-symbol">'fuguDem</span>o').controller(<span class="hljs-symbol">'alertDemoCtr</span>l',['$scope', function ($scope) {
+    $scope.alerts = [
+        { <span class="hljs-class"><span class="hljs-keyword">type</span></span>: <span class="hljs-symbol">'dange</span>r', msg: <span class="hljs-symbol">'Oh</span> snap! <span class="hljs-type">Change</span> a few things up and <span class="hljs-keyword">try</span> submitting again.' },
+        { <span class="hljs-class"><span class="hljs-keyword">type</span></span>: <span class="hljs-symbol">'succes</span>s', msg: <span class="hljs-symbol">'Well</span> done! <span class="hljs-type">You</span> successfully read <span class="hljs-keyword">this</span> important alert message.' },
+        { <span class="hljs-class"><span class="hljs-keyword">type</span></span>: <span class="hljs-symbol">'warnin</span>g', msg: <span class="hljs-symbol">'FBI</span> <span class="hljs-type">Warning</span>! <span class="hljs-type">Manong</span> would ignore anything about warning.' },
+        { <span class="hljs-class"><span class="hljs-keyword">type</span></span>: <span class="hljs-symbol">'inf</span>o', msg: <span class="hljs-symbol">'I</span> know that you wouldn\<span class="hljs-symbol">'t</span> see <span class="hljs-keyword">this</span> line.' }
+    ];
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, <span class="hljs-number">1</span>);
+    };
+}]);
 
+
+<span class="hljs-comment">/**
+ * html文件
+ */</span>
+ &lt;div ng-controller=<span class="hljs-string">"alertDemoCtrl"</span>&gt;
+    &lt;fugu-alert ng-repeat=<span class="hljs-string">"alert in alerts"</span> <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"<span>&#123;&#123;</span>alert.type&#125;&#125;"</span> close=<span class="hljs-string">"true"</span> close-func=<span class="hljs-string">"closeAlert($index)"</span> has-icon=<span class="hljs-string">"true"</span>&gt;<span>&#123;&#123;</span>alert.msg&#125;&#125;&lt;/fugu-alert&gt;
+&lt;/div&gt;
+</code></pre>
 </article>
