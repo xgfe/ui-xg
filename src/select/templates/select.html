@@ -1,0 +1,11 @@
+<div class="fugu-select-container fugu-select dropdown" ng-class="{open: $select.open}">
+  <div class="fugu-select-match"></div>
+  <input type="text" autocomplete="off" tabindex="-1"
+         aria-expanded="true"
+         aria-label="{{ $select.baseTitle }}"
+         class="form-control fugu-select-search"
+         placeholder="{{$select.placeholder}}"
+         ng-model="$select.search"
+         ng-show="$select.searchEnabled && $select.open">
+  <div class="fugu-select-choices"></div>
+</div>

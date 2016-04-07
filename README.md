@@ -12,6 +12,7 @@
 - [notification](./src/notification/docs)
 - [pager](./src/pager/docs)
 - [searchBox](./src/searchBox/docs)
+- [select](./src/select/docs)
 - [sortable](./src/sortable/docs)
 - [switch](./src/switch/docs)
 - [timepicker](./src/timepicker/docs)
