@@ -85,4 +85,18 @@ describe('fugu-switch', function () {
         expect(scope.changeHandler).toHaveBeenCalled();
     });
 
+    it('should get current value', function () {
+        /* TODO trueValue 和 falseValue 没有测试
+        var el = '<fugu-switch ng-model="status" true-value="A" false-value="B"></fugu-switch>';
+        createSwitch(el);
+        scope.status = 'A';
+        scope.A = 'A';
+        scope.B = 'B';
+        scope.$digest();
+        expect(isChecked()).toBe(true);
+        scope.status = 'B';
+        scope.$digest();
+        expect(isChecked()).toBe(false);*/
+    });
+
 });

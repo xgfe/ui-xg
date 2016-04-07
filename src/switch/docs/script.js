@@ -5,4 +5,7 @@ angular.module('fuguDemo').controller('switchDemoCtrl',['$scope', function ($sco
     $scope.statusChange = function () {
         console.log('changed');
     };
+    $scope.status = 'A';
+    $scope.A = 'A';
+    $scope.B = 'B';
 }]);
