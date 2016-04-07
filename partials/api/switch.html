@@ -36,6 +36,9 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"info"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Changed<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">on-change</span>=<span class="hljs-string">"statusChange()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>trueValue and falseValue<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"status"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span> <span class="hljs-attr">true-value</span>=<span class="hljs-string">"A"</span> <span class="hljs-attr">false-value</span>=<span class="hljs-string">"B"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>status:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>status&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
@@ -48,6 +51,9 @@
     $scope.statusChange = function () {
         console.log(<span class="hljs-string">'changed'</span>);
     };
+    $scope.status = <span class="hljs-string">'A'</span>;
+    $scope.A = <span class="hljs-string">'A'</span>;
+    $scope.B = <span class="hljs-string">'B'</span>;
 }]);</code></pre>
     </div>
     
@@ -84,6 +90,9 @@
     <fugu-switch ng-model="open" type="info"></fugu-switch>
     <p>Changed</p>
     <fugu-switch ng-model="open" on-change="statusChange()" type="success"></fugu-switch>
+    <p>trueValue and falseValue</p>
+    <fugu-switch ng-model="status" type="success" true-value="A" false-value="B"></fugu-switch>
+    <pre>status:{{status}}</pre>
 </div></div><script>angular.module('fuguDemo').controller('switchDemoCtrl',['$scope', function ($scope) {
     $scope.open = false;
     $scope.checked = true;
@@ -91,4 +100,7 @@
     $scope.statusChange = function () {
         console.log('changed');
     };
+    $scope.status = 'A';
+    $scope.A = 'A';
+    $scope.B = 'B';
 }]);</script>

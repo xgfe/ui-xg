@@ -46,6 +46,10 @@
     $scope.changePage = function (pageNo) {
         console.log(<span class="hljs-string">'修改页码为:'</span>+pageNo);
     }
+    $scope.$on(<span class="hljs-string">'pager:pageIndexChanged'</span>, function (event, args) {
+        event.stopPropagation();
+        console.log(<span class="hljs-string">'修改页码为:'</span>+(args.pageIndex+<span class="hljs-number">1</span>));
+    });
 }]);</code></pre>
     </div>
     
@@ -83,4 +87,8 @@
     $scope.changePage = function (pageNo) {
         console.log('修改页码为:'+pageNo);
     }
+    $scope.$on('pager:pageIndexChanged', function (event, args) {
+        event.stopPropagation();
+        console.log('修改页码为:'+(args.pageIndex+1));
+    });
 }]);</script>
