@@ -182,5 +182,14 @@ describe('fugu-pager', function () {
         expect(getPaginationEl(4)).toHaveClass('active');
         expect(getPaginationEl(4).text().trim()).toBe('5');
     });
+    it('should get pager:pageIndexChanged event', function (done) {
+        scope.$on('pager:pageIndexChanged', function (event, args) {
+            event.stopPropagation();
+            expect(args.pageIndex).toBe(0);
+            done();
+        });
+        createPager();
+        clickPaginationEl(1);
+    });
 
 });
