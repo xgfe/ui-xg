@@ -10,4 +10,8 @@ angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope', function ($scop
     $scope.changePage = function (pageNo) {
         console.log('修改页码为:'+pageNo);
     }
+    $scope.$on('pager:pageIndexChanged', function (event, args) {
+        event.stopPropagation();
+        console.log('修改页码为:'+(args.pageIndex+1));
+    });
 }]);
