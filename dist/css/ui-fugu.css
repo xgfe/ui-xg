@@ -24,6 +24,7 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -245,7 +246,6 @@
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
 
-
 .fugu-datepicker {
   position: relative;
   display: inline-block; }
@@ -324,6 +324,228 @@
   background-color: transparent;
   max-height: 100%;
   overflow-y: scroll; }
+
+/* Fix Bootstrap dropdown position when inside a input-group */
+.input-group > .fugu-select.dropdown {
+  /* Instead of relative */
+  position: static; }
+
+.input-group > .fugu-select > input.fugu-select-search.form-control {
+  border-radius: 4px;
+  /* FIXME hardcoded value :-/ */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0; }
+
+.input-group > .fugu-select > input.fugu-select-search.form-control {
+  border-radius: 4px !important;
+  /* FIXME hardcoded value :-/ */
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important; }
+
+body > .fugu-select.open {
+  z-index: 1000;
+  /* Standard Bootstrap dropdown z-index */ }
+
+.fugu-select {
+  /* Helper class to show styles when focus */ }
+  .fugu-select .fugu-select-allowclear {
+    margin-right: 10px; }
+  .fugu-select .fugu-select-highlight {
+    font-weight: bold; }
+  .fugu-select .fugu-select-focus {
+    color: #333;
+    background-color: #EBEBEB;
+    border-color: #ADADAD;
+    text-decoration: none;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
+  .fugu-select .fugu-select-toggle {
+    position: relative;
+    outline: 0; }
+  .fugu-select .fugu-select-toggle > .caret {
+    position: absolute;
+    height: 10px;
+    top: 50%;
+    right: 10px;
+    margin-top: -2px; }
+  .fugu-select .fugu-select-match > .btn {
+    /* Instead of center because of .btn */
+    text-align: left !important; }
+  .fugu-select .fugu-select-match > .caret {
+    position: absolute;
+    top: 45%;
+    right: 15px; }
+  .fugu-select .fugu-select-choices {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+    margin-top: -1px; }
+  .fugu-select .fugu-select-choices-row > a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap; }
+  .fugu-select .fugu-select-choices-row > a:hover,
+  .fugu-select .fugu-select-choices-row > a:focus {
+    text-decoration: none;
+    color: #262626;
+    background-color: #f5f5f5; }
+  .fugu-select .fugu-select-choices-row.active > a {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #428bca; }
+  .fugu-select .fugu-select-choices-row.disabled > a,
+  .fugu-select .fugu-select-choices-row.active.disabled > a {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff; }
+  .fugu-select .fugu-select-match.ng-hide-add,
+  .fugu-select .fugu-select-search.ng-hide-add {
+    display: none !important; }
+  .fugu-select.ng-dirty.ng-invalid > button.btn.fugu-select-match {
+    border-color: #D44950; }
+  .fugu-select.direction-up .fugu-select-dropdown {
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25); }
+  .fugu-select .fugu-select-offscreen {
+    clip: rect(0 0 0 0) !important;
+    width: 1px !important;
+    height: 1px !important;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    outline: 0 !important;
+    left: 0 !important;
+    top: 0 !important; }
+
+.fugu-select-multiple {
+  height: auto;
+  padding: 3px 3px 0 3px; }
+  .fugu-select-multiple.fugu-select input.fugu-select-search {
+    background-color: transparent !important;
+    /* To prevent double background when disabled */
+    border: none;
+    outline: none;
+    height: 1.666666em;
+    margin-bottom: 3px; }
+  .fugu-select-multiple.fugu-select .fugu-select-match .close {
+    font-size: 1.6em;
+    line-height: 0.75; }
+  .fugu-select-multiple .fugu-select-match-item {
+    outline: 0;
+    margin: 0 3px 3px 0;
+    position: relative; }
+  .fugu-select-multiple .fugu-select-match-item.dropping-before:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 100%;
+    height: 100%;
+    margin-right: 2px;
+    border-left: 1px solid #428bca; }
+  .fugu-select-multiple .fugu-select-match-item.dropping-after:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    margin-left: 2px;
+    border-right: 1px solid #428bca; }
+
+.fugu-switch {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 25px;
+  border-radius: 1000px;
+  background-color: #777;
+  margin: 0; }
+  .fugu-switch input {
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity=0); }
+  .fugu-switch input:checked + i:before {
+    top: 50%;
+    bottom: 50%;
+    left: 50%;
+    right: 5px;
+    border-width: 0; }
+  .fugu-switch i:before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    border: 1px solid #f0f0f0;
+    border-radius: 1000px;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s; }
+  .fugu-switch input:checked + i:after {
+    margin-left: 16px; }
+  .fugu-switch i:after {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    width: 23px;
+    top: 1px;
+    bottom: 1px;
+    border-radius: 50%;
+    -webkit-transition: margin-left 0.3s;
+    -moz-transition: margin-left 0.3s;
+    transition: margin-left 0.3s;
+    -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25); }
+
+.fugu-switch-default {
+  background-color: #777; }
+
+.fugu-switch-primary {
+  background-color: #337ab7; }
+
+.fugu-switch-success {
+  background-color: #5cb85c; }
+
+.fugu-switch-info {
+  background-color: #5bc0de; }
+
+.fugu-switch-error {
+  background-color: #d9534f; }
+
+.fugu-switch-sm {
+  width: 35px;
+  height: 20px; }
+  .fugu-switch-sm input:checked + i:after {
+    margin-left: 16px; }
+  .fugu-switch-sm i:after {
+    width: 18px; }
+
+.fugu-switch-md {
+  width: 40px;
+  height: 25px; }
+  .fugu-switch-md input:checked + i:after {
+    margin-left: 16px; }
+  .fugu-switch-md i:after {
+    width: 23px; }
+
+.fugu-switch-lg {
+  width: 50px;
+  height: 30px; }
+  .fugu-switch-lg input:checked + i:after {
+    margin-left: 21px; }
+  .fugu-switch-lg i:after {
+    width: 28px; }
 
 .fugu-timepanel {
   width: 150px;
@@ -415,94 +637,6 @@
     .fugu-timepicker .fugu-timepicker-timepanel-top:after {
       top: 118px;
       border-top: 6px solid #fff; }
-
-.fugu-switch {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 25px;
-  border-radius: 1000px;
-  background-color: #777;
-  margin: 0; }
-  .fugu-switch input {
-    position: absolute;
-    opacity: 0;
-    filter: alpha(opacity=0); }
-  .fugu-switch input:checked + i:before {
-    top: 50%;
-    bottom: 50%;
-    left: 50%;
-    right: 5px;
-    border-width: 0; }
-  .fugu-switch i:before {
-    content: "";
-    position: absolute;
-    background-color: #fff;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    border: 1px solid #f0f0f0;
-    border-radius: 1000px;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    transition: all 0.2s; }
-  .fugu-switch input:checked + i:after {
-    margin-left: 16px; }
-  .fugu-switch i:after {
-    content: "";
-    position: absolute;
-    background-color: #fff;
-    width: 23px;
-    top: 1px;
-    bottom: 1px;
-    border-radius: 50%;
-    -webkit-transition: margin-left 0.3s;
-    -moz-transition: margin-left 0.3s;
-    transition: margin-left 0.3s;
-    -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25); }
-
-.fugu-switch-default {
-  background-color: #777; }
-
-.fugu-switch-primary {
-  background-color: #337ab7; }
-
-.fugu-switch-success {
-  background-color: #5cb85c; }
-
-.fugu-switch-info {
-  background-color: #5bc0de; }
-
-.fugu-switch-error {
-  background-color: #d9534f; }
-
-.fugu-switch-sm {
-  width: 35px;
-  height: 20px; }
-  .fugu-switch-sm input:checked + i:after {
-    margin-left: 16px; }
-  .fugu-switch-sm i:after {
-    width: 18px; }
-
-.fugu-switch-md {
-  width: 40px;
-  height: 25px; }
-  .fugu-switch-md input:checked + i:after {
-    margin-left: 16px; }
-  .fugu-switch-md i:after {
-    width: 23px; }
-
-.fugu-switch-lg {
-  width: 50px;
-  height: 30px; }
-  .fugu-switch-lg input:checked + i:after {
-    margin-left: 21px; }
-  .fugu-switch-lg i:after {
-    width: 28px; }
 
 .tree {
   -moz-user-select: -moz-none;

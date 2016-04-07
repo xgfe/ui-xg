@@ -1,0 +1,20 @@
+<div class="fugu-select-container fugu-select-multiple fugu-select dropdown form-control" ng-class="{open: $select.open}">
+  <div>
+    <div class="fugu-select-match"></div>
+    <input type="text"
+           autocomplete="off"
+           autocorrect="off"
+           autocapitalize="off"
+           spellcheck="false"
+           class="fugu-select-search input-xs"
+           placeholder="{{$selectMultiple.getPlaceholder()}}"
+           ng-disabled="$select.disabled"
+           ng-hide="$select.disabled"
+           ng-click="$select.activate()"
+           ng-model="$select.search"
+           role="combobox"
+           aria-label="{{ $select.baseTitle }}"
+           ondrop="return false;">
+  </div>
+  <div class="fugu-select-choices"></div>
+</div>
