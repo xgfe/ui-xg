@@ -36,6 +36,8 @@ define([
             
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
+                $stateProvider.state('app.api.select',{url: "/select",templateUrl: 'partials/api/select.html'});
+            
                 $stateProvider.state('app.api.sortable',{url: "/sortable",templateUrl: 'partials/api/sortable.html'});
             
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});

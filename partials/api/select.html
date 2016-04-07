@@ -1,0 +1,183 @@
+<h1>select</h1><h2>Description</h2><p>select directive.参考<a href="https://github.com/angular-ui/ui-select">ui-select</a>,去除了theme的设置,其他功能照搬过来</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"model"</span>
+    [ <span class="hljs-attr">ng-disable</span>=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-attr">multiple</span>=<span class="hljs-string">"boolean"</span> ]
+    <span class="hljs-attr">...</span> &gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-match</span>
+        [ <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"string"</span> ]
+        [ <span class="hljs-attr">allow-clear</span>=<span class="hljs-string">"boolean"</span> ] <span class="hljs-attr">...</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.name}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-match</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in list | filter:$select.search"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.name}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-choices</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select</span>&gt;</span></span>
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><p>参考<a href="https://github.com/angular-ui/ui-select">ui-select</a>的<a href="https://github.com/angular-ui/ui-select/wiki">相关配置</a></p>
+<hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"selectDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>Simple Demo<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>Multiple Demo<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"goods.brand"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-match</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请选择品牌"</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-match</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in brandList | filter:$select.search"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-choices</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"goods.brands"</span> <span class="hljs-attr">multiple</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-match</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请选择品牌"</span>&gt;</span></span><span class="hljs-template-variable">{{$item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-match</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in brandList | filter:$select.search"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-choices</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>AllowClear Demo<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>brands:</span><span class="hljs-template-variable">{{goods.brands}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"goods.brand"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-match</span> <span class="hljs-attr">allow-clear</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请选择品牌"</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-match</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in brandList | filter:$select.search"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-choices</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>Disabled Demo<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>brand:</span><span class="hljs-template-variable">{{goods.brand}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"goods.brand"</span> <span class="hljs-attr">ng-disabled</span>=<span class="hljs-string">"true"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-match</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请选择品牌"</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-match</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">fugu-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in brandList | filter:$select.search"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select-choices</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-select</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'selectDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.goods = {};
+    $scope.brandList = [{
+        brandName:<span class="hljs-string">'test1'</span>,
+        brandId:<span class="hljs-number">1</span>
+    },{
+        brandName:<span class="hljs-string">'5678765'</span>,
+        brandId:<span class="hljs-number">2</span>
+    },{
+        brandName:<span class="hljs-string">'foooasd'</span>,
+        brandId:<span class="hljs-number">3</span>
+    },{
+        brandName:<span class="hljs-string">'测试'</span>,
+        brandId:<span class="hljs-number">4</span>
+    }];
+}]);</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><div class="example"><div ng-controller="selectDemoCtrl">
+    <div class="row">
+        <div class="col-md-6">Simple Demo</div>
+        <div class="col-md-6">Multiple Demo</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <fugu-select ng-model="goods.brand">
+                <fugu-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
+                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+                    <span>{{item.brandName}}</span>
+                </fugu-select-choices>
+            </fugu-select>
+        </div>
+        <div class="col-md-6">
+            <fugu-select ng-model="goods.brands" multiple>
+                <fugu-select-match placeholder="请选择品牌">{{$item.brandName}}</fugu-select-match>
+                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+                    <span>{{item.brandName}}</span>
+                </fugu-select-choices>
+            </fugu-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">AllowClear Demo</div>
+        <div class="col-md-6"><pre>brands:{{goods.brands}}</pre></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <fugu-select ng-model="goods.brand">
+                <fugu-select-match allow-clear="true" placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
+                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+                    <span>{{item.brandName}}</span>
+                </fugu-select-choices>
+            </fugu-select>
+        </div>
+        <div class="col-md-6">Disabled Demo</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <pre>brand:{{goods.brand}}</pre>
+        </div>
+        <div class="col-md-6">
+            <fugu-select ng-model="goods.brand" ng-disabled="true">
+                <fugu-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
+                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+                    <span>{{item.brandName}}</span>
+                </fugu-select-choices>
+            </fugu-select>
+        </div>
+    </div>
+</div></div><script>angular.module('fuguDemo').controller('selectDemoCtrl',['$scope', function ($scope) {
+    $scope.goods = {};
+    $scope.brandList = [{
+        brandName:'test1',
+        brandId:1
+    },{
+        brandName:'5678765',
+        brandId:2
+    },{
+        brandName:'foooasd',
+        brandId:3
+    },{
+        brandName:'测试',
+        brandId:4
+    }];
+}]);</script>
