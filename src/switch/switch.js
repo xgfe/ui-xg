@@ -8,7 +8,9 @@ angular.module('ui.fugu.switch', [])
     .constant('fuguSwitchConfig', {
         type: 'default',
         size: 'md',
-        isDisabled: false
+        isDisabled: false,
+        trueValue:true,
+        falseValue:false
     })
     .controller('fuguSwitchCtrl', ['$scope', '$attrs','fuguSwitchConfig', function ($scope, $attrs,fuguSwitchConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
@@ -19,20 +21,22 @@ angular.module('ui.fugu.switch', [])
             $scope.switchObj.isDisabled = getAttrValue('ngDisabled','isDisabled');
             $scope.switchObj.type = $scope.type || fuguSwitchConfig.type;
             $scope.switchObj.size = $scope.size || fuguSwitchConfig.size;
+            $scope.switchObj.trueValue = getAttrValue('trueValue');
+            $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
         $scope.$watch('switchObj.query', function (val,old) {
-            ngModelCtrl.$setViewValue(val);
+            ngModelCtrl.$setViewValue(val?$scope.switchObj.trueValue:$scope.switchObj.falseValue);
             ngModelCtrl.$render();
             if(val !== old && $scope.onChange){
                 $scope.onChange();
             }
         });
         this.render = function () {
-            $scope.switchObj.query = ngModelCtrl.$viewValue;
+            $scope.switchObj.query = ngModelCtrl.$viewValue === $scope.switchObj.trueValue;
         };
         function getAttrValue(attributeValue,defaultValue) {
             var val = $scope.$parent.$eval($attrs[attributeValue]);   //变量解析
-            return val ? val : fuguSwitchConfig[defaultValue||attributeValue];
+            return angular.isDefined(val) ? val : fuguSwitchConfig[defaultValue||attributeValue];
         }
     }])
     .directive('fuguSwitch', function () {

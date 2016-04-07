@@ -4272,7 +4272,9 @@ angular.module('ui.fugu.switch', [])
     .constant('fuguSwitchConfig', {
         type: 'default',
         size: 'md',
-        isDisabled: false
+        isDisabled: false,
+        trueValue:true,
+        falseValue:false
     })
     .controller('fuguSwitchCtrl', ['$scope', '$attrs','fuguSwitchConfig', function ($scope, $attrs,fuguSwitchConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
@@ -4283,20 +4285,22 @@ angular.module('ui.fugu.switch', [])
             $scope.switchObj.isDisabled = getAttrValue('ngDisabled','isDisabled');
             $scope.switchObj.type = $scope.type || fuguSwitchConfig.type;
             $scope.switchObj.size = $scope.size || fuguSwitchConfig.size;
+            $scope.switchObj.trueValue = getAttrValue('trueValue');
+            $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
         $scope.$watch('switchObj.query', function (val,old) {
-            ngModelCtrl.$setViewValue(val);
+            ngModelCtrl.$setViewValue(val?$scope.switchObj.trueValue:$scope.switchObj.falseValue);
             ngModelCtrl.$render();
             if(val !== old && $scope.onChange){
                 $scope.onChange();
             }
         });
         this.render = function () {
-            $scope.switchObj.query = ngModelCtrl.$viewValue;
+            $scope.switchObj.query = ngModelCtrl.$viewValue === $scope.switchObj.trueValue;
         };
         function getAttrValue(attributeValue,defaultValue) {
             var val = $scope.$parent.$eval($attrs[attributeValue]);   //变量解析
-            return val ? val : fuguSwitchConfig[defaultValue||attributeValue];
+            return angular.isDefined(val) ? val : fuguSwitchConfig[defaultValue||attributeValue];
         }
     }])
     .directive('fuguSwitch', function () {
@@ -4751,6 +4755,33 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     ""+
     "</div>");
 }]);
+angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/datepicker.html",
+    "<div class=\"fugu-datepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-remove\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-calendar class=\"fugu-datepicker-cal-bottom\" ng-model=\"selectDate\" ng-show=\"showCalendar\" on-change=\"changeDateHandler\""+
+    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
+    "</div>"+
+    "");
+}]);
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
+}]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
@@ -4836,10 +4867,20 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/backdrop.html",
+    "<div class=\"modal-backdrop fade {{ backdropClass }}\""+
+    "     ng-class=\"{in: animate}\""+
+    "     ng-style=\"{'z-index': 1040 + (index && 1 || 0) + index*10}\""+
+    "></div>"+
+    "");
+}]);
+angular.module("modal/templates/window.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/window.html",
+    "<div tabindex=\"-1\" role=\"dialog\" class=\"modal fade\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\" ng-click=\"close($event)\">"+
+    "    <div class=\"modal-dialog\" ng-class=\"{'modal-sm': size == 'sm', 'modal-lg': size == 'lg'}\">"+
+    "        <div class=\"modal-content\" fugu-modal-transclude></div>"+
+    "    </div>"+
     "</div>");
 }]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
@@ -4857,49 +4898,12 @@ angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",func
     "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
     "</div>");
 }]);
-angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/datepicker.html",
-    "<div class=\"fugu-datepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
-    "                <i class=\"glyphicon glyphicon-remove\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
-    "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "    </div>"+
-    "    <fugu-calendar class=\"fugu-datepicker-cal-bottom\" ng-model=\"selectDate\" ng-show=\"showCalendar\" on-change=\"changeDateHandler\""+
-    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
-    "</div>"+
-    "");
-}]);
 angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/notification.html",
     "<div class=\"notice-container\">"+
     "    <div class=\"notice-item\" ng-repeat=\"notification in notifications\">"+
     "        <!--<fugu-alert type=\"{{notification.type}}\" has-icon=\"{{notification.disableIcon}}\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>-->"+
     "        <fugu-alert type=\"{{notification.type}}\" has-icon=\"true\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>"+
-    "    </div>"+
-    "</div>");
-}]);
-angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/backdrop.html",
-    "<div class=\"modal-backdrop fade {{ backdropClass }}\""+
-    "     ng-class=\"{in: animate}\""+
-    "     ng-style=\"{'z-index': 1040 + (index && 1 || 0) + index*10}\""+
-    "></div>"+
-    "");
-}]);
-angular.module("modal/templates/window.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/window.html",
-    "<div tabindex=\"-1\" role=\"dialog\" class=\"modal fade\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\" ng-click=\"close($event)\">"+
-    "    <div class=\"modal-dialog\" ng-class=\"{'modal-sm': size == 'sm', 'modal-lg': size == 'lg'}\">"+
-    "        <div class=\"modal-content\" fugu-modal-transclude></div>"+
     "    </div>"+
     "</div>");
 }]);
@@ -4912,6 +4916,29 @@ angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",fu
     "    </span>"+
     "</div>"+
     "");
+}]);
+angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/pager.html",
+    "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
+    "    <li ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
+    "    </li>"+
+    "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
+    "    </li>"+
+    "    <li ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
+    "    </li>"+
+    "    <li class=\"disabled\">"+
+    "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
+    "    </li>"+
+    "</ul>");
 }]);
 angular.module("select/templates/choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/choices.html",
@@ -5005,29 +5032,6 @@ angular.module("select/templates/select.html",[]).run(["$templateCache",function
     "  <div class=\"fugu-select-choices\"></div>"+
     "</div>"+
     "");
-}]);
-angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/pager.html",
-    "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
-    "    </li>"+
-    "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
-    "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
-    "    </li>"+
-    "    <li class=\"disabled\">"+
-    "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
-    "    </li>"+
-    "</ul>");
 }]);
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/switch.html",
