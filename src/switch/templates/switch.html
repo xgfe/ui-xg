@@ -1,4 +1,4 @@
 <label class="fugu-switch" ng-class="['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]">
-    <input type="checkbox" ng-disabled="switchObj.isDisabled" ng-model="switchObj.query"/>
+    <input type="checkbox" ng-change="changeSwitchHandler()" ng-disabled="switchObj.isDisabled" ng-model="switchObj.query"/>
     <i></i>
 </label>

@@ -32,5 +32,5 @@
 - falseValue(optional):当未选中的时候ngModal的值
     - type:`string`|`number`|`boolean`
     - default:`false`
-- onChange(optional):开关按钮绑定的数据变化之后触发的函数
+- onChange(optional):点击之后如果ngModel绑定对象改变,触发该方法
     - type:`function`
