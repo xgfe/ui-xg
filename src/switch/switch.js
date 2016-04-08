@@ -24,13 +24,15 @@ angular.module('ui.fugu.switch', [])
             $scope.switchObj.trueValue = getAttrValue('trueValue');
             $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
-        $scope.$watch('switchObj.query', function (val,old) {
+        $scope.$watch('switchObj.query', function (val) {
             ngModelCtrl.$setViewValue(val?$scope.switchObj.trueValue:$scope.switchObj.falseValue);
             ngModelCtrl.$render();
-            if(val !== old && $scope.onChange){
+        });
+        $scope.changeSwitchHandler = function () {
+            if($scope.onChange){
                 $scope.onChange();
             }
-        });
+        };
         this.render = function () {
             $scope.switchObj.query = ngModelCtrl.$viewValue === $scope.switchObj.trueValue;
         };
