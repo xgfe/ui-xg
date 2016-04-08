@@ -16,4 +16,5 @@
 - [sortable](./src/sortable/docs)
 - [switch](./src/switch/docs)
 - [timepicker](./src/timepicker/docs)
+- [tooltip](./src/tooltip/docs)
 - [tree](./src/tree/docs)
