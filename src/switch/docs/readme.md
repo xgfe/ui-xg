@@ -6,9 +6,11 @@
 
 ``` html
 <fugu-switch ng-model="boolean"
-    [size="{{string}}"]
-    [type="{{string}}"]
-    [on-change="function"]>
+    [ size="{{string}}" ]
+    [ type="{{string}}" ]
+    [ true-value="value" ]
+    [ false-value="value" ]
+    [ on-change="function" ]>
     </fugu-switch>
 ```
 ## Restrict
@@ -24,5 +26,11 @@
 - type(optional):开关类型。可取值`default`,`primary`,`success`,`info`,`error`
     - type:`string`
     - default:`"default"`
+- trueValue(optional):当选中的时候ngModal的值
+    - type:`string`|`number`|`boolean`
+    - default:`true`
+- falseValue(optional):当未选中的时候ngModal的值
+    - type:`string`|`number`|`boolean`
+    - default:`false`
 - onChange(optional):开关按钮绑定的数据变化之后触发的函数
     - type:`function`
