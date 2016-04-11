@@ -1,0 +1,19 @@
+<div ng-controller="popoverDemoCtrl">
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span fugu-popover popover-is-open="template" content="这是一个弹出提示！">我是第一个有popover的文本(点击生效)</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <label for="button-popover">
+        <span id="button-popover" fugu-popover content="{{text}}" trigger="hover" class="btn btn-sm btn-default">点我！</span>
+        (悬浮生效且文本绑定作用域属性)
+    </label>
+    <br/>
+    <button ng-click="clickPopover()">点击添加</button>
+</div>

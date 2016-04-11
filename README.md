@@ -1,5 +1,6 @@
 # angular-ui-fugu - AngularJS directives 
 
+<<<<<<< HEAD
 ## 依赖说明
 本组件的开发主要依赖于以下几个库:
 
@@ -76,3 +77,24 @@ angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scop
 
 ## LICENSE
 ISC
+=======
+## directives
+- [alert](./src/alert/docs)
+- [button](./src/button/docs)
+- [buttonGroup](./src/buttonGroup/docs)
+- [timepanel](./src/timepanel/docs)
+- [calendar](./src/calendar/docs)
+- [datepicker](./src/datepicker/docs)
+- [dropdown](./src/dropdown/docs)
+- [modal](./src/modal/docs)
+- [notification](./src/notification/docs)
+- [pager](./src/pager/docs)
+- [popover](./src/popover/docs)
+- [searchBox](./src/searchBox/docs)
+- [select](./src/select/docs)
+- [sortable](./src/sortable/docs)
+- [switch](./src/switch/docs)
+- [timepicker](./src/timepicker/docs)
+- [tooltip](./src/tooltip/docs)
+- [tree](./src/tree/docs)
+>>>>>>> refactor(popover):add popover directive
