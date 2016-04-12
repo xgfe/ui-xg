@@ -9,8 +9,21 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions:[],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format:'yyyy-MM-dd hh:mm:ss a' // 日期格式化
+        format:'yyyy-MM-dd hh:mm:ss a', // 日期格式化
+        autoClose:true // 是否自动关闭面板
     })
+    // 位置偏移
+    .factory('fuguDatepickerOffset', ['$document', '$window', function ($document, $window) {
+        return function (element) {
+            var boundingClientRect = element[0].getBoundingClientRect();
+            return {
+                width: boundingClientRect.width || element.prop('offsetWidth'),
+                height: boundingClientRect.height || element.prop('offsetHeight'),
+                top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+                left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+            };
+        };
+    }])
     .service('fuguDatepickerService', ['$document', function($document) {
         var openScope = null;
         this.open = function(datepickerScope) {
@@ -46,8 +59,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element','$attrs','$log','dateFilter','fuguDatepickerService','fuguDatepickerConfig',
-        function ($scope,$element, $attrs,$log,dateFilter,fuguDatepickerService,fuguDatepickerConfig) {
+    .controller('fuguDatepickerCtrl', ['$scope','$window', '$element','$attrs','$log','dateFilter','fuguDatepickerOffset','fuguDatepickerService','fuguDatepickerConfig',
+        function ($scope,$window,$element, $attrs,$log,dateFilter,fuguDatepickerOffset,fuguDatepickerService,fuguDatepickerConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
         var self = this;
         this.init = function (_ngModelCtrl) {
@@ -60,13 +73,45 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         $scope.showCalendar = false;
         this.toggle = function(open) {
             $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
+            if($scope.showCalendar){
+                $scope.$$postDigest(function () {
+                    adjuestPosition();
+                });
+            }
         };
+        function adjuestPosition(){
+            var offset = fuguDatepickerOffset($element);
+
+            var left = offset.left + offset.width;
+            var top = offset.top;
+            var right = window.innerWidth - left;
+            var bottom = window.innerHeight - top - offset.height;
+
+            var calendar = angular.element($element[0].querySelector('.fugu-calendar'));
+
+            calendar.removeClass('fugu-datepicker-cal-left ' +
+                'fugu-datepicker-cal-right' +
+                'fugu-datepicker-cal-top' +
+                'fugu-datepicker-cal-bottom');
+
+            if(left < calendar[0].clientWidth && right > calendar[0].clientWidth){
+                calendar.addClass('fugu-datepicker-cal-right');
+            }else{
+                calendar.addClass('fugu-datepicker-cal-left');
+            }
+            if(top > calendar[0].clientHeight && bottom < calendar[0].clientHeight){
+                calendar.addClass('fugu-datepicker-cal-top');
+            }else{
+                calendar.addClass('fugu-datepicker-cal-bottom');
+            }
+        }
         this.showCalendar = function() {
             return $scope.showCalendar;
         };
-        angular.forEach(['minDate','maxDate','exceptions','clearBtn'], function(key) {
+        angular.forEach(['exceptions','clearBtn'], function(key) {
             $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
         });
+
         var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : fuguDatepickerConfig.format;
 
         this.render = function () {
@@ -91,10 +136,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
 
         // 获取日历面板和被点击的元素
         $scope.getCanledarElement = function () {
-            return $element.find('.fugu-calendar');
+            return angular.element($element[0].querySelector('.fugu-calendar'));
         };
         $scope.getToggleElement = function () {
-            return $element.find('.input-group');
+            return angular.element($element[0].querySelector('.input-group'));
         };
         // 清除日期
         $scope.clearDateHandler = function () {
@@ -110,10 +155,15 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
                 fuguDatepickerService.close($scope);
             }
         });
+
+        var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : fuguDatepickerConfig.autoClose;
         // 选择日期
         $scope.changeDateHandler = function (date) {
             $scope.inputValue = dateFilter(date,format);
             $scope.selectDate = date;
+            if(autoClose){
+                self.toggle();
+            }
             ngModelCtrl.$setViewValue(date);
             ngModelCtrl.$render();
         };
@@ -129,6 +179,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
             replace: true,
             require: ['fuguDatepicker','ngModel'],
             scope: {
+                minDate:'=?',
+                maxDate:'=?',
                 placeholder:'@',
                 isDisabled:'=?ngDisabled'
             },

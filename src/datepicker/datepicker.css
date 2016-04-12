@@ -3,30 +3,48 @@
   display: inline-block; }
   .fugu-datepicker .fugu-calendar {
     position: absolute;
-    right: 0;
-    top: 37px;
     z-index: 1000;
     overflow: visible; }
     .fugu-datepicker .fugu-calendar:before {
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
       content: "";
       display: inline-block;
       position: absolute;
-      border-bottom: 7px solid #ddd; }
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent; }
     .fugu-datepicker .fugu-calendar:after {
       position: absolute;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
       content: "";
       display: inline-block;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent; }
+  .fugu-datepicker .fugu-datepicker-cal-left {
+    right: 0; }
+    .fugu-datepicker .fugu-datepicker-cal-left:before {
+      right: 9px; }
+    .fugu-datepicker .fugu-datepicker-cal-left:after {
+      right: 10px; }
+  .fugu-datepicker .fugu-datepicker-cal-right {
+    left: 0; }
+    .fugu-datepicker .fugu-datepicker-cal-right:before {
+      left: 9px; }
+    .fugu-datepicker .fugu-datepicker-cal-right:after {
+      left: 10px; }
+  .fugu-datepicker .fugu-datepicker-cal-top {
+    bottom: 37px; }
+    .fugu-datepicker .fugu-datepicker-cal-top:before {
+      bottom: -7px;
+      border-top: 7px solid #ddd; }
+    .fugu-datepicker .fugu-datepicker-cal-top:after {
+      bottom: -6px;
+      border-top: 6px solid #fff; }
+  .fugu-datepicker .fugu-datepicker-cal-bottom {
+    top: 37px; }
+    .fugu-datepicker .fugu-datepicker-cal-bottom:before {
+      top: -7px;
+      border-bottom: 7px solid #ddd; }
+    .fugu-datepicker .fugu-datepicker-cal-bottom:after {
+      top: -6px;
       border-bottom: 6px solid #fff; }
-  .fugu-datepicker .fugu-datepicker-cal-bottom:before {
-    right: 9px;
-    top: -7px; }
-  .fugu-datepicker .fugu-datepicker-cal-bottom:after {
-    top: -6px;
-    right: 10px; }
   .fugu-datepicker button:focus {
     outline: 0; }
   .fugu-datepicker .fugu-datepicker-remove {

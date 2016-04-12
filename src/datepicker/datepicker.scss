@@ -1,40 +1,67 @@
 $arrow-right:9px;
 $arrow-top:-6px;
+$inpu-height:30px;
 .fugu-datepicker{
     position: relative;
     display: inline-block;
 
     .fugu-calendar{
         position: absolute;
-        right: 0;
-        top: 37px;
         z-index: 1000;
         overflow: visible;
         &:before{
-            border-left: 7px solid rgba(0, 0, 0, 0);
-            border-right: 7px solid rgba(0, 0, 0, 0);
             content: "";
             display: inline-block;
             position: absolute;
-            border-bottom: - $arrow-top + 1 solid #ddd;
+            border-left: - $arrow-top + 1 solid rgba(0, 0, 0, 0);
+            border-right: - $arrow-top + 1 solid rgba(0, 0, 0, 0);
         }
         &:after{
             position: absolute;
-            border-left: - $arrow-top solid rgba(0, 0, 0, 0);
-            border-right: - $arrow-top solid rgba(0, 0, 0, 0);
             content: "";
             display: inline-block;
-            border-bottom: - $arrow-top solid #fff;
+            border-left: - $arrow-top solid rgba(0, 0, 0, 0);
+            border-right: - $arrow-top solid rgba(0, 0, 0, 0);
+        }
+    }
+    .fugu-datepicker-cal-left{
+        right:0;
+        &:before{
+            right: $arrow-right;
+        }
+        &:after{
+            right: $arrow-right + 1;
+        }
+    }
+    .fugu-datepicker-cal-right{
+        left:0;
+        &:before{
+            left: $arrow-right;
+        }
+        &:after{
+            left: $arrow-right + 1;
+        }
+    }
+    .fugu-datepicker-cal-top{
+        bottom:$inpu-height - $arrow-top + 1;
+        &:before{
+            bottom: $arrow-top - 1;
+            border-top: - $arrow-top + 1 solid #ddd;
+        }
+        &:after{
+            bottom: $arrow-top;
+            border-top: - $arrow-top solid #fff;
         }
     }
     .fugu-datepicker-cal-bottom{
+        top:$inpu-height - $arrow-top + 1;
         &:before{
-            right: $arrow-right;
             top: $arrow-top - 1;
+            border-bottom: - $arrow-top + 1 solid #ddd;
         }
         &:after{
             top: $arrow-top;
-            right: $arrow-right + 1;
+            border-bottom: - $arrow-top solid #fff;
         }
     }
 
