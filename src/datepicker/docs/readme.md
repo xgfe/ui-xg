@@ -13,6 +13,7 @@
     [ clear-btn="boolean" ]
     [ format="string" ]
     [ exceptions="array|date" ]
+    [ auto-close="boolean" ]
     [ ng-disabled="boolean" ]>
 </fugu-datepicker>
 ```
@@ -36,6 +37,9 @@
     - default:`yyyy-MM-dd hh:mm:ss a`
 - exceptions(optional):禁用日期内的例外日期,日期对象或者日期对象数组
     - type:`date`|`array`
+- autoClose(optional):选择日期之后是否自动关闭面板
+    - type:`boolean`
+    - default:`true`
 - ngDisabled(optional): 是否禁用
     - type:`boolean`
     - default:`false`

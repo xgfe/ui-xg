@@ -44,16 +44,19 @@
     line-height: 1; }
     .fugu-calendar .fugu-cal-header > div {
       width: 32px;
+      padding: 1px;
       float: left;
       text-align: center;
       height: 19px;
       color: #666;
       border-bottom: #cecece 1px solid;
-      margin-bottom: 7px; }
+      margin-bottom: 7px;
+      overflow: hidden; }
   .fugu-calendar .fugu-cal-body {
     margin: 0 17px; }
   .fugu-calendar .fugu-cal-row {
     height: 24px;
+    min-width: 231px;
     line-height: 24px;
     clear: both; }
     .fugu-calendar .fugu-cal-row > div {
@@ -130,7 +133,8 @@
     border: 1px solid #ddd;
     margin: 2px;
     text-align: center;
-    cursor: pointer; }
+    cursor: pointer;
+    min-width: 60px; }
     .fugu-calendar .fugu-cal-month-item:hover {
       background: #74BCEC; }
   .fugu-calendar .fugu-cal-year-item {

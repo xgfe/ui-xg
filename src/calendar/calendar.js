@@ -25,7 +25,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         this.$get  = ['$locale','$log',function ($locale,$log) {
             return {
                 getFormats: function () {
-                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS)
+                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS);
                     if(!angular.isArray(FORMATS.SHORTMONTH) ||
                         FORMATS.SHORTMONTH.length!=12 ||
                         !angular.isArray(FORMATS.MONTH) ||
@@ -55,7 +55,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             time:false
         };
         var self = this;
-        angular.forEach(['startingDay','minDate','maxDate','exceptions'], function(key) {
+        angular.forEach(['startingDay','exceptions'], function(key) {
             self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
         $scope.showTime = angular.isDefined($attrs.showTime) ?
@@ -337,8 +337,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             var isToday =tempDate.year===today.year&&tempDate.month===today.month&&tempDate.day===today.day;
             var isSelected =tempDate.year===selectedDt.year&&tempDate.month===selectedDt.month
                 &&tempDate.day===selectedDt.day;
-            var isDisabled = (self.minDate && date.getTime()<self.minDate.getTime() && !isExceptionDay(date))
-                || (self.maxDate && date.getTime()>self.maxDate.getTime() && !isExceptionDay(date));
+            var isDisabled = ($scope.minDate && date.getTime()<$scope.minDate.getTime() && !isExceptionDay(date))
+                || ($scope.maxDate && date.getTime()>$scope.maxDate.getTime() && !isExceptionDay(date));
             var day = date.getDay();
             return {
                 date:date,
@@ -377,6 +377,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             replace: true,
             require: ['fuguCalendar','ngModel'],
             scope: {
+                minDate:'=?',
+                maxDate:'=?',
                 onChange:'&'
             },
             controller: 'fuguCalendarCtrl',

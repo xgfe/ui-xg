@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-04-08
+ * Version: 0.0.1 - 2016-04-12
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -593,7 +593,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         this.$get  = ['$locale','$log',function ($locale,$log) {
             return {
                 getFormats: function () {
-                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS)
+                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS);
                     if(!angular.isArray(FORMATS.SHORTMONTH) ||
                         FORMATS.SHORTMONTH.length!=12 ||
                         !angular.isArray(FORMATS.MONTH) ||
@@ -623,7 +623,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             time:false
         };
         var self = this;
-        angular.forEach(['startingDay','minDate','maxDate','exceptions'], function(key) {
+        angular.forEach(['startingDay','exceptions'], function(key) {
             self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
         });
         $scope.showTime = angular.isDefined($attrs.showTime) ?
@@ -905,8 +905,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             var isToday =tempDate.year===today.year&&tempDate.month===today.month&&tempDate.day===today.day;
             var isSelected =tempDate.year===selectedDt.year&&tempDate.month===selectedDt.month
                 &&tempDate.day===selectedDt.day;
-            var isDisabled = (self.minDate && date.getTime()<self.minDate.getTime() && !isExceptionDay(date))
-                || (self.maxDate && date.getTime()>self.maxDate.getTime() && !isExceptionDay(date));
+            var isDisabled = ($scope.minDate && date.getTime()<$scope.minDate.getTime() && !isExceptionDay(date))
+                || ($scope.maxDate && date.getTime()>$scope.maxDate.getTime() && !isExceptionDay(date));
             var day = date.getDay();
             return {
                 date:date,
@@ -945,6 +945,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             replace: true,
             require: ['fuguCalendar','ngModel'],
             scope: {
+                minDate:'=?',
+                maxDate:'=?',
                 onChange:'&'
             },
             controller: 'fuguCalendarCtrl',
@@ -966,8 +968,21 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions:[],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format:'yyyy-MM-dd hh:mm:ss a' // 日期格式化
+        format:'yyyy-MM-dd hh:mm:ss a', // 日期格式化
+        autoClose:true // 是否自动关闭面板
     })
+    // 位置偏移
+    .factory('fuguDatepickerOffset', ['$document', '$window', function ($document, $window) {
+        return function (element) {
+            var boundingClientRect = element[0].getBoundingClientRect();
+            return {
+                width: boundingClientRect.width || element.prop('offsetWidth'),
+                height: boundingClientRect.height || element.prop('offsetHeight'),
+                top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+                left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+            };
+        };
+    }])
     .service('fuguDatepickerService', ['$document', function($document) {
         var openScope = null;
         this.open = function(datepickerScope) {
@@ -1003,8 +1018,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element','$attrs','$log','dateFilter','fuguDatepickerService','fuguDatepickerConfig',
-        function ($scope,$element, $attrs,$log,dateFilter,fuguDatepickerService,fuguDatepickerConfig) {
+    .controller('fuguDatepickerCtrl', ['$scope','$window', '$element','$attrs','$log','dateFilter','fuguDatepickerOffset','fuguDatepickerService','fuguDatepickerConfig',
+        function ($scope,$window,$element, $attrs,$log,dateFilter,fuguDatepickerOffset,fuguDatepickerService,fuguDatepickerConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
         var self = this;
         this.init = function (_ngModelCtrl) {
@@ -1017,13 +1032,45 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         $scope.showCalendar = false;
         this.toggle = function(open) {
             $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
+            if($scope.showCalendar){
+                $scope.$$postDigest(function () {
+                    adjuestPosition();
+                });
+            }
         };
+        function adjuestPosition(){
+            var offset = fuguDatepickerOffset($element);
+
+            var left = offset.left + offset.width;
+            var top = offset.top;
+            var right = window.innerWidth - left;
+            var bottom = window.innerHeight - top - offset.height;
+
+            var calendar = angular.element($element[0].querySelector('.fugu-calendar'));
+
+            calendar.removeClass('fugu-datepicker-cal-left ' +
+                'fugu-datepicker-cal-right' +
+                'fugu-datepicker-cal-top' +
+                'fugu-datepicker-cal-bottom');
+
+            if(left < calendar[0].clientWidth && right > calendar[0].clientWidth){
+                calendar.addClass('fugu-datepicker-cal-right');
+            }else{
+                calendar.addClass('fugu-datepicker-cal-left');
+            }
+            if(top > calendar[0].clientHeight && bottom < calendar[0].clientHeight){
+                calendar.addClass('fugu-datepicker-cal-top');
+            }else{
+                calendar.addClass('fugu-datepicker-cal-bottom');
+            }
+        }
         this.showCalendar = function() {
             return $scope.showCalendar;
         };
-        angular.forEach(['minDate','maxDate','exceptions','clearBtn'], function(key) {
+        angular.forEach(['exceptions','clearBtn'], function(key) {
             $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
         });
+
         var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : fuguDatepickerConfig.format;
 
         this.render = function () {
@@ -1048,10 +1095,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
 
         // 获取日历面板和被点击的元素
         $scope.getCanledarElement = function () {
-            return $element.find('.fugu-calendar');
+            return angular.element($element[0].querySelector('.fugu-calendar'));
         };
         $scope.getToggleElement = function () {
-            return $element.find('.input-group');
+            return angular.element($element[0].querySelector('.input-group'));
         };
         // 清除日期
         $scope.clearDateHandler = function () {
@@ -1067,10 +1114,15 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
                 fuguDatepickerService.close($scope);
             }
         });
+
+        var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : fuguDatepickerConfig.autoClose;
         // 选择日期
         $scope.changeDateHandler = function (date) {
             $scope.inputValue = dateFilter(date,format);
             $scope.selectDate = date;
+            if(autoClose){
+                self.toggle();
+            }
             ngModelCtrl.$setViewValue(date);
             ngModelCtrl.$render();
         };
@@ -1086,6 +1138,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
             replace: true,
             require: ['fuguDatepicker','ngModel'],
             scope: {
+                minDate:'=?',
+                maxDate:'=?',
                 placeholder:'@',
                 isDisabled:'=?ngDisabled'
             },
@@ -4288,13 +4342,15 @@ angular.module('ui.fugu.switch', [])
             $scope.switchObj.trueValue = getAttrValue('trueValue');
             $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
-        $scope.$watch('switchObj.query', function (val,old) {
+        $scope.$watch('switchObj.query', function (val) {
             ngModelCtrl.$setViewValue(val?$scope.switchObj.trueValue:$scope.switchObj.falseValue);
             ngModelCtrl.$render();
-            if(val !== old && $scope.onChange){
+        });
+        $scope.changeSwitchHandler = function () {
+            if($scope.onChange){
                 $scope.onChange();
             }
-        });
+        };
         this.render = function () {
             $scope.switchObj.query = ngModelCtrl.$viewValue === $scope.switchObj.trueValue;
         };
@@ -5398,15 +5454,15 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     ""+
     "</div>");
 }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
+}]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
@@ -5424,7 +5480,7 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "            </button>"+
     "        </span>"+
     "    </div>"+
-    "    <fugu-calendar class=\"fugu-datepicker-cal-bottom\" ng-model=\"selectDate\" ng-show=\"showCalendar\" on-change=\"changeDateHandler\""+
+    "    <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
     "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
     "</div>"+
     "");
@@ -5510,6 +5566,21 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
+    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
+    "    </button>"+
+    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+    "</div>");
+}]);
 angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/backdrop.html",
     "<div class=\"modal-backdrop fade {{ backdropClass }}\""+
@@ -5524,21 +5595,6 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    <div class=\"modal-dialog\" ng-class=\"{'modal-sm': size == 'sm', 'modal-lg': size == 'lg'}\">"+
     "        <div class=\"modal-content\" fugu-modal-transclude></div>"+
     "    </div>"+
-    "</div>");
-}]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
-}]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
-    "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
     "</div>");
 }]);
 angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
@@ -5679,9 +5735,24 @@ angular.module("select/templates/select.html",[]).run(["$templateCache",function
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/switch.html",
     "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
-    "    <input type=\"checkbox\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
+    "    <input type=\"checkbox\" ng-change=\"changeSwitchHandler()\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
+}]);
+angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker.html",
+    "<div class=\"fugu-timepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "                <i class=\"glyphicon glyphicon-time\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "</div>"+
+    "");
 }]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",
@@ -5710,21 +5781,6 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "        </div>"+
     "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
     "    </div>"+
-    "</div>"+
-    "");
-}]);
-angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepicker.html",
-    "<div class=\"fugu-timepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
-    "                <i class=\"glyphicon glyphicon-time\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "    </div>"+
-    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
     "</div>"+
     "");
 }]);

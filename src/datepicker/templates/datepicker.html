@@ -12,6 +12,6 @@
             </button>
         </span>
     </div>
-    <fugu-calendar class="fugu-datepicker-cal-bottom" ng-model="selectDate" ng-show="showCalendar" on-change="changeDateHandler"
+    <fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler"
                    exceptions="exceptions" min-date="minDate" max-date="maxDate"></fugu-calendar>
 </div>
