@@ -44,6 +44,8 @@ define([
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             
+                $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
+            
                 $stateProvider.state('app.api.tree',{url: "/tree",templateUrl: 'partials/api/tree.html'});
             
         
