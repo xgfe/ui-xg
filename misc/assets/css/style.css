@@ -232,7 +232,6 @@ aside.app-aside:before{
     color: #1022FF;
 }
 .table-display {
-    display: table;
     width: 100%;
 }
 .app-wrapper {
@@ -240,8 +239,7 @@ aside.app-aside:before{
     margin-left: -100px;
     margin-right: -100px;
     height: 100%;
-    display: table-cell;
-    vertical-align: middle;
+    margin-top: 200px;
 }
 .app-home h1 {
     padding-bottom: 12px;
