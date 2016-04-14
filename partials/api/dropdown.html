@@ -24,7 +24,7 @@
     <div class="tab-pane active" id="index_html">
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"dropdownDemoCtrl"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown</span> <span class="hljs-attr">cols-num</span>=<span class="hljs-string">"1"</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">fugu-dropdown-toggle</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-sm btn-primary"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">fugu-dropdown-toggle</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-lg btn-primary"</span>&gt;</span>
             </span><span class="hljs-template-variable"><span>&#123;&#123;</span>currentUser.name&#125;&#125;</span><span class="xml">&amp;nbsp;<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in list"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.name&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"selectItem(item)"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.name&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
@@ -88,7 +88,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
     });
 </script></div><div class="example"><div ng-controller="dropdownDemoCtrl">
     <fugu-dropdown cols-num="1">
-        <button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">
+        <button fugu-dropdown-toggle type="button" class="btn btn-lg btn-primary">
             {{currentUser.name}}&nbsp;<span class="caret"></span>
         </button>
         <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
