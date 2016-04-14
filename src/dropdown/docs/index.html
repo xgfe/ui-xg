@@ -1,11 +1,19 @@
 <div ng-controller="dropdownDemoCtrl">
-    <fugu-dropdown btn-value="{{currentUser.name}}">
+    <fugu-dropdown cols-num="1">
+        <button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">
+            {{currentUser.name}}&nbsp;<span class="caret"></span>
+        </button>
         <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
     </fugu-dropdown>
-    <fugu-dropdown btn-value="第二项" is-open="status.isOpen" ng-disabled="status.isDisabled">
+    <fugu-dropdown is-open="status.isOpen">
+        <button fugu-dropdown-toggle type="button" ng-disabled="status.isDisabled" class="btn btn-sm btn-primary">
+            {{currentUser.name}}&nbsp;<span class="caret"></span>
+        </button>
         <fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>
         <fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>
+        <fugu-dropdown-choices title="第三项">第三项</fugu-dropdown-choices>
+        <fugu-dropdown-choices title="第四项">第四项</fugu-dropdown-choices>
+        <fugu-dropdown-choices title="第五项">第五项</fugu-dropdown-choices>
     </fugu-dropdown>
     isOpen:{{status.isOpen}}<input type="checkbox" ng-model="status.isOpen"/>
     isDisabled:{{status.isDisabled}}<input type="checkbox" ng-model="status.isDisabled"/>

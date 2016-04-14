@@ -28,15 +28,16 @@ describe('fugu-dropdown', function () {
     });
     var clickDropdownToggle = function(elm) {
         elm = elm || element;
-        elm.find('.dropdown-toggle').click();
+        elm.find('.fugu-dropdown-toggle').click();
     };
     describe('basic', function () {
         function createDropdown(){
-            var ele = compile(angular.element('<fugu-dropdown btn-value="第二项">'+
+            var ele = compile(angular.element('<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
-                '</fugu-dropdown>'))(scope)
+                '</fugu-dropdown>'))(scope);
             scope.$apply();
             return ele;
         }
@@ -96,7 +97,8 @@ describe('fugu-dropdown', function () {
         });
 
         it('should not toggle if the element has `disabled` class', function() {
-            var el = '<fugu-dropdown class="disabled" btn-value="第二项">'+
+            var el = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="disabled btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>'+
                 '</fugu-dropdown>';
             var elm = compile(angular.element(el))(scope);
@@ -106,7 +108,8 @@ describe('fugu-dropdown', function () {
         });
 
         it('should not toggle if the element is disabled', function() {
-            var el = '<fugu-dropdown disabled btn-value="第二项">'+
+            var el = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle disabled type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>'+
                 '</fugu-dropdown>';
             var elm = compile(angular.element(el))(scope);
@@ -117,7 +120,8 @@ describe('fugu-dropdown', function () {
 
         it('should not toggle if the element has `ng-disabled` as true', function() {
             rootScope.isdisabled = true;
-            var el = '<fugu-dropdown ng-disabled="isdisabled" btn-value="第二项">'+
+            var el = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle ng-disabled="isdisabled" type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>'+
                 '</fugu-dropdown>';
             var elm = compile(angular.element(el))(scope);
@@ -151,6 +155,7 @@ describe('fugu-dropdown', function () {
     describe('multi col dropdown', function () {
         it('should not be multi col', function () {
             var html = '<fugu-dropdown btn-value="第二项">'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
@@ -161,7 +166,8 @@ describe('fugu-dropdown', function () {
         });
 
         it('should have multi col class', function () {
-            var html = '<fugu-dropdown btn-value="第二项">'+
+            var html = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
@@ -173,7 +179,8 @@ describe('fugu-dropdown', function () {
             expect(ele).toHaveClass(dropdownConfig.multiColClass);
         });
         it('dropdown list width shoule be 3*dropdownConfig.eachItemWidth', function () {
-            var html = '<fugu-dropdown btn-value="第二项">'+
+            var html = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
@@ -182,11 +189,12 @@ describe('fugu-dropdown', function () {
                 '</fugu-dropdown>';
             var ele = compile(html)(scope);
             scope.$apply();
-            expect(ele.find('.dropdown-menu').css('width')).toBe(fuguDropdownProvider.getColsNum() * dropdownConfig.eachItemWidth + 'px');
+            expect(ele.find('.fugu-dropdown-menu').css('width')).toBe(fuguDropdownProvider.getColsNum() * dropdownConfig.eachItemWidth + 'px');
         });
         it('should not have multi col class when set colsNum to be 5', function () {
             dropdownProvider.setColsNum(5);
-            var html = '<fugu-dropdown btn-value="第二项">'+
+            var html = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
                 '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
                 '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
@@ -196,6 +204,20 @@ describe('fugu-dropdown', function () {
             var ele = compile(html)(scope);
             scope.$apply();
             expect(ele).not.toHaveClass(dropdownConfig.multiColClass);
+        });
+        it('should have multi col class when set colsNum attr to be 1', function () {
+            var html = '<fugu-dropdown cols-num="1">'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
+                '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
+                '</fugu-dropdown>';
+            var ele = compile(html)(scope);
+            scope.$apply();
+            expect(ele).toHaveClass(dropdownConfig.multiColClass);
+            expect(ele.find('.fugu-dropdown-menu > li').css('width')).toBe('100%');
         });
     });
 });
