@@ -1,6 +1,6 @@
 <div ng-controller="dropdownDemoCtrl">
     <fugu-dropdown cols-num="1">
-        <button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">
+        <button fugu-dropdown-toggle type="button" class="btn btn-lg btn-primary">
             {{currentUser.name}}&nbsp;<span class="caret"></span>
         </button>
         <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>

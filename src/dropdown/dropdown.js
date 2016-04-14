@@ -56,7 +56,7 @@ angular.module('ui.fugu.dropdown',[])
     function closeDropdown(evt) {
         if (!openScope) { return; }
         var toggleElement = openScope.getToggleElement();
-        if (evt && toggleElement && toggleElement[0].contains(evt.target)) {
+        if (evt && toggleElement && toggleElement.contains(evt.target)) {
             return;
         }
         openScope.isOpen = false;
@@ -90,7 +90,7 @@ angular.module('ui.fugu.dropdown',[])
         this.isOpen = function() {
             return $scope.isOpen;
         };
-
+        $scope.dropdownMenuStyles = {};
         function adjustPostion(){
             var offset = fuguDropdownOffset($element);
 
@@ -100,9 +100,12 @@ angular.module('ui.fugu.dropdown',[])
             var dropdownMenu = angular.element($element[0].querySelector('.fugu-dropdown-menu'));
             dropdownMenu.removeClass('dropdown-menu-top dropdown-menu-bottom');
             if(top > dropdownMenu[0].clientHeight && bottom < dropdownMenu[0].clientHeight){
-                dropdownMenu.addClass('dropdown-menu-top');
+                var toggle = $scope.getToggleElement();
+                $scope.dropdownMenuStyles.top = '';
+                $scope.dropdownMenuStyles.bottom = toggle?toggle.clientHeight+'px':'';
             }else{
-                dropdownMenu.addClass('dropdown-menu-bottom');
+                $scope.dropdownMenuStyles.top = '100%';
+                $scope.dropdownMenuStyles.bottom = '';
             }
         }
         $scope.$watch('isOpen', function(isOpen) {
@@ -117,11 +120,14 @@ angular.module('ui.fugu.dropdown',[])
             }
         });
         $scope.getToggleElement = function () {
-            return angular.element($element[0].querySelector('.fugu-dropdown-toggle'));
+            return $element[0].querySelector('.fugu-dropdown-toggle');
         };
         $scope.count = 0;
         this.addChild = function () {
             $scope.count ++;
+
+            $scope.dropdownMenuStyles.width = $scope.count>$scope.colsNum?$scope.colsNum*$scope.eachItemWidth+'px':'auto';
+
             if($scope.count>$scope.colsNum){
                 angular.element($element[0].querySelectorAll('.fugu-dropdown-menu > li')).css('width', 100/$scope.colsNum+'%');
             }

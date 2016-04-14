@@ -316,7 +316,7 @@
     outline: none; }
   .fugu-dropdown > .fugu-dropdown-menu {
     z-index: 1010;
-    margin: 2px 0 30px;
+    margin: 2px 0;
     position: absolute;
     left: 0;
     display: none;
@@ -334,7 +334,6 @@
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175); }
     .fugu-dropdown > .fugu-dropdown-menu li {
-      float: left;
       border-right: 1px solid #eaeff0;
       padding-right: 10px;
       padding-left: 10px;
@@ -352,19 +351,18 @@
       white-space: nowrap; }
       .fugu-dropdown > .fugu-dropdown-menu a:hover {
         background: #ddd; }
-  .fugu-dropdown > .dropdown-menu-bottom {
-    top: 100%; }
-  .fugu-dropdown > .dropdown-menu-top {
-    bottom: 2px; }
+
+.fugu-dropdown-multi .fugu-dropdown-menu > li {
+  float: left; }
 
 .fugu-dropdown.open .fugu-dropdown-menu {
   display: block; }
 
 @media screen and (max-width: 767px) {
-  .fugu-dropdown > .dropdown-menu {
-    width: 250px; }
-    .fugu-dropdown > .dropdown-menu li {
-      width: 50%; }
+  .fugu-dropdown-multi > .fugu-dropdown-menu {
+    width: 250px !important; }
+    .fugu-dropdown-multi > .fugu-dropdown-menu li {
+      width: 50% !important; }
   .fugu-dropdown.open {
     width: 100%; } }
 
@@ -604,46 +602,6 @@ body > .fugu-select.open {
   .fugu-switch-lg i:after {
     width: 28px; }
 
-.fugu-timepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-timepicker button {
-    outline: none; }
-  .fugu-timepicker .fugu-timepanel {
-    position: absolute;
-    left: 0;
-    z-index: 1000; }
-    .fugu-timepicker .fugu-timepanel:before {
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      content: "";
-      display: inline-block;
-      position: absolute;
-      left: 9px; }
-    .fugu-timepicker .fugu-timepanel:after {
-      position: absolute;
-      left: 10px;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      content: "";
-      display: inline-block; }
-  .fugu-timepicker .fugu-timepicker-timepanel-bottom {
-    top: 35px; }
-    .fugu-timepicker .fugu-timepicker-timepanel-bottom:before {
-      border-bottom: 7px solid #ddd;
-      top: -7px; }
-    .fugu-timepicker .fugu-timepicker-timepanel-bottom:after {
-      top: -6px;
-      border-bottom: 6px solid #fff; }
-  .fugu-timepicker .fugu-timepicker-timepanel-top {
-    top: -126px; }
-    .fugu-timepicker .fugu-timepicker-timepanel-top:before {
-      border-top: 7px solid #ddd;
-      top: 118px; }
-    .fugu-timepicker .fugu-timepicker-timepanel-top:after {
-      top: 118px;
-      border-top: 6px solid #fff; }
-
 .fugu-timepanel {
   width: 150px;
   display: inline-block;
@@ -694,6 +652,46 @@ body > .fugu-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.fugu-timepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-timepicker button {
+    outline: none; }
+  .fugu-timepicker .fugu-timepanel {
+    position: absolute;
+    left: 0;
+    z-index: 1000; }
+    .fugu-timepicker .fugu-timepanel:before {
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      content: "";
+      display: inline-block;
+      position: absolute;
+      left: 9px; }
+    .fugu-timepicker .fugu-timepanel:after {
+      position: absolute;
+      left: 10px;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      content: "";
+      display: inline-block; }
+  .fugu-timepicker .fugu-timepicker-timepanel-bottom {
+    top: 35px; }
+    .fugu-timepicker .fugu-timepicker-timepanel-bottom:before {
+      border-bottom: 7px solid #ddd;
+      top: -7px; }
+    .fugu-timepicker .fugu-timepicker-timepanel-bottom:after {
+      top: -6px;
+      border-bottom: 6px solid #fff; }
+  .fugu-timepicker .fugu-timepicker-timepanel-top {
+    top: -126px; }
+    .fugu-timepicker .fugu-timepicker-timepanel-top:before {
+      border-top: 7px solid #ddd;
+      top: 118px; }
+    .fugu-timepicker .fugu-timepicker-timepanel-top:after {
+      top: 118px;
+      border-top: 6px solid #fff; }
 
 /*!
  fugu-tooltip.scss
