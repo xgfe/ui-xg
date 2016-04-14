@@ -5,9 +5,10 @@
 ## Usage
 
 ```
-<fugu-dropdown btn-value="{{string}}"
-    [is-open="boolean"]
-    [ng-disabled="boolean"]>
+<fugu-dropdown
+    [ is-open="boolean" ]
+    [ cols-num="number" ]>
+        <button fugu-dropdown-toggle type="button" class="btn">Text</button>
         <fugu-dropdown-choices>{{string}}</fugu-dropdown-choices>
     ...
 </fugu-dropdown>
@@ -22,11 +23,9 @@
 
 ## Arguments
 
-- btnValue:按钮显示文本
-    - type:`string`
 - isOpen:是否开启列表
     - type:`boolean`
     - default:`false`
-- ngDisabled:是否禁用下拉列表
-    - type:`boolean`
-    - default:`false`
+- colsNum:设置列数,属性的配置会覆盖全局provider的配置,全局的配置会覆盖默认的配置
+    - type:`number`
+    - default:`3`

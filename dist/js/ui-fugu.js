@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.0.1 - 2016-04-13
+ * Version: 0.0.1 - 2016-04-14
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -1161,7 +1161,7 @@ angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
     eachItemWidth: 120, //每一个项目的宽度
     openClass:'open', //打开dropdown的calss
-    multiColClass: 'fugu-dropdown' //控制多列显示的calss
+    multiColClass: 'fugu-dropdown-multi' //控制多列显示的calss
 })
 .provider('fuguDropdown', function () {
     var _colsNum = 3;
@@ -1176,6 +1176,17 @@ angular.module('ui.fugu.dropdown',[])
         }
     }
 })
+.factory('fuguDropdownOffset', ['$document', '$window', function ($document, $window) {
+    return function (element) {
+        var boundingClientRect = element[0].getBoundingClientRect();
+        return {
+            width: boundingClientRect.width || element.prop('offsetWidth'),
+            height: boundingClientRect.height || element.prop('offsetHeight'),
+            top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
+            left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+        };
+    };
+}])
 .service('fuguDropdownService', ['$document', function($document) {
     var openScope = null;
     this.open = function(dropdownScope) {
@@ -1206,52 +1217,78 @@ angular.module('ui.fugu.dropdown',[])
     }
 
 }])
-.controller('fuguDropdownCtrl',['$scope','$rootScope','$element','fuguDropdownConfig','fuguDropdownService','fuguDropdown', function ($scope,$rootScope,$element,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
-    $scope.colsNum = fuguDropdownProvider.getColsNum();
-    $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
-    $scope.openClass = fuguDropdownConfig.openClass;
-    $scope.multiColClass = fuguDropdownConfig.multiColClass;
+.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','fuguDropdownOffset','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
+    function ($scope,$timeout,$attrs,$element,fuguDropdownOffset,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
+        $scope.colsNum = angular.isDefined($attrs.colsNum) ?
+            angular.copy($scope.$parent.$eval($attrs.colsNum)) :fuguDropdownProvider.getColsNum();
+        $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
+        $scope.openClass = fuguDropdownConfig.openClass;
+        $scope.multiColClass = fuguDropdownConfig.multiColClass;
 
-    var _this = this;
+        var _this = this;
 
-    $scope.toggleDropdown = function (event) {
-        event.preventDefault();
-        if (!$scope.isDisabled) {
-            _this.toggle();
+        $scope.toggleDropdown = function (event) {
+            event.preventDefault();
+            if(!getDisabled()){
+                _this.toggle();
+            }
+        };
+        function getDisabled(){
+            return $scope.toggle.hasClass('disabled') || $scope.toggle.attr('disabled')
         }
-    };
-    this.toggle = function(open) {
-        var result = $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
-        return result;
-    };
-    this.isOpen = function() {
-        return $scope.isOpen;
-    };
-    this.init = function () {
-        $scope.isDisabled = $scope.isDisabled || !!$element.attr('disabled') || $element.hasClass('disabled');
-    };
+        this.toggle = function(open) {
+            var result = $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
+            return result;
+        };
+        this.isOpen = function() {
+            return $scope.isOpen;
+        };
 
-    $scope.$watch('isOpen', function(isOpen) {
-        if (isOpen) {
-            fuguDropdownService.open($scope);
-        } else {
-            fuguDropdownService.close($scope);
-        }
-    });
-    $scope.getToggleElement = function () {
-        return $element.find('.dropdown-toggle');
-    };
-    $scope.count = 0;
-    this.addChild = function () {
-        $scope.count ++;
-        if($scope.count>$scope.colsNum){
-            $element.find('.dropdown-menu > li').css('width',100/$scope.colsNum+'%');
-        }
-    };
+        function adjustPostion(){
+            var offset = fuguDropdownOffset($element);
 
-    $scope.$on('$locationChangeSuccess', function() {
-        $scope.isOpen = false;
-    });
+            var top = offset.top;
+            var bottom = window.innerHeight - top - offset.height;
+
+            var dropdownMenu = angular.element($element[0].querySelector('.fugu-dropdown-menu'));
+            dropdownMenu.removeClass('dropdown-menu-top dropdown-menu-bottom');
+            if(top > dropdownMenu[0].clientHeight && bottom < dropdownMenu[0].clientHeight){
+                dropdownMenu.addClass('dropdown-menu-top');
+            }else{
+                dropdownMenu.addClass('dropdown-menu-bottom');
+            }
+        }
+        $scope.$watch('isOpen', function(isOpen) {
+            if (isOpen) {
+                fuguDropdownService.open($scope);
+                // timeout 等ng-repeat
+                $timeout(function () {
+                    adjustPostion();
+                });
+            } else {
+                fuguDropdownService.close($scope);
+            }
+        });
+        $scope.getToggleElement = function () {
+            return angular.element($element[0].querySelector('.fugu-dropdown-toggle'));
+        };
+        $scope.count = 0;
+        this.addChild = function () {
+            $scope.count ++;
+            if($scope.count>$scope.colsNum){
+                angular.element($element[0].querySelectorAll('.fugu-dropdown-menu > li')).css('width', 100/$scope.colsNum+'%');
+            }
+        };
+        this.appendToggle = function (toggle) {
+            var toggleEl = angular.element($element[0].querySelector('.fugu-dropdown-toggle'));
+            toggleEl.removeAttr('fugu-dropdown-toggle');
+            toggleEl.append(toggle);
+            $scope.toggle = toggle;
+        };
+
+        $scope.$on('$locationChangeSuccess', function() {
+            $scope.isOpen = false;
+        });
 }])
 .directive('fuguDropdown',function () {
     return {
@@ -1261,13 +1298,17 @@ angular.module('ui.fugu.dropdown',[])
         require:'^fuguDropdown',
         transclude:true,
         scope:{
-            isOpen:'=?',
-            isDisabled:'=?ngDisabled',
-            btnValue:'@?'
+            isOpen:'=?'
         },
-        controller:'fuguDropdownCtrl',
-        link: function (scope,el,attrs,fuguDropdownCtrl) {
-            fuguDropdownCtrl.init();
+        controller:'fuguDropdownCtrl'
+    }
+})
+.directive('fuguDropdownToggle',function () {
+    return {
+        restrict: 'A',
+        require:'^fuguDropdown',
+        link: function (scope,el,attrs,$dropdown) {
+            $dropdown.appendToggle(el);
         }
     }
 })
@@ -5458,12 +5499,6 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
 }]);
-angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
-}]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
     "<div class=\"fugu-calendar\">"+
@@ -5545,6 +5580,23 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
+angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown-choices.html",
+    "<li>"+
+    "    <a href=\"javascript:;\" ng-transclude></a>"+
+    "</li>");
+}]);
+angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/dropdown.html",
+    "<div class=\"fugu-dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
+    "    <!--<button type=\"button\"  ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">-->"+
+    "        <!--{{btnValue}}&nbsp;<span class=\"caret\"></span>-->"+
+    "    <!--</button>-->"+
+    "    <div class=\"fugu-dropdown-toggle\" ng-click=\"toggleDropdown($event)\"></div>"+
+    "    <ul class=\"fugu-dropdown-menu\""+
+    "        ng-style=\"{width:(count>colsNum?colsNum*eachItemWidth+'px':'auto')}\" ng-transclude=\"\"></ul>"+
+    "</div>");
+}]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
     "<div class=\"fugu-datepicker\">"+
@@ -5566,19 +5618,19 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "</div>"+
     "");
 }]);
-angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown-choices.html",
-    "<li>"+
-    "    <a href=\"javascript:;\" ng-transclude></a>"+
-    "</li>");
+angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/buttonGroup.html",
+    "<div class=\"btn-group\">"+
+    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "</div>");
 }]);
-angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/dropdown.html",
-    "<div class=\"btn-group dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <button type=\"button\" ng-click=\"toggleDropdown($event)\" ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">"+
-    "        {{btnValue}}&nbsp;<span class=\"caret\"></span>"+
-    "    </button>"+
-    "    <ul class=\"dropdown-menu\" ng-style=\"{width:count>colsNum?colsNum*eachItemWidth:'auto'}\" ng-transclude></ul>"+
+angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/notification.html",
+    "<div class=\"notice-container\">"+
+    "    <div class=\"notice-item\" ng-repeat=\"notification in notifications\">"+
+    "        <!--<fugu-alert type=\"{{notification.type}}\" has-icon=\"{{notification.disableIcon}}\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>-->"+
+    "        <fugu-alert type=\"{{notification.type}}\" has-icon=\"true\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>"+
+    "    </div>"+
     "</div>");
 }]);
 angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
@@ -5597,14 +5649,15 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    </div>"+
     "</div>");
 }]);
-angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/notification.html",
-    "<div class=\"notice-container\">"+
-    "    <div class=\"notice-item\" ng-repeat=\"notification in notifications\">"+
-    "        <!--<fugu-alert type=\"{{notification.type}}\" has-icon=\"{{notification.disableIcon}}\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>-->"+
-    "        <fugu-alert type=\"{{notification.type}}\" has-icon=\"true\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>"+
-    "    </div>"+
-    "</div>");
+angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/searchBox.html",
+    "<div ng-class=\"{'input-group':showBtn}\">"+
+    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
+    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
+    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
+    "    </span>"+
+    "</div>"+
+    "");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
@@ -5628,16 +5681,6 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
-}]);
-angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/searchBox.html",
-    "<div ng-class=\"{'input-group':showBtn}\">"+
-    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
-    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
-    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
-    "    </span>"+
-    "</div>"+
-    "");
 }]);
 angular.module("select/templates/choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/choices.html",
