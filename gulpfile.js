@@ -9,7 +9,6 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     rimraf = require('gulp-rimraf'),
-    replace = require('gulp-replace'),
     karmaServer = require('karma').Server,
     marked = require('marked'),
     renderer = new marked.Renderer(),
@@ -249,24 +248,6 @@ gulp.task('clean', function() {
     return gulp.src(config.dist, { read: false })
         .pipe(rimraf());
 });
-/**
- * 自动构建README
- */
-gulp.task('readme',['modules'], function () {
-    var directives = config.modules.map(function (module) {
-        return '- ['+module.name+'](./src/'+module.name+'/docs)';
-    }).join('\n');
-    var data = {
-        filename:config.pkg.name,
-        directives:directives
-    };
-    return gulp.src('misc/tasks/README.tpl')
-        .pipe(replace(/<%([^%>]+)%>/g, function (m,$1) {
-            return data[$1.trim()];
-        }))
-        .pipe(rename({extname: '.md'}))
-        .pipe(gulp.dest('./'));
-});
 // 复制静态文件
 gulp.task('copy',['uglify'], function () {
     // copy assets
@@ -392,7 +373,7 @@ gulp.task('create', function () {
     });
 });
 gulp.task('test',['html2js','karma']);
-gulp.task('build',['clean','eslint','concat:css','concat:js','uglify','readme']);
+gulp.task('build',['clean','eslint','concat:css','concat:js','uglify']);
 gulp.task('default',['test'], function () {
     gulp.run('build');
 });
