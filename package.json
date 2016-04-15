@@ -1,18 +1,19 @@
 {
   "name": "angular-ui-fugu",
-  "version": "0.0.1",
-  "description": "UI Fugu ",
-  "main": "ui-fugu.js",
+  "version": "0.1.0",
+  "description": "UI Fugu",
+  "main": "dist/js/ui-fugu.js",
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.sankuai.com/~yangjiyuan/angular-ui-fugu.git"
+    "url": "https://github.com/xgfe/angular-ui-fugu.git"
   },
   "keywords": [
     "UI",
     "angular",
+    "angular directives",
     "bootstrap"
   ],
-  "author": "YangJiyuan<yangjiyuan@meituan.com>",
+  "author": "xgfe",
   "license": "ISC",
   "devDependencies": {
     "angular-mocks": "1.2.25",
