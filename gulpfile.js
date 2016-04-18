@@ -182,7 +182,21 @@ function dependenciesForModule(name) {
  * 获取所有模块
  */
 gulp.task('modules',['html2js'], function () {
-    _.matchFile(config.src + '/*/').forEach(function (dir) {
+    var argvs = process.argv.slice(2);
+    var pos = argvs.indexOf('-m');
+    var moduleNames = 'all';
+    if(~pos && argvs[pos+1]){
+        moduleNames = argvs[pos+1].split(',').filter(function (m) {
+            return m;
+        });
+    }
+    var modulesPaths;
+    if(moduleNames === 'all' || !moduleNames.length){
+        modulesPaths = config.src + '/*/';
+    }else{
+        modulesPaths = config.src + '/*('+moduleNames.join('|')+')/';
+    }
+    _.matchFile(modulesPaths).forEach(function (dir) {
         findModule(dir.split('/')[1]);
     });
     config.modules.forEach(function (module) {
@@ -198,10 +212,16 @@ gulp.task('sass', function () {
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(config.src));
 });
-gulp.task('concat:css',['sass'], function () {
-    return gulp.src(config.src + '/*/*.css')
-    .pipe(concat(config.filename + '.css'))
-    .pipe(gulp.dest('./'+config.dist+'/css/'));
+gulp.task('concat:css',['modules','sass'], function () {
+    var src = config.modules.map(function (module) {
+        return module.name;
+    });
+    if(src.length){
+        var srcPath = config.src + '/*('+src.join('|')+')/*.css';
+        return gulp.src(srcPath)
+        .pipe(concat(config.filename + '.css'))
+        .pipe(gulp.dest('./'+config.dist+'/css/'));
+    }
 });
 gulp.task('concat:js',['modules'], function () {
     function getFileMapping(){
@@ -213,7 +233,10 @@ gulp.task('concat:js',['modules'], function () {
     }
     var srcFile = [];
     srcFile = srcFile.concat(getFileMapping());
-    srcFile.push(config.src + '/*/templates/*.js');
+    var tplPaths = srcFile.map(function (file) {
+        return config.src + '/'+file.split('/')[1]+'/templates/*.js';
+    });
+    srcFile = srcFile.concat(tplPaths);
     return gulp.src(srcFile)
         .pipe(concat(config.filename + '.js'))
         .pipe(insert.transform(function (contents) {
