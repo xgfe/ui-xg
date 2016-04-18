@@ -105,12 +105,12 @@ angular.module('ui.fugu.timepanel', [])
             var date = ngModelCtrl.$modelValue;
 
             if (isNaN(date)) {
-                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-            } else {
-                $scope.hour = date ? addZero(date.getHours()) : null;
-                $scope.minute = date ? addZero(date.getMinutes()) : null;
-                $scope.second = date ? addZero(date.getSeconds()) : null;
+                $log.warn('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
             }
+            $scope.hour = date ? addZero(date.getHours()) : null;
+            $scope.minute = date ? addZero(date.getMinutes()) : null;
+            $scope.second = date ? addZero(date.getSeconds()) : null;
         };
         this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
             var isScrollingUp = function (e) {

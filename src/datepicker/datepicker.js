@@ -118,10 +118,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
             var date = ngModelCtrl.$modelValue;
             if (isNaN(date)) {
                 $log.error('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-            } else {
-                $scope.selectDate = ngModelCtrl.$modelValue;
-                $scope.inputValue = dateFilter(date,format);
+                date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
             }
+            $scope.selectDate = date;
+            $scope.inputValue = dateFilter(date,format);
         };
         // 显示隐藏日历
         $scope.toggleCalendarHandler  = function (evt) {
