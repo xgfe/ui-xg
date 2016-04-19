@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-04-18
+ * Version: 0.1.0 - 2016-04-19
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -5501,34 +5501,43 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
     ""+
     "</div>");
 }]);
+angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/button.html",
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+}]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
     "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
-angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
-}]);
-angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/datepicker.html",
-    "<div class=\"fugu-datepicker\">"+
-    "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
-    "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
-    "                <i class=\"glyphicon glyphicon-remove\"></i>"+
-    "            </button>"+
-    "        </span>"+
-    "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
-    "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
-    "            </button>"+
-    "        </span>"+
+angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepanel.html",
+    "<div class=\"fugu-timepanel\">"+
+    "    <div class=\"fugu-timepanel-col\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('hour',23)\">{{hour | smallerValue:23:hourStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
+    "            <span class=\"fugu-timepanel-label\">时</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('hour',23)\">{{hour | largerValue:23:hourStep}}</div>"+
     "    </div>"+
-    "    <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
-    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
+    "    <div class=\"fugu-timepanel-col\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('minute',59)\">{{minute | smallerValue:59:minuteStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
+    "            <span class=\"fugu-timepanel-label\">分</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('minute',59)\">{{minute | largerValue:59:minuteStep}}</div>"+
+    "    </div>"+
+    "    <div class=\"fugu-timepanel-col\" ng-show=\"showSeconds\">"+
+    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('second',59)\">{{second | smallerValue:59:secondStep}}</div>"+
+    "        <div class=\"fugu-timepanel-middle clearfix\">"+
+    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
+    "            <span class=\"fugu-timepanel-label\">秒</span>"+
+    "        </div>"+
+    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
+    "    </div>"+
     "</div>"+
     "");
 }]);
@@ -5613,6 +5622,27 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
+angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/datepicker.html",
+    "<div class=\"fugu-datepicker\">"+
+    "    <div class=\"input-group\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-remove\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "        <span class=\"input-group-btn\">"+
+    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
+    "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
+    "            </button>"+
+    "        </span>"+
+    "    </div>"+
+    "    <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
+    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
+    "</div>"+
+    "");
+}]);
 angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown-choices.html",
     "<li>"+
@@ -5655,16 +5685,6 @@ angular.module("notification/templates/notification.html",[]).run(["$templateCac
     "    </div>"+
     "</div>");
 }]);
-angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/searchBox.html",
-    "<div ng-class=\"{'input-group':showBtn}\">"+
-    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
-    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
-    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
-    "    </span>"+
-    "</div>"+
-    "");
-}]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
     "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
@@ -5687,6 +5707,16 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/searchBox.html",
+    "<div ng-class=\"{'input-group':showBtn}\">"+
+    "    <input type=\"text\" class=\"input-sm form-control\" ng-keyup=\"keyUpToSearch($event)\" placeholder=\"{{placeholder}}\" ng-model=\"searchBox.query\">"+
+    "    <span class=\"input-group-btn\" ng-if=\"showBtn\">"+
+    "        <button class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"doSearch()\">{{getText()}}</button>"+
+    "    </span>"+
+    "</div>"+
+    "");
 }]);
 angular.module("select/templates/choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/choices.html",
@@ -5787,36 +5817,6 @@ angular.module("switch/templates/switch.html",[]).run(["$templateCache",function
     "    <input type=\"checkbox\" ng-change=\"changeSwitchHandler()\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
-}]);
-angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepanel.html",
-    "<div class=\"fugu-timepanel\">"+
-    "    <div class=\"fugu-timepanel-col\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('hour',23)\">{{hour | smallerValue:23:hourStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
-    "            <span class=\"fugu-timepanel-label\">时</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('hour',23)\">{{hour | largerValue:23:hourStep}}</div>"+
-    "    </div>"+
-    "    <div class=\"fugu-timepanel-col\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('minute',59)\">{{minute | smallerValue:59:minuteStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
-    "            <span class=\"fugu-timepanel-label\">分</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('minute',59)\">{{minute | largerValue:59:minuteStep}}</div>"+
-    "    </div>"+
-    "    <div class=\"fugu-timepanel-col\" ng-show=\"showSeconds\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('second',59)\">{{second | smallerValue:59:secondStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
-    "            <span class=\"fugu-timepanel-label\">秒</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
-    "    </div>"+
-    "</div>"+
-    "");
 }]);
 angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepicker.html",

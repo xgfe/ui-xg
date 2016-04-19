@@ -14,7 +14,6 @@
   font-weight: 400;
   line-height: 1.42857143;
   text-align: left;
-  text-align: start;
   text-decoration: none;
   text-shadow: none;
   text-transform: none;
@@ -25,10 +24,14 @@
   white-space: normal;
   filter: alpha(opacity=0);
   opacity: 0;
+  width: 0;
+  height: 0;
   line-break: auto;
 
   &.in{
     opacity: 0.9;
+    width: auto;
+    height: auto;
   }
   &.bottom{
     padding: 5px 0;
