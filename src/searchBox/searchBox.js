@@ -13,9 +13,7 @@ angular.module('ui.fugu.searchBox',[])
     var ngModelCtrl = { $setViewValue: angular.noop };
     $scope.searchBox = {};
     this.init = function (_ngModelCtrl) {
-        if(_ngModelCtrl){
-            ngModelCtrl = _ngModelCtrl;
-        }
+        ngModelCtrl = _ngModelCtrl;
         ngModelCtrl.$render = this.render;
         $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : fuguSearchBoxConfig.showBtn;
     };
@@ -44,9 +42,7 @@ angular.module('ui.fugu.searchBox',[])
         }
     };
     this.render = function() {
-        if(ngModelCtrl.$viewValue){
-            $scope.searchBox.query = ngModelCtrl.$viewValue;
-        }
+        $scope.searchBox.query = ngModelCtrl.$modelValue;
     };
 }])
 .directive('fuguSearchBox',function () {

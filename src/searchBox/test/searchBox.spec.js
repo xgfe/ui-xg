@@ -20,7 +20,7 @@ describe('fugu-search-box', function () {
         scope.$digest();
     }
     it('should render a normal search box', function () {
-        var el = '<fugu-search-box></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query"></fugu-search-box>';
         createSearchBox(el);
         expect(element.hasClass('input-group')).toBe(true);
         expect(element.find('input').length).toBe(1);
@@ -28,36 +28,36 @@ describe('fugu-search-box', function () {
     });
 
     it('should have a default button text', function () {
-        var el = '<fugu-search-box></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query"></fugu-search-box>';
         createSearchBox(el);
         expect(element.find('button').text()).toBe(searchBoxConfig.btnText);
     });
 
     it('should set button text', function () {
-        var el = '<fugu-search-box btn-text="Search"></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query" btn-text="Search"></fugu-search-box>';
         createSearchBox(el);
         expect(element.find('button').text()).toBe('Search');
-        el = '<fugu-search-box btn-text="{{text}}"></fugu-search-box>';
+        el = '<fugu-search-box ng-model="query" btn-text="{{text}}"></fugu-search-box>';
         scope.text = 'customText';
         createSearchBox(el);
         expect(element.find('button').text()).toBe(scope.text);
     });
 
     it('should not have a default placeholder', function () {
-        var el = '<fugu-search-box></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query"></fugu-search-box>';
         createSearchBox(el);
         expect(element.find('input').attr('placeholder')).toBe('');
     });
 
     it('should have a placeholder', function () {
-        var el = '<fugu-search-box placeholder="{{placeholder}}"></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query" placeholder="{{placeholder}}"></fugu-search-box>';
         scope.placeholder = '搜索文本框';
         createSearchBox(el);
         expect(element.find('input').attr('placeholder')).toBe(scope.placeholder);
     });
 
     it('should not show button when "show-btn" set to be false', function () {
-        var el = '<fugu-search-box show-btn="show"></fugu-search-box>';
+        var el = '<fugu-search-box ng-model="query" show-btn="show"></fugu-search-box>';
         scope.show = false;
         createSearchBox(el);
         expect(element.find('button').length).toBe(0);
