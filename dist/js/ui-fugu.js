@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-04-19
+ * Version: 0.1.0 - 2016-04-20
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -2253,9 +2253,7 @@ angular.module('ui.fugu.searchBox',[])
     var ngModelCtrl = { $setViewValue: angular.noop };
     $scope.searchBox = {};
     this.init = function (_ngModelCtrl) {
-        if(_ngModelCtrl){
-            ngModelCtrl = _ngModelCtrl;
-        }
+        ngModelCtrl = _ngModelCtrl;
         ngModelCtrl.$render = this.render;
         $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : fuguSearchBoxConfig.showBtn;
     };
@@ -2284,9 +2282,7 @@ angular.module('ui.fugu.searchBox',[])
         }
     };
     this.render = function() {
-        if(ngModelCtrl.$viewValue){
-            $scope.searchBox.query = ngModelCtrl.$viewValue;
-        }
+        $scope.searchBox.query = ngModelCtrl.$modelValue;
     };
 }])
 .directive('fuguSearchBox',function () {
