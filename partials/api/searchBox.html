@@ -26,6 +26,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>/&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>Query:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>query&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"toggleButton()"</span>&gt;</span>toggleButton<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-primary"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"query = ''"</span>&gt;</span>Clear<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
@@ -66,6 +67,7 @@
     <hr/>
     <pre>Query:{{query}}</pre>
     <button class="btn btn-default" type="button" ng-click="toggleButton()">toggleButton</button>
+    <button class="btn btn-primary" type="button" ng-click="query = ''">Clear</button>
 </div></div><script>angular.module('fuguDemo').controller('searchBoxDemoCtrl',['$scope', function ($scope) {
     $scope.showButton = false;
     $scope.text = 'search';
