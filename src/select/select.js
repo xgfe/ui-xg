@@ -163,8 +163,8 @@ angular.module('ui.fugu.select', [])
         var minErr = angular.$$minErr('ui.fugu.select');
         return function () {
             var error = minErr.apply(this, arguments);
-            var str = '\nhttp://errors.angularjs.org/.*';
-            var message = error.message.replace(new RegExp(str), '');
+            var str = '\n?http://errors.angularjs.org/.*';
+            var message = error.message.replace(new RegExp(str), '').trim();
             return new Error(message);
         };
     })
@@ -258,7 +258,7 @@ angular.module('ui.fugu.select', [])
                 var i, j, result = [];
                 for (i = 0; i < groupNames.length; i++) {
                     for (j = 0; j < groups.length; j++) {
-                        if (groups[j].name === [groupNames[i]]) {
+                        if (groups[j].name === groupNames[i]) {
                             result.push(groups[j]);
                         }
                     }
@@ -470,7 +470,7 @@ angular.module('ui.fugu.select', [])
 
                                     // create new item on the fly if we don't already have one;
                                     // use tagging function if we have one
-                                    if (!angular.isUndefined(ctrl.tagging.fct) && typeof item === 'string') {
+                                    if (angular.isDefined(ctrl.tagging.fct) && typeof item === 'string') {
                                         item = ctrl.tagging.fct(ctrl.search);
                                         if (!item) {
                                             return;
@@ -823,10 +823,12 @@ angular.module('ui.fugu.select', [])
                             if (!angular.isUndefined(attrs.tagging)) {
                                 // $eval() is needed otherwise we get a string instead of a boolean
                                 var taggingEval = scope.$eval(attrs.tagging);
-                                $select.tagging = {isActivated: true, fct: taggingEval !== true ? taggingEval : null};
-                            }
-                            else {
-                                $select.tagging = {isActivated: false, fct: null};
+                                $select.tagging = {isActivated: true};
+                                if(taggingEval !== true ){
+                                    $select.tagging.fct  = taggingEval
+                                }
+                            }else {
+                                $select.tagging = {isActivated: false};
                             }
                         });
 

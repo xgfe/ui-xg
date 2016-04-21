@@ -7,7 +7,7 @@
     <span ng-show="$select.isEmpty()" class="fugu-select-placeholder text-muted">{{$select.placeholder}}</span>
     <span ng-hide="$select.isEmpty()" class="fugu-select-match-text pull-left" ng-class="{'fugu-select-allow-clear': $select.allowClear && !$select.isEmpty()}" ng-transclude=""></span>
     <i class="caret pull-right" ng-click="$select.toggle($event)"></i>
-    <a ng-show="$select.allowClear && !$select.isEmpty()" aria-label="{{ $select.baseTitle }} clear"
+    <a ng-if="$select.allowClear && !$select.isEmpty()" aria-label="{{ $select.baseTitle }} clear"
       ng-click="$select.clear($event)" class="fugu-select-allowclear btn btn-xs btn-link pull-right">
       <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
     </a>
