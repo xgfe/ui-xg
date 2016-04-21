@@ -6,7 +6,7 @@ describe('fugu-popover', function () {
 
     beforeEach(inject(function($rootScope, _$compile_) {
         element = angular.element(
-            '<span fugu-popover popover-is-open="template" content="nimenghao!!!">我是第一个自由的文本</span>'
+            '<span fugu-popover popover-is-open="template" content="'+'nimenghao'+'">我是第一个自由的文本</span>'
         );
         scope = $rootScope;
         $compile = _$compile_;
@@ -48,7 +48,7 @@ describe('fugu-popover', function () {
     it('content should accept an param', inject(function() {
         scope.text = "提示信息"
         element = $compile(angular.element(
-            '<span fugu-popover trigger="hover" content="{{text}}">Selector Text</span>'
+            '<span fugu-popover trigger="hover" content="text">Selector Text</span>'
         ))(scope);
         scope.$digest();
         elm = element.next();
@@ -61,7 +61,7 @@ describe('fugu-popover', function () {
         element = $compile(angular.element(
             '<ul>'+
                 '<li ng-repeat="item in items">'+
-                    '<span fugu-popover trigger="hover" content="{{item.text}}">{{item.name}}</span>'+
+                    '<span fugu-popover trigger="hover" content="item.text">{{item.name}}</span>'+
                 '</li>'+
             '</ul>'
         ))(scope);

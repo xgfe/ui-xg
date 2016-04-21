@@ -6,7 +6,6 @@
 
 .fugu-tooltip{
   position: absolute;
-  display: block;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -22,13 +21,12 @@
   word-wrap: normal;
   white-space: normal;
   filter: alpha(opacity=0);
-  opacity: 0;
-  z-index: -9999;  // fix issue: #2
+  display: none;
   line-break: auto;
 
   &.in{
-    opacity: 0.9;
-    z-index: 9999;  // fix issue: #2
+    //opacity: 0.9;
+    display: block;
   }
   &.bottom{
     padding: 5px 0;

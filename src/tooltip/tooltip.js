@@ -6,55 +6,6 @@
  */
 angular.module('ui.fugu.tooltip',[])
 
-.factory('$$stackedMap', function() {
-    return {
-        createNew: function() {
-            var stack = [];
-
-            return {
-                add: function(key, value) {
-                    stack.push({
-                        key: key,
-                        value: value
-                    });
-                },
-                get: function(key) {
-                    for (var i = 0; i < stack.length; i++) {
-                        if (key === stack[i].key) {
-                            return stack[i];
-                        }
-                    }
-                },
-                keys: function() {
-                    var keys = [];
-                    for (var i = 0; i < stack.length; i++) {
-                        keys.push(stack[i].key);
-                    }
-                    return keys;
-                },
-                top: function() {
-                    return stack[stack.length - 1];
-                },
-                remove: function(key) {
-                    var idx = -1;
-                    for (var i = 0; i < stack.length; i++) {
-                        if (key === stack[i].key) {
-                            idx = i;
-                            break;
-                        }
-                    }
-                    return stack.splice(idx, 1)[0];
-                },
-                removeTop: function() {
-                    return stack.splice(stack.length - 1, 1)[0];
-                },
-                length: function() {
-                    return stack.length;
-                }
-            };
-        }
-    };
-})
 .factory('$uibPosition', ['$document', '$window', function($document, $window) {
         /**
          * Used by scrollbarWidth() function to cache scrollbar's width.
@@ -582,7 +533,6 @@ angular.module('ui.fugu.tooltip',[])
                 $scope.trigger = ($scope.trigger&&($scope.trigger==="hover"))?"hover":"click";
                 $scope.content = $scope.content||"请设置提示文字";
                 // 设置初始值
-                $attrs.content = $scope.content;
                 $scope.isHover = false;
                 $scope.tooltipIsOpen = $scope.tooltipIsOpen||false;
             }
@@ -591,49 +541,49 @@ angular.module('ui.fugu.tooltip',[])
             //tooltip模板
             var elementTemplate =
                 '<div class="tooltip fugu-tooltip"'+
-                'tooltip-animation-class="fade" '+
-                'uib-tooltip-classes '+
                 'ng-class="{in:tooltipIsOpen||isHover}">'+
                 '<div class="tooltip-arrow"></div>'+
                 '<div class="tooltip-inner" ng-bind="content"></div>'+
                 '</div>';
-            var element = angular.element(elementTemplate);
+            var element;
+            element = angular.element(elementTemplate);
             element = $compile(element)($scope);
+            element.addClass("bottom");
+            $element.after(element);
+            changeDom();
 
             //判断触发方式
             if($scope.trigger==="hover") {
                 $element.on('mouseenter',function(){
-                    addDom();
+                    changeDom();
                     $scope.isHover = true;
                     $scope.$digest();
                 })
                 $element.on('mouseleave',function(){
-                    addDom();
                     $scope.isHover = false;
                     $scope.$digest();
                 })
             }
 
-            //计算位移并添加至DOM中
-            function addDom() {
-
+            //调整tooltip的位置
+            function changeDom() {
                 //将计算的偏移量进行填充
                 var elePosition = $position.positionElements($element,element,'bottom','false');
                 $position.positionArrow(element, elePosition.placement);
-                element.addClass("bottom");
                 element.css({ top: elePosition.top + 'px', left: elePosition.left + 'px', visibility: 'visible' })
-                $element.after(element);
             }
 
-            $scope.$watch('tooltipIsOpen',function(){
-                addDom();
+            $scope.$watch('tooltipIsOpen',function(newValue){
+                if(newValue){
+                    changeDom();
+                }
             })
 }])
 .directive('fuguTooltip',function () {
     return {
         restrict: 'AE',
         scope:{
-            content:'@?',
+            content:'=?',
             trigger:'@',
             tooltipIsOpen:'=?'
         },
