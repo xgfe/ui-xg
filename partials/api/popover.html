@@ -1,0 +1,99 @@
+<h1>Popover</h1><h2>Description</h2><p>一个轻量级的可扩展的提示指令，支持click和hover两种形式。</p>
+<h2>Usage</h2><pre><code class="lang-javascript">&lt;<span class="hljs-selector-tag">span</span> fugu-popover <span class="hljs-attribute">content</span>=<span class="hljs-string">"popover message"</span>
+    [ popover-is-open=<span class="hljs-string">"string"</span> ]
+    [ trigger=<span class="hljs-string">"string"</span> ]&gt;
+&lt;/span&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>content</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>请设置提示文字</code></td><td>指定popover的提示文字,若不设置，则默认显示<code>请设置提示文字</code>。</td></tr><tr><td>trigger(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>click</code></td><td>可以设置popover的触发方式，目前支持<code>click</code>和<code>hover</code>两种方式，若选择<code>hover</code>需要单独指定。</td></tr><tr><td>popoverIsOpen(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>当trigger设置为<code>click</code>时，可以由<code>popover-is-open</code>属性设置popover是否显示。</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"popoverDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">fugu-popover</span> <span class="hljs-attr">popover-is-open</span>=<span class="hljs-string">"template"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"'这是一个弹出提示！'"</span>&gt;</span>我是第一个有popover的文本(点击生效)<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"button-popover"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"button-popover"</span> <span class="hljs-attr">fugu-popover</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">trigger</span>=<span class="hljs-string">"hover"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-sm btn-default"</span>&gt;</span>点我！<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        (悬浮生效且文本绑定作用域属性)
+    <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"clickPopover()"</span>&gt;</span>点击添加<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'popoverDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    $scope.text =
+        <span class="hljs-string">"凉风有信，秋月无边，"</span>+
+        <span class="hljs-string">"亏我思娇的情绪好比度日如年，"</span>+
+        <span class="hljs-string">"虽然我不是玉树临风，潇洒倜傥，"</span>+
+        <span class="hljs-string">"可是我有我广阔的胸襟，加强健的臂腕！"</span>;
+    $scope.template = false;
+    $scope.clickPopover = function(){
+        $scope.template = !$scope.template;
+    }
+}]);</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><div class="example"><div ng-controller="popoverDemoCtrl">
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span fugu-popover popover-is-open="template" content="'这是一个弹出提示！'">我是第一个有popover的文本(点击生效)</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <span>我是一个自由的文本</span>
+    <label for="button-popover">
+        <span id="button-popover" fugu-popover content="text" trigger="hover" class="btn btn-sm btn-default">点我！</span>
+        (悬浮生效且文本绑定作用域属性)
+    </label>
+    <br/>
+    <button ng-click="clickPopover()">点击添加</button>
+</div></div><script>angular.module('fuguDemo').controller('popoverDemoCtrl',['$scope', function ($scope) {
+    $scope.text =
+        "凉风有信，秋月无边，"+
+        "亏我思娇的情绪好比度日如年，"+
+        "虽然我不是玉树临风，潇洒倜傥，"+
+        "可是我有我广阔的胸襟，加强健的臂腕！";
+    $scope.template = false;
+    $scope.clickPopover = function(){
+        $scope.template = !$scope.template;
+    }
+}]);</script>

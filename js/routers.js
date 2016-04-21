@@ -34,6 +34,8 @@ define([
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
             
+                $stateProvider.state('app.api.popover',{url: "/popover",templateUrl: 'partials/api/popover.html'});
+            
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
                 $stateProvider.state('app.api.select',{url: "/select",templateUrl: 'partials/api/select.html'});
