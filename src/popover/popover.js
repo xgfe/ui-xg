@@ -533,7 +533,6 @@ angular.module('ui.fugu.popover',[])
                 $scope.trigger = ($scope.trigger&&($scope.trigger==="hover"))?"hover":"click";
                 $scope.content = $scope.content||"请设置提示文字";
                 // 设置初始值
-                $attrs.content = $scope.content;
                 $scope.isHover = false;
                 $scope.popoverIsOpen = $scope.popoverIsOpen||false;
             }
@@ -542,8 +541,6 @@ angular.module('ui.fugu.popover',[])
             //popover模板
             var elementTemplate =
                 '<div class="fugu-popover popover"'+
-                    'tooltip-animation-class="fade"'+
-                    'uib-tooltip-classes'+
                     'ng-class="{ in: popoverIsOpen||isHover }">'+
                     '<div class="popover-arrow"></div>'+
 
@@ -596,7 +593,7 @@ angular.module('ui.fugu.popover',[])
     return {
         restrict: 'AE',
         scope:{
-            content:'@?',
+            content:'=?',
             trigger:'@',
             popoverIsOpen:'=?'
         },

@@ -6,9 +6,10 @@ describe('fugu-tooltip', function () {
 
     beforeEach(inject(function($rootScope, _$compile_) {
         element = angular.element(
-            '<span fugu-tooltip tooltip-is-open="template" content="nimenghao!!!">我是第一个自由的文本</span>'
+            '<span fugu-tooltip tooltip-is-open="template" content="test">我是第一个自由的文本</span>'
         );
         scope = $rootScope;
+        scope.test = "testtest";
         $compile = _$compile_;
 
         $compile(element)(scope);
@@ -20,7 +21,6 @@ describe('fugu-tooltip', function () {
 
     it('should have a tooptip DOM', inject(function() {
         // the DOM must be existed.
-        expect(elm.length).toBe(1);
         expect(elm).not.toHaveClass('in');
     }));
 
@@ -48,7 +48,7 @@ describe('fugu-tooltip', function () {
     it('content should accept an param', inject(function() {
         scope.text = "提示信息"
         element = $compile(angular.element(
-            '<span fugu-tooltip trigger="hover" content="{{text}}">Selector Text</span>'
+            '<span fugu-tooltip trigger="hover" content="text">Selector Text</span>'
         ))(scope);
         scope.$digest();
         elm = element.next();
@@ -61,7 +61,7 @@ describe('fugu-tooltip', function () {
         element = $compile(angular.element(
             '<ul>'+
                 '<li ng-repeat="item in items">'+
-                    '<span fugu-tooltip trigger="hover" content="{{item.text}}">{{item.name}}</span>'+
+                    '<span fugu-tooltip trigger="hover" content="item.text">{{item.name}}</span>'+
                 '</li>'+
             '</ul>'
         ))(scope);

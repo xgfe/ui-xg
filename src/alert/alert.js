@@ -9,9 +9,9 @@ angular.module('ui.fugu.alert',[])
 
     //指令初始化
     function initConfig(){
-        $scope.closeable = ($scope.close&&($scope.close=="true"||$scope.close=="1"))?true:false;
+        $scope.closeable = !!($scope.close&&($scope.close=="true"||$scope.close=="1"));
         $scope.defaultclose = false;
-        $scope.hasIcon = ($scope.hasIcon&&($scope.hasIcon=="true"||$scope.hasIcon=="1"))?true:false;
+        $scope.hasIcon = !!($scope.hasIcon&&($scope.hasIcon=="true"||$scope.hasIcon=="1"));
     }
     initConfig();
 
