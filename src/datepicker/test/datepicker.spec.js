@@ -9,8 +9,8 @@ describe('ui.fugu.datepicker', function () {
         module('ui.fugu.timepanel');
         module('ui.fugu.calendar');
         module('ui.fugu.datepicker');
-        module('datepicker/templates/timepanel.html');
-        module('datepicker/templates/calendar.html');
+        module('timepanel/templates/timepanel.html');
+        module('calendar/templates/calendar.html');
         module('datepicker/templates/datepicker.html');
         inject(function( $compile, $rootScope,fuguDatepickerConfig,_dateFilter_) {
             compile = $compile;

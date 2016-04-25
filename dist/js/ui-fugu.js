@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-04-22
+ * Version: 0.1.0 - 2016-04-25
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -6173,87 +6173,6 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "    </div>"+
     "</div>");
 }]);
-angular.module("datepicker/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/calendar.html",
-    "<div class=\"fugu-calendar\">"+
-    "    <div class=\"fugu-cal-panel-day\" ng-show=\"panels.day\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>"+
-    "            <span class=\"fugu-cal-month-name\">"+
-    "                <a href=\"javascript:;\" ng-click=\"selectPanel('month')\">{{FORMATS.SHORTMONTH[currentMonth]}}</a>"+
-    "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
-    "            </span>"+
-    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>"+
-    "        </div>"+
-    "        <div class=\"fugu-cal-header clearfix\">"+
-    "            <div ng-repeat=\"day in dayNames track by $index\">{{day}}</div>"+
-    "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <div class=\"fugu-cal-row\" ng-repeat=\"row in allDays\">"+
-    "                <div ng-class=\"{'fugu-cal-select':day.index===currentDay,'fugu-cal-outside':!day.inMonth,'fugu-cal-weekday':day.isWeekend,'fugu-cal-day-today':day.isToday,'fugu-cal-day-disabled':day.isDisabled}\""+
-    "                     class=\"fugu-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">"+
-    "                    <span class=\"fugu-cal-day-inner\">{{day.day}}</span>"+
-    "                </div>"+
-    "            </div>"+
-    "        </div>"+
-    "        <div class=\"fugu-cal-footer\">"+
-    "            <div class=\"fugu-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">"+
-    "                <span class=\"glyphicon glyphicon-time\"></span>"+
-    "                {{selectDate | date:'shortTime'}}"+
-    "            </div>"+
-    "            <div class=\"fugu-cal-today-btn\" ng-click=\"chooseToday()\">Today</div>"+
-    "        </div>"+
-    "    </div>"+
-    "    <div class=\"fugu-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+
-    "        <fugu-timepanel ng-model=\"selectDate\"></fugu-timepanel>"+
-    "        <div class=\"btn-group clearfix\">"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>"+
-    "        </div>"+
-    "    </div>"+
-    "    <div class=\"fugu-cal-panel-month\" ng-show=\"panels.month\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <span class=\"fugu-cal-month-name\">"+
-    "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
-    "            </span>"+
-    "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <table class=\"fugu-cal-month-table\">"+
-    "                <tr ng-repeat=\"monthRow in allMonths\">"+
-    "                    <td class=\"fugu-cal-month-item\""+
-    "                        ng-repeat=\"month in monthRow\""+
-    "                        ng-click=\"chooseMonthHandler(month.index)\""+
-    "                        ng-class=\"{'fugu-cal-month-select':month.index === currentMonth}\">"+
-    "                        <span class=\"fugu-cal-month-inner\">{{month.name}}</span>"+
-    "                    </td>"+
-    "                </tr>"+
-    "            </table>"+
-    "        </div>"+
-    "    </div>"+
-    "    <div class=\"fugu-cal-panel-year\" ng-show=\"panels.year\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>"+
-    "            <span class=\"fugu-cal-month-name\">"+
-    "                <a href=\"javascript:;\">{{allYears[0][0]}}-{{allYears[3][2]}}</a>"+
-    "            </span>"+
-    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>"+
-    "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <table class=\"fugu-cal-month-table\">"+
-    "                <tr ng-repeat=\"yearRow in allYears track by $index\">"+
-    "                    <td class=\"fugu-cal-month-item fugu-cal-year-item\""+
-    "                        ng-repeat=\"year in yearRow track by $index\""+
-    "                        ng-click=\"chooseYearHandler(year)\""+
-    "                        ng-class=\"{'fugu-cal-month-select':year === currentYear}\">"+
-    "                        <span class=\"fugu-cal-month-inner\">{{year}}</span>"+
-    "                    </td>"+
-    "                </tr>"+
-    "            </table>"+
-    "        </div>"+
-    "    </div>"+
-    "</div>");
-}]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
     "<div class=\"fugu-datepicker\">"+
@@ -6272,36 +6191,6 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "    </div>"+
     "    <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
     "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
-    "</div>"+
-    "");
-}]);
-angular.module("datepicker/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/timepanel.html",
-    "<div class=\"fugu-timepanel\">"+
-    "    <div class=\"fugu-timepanel-col\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('hour',23)\">{{hour | smallerValue:23:hourStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
-    "            <span class=\"fugu-timepanel-label\">时</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('hour',23)\">{{hour | largerValue:23:hourStep}}</div>"+
-    "    </div>"+
-    "    <div class=\"fugu-timepanel-col\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('minute',59)\">{{minute | smallerValue:59:minuteStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
-    "            <span class=\"fugu-timepanel-label\">分</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('minute',59)\">{{minute | largerValue:59:minuteStep}}</div>"+
-    "    </div>"+
-    "    <div class=\"fugu-timepanel-col\" ng-show=\"showSeconds\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('second',59)\">{{second | smallerValue:59:secondStep}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
-    "            <span class=\"fugu-timepanel-label\">秒</span>"+
-    "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
-    "    </div>"+
     "</div>"+
     "");
 }]);
