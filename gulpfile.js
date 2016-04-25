@@ -49,6 +49,10 @@ gulp.task('karma',['html2js'], function (done) {
         singleRun: true
     }, done).start();
 });
+gulp.task('clean:html2js', function () {
+    return gulp.src(config.src+'/**/*.html.js', { read: false })
+        .pipe(rimraf());
+});
 /**
  * 将angular的模板文件转化为js
  */
@@ -395,7 +399,7 @@ gulp.task('create', function () {
         _.createModuleFiles(module);
     });
 });
-gulp.task('test',['html2js','karma']);
+gulp.task('test',['clean:html2js','html2js','karma']);
 gulp.task('build',['clean','eslint','concat:css','concat:js','uglify']);
 gulp.task('default',['test'], function () {
     gulp.run('build');
