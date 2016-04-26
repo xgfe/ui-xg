@@ -102,6 +102,7 @@
   margin-right: -6px;
   margin-left: 6px; }
 
+
 .fugu-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -301,7 +302,6 @@
   .fugu-datepicker .fugu-datepicker-remove {
     border-radius: 0;
     border-left: 0; }
-
 
 /*!
  fugu-dropdown.css

@@ -1,5 +1,5 @@
-angular.module('fuguDemo').config(['fuguCanlenderProvider', function (fuguCanlenderProvider) {
-    fuguCanlenderProvider.setFormats('SHORTDAY',['日','一','二','三','四','五','六'])
+angular.module('fuguDemo').config(['fuguCalendarProvider', function (fuguCalendarProvider) {
+    fuguCalendarProvider.setFormats('SHORTDAY',['日','一','二','三','四','五','六'])
 }]);
 angular.module('fuguDemo').controller('calendarDemoCtrl',['$scope', function ($scope) {
     $scope.date = new Date();

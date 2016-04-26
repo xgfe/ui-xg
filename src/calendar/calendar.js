@@ -12,7 +12,7 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         maxDate: null, // 最大可选日期
         exceptions:[]  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
     })
-    .provider('fuguCanlendar', function () {
+    .provider('fuguCalendar', function () {
         var FORMATS = {};
         this.setFormats = function (formats,subFormats) {
             if(subFormats){
@@ -41,9 +41,9 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             }
         }]
     })
-    .controller('fuguCalendarCtrl', ['$scope', '$attrs','$log','fuguCanlendar','fuguCalendarConfig',
-        function ($scope, $attrs,$log,fuguCanlendarProvider,calendarConfig) {
-        var FORMATS = fuguCanlendarProvider.getFormats();
+    .controller('fuguCalendarCtrl', ['$scope', '$attrs','$log','fuguCalendar','fuguCalendarConfig',
+        function ($scope, $attrs,$log,fuguCalendarProvider,calendarConfig) {
+        var FORMATS = fuguCalendarProvider.getFormats();
         var MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31]; //每个月的天数,2月会根据闰年调整
         var ngModelCtrl = {$setViewValue: angular.noop};
 
@@ -330,6 +330,22 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             date.setDate(day || 1);
             return date;
         }
+            // date1 是否比date2小,
+        function earlierThan(date1,date2){
+            var tempDate1 = splitDate(date1);
+            var tempDate2 = splitDate(date2);
+            if(tempDate1.year < tempDate2.year){
+                return true;
+            }else if(tempDate1.year > tempDate2.year){
+                return false;
+            }
+            if(tempDate1.month < tempDate2.month){
+                return true;
+            }else if(tempDate1.month > tempDate2.month){
+                return false;
+            }
+            return tempDate1.day < tempDate2.day;
+        }
         //对日期进行格式化
         function formatDate(date){
             var tempDate = splitDate(date);
@@ -338,8 +354,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             var isToday =tempDate.year===today.year&&tempDate.month===today.month&&tempDate.day===today.day;
             var isSelected =tempDate.year===selectedDt.year&&tempDate.month===selectedDt.month
                 &&tempDate.day===selectedDt.day;
-            var isDisabled = ($scope.minDate && date.getTime()<$scope.minDate.getTime() && !isExceptionDay(date))
-                || ($scope.maxDate && date.getTime()>$scope.maxDate.getTime() && !isExceptionDay(date));
+            var isDisabled = ($scope.minDate && earlierThan(date,$scope.minDate) && !isExceptionDay(date))
+                || ($scope.maxDate && earlierThan($scope.maxDate,date) && !isExceptionDay(date));
             var day = date.getDay();
             return {
                 date:date,
