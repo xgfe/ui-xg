@@ -69,3 +69,5 @@ Temporary Items
 *.html.js
 # 开发模式下忽略文档
 dist/docs
+# 代码覆盖率
+coverage/
