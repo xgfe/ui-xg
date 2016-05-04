@@ -2117,7 +2117,7 @@ angular.module('ui.fugu.pager',[])
     $scope.totalPages = 1;
 
     $scope.$watch('pageNo', function (val) {
-        $scope.selectPage(val-1 || 0)
+        $scope.currentPage = val - 1;
     });
     $scope.$watch("totalItems", function (val) {
         if($scope.currentPage === -1){
@@ -2186,10 +2186,8 @@ angular.module('ui.fugu.pager',[])
         }
         $scope.currentPage = value;
         $scope.pageNo = value+1;
-        if ($scope.pages[$scope.currentPage - pageOffset]) {
-            $scope.pages[$scope.currentPage - pageOffset].active = true;
-            $scope.$emit("pager:pageIndexChanged", $scope.pages[$scope.currentPage - pageOffset]);
-        }
+        $scope.pages[$scope.currentPage - pageOffset].active = true;
+        $scope.$emit("pager:pageIndexChanged", $scope.pages[$scope.currentPage - pageOffset]);
         var fn;
         if(angular.isDefined($scope.pageChanged) && oldPage !== $scope.currentPage){
             fn = $scope.pageChanged();
