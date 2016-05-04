@@ -3,6 +3,7 @@ describe('fugu-dropdown', function () {
     var compile, // 编译模板
         scope, // 新创建的scope，编译的html所在的scope
         rootScope,
+        $timeout,
         document,
         dropdownConfig, //dropdown的常量配置
         element,    //指令DOM结点
@@ -14,21 +15,25 @@ describe('fugu-dropdown', function () {
         }]);
         module('dropdown/templates/dropdown.html');
         module('dropdown/templates/dropdown-choices.html');
-        inject(function( $compile, $rootScope, $document, fuguDropdownConfig,fuguDropdown) {
+        inject(function( $compile, $rootScope, _$window_,$document, fuguDropdownConfig,fuguDropdown,_$timeout_) {
             compile = $compile;
             scope = $rootScope.$new();
             rootScope = $rootScope;
             document = $document;
             dropdownConfig = fuguDropdownConfig;
-            fuguDropdownProvider = fuguDropdown
+            fuguDropdownProvider = fuguDropdown;
+            $timeout = _$timeout_;
         })
     });
     afterEach(function() {
         element.remove();
     });
-    var clickDropdownToggle = function(elm) {
+    var clickDropdownToggle = function(elm,open) {
         elm = elm || element;
         elm.find('.fugu-dropdown-toggle').click();
+        if(open){
+            $timeout.flush(10);
+        }
     };
     describe('basic', function () {
         function createDropdown(){
@@ -49,7 +54,7 @@ describe('fugu-dropdown', function () {
 
         it('should toggle on button click', function() {
             expect(element).not.toHaveClass(dropdownConfig.openClass);
-            clickDropdownToggle();
+            clickDropdownToggle(null,true);
             expect(element).toHaveClass(dropdownConfig.openClass);
             clickDropdownToggle();
             expect(element).not.toHaveClass(dropdownConfig.openClass);
@@ -58,7 +63,7 @@ describe('fugu-dropdown', function () {
         it('should toggle when an option is clicked', function() {
             document.find('body').append(element);
             expect(element).not.toHaveClass(dropdownConfig.openClass);
-            clickDropdownToggle();
+            clickDropdownToggle(null,true);
             expect(element).toHaveClass(dropdownConfig.openClass);
 
             var optionEl = element.find('ul > li').eq(0).find('a').eq(0);
@@ -67,14 +72,14 @@ describe('fugu-dropdown', function () {
         });
 
         it('should close on document click', function() {
-            clickDropdownToggle();
+            clickDropdownToggle(null,true);
             expect(element).toHaveClass(dropdownConfig.openClass);
             document.click();
             expect(element).not.toHaveClass(dropdownConfig.openClass);
         });
 
         it('should close on $location change', function() {
-            clickDropdownToggle();
+            clickDropdownToggle(null,true);
             expect(element).toHaveClass(dropdownConfig.openClass);
             rootScope.$broadcast('$locationChangeSuccess');
             rootScope.$apply();
@@ -87,11 +92,11 @@ describe('fugu-dropdown', function () {
             expect(elm1).not.toHaveClass(dropdownConfig.openClass);
             expect(elm2).not.toHaveClass(dropdownConfig.openClass);
 
-            clickDropdownToggle( elm1 );
+            clickDropdownToggle( elm1 ,true);
             expect(elm1).toHaveClass(dropdownConfig.openClass);
             expect(elm2).not.toHaveClass(dropdownConfig.openClass);
 
-            clickDropdownToggle( elm2 );
+            clickDropdownToggle( elm2 ,true);
             expect(elm1).not.toHaveClass(dropdownConfig.openClass);
             expect(elm2).toHaveClass(dropdownConfig.openClass);
         });
@@ -144,7 +149,7 @@ describe('fugu-dropdown', function () {
             expect(element).not.toHaveClass(dropdownConfig.openClass);
             expect(scope.clicked).toBeFalsy();
 
-            clickDropdownToggle();
+            clickDropdownToggle(null, true);
             expect(element).toHaveClass(dropdownConfig.openClass);
             expect(scope.clicked).toBeFalsy();
 
@@ -190,6 +195,22 @@ describe('fugu-dropdown', function () {
             var ele = compile(html)(scope);
             scope.$apply();
             expect(ele.find('.fugu-dropdown-menu').css('width')).toBe(fuguDropdownProvider.getColsNum() * dropdownConfig.eachItemWidth + 'px');
+        });
+        it('should have default multi col num when set colsNum', function () {
+            dropdownProvider.setColsNum();
+            var html = '<fugu-dropdown>'+
+                '<button fugu-dropdown-toggle type="button" class="btn btn-sm btn-primary">第二项</button>'+
+                '<fugu-dropdown-choices title="第一项">第一项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>'+
+                '<fugu-dropdown-choices title="fugu-dropdown">fugu-dropdown</fugu-dropdown-choices>'+
+                '</fugu-dropdown>';
+            var ele = compile(html)(scope);
+            scope.$apply();
+            expect(fuguDropdownProvider.getColsNum()).toBe(3);
+            var width = ele.find('.fugu-dropdown-menu > li').css('width');
+            expect(parseFloat(width).toFixed(3)).toEqual((100/3).toFixed(3));
         });
         it('should not have multi col class when set colsNum to be 5', function () {
             dropdownProvider.setColsNum(5);

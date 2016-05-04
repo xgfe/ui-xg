@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-04-26
+ * Version: 0.1.0 - 2016-05-04
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -1252,11 +1252,8 @@ angular.module('ui.fugu.dropdown',[])
         function getDisabled(){
             return $scope.toggle.hasClass('disabled') || $scope.toggle.attr('disabled')
         }
-        this.toggle = function(open) {
-            var result = $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
-            return result;
-        };
-        this.isOpen = function() {
+        this.toggle = function() {
+            $scope.isOpen = !$scope.isOpen;
             return $scope.isOpen;
         };
         $scope.dropdownMenuStyles = {};
@@ -1267,7 +1264,6 @@ angular.module('ui.fugu.dropdown',[])
             var bottom = window.innerHeight - top - offset.height;
 
             var dropdownMenu = angular.element($element[0].querySelector('.fugu-dropdown-menu'));
-            dropdownMenu.removeClass('dropdown-menu-top dropdown-menu-bottom');
             if(top > dropdownMenu[0].clientHeight && bottom < dropdownMenu[0].clientHeight){
                 var toggle = $scope.getToggleElement();
                 $scope.dropdownMenuStyles.top = '';
@@ -6219,9 +6215,6 @@ angular.module("dropdown/templates/dropdown-choices.html",[]).run(["$templateCac
 angular.module("dropdown/templates/dropdown.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/dropdown.html",
     "<div class=\"fugu-dropdown\" ng-class=\"[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]\">"+
-    "    <!--<button type=\"button\"  ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-primary dropdown-toggle\">-->"+
-    "        <!--{{btnValue}}&nbsp;<span class=\"caret\"></span>-->"+
-    "    <!--</button>-->"+
     "    <div class=\"fugu-dropdown-toggle\" ng-click=\"toggleDropdown($event)\"></div>"+
     "    <ul class=\"fugu-dropdown-menu\""+
     "        ng-style=\"dropdownMenuStyles\" ng-transclude=\"\"></ul>"+
