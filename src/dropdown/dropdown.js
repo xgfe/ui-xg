@@ -83,11 +83,8 @@ angular.module('ui.fugu.dropdown',[])
         function getDisabled(){
             return $scope.toggle.hasClass('disabled') || $scope.toggle.attr('disabled')
         }
-        this.toggle = function(open) {
-            var result = $scope.isOpen = arguments.length ? !!open : !$scope.isOpen;
-            return result;
-        };
-        this.isOpen = function() {
+        this.toggle = function() {
+            $scope.isOpen = !$scope.isOpen;
             return $scope.isOpen;
         };
         $scope.dropdownMenuStyles = {};
@@ -98,7 +95,6 @@ angular.module('ui.fugu.dropdown',[])
             var bottom = window.innerHeight - top - offset.height;
 
             var dropdownMenu = angular.element($element[0].querySelector('.fugu-dropdown-menu'));
-            dropdownMenu.removeClass('dropdown-menu-top dropdown-menu-bottom');
             if(top > dropdownMenu[0].clientHeight && bottom < dropdownMenu[0].clientHeight){
                 var toggle = $scope.getToggleElement();
                 $scope.dropdownMenuStyles.top = '';
