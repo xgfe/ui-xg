@@ -1356,51 +1356,9 @@ angular.module('ui.fugu.modal', [])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
-    .factory('$transition', ['$q', '$timeout', '$rootScope', function($q, $timeout, $rootScope) {
+    .factory('$transition', function() {
 
-        var $transition = function(element, trigger, options) {
-            options = options || {};
-            var deferred = $q.defer();
-            var endEventName = $transition[options.animation ? 'animationEndEventName' : 'transitionEndEventName'];
-
-            function transitionEndHandler(){
-                $rootScope.$apply(function() {
-                    element.unbind(endEventName, transitionEndHandler);
-                    deferred.resolve(element);
-                });
-            }
-
-            if (endEventName) {
-                element.bind(endEventName, transitionEndHandler);
-            }
-
-            // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
-            $timeout(function() {
-                if ( angular.isString(trigger) ) {
-                    element.addClass(trigger);
-                } else if ( angular.isFunction(trigger) ) {
-                    trigger(element);
-                } else if ( angular.isObject(trigger) ) {
-                    element.css(trigger);
-                }
-                //If browser does not support transitions, instantly resolve
-                if ( !endEventName ) {
-                    deferred.resolve(element);
-                }
-            });
-
-            // Add our custom cancel function to the promise that is returned
-            // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
-            // i.e. it will therefore never raise a transitionEnd event for that transition
-            deferred.promise.cancel = function() {
-                if ( endEventName ) {
-                    element.unbind(endEventName, transitionEndHandler);
-                }
-                deferred.reject('Transition cancelled');
-            };
-
-            return deferred.promise;
-        };
+        var $transition = {};
 
         // Work out the name of the transitionEnd event
         var transElement = document.createElement('trans');
@@ -1426,7 +1384,7 @@ angular.module('ui.fugu.modal', [])
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
-    }])
+    })
     /**
      * A helper, internal data structure that acts as a map but also allows getting / removing
      * elements in the LIFO order
