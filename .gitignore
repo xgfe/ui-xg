@@ -69,3 +69,5 @@ Temporary Items
 # 忽略dist下的文档
 dist/docs
 src/*/example.html
+# 代码覆盖率
+coverage/

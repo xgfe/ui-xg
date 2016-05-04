@@ -28,27 +28,23 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">fugu-pager</span> <span class="hljs-attr">page-no</span>=<span class="hljs-string">"pages.pageNo"</span> <span class="hljs-attr">total-items</span>=<span class="hljs-string">"pages.totalCount"</span> <span class="hljs-attr">first-text</span>=<span class="hljs-string">"First"</span> <span class="hljs-attr">last-text</span>=<span class="hljs-string">"Last"</span> <span class="hljs-attr">page-changed</span>=<span class="hljs-string">"changePage"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-pager</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>currentPageNo is : </span><span class="hljs-template-variable"><span>&#123;&#123;</span>pages.pageNo&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"setPage"</span>&gt;</span>设置页码:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"setPage"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">min</span>=<span class="hljs-string">"1"</span> <span class="hljs-attr">ng-change</span>=<span class="hljs-string">"setPageNo(pages.pageNo)"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"pages.pageNo"</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'pagerDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'pagerDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>, <span class="hljs-keyword">function</span> ($scope,$log) {
     $scope.pages = {
         pageNo:<span class="hljs-number">1</span>,
         pageSize:<span class="hljs-number">30</span>,
         totalCount:<span class="hljs-number">110</span>
     };
-    $scope.setPageNo = function (val) {
-        $scope.pages.pageNo = val;
-    };
     $scope.changePage = function (pageNo) {
-        console.log(<span class="hljs-string">'修改页码为:'</span>+pageNo);
+        $log.log(<span class="hljs-string">'修改页码为:'</span>+pageNo);
     }
     $scope.$on(<span class="hljs-string">'pager:pageIndexChanged'</span>, function (event, args) {
         event.stopPropagation();
-        console.log(<span class="hljs-string">'修改页码为:'</span>+(args.pageIndex+<span class="hljs-number">1</span>));
+        $log.log(<span class="hljs-string">'修改页码为:'</span>+(args.pageIndex+<span class="hljs-number">1</span>));
     });
 }]);</code></pre>
     </div>
@@ -74,21 +70,17 @@
     <fugu-pager page-no="pages.pageNo" total-items="pages.totalCount" first-text="First" last-text="Last" page-changed="changePage"></fugu-pager>
     <br/>
     <pre>currentPageNo is : {{pages.pageNo}}</pre>
-    <label for="setPage">设置页码:</label><input id="setPage" type="number" min="1" ng-change="setPageNo(pages.pageNo)" ng-model="pages.pageNo"/>
-</div></div><script>angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope', function ($scope) {
+</div></div><script>angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope','$log', function ($scope,$log) {
     $scope.pages = {
         pageNo:1,
         pageSize:30,
         totalCount:110
     };
-    $scope.setPageNo = function (val) {
-        $scope.pages.pageNo = val;
-    };
     $scope.changePage = function (pageNo) {
-        console.log('修改页码为:'+pageNo);
+        $log.log('修改页码为:'+pageNo);
     }
     $scope.$on('pager:pageIndexChanged', function (event, args) {
         event.stopPropagation();
-        console.log('修改页码为:'+(args.pageIndex+1));
+        $log.log('修改页码为:'+(args.pageIndex+1));
     });
 }]);</script>
