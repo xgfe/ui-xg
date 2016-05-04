@@ -1,17 +1,14 @@
-angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope', function ($scope) {
+angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope','$log', function ($scope,$log) {
     $scope.pages = {
         pageNo:1,
         pageSize:30,
         totalCount:110
     };
-    $scope.setPageNo = function (val) {
-        $scope.pages.pageNo = val;
-    };
     $scope.changePage = function (pageNo) {
-        console.log('修改页码为:'+pageNo);
+        $log.log('修改页码为:'+pageNo);
     }
     $scope.$on('pager:pageIndexChanged', function (event, args) {
         event.stopPropagation();
-        console.log('修改页码为:'+(args.pageIndex+1));
+        $log.log('修改页码为:'+(args.pageIndex+1));
     });
 }]);

@@ -60,7 +60,12 @@ describe('fugu-pager', function () {
     });
 
     it('disables the "next" and "last" link if current page is num-pages', function() {
-        createPager();
+        scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
+        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        scope.total = 50;
+        scope.pageNo = 1;
+        element = compile(el)(scope);
+        scope.$apply();
         updateCurrentPage(3);
         expect(getPaginationEl(-1)).toHaveClass('disabled');
         expect(getPaginationEl(-2)).toHaveClass('disabled');
@@ -68,7 +73,12 @@ describe('fugu-pager', function () {
     });
 
     it('changes currentPage if the "previous" link is clicked', function() {
-        createPager();
+        scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
+        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        scope.total = 50;
+        scope.pageNo = 1;
+        element = compile(el)(scope);
+        scope.$apply();
         updateCurrentPage(3);
         clickPaginationEl(1);
         expect(getPaginationEl(3)).toHaveClass('active');
@@ -91,6 +101,30 @@ describe('fugu-pager', function () {
         createPager();
         clickPaginationEl(-2);
         expect(getPaginationEl(4)).toHaveClass('active');
+    });
+    it('should not changes currentPage when is last page if the "last" or "next" link is clicked', function() {
+        scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
+        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        scope.total = 50;
+        scope.pageNo = 3;
+        element = compile(el)(scope);
+        scope.$apply();
+        clickPaginationEl(-2);
+        expect(scope.selectPageHandler).not.toHaveBeenCalled();
+        clickPaginationEl(-3);
+        expect(scope.selectPageHandler).not.toHaveBeenCalled();
+    });
+    it('should not changes currentPage when is first page if the "first" or "prev" link is clicked', function() {
+        scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
+        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        scope.total = 50;
+        scope.pageNo = 1;
+        element = compile(el)(scope);
+        scope.$apply();
+        clickPaginationEl(0);
+        expect(scope.selectPageHandler).not.toHaveBeenCalled();
+        clickPaginationEl(1);
+        expect(scope.selectPageHandler).not.toHaveBeenCalled();
     });
 
     it('executes the `page-changed` expression when an element is clicked', function() {
