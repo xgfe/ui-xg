@@ -570,7 +570,17 @@ angular.module('ui.fugu.tooltip',[])
                 //将计算的偏移量进行填充
                 var elePosition = $position.positionElements($element,element,'bottom','false');
                 $position.positionArrow(element, elePosition.placement);
-                element.css({ top: elePosition.top + 'px', left: elePosition.left + 'px', visibility: 'visible' })
+                var posParentElm = $position.offsetParent($element), oldParentElm;
+                var offsetTop = elePosition.top,//垂直偏移：定位垂直偏移-定位父元素垂直偏移
+                    offsetLeft = elePosition.left; //水平偏移：定位水平偏移-定位父元素水平偏移
+                //重复递归定位父节点，减去父节点的offset距离
+                while(posParentElm != oldParentElm) {
+                    offsetTop = offsetTop - posParentElm.offsetTop;
+                    offsetLeft = offsetLeft-posParentElm.offsetLeft;
+                    oldParentElm = posParentElm;
+                    posParentElm = $position.offsetParent(posParentElm);
+                }
+                element.css({ top: offsetTop, left: offsetLeft, visibility: 'visible' })
             }
 
             $scope.$watch('tooltipIsOpen',function(newValue){
