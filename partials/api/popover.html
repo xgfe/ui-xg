@@ -40,14 +40,14 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'popoverDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'popoverDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.text =
         <span class="hljs-string">"凉风有信，秋月无边，"</span>+
         <span class="hljs-string">"亏我思娇的情绪好比度日如年，"</span>+
         <span class="hljs-string">"虽然我不是玉树临风，潇洒倜傥，"</span>+
         <span class="hljs-string">"可是我有我广阔的胸襟，加强健的臂腕！"</span>;
-    $scope.template = false;
-    $scope.clickPopover = function(){
+    $scope.template = <span class="hljs-keyword">false</span>;
+    $scope.clickPopover = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
         $scope.template = !$scope.template;
     }
 }]);</code></pre>

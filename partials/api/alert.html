@@ -42,22 +42,22 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'alertDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
-    $scope.isIcon = false;
-    $scope.boolean = true;
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'alertDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.isIcon = <span class="hljs-keyword">false</span>;
+    $scope.boolean = <span class="hljs-keyword">true</span>;
     $scope.alerts = [
         { type: <span class="hljs-string">'danger'</span>, msg: <span class="hljs-string">'Oh snap! Change a few things up and try submitting again.'</span> },
         { type: <span class="hljs-string">'success'</span>, msg: <span class="hljs-string">'Well done! You successfully read this important alert message.'</span> },
         { type: <span class="hljs-string">'warning'</span>, msg: <span class="hljs-string">'FBI Warning! Manong would ignore anything about warning.'</span> },
-        { type: <span class="hljs-string">'info'</span>, msg: <span class="hljs-string">'I know that you wouldn\'</span>t see this line.<span class="hljs-string">' }
+        { type: <span class="hljs-string">'info'</span>, msg: <span class="hljs-string">'I know that you wouldn\'t see this line.'</span> }
     ];
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
+    $scope.closeAlert = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(index)</span> </span>{
+        $scope.alerts.splice(index, <span class="hljs-number">1</span>);
     };
-    $scope.addAlert = function(){
-        $scope.alerts.push({msg:"this is a new alert."});
+    $scope.addAlert = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+        $scope.alerts.push({msg:<span class="hljs-string">"this is a new alert."</span>});
     }
-}]);</span></code></pre>
+}]);</code></pre>
     </div>
     
     

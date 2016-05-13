@@ -23,31 +23,31 @@
 <div class="tab-content" id="codeTabPabels">
     
     <div class="tab-pane active" id="index_html">
-<pre><code>&lt;<span class="hljs-keyword">div</span> ng-controller=<span class="hljs-string">"calendarDemoCtrl"</span>&gt;
-    &lt;fugu-calendar <span class="hljs-built_in">min</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"minDate"</span> <span class="hljs-built_in">max</span>-<span class="hljs-built_in">date</span>=<span class="hljs-string">"maxDate"</span> ng-model=<span class="hljs-string">"date"</span> exceptions=<span class="hljs-string">"exceptions"</span>&gt;&lt;/fugu-calendar&gt;
-    &lt;pre&gt;<span>&#123;&#123;</span><span class="hljs-built_in">date</span> | <span class="hljs-built_in">date</span>:<span class="hljs-string">'yyyy-MM-dd hh:mm:ss'</span>&#125;&#125;&lt;/pre&gt;
-&lt;/<span class="hljs-keyword">div</span>&gt;</code></pre>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"calendarDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-calendar</span> <span class="hljs-attr">min-date</span>=<span class="hljs-string">"minDate"</span> <span class="hljs-attr">max-date</span>=<span class="hljs-string">"maxDate"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"date"</span> <span class="hljs-attr">exceptions</span>=<span class="hljs-string">"exceptions"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-calendar</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span><span class="hljs-name">date</span> | <span class="hljs-name">date</span>:'yyyy-MM-dd hh:mm:ss'&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguCalendarProvider'</span>, <span class="hljs-keyword">function</span> (fuguCalendarProvider) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguCalendarProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fuguCalendarProvider)</span> </span>{
     fuguCalendarProvider.setFormats(<span class="hljs-string">'SHORTDAY'</span>,[<span class="hljs-string">'日'</span>,<span class="hljs-string">'一'</span>,<span class="hljs-string">'二'</span>,<span class="hljs-string">'三'</span>,<span class="hljs-string">'四'</span>,<span class="hljs-string">'五'</span>,<span class="hljs-string">'六'</span>])
 }]);
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
-    $scope.date = new Date();
+angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.date = <span class="hljs-keyword">new</span> Date();
 
-    $scope.minDate = new Date();
-    $scope.minDate.setDate(<span class="hljs-number">15</span>); // 本月<span class="hljs-number">15</span>号之前的日期不可选
+    $scope.minDate = <span class="hljs-keyword">new</span> Date();
+    $scope.minDate.setDate(<span class="hljs-number">15</span>); <span class="hljs-comment">// 本月15号之前的日期不可选</span>
 
-    $scope.maxDate = new Date();
-    $scope.maxDate.setYear(<span class="hljs-number">2017</span>); // <span class="hljs-number">2017</span>年之后的不可选
+    $scope.maxDate = <span class="hljs-keyword">new</span> Date();
+    $scope.maxDate.setYear(<span class="hljs-number">2017</span>); <span class="hljs-comment">// 2017年之后的不可选</span>
 
-    // 设置两个例外的日期
-    var dt1 = new Date();
+    <span class="hljs-comment">// 设置两个例外的日期</span>
+    <span class="hljs-keyword">var</span> dt1 = <span class="hljs-keyword">new</span> Date();
     dt1.setMonth($scope.date.getMonth());
     dt1.setDate(<span class="hljs-number">5</span>);
-    var dt2 = new Date();
+    <span class="hljs-keyword">var</span> dt2 = <span class="hljs-keyword">new</span> Date();
     dt2.setFullYear(<span class="hljs-number">2017</span>);
     dt2.setMonth($scope.date.getMonth()+<span class="hljs-number">1</span>);
     dt2.setDate(<span class="hljs-number">5</span>);

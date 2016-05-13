@@ -46,11 +46,11 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'switchDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
-    $scope.open = false;
-    $scope.checked = true;
-    $scope.isDisabled = true;
-    $scope.statusChange = function () {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'switchDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.open = <span class="hljs-keyword">false</span>;
+    $scope.checked = <span class="hljs-keyword">true</span>;
+    $scope.isDisabled = <span class="hljs-keyword">true</span>;
+    $scope.statusChange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         console.log(<span class="hljs-string">'changed'</span>);
     };
     $scope.status = <span class="hljs-string">'A'</span>;

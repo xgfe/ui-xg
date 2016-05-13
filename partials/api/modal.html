@@ -73,18 +73,18 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>,<span class="hljs-string">'$fgModal'</span>, <span class="hljs-keyword">function</span> ($scope,$log,$fgModal) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>,<span class="hljs-string">'$fgModal'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$log,$fgModal)</span> </span>{
     $scope.items = [<span class="hljs-string">'item1'</span>, <span class="hljs-string">'item2'</span>, <span class="hljs-string">'item3'</span>];
 
-    $scope.open = function (size) {
+    $scope.open = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(size)</span> </span>{
 
-        var modalInstance = $fgModal.open({
+        <span class="hljs-keyword">var</span> modalInstance = $fgModal.open({
             templateUrl: <span class="hljs-string">'modalContent.html'</span>,
             controller: <span class="hljs-string">'modalInstanceCtrl'</span>,
             size: size,
             resolve: {
-                items: function () {
-                    return {
+                items: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    <span class="hljs-keyword">return</span> {
                         items:$scope.items,
                         selected:$scope.selected
                     };
@@ -92,42 +92,42 @@
             }
         });
 
-        modalInstance.result.then(function (result) {
+        modalInstance.result.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
             $scope.items = result.items;
             $scope.selected = result.selected;
-        }, function () {
-            $log.info(<span class="hljs-string">'Modal dismissed at: '</span> + new Date());
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            $log.info(<span class="hljs-string">'Modal dismissed at: '</span> + <span class="hljs-keyword">new</span> Date());
         });
     };
 }]);
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalInstanceCtrl'</span>, [<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$fgModalInstance'</span>,<span class="hljs-string">'items'</span>,<span class="hljs-string">'$fgModal'</span>,<span class="hljs-keyword">function</span> ($scope, $fgModalInstance, items,$fgModal) {
+angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalInstanceCtrl'</span>, [<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$fgModalInstance'</span>,<span class="hljs-string">'items'</span>,<span class="hljs-string">'$fgModal'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $fgModalInstance, items,$fgModal)</span> </span>{
 
     $scope.items = angular.copy(items.items);
     $scope.selected = {
         item: items.selected
     };
 
-    $scope.openAnother = function () {
+    $scope.openAnother = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $fgModal.open({
             templateUrl: <span class="hljs-string">'anotherModal.html'</span>,
             size: <span class="hljs-string">'sm'</span>,
-            controller: [<span class="hljs-string">'$scope'</span>,function ($scope) {
+            controller: [<span class="hljs-string">'$scope'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
                 $scope.modalBodyText = <span class="hljs-string">"Hello!'I'm a another modal"</span>;
-                $scope.ok = function () {
+                $scope.ok = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
                     $scope.$close(<span class="hljs-string">'close modal by $scope'</span>);
                 };
             }]
         });
     };
 
-    $scope.ok = function () {
+    $scope.ok = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $fgModalInstance.close({
             items:$scope.items,
             selected:$scope.selected.item
         });
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $fgModalInstance.dismiss(<span class="hljs-string">'cancel'</span>);
     };
 }]);</code></pre>

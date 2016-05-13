@@ -43,24 +43,24 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'sortableDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'sortableDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$scope</span>) </span>{
     $scope.mockList = [{
-        name:<span class="hljs-string">'List Item -- 1'</span>,
-        id:<span class="hljs-number">1</span>
+        <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item -- 1'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">1
     },{
-        name:<span class="hljs-string">'List Item -- 2'</span>,
-        id:<span class="hljs-number">2</span>
+        name</span>:<span class="hljs-string">'List Item -- 2'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">2
     },{
-        name:<span class="hljs-string">'List Item -- 3'</span>,
-        id:<span class="hljs-number">3</span>
+        name</span>:<span class="hljs-string">'List Item -- 3'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">3
     },{
-        name:<span class="hljs-string">'List Item -- 4'</span>,
-        id:<span class="hljs-number">4</span>
+        name</span>:<span class="hljs-string">'List Item -- 4'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">4
     }];
-    $scope.addItem = function () {
+    $scope.addItem</span> = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
         $scope.mockList.push({
-            name:<span class="hljs-string">'List Item -- '</span>+($scope.mockList.length+<span class="hljs-number">1</span>),
-            id:$scope.mockList.length+<span class="hljs-number">1</span>
+            <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item -- '</span>+($scope.mockList.length+<span class="hljs-number">1</span>),
+            <span class="hljs-attribute">id:</span><span class="hljs-string">$scope.mockList.length</span>+<span class="hljs-number">1</span>
         });
     }
 }]);</code></pre>

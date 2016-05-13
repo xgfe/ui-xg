@@ -117,12 +117,12 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'buttonGroupDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'buttonGroupDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.radioModel = <span class="hljs-string">'man'</span>;
     $scope.checkModel = {
-        <span class="hljs-string">'music'</span> : true,
-        <span class="hljs-string">'running'</span> : true,
-        <span class="hljs-string">'football'</span> : false
+        <span class="hljs-string">'music'</span> : <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'running'</span> : <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'football'</span> : <span class="hljs-keyword">false</span>
     };
     $scope.type = <span class="hljs-string">'checkbox'</span>;
     $scope.checkModelArr = [<span class="hljs-string">'music'</span>, <span class="hljs-string">'running'</span>, <span class="hljs-string">'football'</span>];
@@ -133,7 +133,7 @@
         <span class="hljs-string">'running'</span> : <span class="hljs-number">0</span>,
         <span class="hljs-string">'football'</span> : <span class="hljs-number">0</span>
     };
-    $scope.disabled = true;
+    $scope.disabled = <span class="hljs-keyword">true</span>;
     $scope.viewModel = <span class="hljs-string">'按钮1'</span>
 }]);</code></pre>
     </div>
@@ -147,7 +147,7 @@
 <span class="hljs-selector-class">.buttonGroup</span> <span class="hljs-selector-tag">li</span> &gt; <span class="hljs-selector-tag">p</span>, <span class="hljs-selector-class">.buttonGroup</span> <span class="hljs-selector-tag">li</span> &gt; <span class="hljs-selector-tag">div</span> {
     <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;
     <span class="hljs-attribute">font-weight</span>: bold;
-    <span class="hljs-attribute">color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.74</span>);
+    <span class="hljs-attribute">color</span>: <span class="hljs-built_in">rgba</span>(0, 0, 0, 0.74);
     <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">2px</span>;
 }
 <span class="hljs-selector-class">.buttonGroup</span> <span class="hljs-selector-tag">li</span> <span class="hljs-selector-tag">span</span> {

@@ -62,32 +62,32 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.text = <span class="hljs-string">'设置text'</span>;
     $scope.typeArr = [<span class="hljs-string">'button'</span>, <span class="hljs-string">'reset'</span>, <span class="hljs-string">'submit'</span>];
     $scope.btnClass = <span class="hljs-string">'primary'</span>;
     $scope.formContent = <span class="hljs-string">'表单内容'</span>;
     $scope.submit = <span class="hljs-string">"Submit"</span>;
     $scope.reset = <span class="hljs-string">"Reset"</span>;
-    $scope.block = true;
+    $scope.block = <span class="hljs-keyword">true</span>;
     $scope.clickText = <span class="hljs-string">""</span>;
 
-    $scope.activeTrue = true;
-    $scope.activeFalse = false;
+    $scope.activeTrue = <span class="hljs-keyword">true</span>;
+    $scope.activeFalse = <span class="hljs-keyword">false</span>;
 
-    $scope.disabledTrue = true;
-    $scope.disabledFalse = false;
+    $scope.disabledTrue = <span class="hljs-keyword">true</span>;
+    $scope.disabledFalse = <span class="hljs-keyword">false</span>;
 
-    $scope.loadingTrue = true;
-    $scope.loadingFalse = false;
+    $scope.loadingTrue = <span class="hljs-keyword">true</span>;
+    $scope.loadingFalse = <span class="hljs-keyword">false</span>;
 
     $scope.icon = <span class="hljs-string">'plus'</span>;
 
-    $scope.loading = false;
-    $scope.clickFn = function(){
+    $scope.loading = <span class="hljs-keyword">false</span>;
+    $scope.clickFn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
         $scope.loading = !$scope.loading;
     };
-    $scope.submitFn = function(){
+    $scope.submitFn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
         $scope.clickText = <span class="hljs-string">'submit function'</span>;
     };
     $scope.classArr = [<span class="hljs-string">'danger'</span>, <span class="hljs-string">'warning'</span> , <span class="hljs-string">'default'</span> , <span class="hljs-string">'success'</span> , <span class="hljs-string">'info'</span> , <span class="hljs-string">'primary'</span>, <span class="hljs-string">'link'</span>];
@@ -99,7 +99,7 @@
     <div class="tab-pane " id="style_css">
 <pre><code><span class="hljs-selector-class">.buttonDemo</span> <span class="hljs-selector-tag">p</span>{
     <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;
-    <span class="hljs-attribute">color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.74</span>);
+    <span class="hljs-attribute">color</span>: <span class="hljs-built_in">rgba</span>(0, 0, 0, 0.74);
 }</code></pre>
     </div>
     

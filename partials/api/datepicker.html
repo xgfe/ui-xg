@@ -42,15 +42,15 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'datepickerDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
-    $scope.date = new Date();
-    $scope.minDate = new Date(<span class="hljs-string">'2016-3-10'</span>);
-    $scope.maxDate = new Date(<span class="hljs-string">'2017-3-21'</span>);
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'datepickerDemoCtrl'</span>,<span class="hljs-meta">[</span><span class="hljs-string">'$scope'</span>, function ($scope) {
+    $scope.date = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>();
+    $scope.minDate = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2016-3-10'</span>);
+    $scope.maxDate = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2017-3-21'</span>);
 
-    $scope.exceptions = [
-        new Date(<span class="hljs-string">'2016-3-5'</span>),
-        new Date(<span class="hljs-string">'2017-3-25'</span>)
-    ];
+    $scope.exceptions = <span class="hljs-meta">[</span>
+        <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2016-3-5'</span>),
+        <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>(<span class="hljs-string">'2017-3-25'</span>)
+    <span class="hljs-meta">]</span>;
     $scope.isDisabled = false;
 }]);</code></pre>
     </div>

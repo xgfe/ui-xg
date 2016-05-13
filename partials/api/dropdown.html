@@ -47,25 +47,25 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguDropdownProvider'</span>, <span class="hljs-keyword">function</span> (fuguDropdownProvider) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguDropdownProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fuguDropdownProvider)</span> </span>{
     fuguDropdownProvider.setColsNum(<span class="hljs-number">3</span>);
 }]);
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
-    $scope.list = [
+angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.<span class="hljs-keyword">list</span> = [
         {id:<span class="hljs-number">1</span>,name:<span class="hljs-string">'Jerry'</span>},
         {id:<span class="hljs-number">2</span>,name:<span class="hljs-string">'Test'</span>},
         {id:<span class="hljs-number">3</span>,name:<span class="hljs-string">'multidropdownmultidropdown'</span>},
         {id:<span class="hljs-number">4</span>,name:<span class="hljs-string">'meituan'</span>}];
     $scope.status = {
-        isOpen:true,
-        isDisabled:true
+        isOpen:<span class="hljs-keyword">true</span>,
+        isDisabled:<span class="hljs-keyword">true</span>
     };
-    $scope.doClick = function (evt) {
+    $scope.doClick = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(evt)</span> </span>{
         evt.stopPropagation();
         $scope.status.isOpen = !$scope.status.isOpen
     };
     $scope.currentUser = {id:<span class="hljs-number">1</span>,name:<span class="hljs-string">'Jerry'</span>};
-    $scope.selectItem = function (item) {
+    $scope.selectItem = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
         $scope.currentUser = item;
     }
 }]);</code></pre>

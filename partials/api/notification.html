@@ -42,52 +42,52 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'notificationProvider'</span>, function (notificationProvider   ) {
-    notificationProvider.globalDurationTime(<span class="hljs-number">5000</span>)<span class="hljs-comment">; //统一设置5秒后关闭</span>
-    notificationProvider.globalDisableCloseBtn(true)<span class="hljs-comment">; //统一设置不显示关闭标签</span>
-    notificationProvider.globalUnique(false)<span class="hljs-comment">; //统一设置通知可重复显示</span>
-    notificationProvider.globalLimitNum(<span class="hljs-number">5</span>)<span class="hljs-comment">; //统一设置最多显示5条通知</span>
-}])<span class="hljs-comment">;</span>
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'notificationDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'notification'</span>, function ($scope, notification) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'notificationProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(notificationProvider   )</span> </span>{
+    notificationProvider.globalDurationTime(<span class="hljs-number">5000</span>); <span class="hljs-comment">//统一设置5秒后关闭</span>
+    notificationProvider.globalDisableCloseBtn(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不显示关闭标签</span>
+    notificationProvider.globalUnique(<span class="hljs-keyword">false</span>); <span class="hljs-comment">//统一设置通知可重复显示</span>
+    notificationProvider.globalLimitNum(<span class="hljs-number">5</span>); <span class="hljs-comment">//统一设置最多显示5条通知</span>
+}]);
+angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'notificationDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'notification'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, notification)</span> </span>{
     $scope.notifications = [
-        {<span class="hljs-keyword">title</span>:<span class="hljs-string">'This is success info'</span>, type: <span class="hljs-string">'info'</span>},
-        {<span class="hljs-keyword">title</span>:<span class="hljs-string">'This is success error'</span>, type: <span class="hljs-string">'error'</span>},
-        {<span class="hljs-keyword">title</span>:<span class="hljs-string">'This is success success'</span>, type: <span class="hljs-string">'success'</span>},
-        {<span class="hljs-keyword">title</span>:<span class="hljs-string">'This is success warning'</span>, type: <span class="hljs-string">'warning'</span>}
-    ]<span class="hljs-comment">;</span>
-    $scope.addNotice = function(type){
-        var config = {}<span class="hljs-comment">;</span>
+        {title:<span class="hljs-string">'This is success info'</span>, type: <span class="hljs-string">'info'</span>},
+        {title:<span class="hljs-string">'This is success error'</span>, type: <span class="hljs-string">'error'</span>},
+        {title:<span class="hljs-string">'This is success success'</span>, type: <span class="hljs-string">'success'</span>},
+        {title:<span class="hljs-string">'This is success warning'</span>, type: <span class="hljs-string">'warning'</span>}
+    ];
+    $scope.addNotice = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type)</span></span>{
+        <span class="hljs-keyword">var</span> config = {};
         <span class="hljs-keyword">switch</span>(type){
             <span class="hljs-keyword">case</span> <span class="hljs-string">'info'</span>:
-                config.duration = <span class="hljs-number">-1</span><span class="hljs-comment">; //一直显示</span>
-                notification.info(<span class="hljs-string">'info － will always show'</span>, config)<span class="hljs-comment">;</span>
-                <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
+                config.duration = <span class="hljs-number">-1</span>; <span class="hljs-comment">//一直显示</span>
+                notification.info(<span class="hljs-string">'info － will always show'</span>, config);
+                <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">case</span> <span class="hljs-string">'success'</span>:
-                config.duration = <span class="hljs-number">1000</span><span class="hljs-comment">; //一直显示</span>
-                config.disableCloseBtn = true<span class="hljs-comment">; //不显示关闭</span>
-                notification.success(<span class="hljs-string">'success - will show 1 second,not show close button'</span>, config)<span class="hljs-comment">;</span>
-                <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
+                config.duration = <span class="hljs-number">1000</span>; <span class="hljs-comment">//一直显示</span>
+                config.disableCloseBtn = <span class="hljs-keyword">true</span>; <span class="hljs-comment">//不显示关闭</span>
+                notification.success(<span class="hljs-string">'success - will show 1 second,not show close button'</span>, config);
+                <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">case</span> <span class="hljs-string">'warning'</span>:
-                config.variables = {name: <span class="hljs-string">'penglu'</span>, email: <span class="hljs-string">'rabbit_pl@126.com'</span>}<span class="hljs-comment">;  // 设置模版</span>
-                notification.warning(<span class="hljs-string">'warning - limitNum:2,author:{{name}},email:{{email}}'</span>, config)<span class="hljs-comment">;</span>
-                <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
+                config.variables = {name: <span class="hljs-string">'penglu'</span>, email: <span class="hljs-string">'rabbit_pl@126.com'</span>};  <span class="hljs-comment">// 设置模版</span>
+                notification.warning(<span class="hljs-string">'warning - limitNum:2,author:{{name}},email:{{email}}'</span>, config);
+                <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">case</span> <span class="hljs-string">'error'</span>:
-                config.duration = <span class="hljs-number">1000</span><span class="hljs-comment">; //一直显示</span>
-                config.disableCloseBtn = true<span class="hljs-comment">; //不显示关闭</span>
-                config.variables = {name: <span class="hljs-string">'penglu'</span>, email: <span class="hljs-string">'rabbit_pl@126.com'</span>}<span class="hljs-comment">;</span>
-                notification.error(<span class="hljs-string">'error - show 10 second; not show close btn; author:{{name}},email:{{email}}'</span>, config)<span class="hljs-comment">;</span>
-                <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
+                config.duration = <span class="hljs-number">1000</span>; <span class="hljs-comment">//一直显示</span>
+                config.disableCloseBtn = <span class="hljs-keyword">true</span>; <span class="hljs-comment">//不显示关闭</span>
+                config.variables = {name: <span class="hljs-string">'penglu'</span>, email: <span class="hljs-string">'rabbit_pl@126.com'</span>};
+                notification.error(<span class="hljs-string">'error - show 10 second; not show close btn; author:{{name}},email:{{email}}'</span>, config);
+                <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">default</span> :
-                $scope.notifications.<span class="hljs-keyword">forEach</span>(function(val){
-                    config = angular.copy(val)<span class="hljs-comment">;</span>
-                    <span class="hljs-keyword">delete</span> config.<span class="hljs-keyword">title</span><span class="hljs-comment">;</span>
-                    <span class="hljs-keyword">delete</span> config.type<span class="hljs-comment">;</span>
-                    notification.common(val.<span class="hljs-keyword">title</span>, config, val.type)<span class="hljs-comment">;</span>
-                })<span class="hljs-comment">;</span>
-                <span class="hljs-keyword">break</span><span class="hljs-comment">;</span>
+                $scope.notifications.<span class="hljs-keyword">forEach</span>(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(val)</span></span>{
+                    config = angular.copy(val);
+                    delete config.title;
+                    delete config.type;
+                    notification.common(val.title, config, val.type);
+                });
+                <span class="hljs-keyword">break</span>;
         }
-    }<span class="hljs-comment">;</span>
-}])<span class="hljs-comment">;</span></code></pre>
+    };
+}]);</code></pre>
     </div>
     
     

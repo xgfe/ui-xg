@@ -38,10 +38,10 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'tooltipDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'tooltipDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.text = <span class="hljs-string">"这是另一个提示！"</span>;
-    $scope.template = false;
-    $scope.clickTooltip = function(){
+    $scope.template = <span class="hljs-keyword">false</span>;
+    $scope.clickTooltip = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
         $scope.template = !$scope.template;
     }
 }]);</code></pre>
