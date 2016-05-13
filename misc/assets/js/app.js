@@ -1,7 +1,9 @@
 define([
     'jquery',
     'angular',
-    'lib'
+    'ngAnimate',
+    'uiRouter',
+    'uiFugu'
 ], function($,angular) {
 
     //定义angular模块

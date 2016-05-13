@@ -284,26 +284,14 @@ gulp.task('copy',['uglify'], function () {
     gulp.src(['misc/assets/js/*.js'])
         .pipe(gulp.dest(config.dist+'/docs/js'));
 
-    gulp.src(['misc/assets/js/lib/require.min.js'])
-        .pipe(gulp.dest(config.dist+'/docs/js/lib'));
 
-    // copy angular and jquery
-    gulp.src(['lib/angular/angular.min.js','lib/jquery/dist/jquery.min.js'])
-        .pipe(gulp.dest(config.dist+'/docs/js/lib'));
-
-    // combine js files
-    gulp.src(['misc/assets/js/lib/*','!misc/assets/js/lib/require.min.js',config.dist+'/js/'+config.filename+'.min.js'])
-        .pipe(concat('lib-comb.js'))
+    gulp.src([config.dist+'/js/'+config.filename+'.min.js'])
         .pipe(gulp.dest(config.dist+'/docs/js/lib'));
 
     // combine css files
-    gulp.src(['lib/bootstrap/dist/css/bootstrap.min.css','misc/assets/css/github.css',config.dist+'/css/'+config.filename+'.min.css','misc/assets/css/style.css'])
+    return gulp.src(['misc/assets/css/github.css',config.dist+'/css/'+config.filename+'.min.css','misc/assets/css/style.css'])
         .pipe(concat('style.css'))
         .pipe(gulp.dest(config.dist+'/docs/css'));
-
-    // copy font files
-    return gulp.src(['lib/bootstrap/dist/fonts/*'])
-        .pipe(gulp.dest(config.dist+'/docs/fonts'));
 });
 // 自动构建API网站
 gulp.task('docs',['copy'], function () {
