@@ -9,8 +9,11 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions:[],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format:'yyyy-MM-dd hh:mm:ss a', // 日期格式化
-        autoClose:true // 是否自动关闭面板
+        format:'yyyy-MM-dd hh:mm:ss', // 日期格式化
+        autoClose:true, // 是否自动关闭面板,
+        clearBtn: false,
+        showTime: true,
+        size:'md'
     })
     // 位置偏移
     .factory('fuguDatepickerOffset', ['$document', '$window', function ($document, $window) {
@@ -108,7 +111,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         this.showCalendar = function() {
             return $scope.showCalendar;
         };
-        angular.forEach(['exceptions','clearBtn'], function(key) {
+        angular.forEach(['exceptions','clearBtn','showTime'], function(key) {
             $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
         });
 
@@ -181,7 +184,9 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
                 minDate:'=?',
                 maxDate:'=?',
                 placeholder:'@',
-                isDisabled:'=?ngDisabled'
+                size:'@',
+                isDisabled:'=?ngDisabled',
+                onChange:'&ngChange'
             },
             controller: 'fuguDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
