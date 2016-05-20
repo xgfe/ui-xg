@@ -24,6 +24,7 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -248,7 +249,6 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
-
 
 .fugu-datepicker {
   position: relative;

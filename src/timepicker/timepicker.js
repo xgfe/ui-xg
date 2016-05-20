@@ -52,11 +52,16 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             ngModelCtrl.$formatters.unshift(function(modelValue) {
                 return modelValue ? new Date(modelValue) : null;
             });
-            $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-            $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-            $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
         };
         var _this = this;
+        /*
+         fix 父组件的controller优先于子组件初始化,hourStep三个属性需要在子组件初始化的是即传递进去
+         不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
+         http://xgfe.github.io/2015/12/22/penglu/link-controller/
+         */
+        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
+        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
+        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
         $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
 
         $scope.showTimepanel = false;
