@@ -448,6 +448,8 @@ angular.module('ui.fugu.timepanel', [])
         $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
         $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
         $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
+        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepanelConfig.readonlyInput;
+
         $scope.showSeconds = timepanelConfig.showSeconds;
         if ($attrs.showSeconds) {
             $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
@@ -5009,6 +5011,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
+        readonlyInput:false,
         format:'HH:mm:ss'
     })
     .service('fuguTimepickerService', ['$document', function($document) {
@@ -5034,8 +5037,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             if (!openScope) { return; }
             var panelElement = openScope.getTimepanelElement();
             var toggleElement = openScope.getToggleElement();
-            if(panelElement && panelElement[0].contains(evt.target) ||
-                toggleElement && toggleElement[0].contains(evt.target)){
+            if(panelElement && panelElement.contains(evt.target) ||
+                toggleElement && toggleElement.contains(evt.target)){
                 return;
             }
             openScope.showTimepanel = false;
@@ -5056,6 +5059,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
         };
         var _this = this;
+        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
+
         $scope.showTimepanel = false;
         this.toggle = function(open) {
             $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
@@ -5086,10 +5091,11 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             }
         };
         $scope.getTimepanelElement = function () {
-            return $element.find('.fugu-timepanel');
+            // do not use $element.find() it only can find a element by tag name
+            return $element[0].querySelector('.fugu-timepanel');
         };
         $scope.getToggleElement = function () {
-            return $element.find('.input-group');
+            return $element[0].querySelector('.input-group');
         };
         $scope.$watch('showTimepanel', function(showTimepanel) {
             if (showTimepanel) {
@@ -6051,7 +6057,7 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "    <div class=\"fugu-timepanel-col\">"+
     "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('hour',23)\">{{hour | smallerValue:23:hourStep}}</div>"+
     "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
+    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
     "            <span class=\"fugu-timepanel-label\">时</span>"+
     "        </div>"+
     "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('hour',23)\">{{hour | largerValue:23:hourStep}}</div>"+
@@ -6059,7 +6065,7 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "    <div class=\"fugu-timepanel-col\">"+
     "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('minute',59)\">{{minute | smallerValue:59:minuteStep}}</div>"+
     "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
+    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
     "            <span class=\"fugu-timepanel-label\">分</span>"+
     "        </div>"+
     "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('minute',59)\">{{minute | largerValue:59:minuteStep}}</div>"+
@@ -6067,7 +6073,7 @@ angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",fu
     "    <div class=\"fugu-timepanel-col\" ng-show=\"showSeconds\">"+
     "        <div class=\"fugu-timepanel-top\" ng-click=\"decrease('second',59)\">{{second | smallerValue:59:secondStep}}</div>"+
     "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
+    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
     "            <span class=\"fugu-timepanel-label\">秒</span>"+
     "        </div>"+
     "        <div class=\"fugu-timepanel-bottom\" ng-click=\"increase('second',59)\">{{second | largerValue:59:secondStep}}</div>"+
@@ -6360,7 +6366,7 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     "            </button>"+
     "        </span>"+
     "    </div>"+
-    "    <fugu-timepanel hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "    <fugu-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
     "</div>"+
     "");
 }]);

@@ -9,6 +9,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
+        readonlyInput:false,
         format:'HH:mm:ss'
     })
     .service('fuguTimepickerService', ['$document', function($document) {
@@ -34,8 +35,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             if (!openScope) { return; }
             var panelElement = openScope.getTimepanelElement();
             var toggleElement = openScope.getToggleElement();
-            if(panelElement && panelElement[0].contains(evt.target) ||
-                toggleElement && toggleElement[0].contains(evt.target)){
+            if(panelElement && panelElement.contains(evt.target) ||
+                toggleElement && toggleElement.contains(evt.target)){
                 return;
             }
             openScope.showTimepanel = false;
@@ -56,6 +57,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
         };
         var _this = this;
+        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
+
         $scope.showTimepanel = false;
         this.toggle = function(open) {
             $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
@@ -86,10 +89,11 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             }
         };
         $scope.getTimepanelElement = function () {
-            return $element.find('.fugu-timepanel');
+            // do not use $element.find() it only can find a element by tag name
+            return $element[0].querySelector('.fugu-timepanel');
         };
         $scope.getToggleElement = function () {
-            return $element.find('.input-group');
+            return $element[0].querySelector('.input-group');
         };
         $scope.$watch('showTimepanel', function(showTimepanel) {
             if (showTimepanel) {
