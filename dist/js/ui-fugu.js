@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-05-19
+ * Version: 0.1.0 - 2016-05-20
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -985,8 +985,11 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions:[],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format:'yyyy-MM-dd hh:mm:ss a', // 日期格式化
-        autoClose:true // 是否自动关闭面板
+        format:'yyyy-MM-dd hh:mm:ss', // 日期格式化
+        autoClose:true, // 是否自动关闭面板,
+        clearBtn: false,
+        showTime: true,
+        size:'md'
     })
     // 位置偏移
     .factory('fuguDatepickerOffset', ['$document', '$window', function ($document, $window) {
@@ -1084,7 +1087,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
         this.showCalendar = function() {
             return $scope.showCalendar;
         };
-        angular.forEach(['exceptions','clearBtn'], function(key) {
+        angular.forEach(['exceptions','clearBtn','showTime'], function(key) {
             $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
         });
 
@@ -1157,7 +1160,9 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar'])
                 minDate:'=?',
                 maxDate:'=?',
                 placeholder:'@',
-                isDisabled:'=?ngDisabled'
+                size:'@',
+                isDisabled:'=?ngDisabled',
+                onChange:'&ngChange'
             },
             controller: 'fuguDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -6155,20 +6160,20 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/datepicker.html",
     "<div class=\"fugu-datepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
     "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
+    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
     "                <i class=\"glyphicon glyphicon-remove\"></i>"+
     "            </button>"+
     "        </span>"+
     "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default fugu-datepicker-toggle\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
+    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default fugu-datepicker-toggle\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
     "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
     "            </button>"+
     "        </span>"+
     "    </div>"+
     "    <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
-    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\"></fugu-calendar>"+
+    "                   exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\" show-time=\"showTime\"></fugu-calendar>"+
     "</div>"+
     "");
 }]);

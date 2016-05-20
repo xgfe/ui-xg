@@ -363,4 +363,56 @@ describe('ui.fugu.datepicker', function () {
             expect(isSeamTime(scope.time,scope.exceptions[1])).toBeTruthy();
         });
     });
+    describe('showTime attribute', function () {
+        function findTimeHandler(){
+            return element.find('.fugu-cal-time');
+        }
+        it('should show time by default', function () {
+            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            scope.time = getDate();
+            createDatepicker(el);
+            clickToggleButton();
+            expect(findTimeHandler().length).toBe(1);
+        });
+        it('should not show time', function () {
+            var el = '<fugu-datepicker show-time="false" ng-model="time"></fugu-datepicker>';
+            scope.time = getDate();
+            createDatepicker(el);
+            clickToggleButton();
+            expect(findTimeHandler().length).toBe(0);
+        });
+    });
+    describe('size attribute', function () {
+        it('should be middle size by default', function () {
+            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            scope.time = getDate();
+            createDatepicker(el);
+            var input = element.find('.fugu-datepicker-input');
+            expect(input).not.toHaveClass('input-sm');
+            expect(input).not.toHaveClass('input-lg');
+            var btn = element.find('.input-group-btn > button');
+            expect(btn).not.toHaveClass('btn-sm');
+            expect(btn).not.toHaveClass('btn-lg');
+        });
+        it('should be small size', function () {
+            var el = '<fugu-datepicker size="{{size}}" ng-model="time"></fugu-datepicker>';
+            scope.time = getDate();
+            scope.size = 'sm';
+            createDatepicker(el);
+            var input = element.find('.fugu-datepicker-input');
+            expect(input).toHaveClass('input-sm');
+            var btn = element.find('.input-group-btn > button');
+            expect(btn).toHaveClass('btn-sm');
+        });
+        it('should be large size', function () {
+            var el = '<fugu-datepicker size="{{size}}" ng-model="time"></fugu-datepicker>';
+            scope.time = getDate();
+            scope.size = 'lg';
+            createDatepicker(el);
+            var input = element.find('.fugu-datepicker-input');
+            expect(input).toHaveClass('input-lg');
+            var btn = element.find('.input-group-btn > button');
+            expect(btn).toHaveClass('btn-lg');
+        });
+    });
 });
