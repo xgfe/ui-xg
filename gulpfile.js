@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     insert = require('gulp-insert'),
     uglify = require('gulp-uglify'),
-    nano = require('gulp-cssnano'),
+    cleanCss = require('gulp-clean-css'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     rimraf = require('gulp-rimraf'),
@@ -253,7 +253,7 @@ gulp.task('concat:js',['modules'], function () {
  */
 gulp.task('uglify',['concat:css','concat:js'], function () {
     gulp.src([config.dist+'/css/*.css','!'+config.dist+'/css/*.min.css'])
-        .pipe(nano())
+        .pipe(cleanCss())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest(config.dist+'/css'));
 
