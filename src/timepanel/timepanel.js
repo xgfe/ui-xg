@@ -73,6 +73,8 @@ angular.module('ui.fugu.timepanel', [])
         $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
         $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
         $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
+        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepanelConfig.readonlyInput;
+
         $scope.showSeconds = timepanelConfig.showSeconds;
         if ($attrs.showSeconds) {
             $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
