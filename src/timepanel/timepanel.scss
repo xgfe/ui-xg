@@ -1,5 +1,4 @@
 .fugu-timepanel{
-    width: 150px;
     display: inline-block;
     border-radius: 3px;
     color: #666;
@@ -27,12 +26,11 @@
         position: relative;
     }
     .fugu-timepanel-input{
-        width: 30px;
+        width: 100%;
         border:none;
         outline: none;
         float: left;
         position: relative;
-        left: -3px;
         text-align: center;
     }
     .fugu-timepanel-top,

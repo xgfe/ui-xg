@@ -2,5 +2,6 @@ angular.module('fuguDemo').controller('timepanelDemoCtrl',['$scope','$log', func
     $scope.time = new Date();
     $scope.changed = function (time) {
         $log.log(time);
-    }
+    };
+    $scope.showSeconds = true;
 }]);

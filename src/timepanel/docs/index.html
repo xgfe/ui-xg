@@ -1,4 +1,6 @@
 <div ng-controller="timepanelDemoCtrl">
-    <fugu-timepanel ng-model="time" minute-step="'10'" on-change="changed"></fugu-timepanel>
+    <fugu-timepanel show-seconds="showSeconds" readonly-input="readonlyInput" ng-model="time" minute-step="'10'" on-change="changed"></fugu-timepanel>
     <pre>{{time | date:'shortTime'}}</pre>
+    showSeconds:<input type="checkbox" ng-model="showSeconds">
+    readonlyInput:<input type="checkbox" ng-model="readonlyInput">
 </div>

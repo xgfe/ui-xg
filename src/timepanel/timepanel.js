@@ -11,33 +11,10 @@ angular.module('ui.fugu.timepanel', [])
         secondStep: 1,
         showSeconds: true,
         mousewheel: true,
-        arrowkeys: true
+        arrowkeys: true,
+        readonlyInput: false
     })
-    .filter('smallerValue', function () {
-        return function (input, maxValue, step) {
-            input = parseInt(input, 10) - parseInt(step, 10);
-            if (input < 0) {
-                input = maxValue;
-            }
-            if (input < 10) {
-                input = '0' + input;
-            }
-            return input;
-        }
-    })
-    .filter('largerValue', function () {
-        return function (input, maxValue, step) {
-            input = parseInt(input, 10) + parseInt(step, 10);
-            if (input > maxValue) {
-                input = 0;
-            }
-            if (input < 10) {
-                input = '0' + input
-            }
-            return input;
-        }
-    })
-    .controller('fuguTimepanelCtrl', ['$scope', '$attrs', '$parse','$log', 'fuguTimepanelConfig', 'smallerValueFilter', 'largerValueFilter', function ($scope, $attrs, $parse,$log, timepanelConfig, smallerValueFilter, largerValueFilter) {
+    .controller('fuguTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
 
         this.init = function (_ngModelCtrl, inputs) {
@@ -73,22 +50,116 @@ angular.module('ui.fugu.timepanel', [])
         $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
         $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
         $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
-        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepanelConfig.readonlyInput;
 
+        // show seconds
         $scope.showSeconds = timepanelConfig.showSeconds;
         if ($attrs.showSeconds) {
             $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
                 $scope.showSeconds = !!value;
+                if (!$scope.showSeconds) {
+                    $scope.panelStyles = {width: '80px'};
+                } else {
+                    $scope.panelStyles = {};
+                }
             });
         }
-        $scope.decrease = function (type, maxValue) {
-            $scope[type] = smallerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+        // readonly input
+        $scope.readonlyInput = timepanelConfig.readonlyInput;
+        if ($attrs.readonlyInput) {
+            $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
+                $scope.readonlyInput = !!value;
+            });
+        }
+        // 使用对象存储是否可以点击某一个时间进行增长或减少
+        $scope.isMaxTime = {};
+        $scope.isMinTime = {};
+        //减少时/分/秒
+        $scope.decrease = function (type) {
+            if ($scope.isMinTime[type]) {
+                return;
+            }
+            var step = parseInt($scope[type + 'Step']);
+            var oldVal = parseInt($scope[type], 10);
+            var smallerVal = $scope['smaller' + type[0].toUpperCase() + type.slice(1)];
+            if (timeIsOutOfRange(type, smallerVal)) {
+                return;
+            }
+            $scope[type] = smallerVal;
+            if (oldVal - step < 0) {
+                carryTime(type, 'decrease');
+            }
             changeHandler();
         };
-        $scope.increase = function (type, maxValue) {
-            $scope[type] = largerValueFilter($scope[type], maxValue, $scope[type + 'Step']);
+        //增加时/分/秒
+        $scope.increase = function (type) {
+            if ($scope.isMaxTime[type]) {
+                return;
+            }
+            var maxValue = type === 'minute' || type === 'second' ? 60 : 24;
+            var step = parseInt($scope[type + 'Step']);
+            var oldVal = parseInt($scope[type], 10);
+            var largerValue = $scope['larger' + type[0].toUpperCase() + type.slice(1)];
+            if (timeIsOutOfRange(type, largerValue)) {
+                return;
+            }
+            $scope[type] = largerValue;
+            if (oldVal + step >= maxValue) {
+                carryTime(type, 'increase');
+            }
             changeHandler();
         };
+        $scope.$watch('hour', function (newVal) {
+            var step = parseInt($scope.hourStep);
+            $scope.smallerHour = getSmallerVal(newVal, step, 24);
+            $scope.largerHour = getLargerVal(newVal, step, 24);
+        });
+        $scope.$watch('minute', function (newVal) {
+            var step = parseInt($scope.minuteStep);
+            $scope.smallerMinute = getSmallerVal(newVal, step, 60);
+            $scope.largerMinute = getLargerVal(newVal, step, 60);
+        });
+        $scope.$watch('second', function (newVal) {
+            var step = parseInt($scope.secondStep);
+            $scope.smallerSecond = getSmallerVal(newVal, step, 60);
+            $scope.largerSecond = getLargerVal(newVal, step, 60);
+        });
+        function getSmallerVal(val, step, maxValue) {
+            var result = parseInt(val, 10) - parseInt(step, 10);
+            if (result < 0) {
+                result = maxValue + result;
+            }
+            if (result < 10) {
+                result = '0' + result;
+            }
+            return result;
+        }
+
+        function getLargerVal(val, step, maxValue) {
+            var result = parseInt(val, 10) + parseInt(step, 10);
+            if (result >= maxValue) {
+                result = result - maxValue;
+            }
+            if (result < 10) {
+                result = '0' + result
+            }
+            return result;
+        }
+
+        // 时间进位,秒和分钟满60进一
+        var timeCarrys = {
+            hour: null,
+            minute: 'hour',
+            second: 'minute'
+        };
+
+        function carryTime(type, dir) {
+            var val = timeCarrys[type];
+            if (!val) {
+                return;
+            }
+            $scope[dir](val);
+        }
+
         $scope.changeInputValue = function (type, maxValue) {
             if (isNaN($scope[type])) {
                 return;
@@ -124,28 +195,31 @@ angular.module('ui.fugu.timepanel', [])
             };
 
             hoursInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour', 23) : $scope.decrease('hour', 23));
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour') : $scope.decrease('hour'));
                 e.preventDefault();
             });
 
             minutesInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute', 59) : $scope.decrease('minute', 59));
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute') : $scope.decrease('minute'));
                 e.preventDefault();
             });
 
             secondsInputEl.bind('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('second', 59) : $scope.decrease('second', 59));
+                $scope.$apply(isScrollingUp(e) ? $scope.increase('second') : $scope.decrease('second'));
                 e.preventDefault();
             });
         };
 
         this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour', 23));
-            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute', 59));
-            secondsInputEl.bind('keydown', arrowkeyEventHandler('second', 59));
+            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour'));
+            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute'));
+            secondsInputEl.bind('keydown', arrowkeyEventHandler('second'));
         };
         function changeHandler() {
             var dt = angular.copy(ngModelCtrl.$modelValue);
+            if(timeIsInvalid(dt)){
+                dt = new Date();
+            }
             dt.setHours($scope.hour);
             dt.setMinutes($scope.minute);
             dt.setSeconds($scope.second);
@@ -159,15 +233,66 @@ angular.module('ui.fugu.timepanel', [])
             ngModelCtrl.$render();
         }
 
-        function arrowkeyEventHandler(type, maxValue) {
+        // 判断time是否是时间对象
+        function timeIsInvalid(time) {
+            var dt = new Date(time);
+            return isNaN(dt.getTime());
+        }
+
+        /**
+         * 判断时间是否超出min和max设置的时间范围
+         * @param type - 类型,hour,minute,second
+         * @param value - 需要改变的值
+         * @returns {boolean}
+         */
+        function timeIsOutOfRange(type, value) {
+            var method = 'set' + type[0].toUpperCase() + type.slice(1) + 's';
+            var result = false;
+            var currentTime, minTime, maxTime;
+            if (angular.isDefined($attrs.minTime)) {
+                if (timeIsInvalid($scope.minTime)) {
+                    $log.warn('Timepicker directive: "min-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                } else {
+                    currentTime = buildDate();
+                    minTime = new Date($scope.minTime);
+                    currentTime[method](value);
+                    result = currentTime < minTime;
+                }
+            }
+            if (result) {
+                return true;
+            }
+            if (angular.isDefined($attrs.maxTime)) {
+                if (timeIsInvalid($scope.maxTime)) {
+                    $log.warn('Timepicker directive: "max-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                } else {
+                    currentTime = buildDate();
+                    maxTime = new Date($scope.maxTime);
+                    currentTime[method](value);
+                    result = currentTime > maxTime;
+                }
+            }
+            return result;
+        }
+
+        // 根据输入框的内容生成时间
+        function buildDate() {
+            var dt = new Date();
+            dt.setHours($scope.hour);
+            dt.setMinutes($scope.minute);
+            dt.setSeconds($scope.second);
+            return dt;
+        }
+
+        function arrowkeyEventHandler(type) {
             return function (e) {
                 if (e.which === 38) { // up
                     e.preventDefault();
-                    $scope.increase(type, maxValue);
+                    $scope.increase(type);
                     $scope.$apply();
                 } else if (e.which === 40) { // down
                     e.preventDefault();
-                    $scope.decrease(type, maxValue);
+                    $scope.decrease(type);
                     $scope.$apply();
                 }
             }
@@ -184,7 +309,9 @@ angular.module('ui.fugu.timepanel', [])
             replace: true,
             require: ['fuguTimepanel', 'ngModel'],
             scope: {
-                onChange: '&'
+                onChange: '&',
+                minTime: '=?',
+                maxTime: '=?'
             },
             controller: 'fuguTimepanelCtrl',
             link: function (scope, el, attrs, ctrls) {
