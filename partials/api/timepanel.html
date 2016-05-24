@@ -1,16 +1,19 @@
 <h1>timepanel</h1><h2>Description</h2><p>时间选择面板，在<a ui-sref="app.api.calendar" href="../../calendar/docs/readme.md">calendar</a>和<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">timepicker</a>中有使用</p>
 <h2>Usage</h2><pre><code class="lang-html">&lt;fugu-timepanel ng-model=<span class="hljs-string">"time"</span>
-    [ hour-step=<span class="hljs-string">"number"</span> ]
-    [ minute-step=<span class="hljs-string">"number"</span> ]
-    [ second-step=<span class="hljs-string">"number"</span> ]
-    [ show-seconds=<span class="hljs-string">"boolean"</span> ]
+    [ hour-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
+    [ minute-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
+    [ <span class="hljs-built_in">second</span>-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
+    [ <span class="hljs-built_in">show</span>-seconds=<span class="hljs-string">"boolean"</span> ]
     [ mousewheel=<span class="hljs-string">"boolean"</span> ]
     [ arrowkeys=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">readonly</span>-input=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">min</span>-<span class="hljs-built_in">time</span>=<span class="hljs-string">"date"</span> ]
+    [ <span class="hljs-built_in">max</span>-<span class="hljs-built_in">time</span>=<span class="hljs-string">"date"</span> ]
     [ on-change=<span class="hljs-string">"function"</span> ]&gt;
 &lt;/fugu-timepanel&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>绑定日期对象</td></tr><tr><td>hourStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的小时数</td></tr><tr><td>minuteStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的分钟数</td></tr><tr><td>secondStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的秒数</td></tr><tr><td>showSeconds(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示秒</td></tr><tr><td>mousewheel(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否可以使用鼠标滚轮增加或减少小时/分钟/秒</td></tr><tr><td>arrowkeys(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否可以使用上下方向键增加或减少小时/分钟/秒</td></tr><tr><td>onChange(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>时间变动的时候触发的函数，只需要传入方法名即可，这样方法的参数为绑定是日期对象</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>绑定日期对象</td></tr><tr><td>hourStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的小时数</td></tr><tr><td>minuteStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的分钟数</td></tr><tr><td>secondStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的秒数</td></tr><tr><td>showSeconds(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否显示秒</td></tr><tr><td>mousewheel(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否可以使用鼠标滚轮增加或减少小时/分钟/秒</td></tr><tr><td>arrowkeys(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否可以使用上下方向键增加或减少小时/分钟/秒</td></tr><tr><td>readonlyInput(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>输入框是否是只读模式</td></tr><tr><td>minTime(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可选择的最小时间</td></tr><tr><td>maxTime(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可选择的最大时间</td></tr><tr><td>onChange(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>时间变动的时候触发的函数，只需要传入方法名即可，这样方法的参数为绑定是日期对象</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -22,10 +25,12 @@
 <div class="tab-content" id="codeTabPabels">
     
     <div class="tab-pane active" id="index_html">
-<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"timepanelDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-timepanel</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"time"</span> <span class="hljs-attr">minute-step</span>=<span class="hljs-string">"'10'"</span> <span class="hljs-attr">on-change</span>=<span class="hljs-string">"changed"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-timepanel</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>time | <span class="hljs-name">date</span>:'shortTime'&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+<pre><code>&lt;div ng-controller=<span class="hljs-string">"timepanelDemoCtrl"</span>&gt;
+    &lt;fugu-timepanel show-seconds=<span class="hljs-string">"showSeconds"</span> readonly-<span class="hljs-built_in">input</span>=<span class="hljs-string">"readonlyInput"</span> ng-model=<span class="hljs-string">"time"</span> minute-step=<span class="hljs-string">"'10'"</span> <span class="hljs-keyword">on</span>-<span class="hljs-keyword">change</span>=<span class="hljs-string">"changed"</span>&gt;&lt;/fugu-timepanel&gt;
+    <span class="hljs-symbol">&lt;pre&gt;</span><span>&#123;&#123;</span>time | date:<span class="hljs-string">'shortTime'</span>&#125;&#125;&lt;/<span class="hljs-keyword">pre</span>&gt;
+    showSecond<span class="hljs-variable">s:</span>&lt;<span class="hljs-built_in">input</span> <span class="hljs-built_in">type</span>=<span class="hljs-string">"checkbox"</span> ng-model=<span class="hljs-string">"showSeconds"</span>&gt;
+    readonlyInpu<span class="hljs-variable">t:</span>&lt;<span class="hljs-built_in">input</span> <span class="hljs-built_in">type</span>=<span class="hljs-string">"checkbox"</span> ng-model=<span class="hljs-string">"readonlyInput"</span>&gt;
+&lt;/div&gt;</code></pre>
     </div>
     
     
@@ -34,7 +39,8 @@
     $scope.time = <span class="hljs-keyword">new</span> Date();
     $scope.changed = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(time)</span> </span>{
         $log.log(time);
-    }
+    };
+    $scope.showSeconds = <span class="hljs-keyword">true</span>;
 }]);</code></pre>
     </div>
     
@@ -54,11 +60,14 @@
         });
     });
 </script></div><div class="example"><div ng-controller="timepanelDemoCtrl">
-    <fugu-timepanel ng-model="time" minute-step="'10'" on-change="changed"></fugu-timepanel>
+    <fugu-timepanel show-seconds="showSeconds" readonly-input="readonlyInput" ng-model="time" minute-step="'10'" on-change="changed"></fugu-timepanel>
     <pre>{{time | date:'shortTime'}}</pre>
+    showSeconds:<input type="checkbox" ng-model="showSeconds">
+    readonlyInput:<input type="checkbox" ng-model="readonlyInput">
 </div></div><script>angular.module('fuguDemo').controller('timepanelDemoCtrl',['$scope','$log', function ($scope,$log) {
     $scope.time = new Date();
     $scope.changed = function (time) {
         $log.log(time);
-    }
+    };
+    $scope.showSeconds = true;
 }]);</script>
