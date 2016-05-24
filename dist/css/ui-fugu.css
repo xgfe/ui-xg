@@ -24,7 +24,6 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
-
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -102,6 +101,7 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
+
 
 .fugu-calendar {
   display: inline-block;
@@ -676,7 +676,6 @@ body > .fugu-select.open {
     width: 28px; }
 
 .fugu-timepanel {
-  width: 150px;
   display: inline-block;
   border-radius: 3px;
   color: #666;
@@ -702,12 +701,11 @@ body > .fugu-select.open {
     cursor: pointer;
     position: relative; }
   .fugu-timepanel .fugu-timepanel-input {
-    width: 30px;
+    width: 100%;
     border: none;
     outline: none;
     float: left;
     position: relative;
-    left: -3px;
     text-align: center; }
   .fugu-timepanel .fugu-timepanel-top,
   .fugu-timepanel .fugu-timepanel-bottom {

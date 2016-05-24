@@ -45,13 +45,15 @@ describe('ui.fugu.timepicker', function () {
         return element.find('.fugu-timepanel');
     }
     function increaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
+        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
         el.click();
+        scope.$digest();
     }
 
     function decreaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
+        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
         el.click();
+        scope.$digest();
     }
     function getTimes() {
         var inputs = element.find('input');
@@ -60,14 +62,14 @@ describe('ui.fugu.timepicker', function () {
             secondInputEl = inputs.eq(3);
         return {
             hour: hourInputEl.val(),
-            hour_smaller: hourInputEl.parent().prev().text(),
-            hour_larger: hourInputEl.parent().next().text(),
+            hour_smaller: hourInputEl.parent().next().text(),
+            hour_larger: hourInputEl.parent().prev().text(),
             minute: minuteInputEl.val(),
-            minute_smaller: minuteInputEl.parent().prev().text(),
-            minute_larger: minuteInputEl.parent().next().text(),
+            minute_smaller: minuteInputEl.parent().next().text(),
+            minute_larger: minuteInputEl.parent().prev().text(),
             second: secondInputEl.val(),
-            second_smaller: secondInputEl.parent().prev().text(),
-            second_larger: secondInputEl.parent().next().text()
+            second_smaller: secondInputEl.parent().next().text(),
+            second_larger: secondInputEl.parent().prev().text()
         }
     }
 
