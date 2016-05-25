@@ -17,4 +17,31 @@
             <pre>time2:{{time2 | date:'HH:mm:ss'}}</pre>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker readonly-input="readonlyInput" ng-model="time2"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <label for="readonlyInput">
+                readonlyInput: <input id="readonlyInput" type="checkbox" ng-model="readonlyInput">
+            </label>
+            <pre>{{readonlyInput}}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker min-time="minTime" ng-model="time"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <pre>minTime:{{minTime | date:'HH:mm:ss'}}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker max-time="maxTime" ng-model="time2"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <pre>maxTime:{{maxTime | date:'HH:mm:ss'}}</pre>
+        </div>
+    </div>
 </div>

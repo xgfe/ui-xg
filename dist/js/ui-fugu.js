@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-05-24
+ * Version: 0.1.0 - 2016-05-25
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -569,26 +569,26 @@ angular.module('ui.fugu.timepanel', [])
                 return e.detail || delta > 0;
             };
 
-            hoursInputEl.bind('mousewheel wheel', function (e) {
+            hoursInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('hour') : $scope.decrease('hour'));
                 e.preventDefault();
             });
 
-            minutesInputEl.bind('mousewheel wheel', function (e) {
+            minutesInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('minute') : $scope.decrease('minute'));
                 e.preventDefault();
             });
 
-            secondsInputEl.bind('mousewheel wheel', function (e) {
+            secondsInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('second') : $scope.decrease('second'));
                 e.preventDefault();
             });
         };
 
         this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour'));
-            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute'));
-            secondsInputEl.bind('keydown', arrowkeyEventHandler('second'));
+            hoursInputEl.on('keydown', arrowkeyEventHandler('hour'));
+            minutesInputEl.on('keydown', arrowkeyEventHandler('minute'));
+            secondsInputEl.on('keydown', arrowkeyEventHandler('second'));
         };
         function changeHandler() {
             var dt = angular.copy(ngModelCtrl.$modelValue);
@@ -624,7 +624,7 @@ angular.module('ui.fugu.timepanel', [])
             var method = 'set' + type[0].toUpperCase() + type.slice(1) + 's';
             var result = false;
             var currentTime, minTime, maxTime;
-            if (angular.isDefined($attrs.minTime)) {
+            if (angular.isDefined($attrs.minTime) && angular.isDefined($scope.minTime)) {
                 if (timeIsInvalid($scope.minTime)) {
                     $log.warn('Timepicker directive: "min-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
                 } else {
@@ -637,7 +637,7 @@ angular.module('ui.fugu.timepanel', [])
             if (result) {
                 return true;
             }
-            if (angular.isDefined($attrs.maxTime)) {
+            if (angular.isDefined($attrs.maxTime) && angular.isDefined($scope.maxTime)) {
                 if (timeIsInvalid($scope.maxTime)) {
                     $log.warn('Timepicker directive: "max-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
                 } else {
@@ -5191,7 +5191,14 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
         $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
         $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
-        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
+
+        // readonly input
+        $scope.readonlyInput = timepickerConfig.readonlyInput;
+        if ($attrs.readonlyInput) {
+            $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
+                $scope.readonlyInput = !!value;
+            });
+        }
 
         $scope.showTimepanel = false;
         this.toggle = function(open) {
@@ -5248,6 +5255,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             require: ['fuguTimepicker','ngModel'],
             scope: {
                 isDisabled:'=?ngDisabled',
+                minTime:'=?',
+                maxTime:'=?',
                 placeholder:'@'
             },
             controller: 'fuguTimepickerCtrl',
@@ -6498,7 +6507,9 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     "            </button>"+
     "        </span>"+
     "    </div>"+
-    "    <fugu-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\" class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\" ng-show=\"showTimepanel\"></fugu-timepanel>"+
+    "    <fugu-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\""+
+    "                    class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\""+
+    "                    ng-show=\"showTimepanel\" min-time=\"minTime\" max-time=\"maxTime\"></fugu-timepanel>"+
     "</div>"+
     "");
 }]);

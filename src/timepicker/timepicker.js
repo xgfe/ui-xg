@@ -62,7 +62,14 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
         $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
         $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
-        $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
+
+        // readonly input
+        $scope.readonlyInput = timepickerConfig.readonlyInput;
+        if ($attrs.readonlyInput) {
+            $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
+                $scope.readonlyInput = !!value;
+            });
+        }
 
         $scope.showTimepanel = false;
         this.toggle = function(open) {
@@ -119,6 +126,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
             require: ['fuguTimepicker','ngModel'],
             scope: {
                 isDisabled:'=?ngDisabled',
+                minTime:'=?',
+                maxTime:'=?',
                 placeholder:'@'
             },
             controller: 'fuguTimepickerCtrl',

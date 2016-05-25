@@ -194,26 +194,26 @@ angular.module('ui.fugu.timepanel', [])
                 return e.detail || delta > 0;
             };
 
-            hoursInputEl.bind('mousewheel wheel', function (e) {
+            hoursInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('hour') : $scope.decrease('hour'));
                 e.preventDefault();
             });
 
-            minutesInputEl.bind('mousewheel wheel', function (e) {
+            minutesInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('minute') : $scope.decrease('minute'));
                 e.preventDefault();
             });
 
-            secondsInputEl.bind('mousewheel wheel', function (e) {
+            secondsInputEl.on('mousewheel wheel', function (e) {
                 $scope.$apply(isScrollingUp(e) ? $scope.increase('second') : $scope.decrease('second'));
                 e.preventDefault();
             });
         };
 
         this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            hoursInputEl.bind('keydown', arrowkeyEventHandler('hour'));
-            minutesInputEl.bind('keydown', arrowkeyEventHandler('minute'));
-            secondsInputEl.bind('keydown', arrowkeyEventHandler('second'));
+            hoursInputEl.on('keydown', arrowkeyEventHandler('hour'));
+            minutesInputEl.on('keydown', arrowkeyEventHandler('minute'));
+            secondsInputEl.on('keydown', arrowkeyEventHandler('second'));
         };
         function changeHandler() {
             var dt = angular.copy(ngModelCtrl.$modelValue);
@@ -249,7 +249,7 @@ angular.module('ui.fugu.timepanel', [])
             var method = 'set' + type[0].toUpperCase() + type.slice(1) + 's';
             var result = false;
             var currentTime, minTime, maxTime;
-            if (angular.isDefined($attrs.minTime)) {
+            if (angular.isDefined($attrs.minTime) && angular.isDefined($scope.minTime)) {
                 if (timeIsInvalid($scope.minTime)) {
                     $log.warn('Timepicker directive: "min-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
                 } else {
@@ -262,7 +262,7 @@ angular.module('ui.fugu.timepanel', [])
             if (result) {
                 return true;
             }
-            if (angular.isDefined($attrs.maxTime)) {
+            if (angular.isDefined($attrs.maxTime) && angular.isDefined($scope.maxTime)) {
                 if (timeIsInvalid($scope.maxTime)) {
                     $log.warn('Timepicker directive: "max-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
                 } else {
