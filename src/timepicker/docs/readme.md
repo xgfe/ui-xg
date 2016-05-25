@@ -12,6 +12,9 @@
     [ second-step="number" ]
     [ placeholder="string" ]
     [ format="string" ]
+    [ readonly-input="boolean" ]
+    [ min-time="date" ]
+    [ max-time="date" ]
     [ ng-disabled="boolean" ]>
 </fugu-timepicker>
 ```
@@ -35,6 +38,13 @@
 - format(optional):显示在输入框的格式化日期，与angular自带的[dateFilter](https://docs.angularjs.org/api/ng/filter/date)可选的格式一样。
     - type:`string`
     - default:`HH:mm:ss`
+- readonlyInput(optional):输入框是否是只读模式
+    - type:`boolean`
+    - default:`false`
+- minTime(optional):可选择的最小时间
+    - type:`date`
+- maxTime(optional):可选择的最大时间
+    - type:`date`
 - ngDisabled(optional):是否禁用
     - type:`boolean`
     - default:`false`
