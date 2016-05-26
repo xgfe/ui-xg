@@ -1,15 +1,18 @@
 <h1>timepicker</h1><h2>Description</h2><p>时间选择器，依赖于<a ui-sref="app.api.timepanel" href="../../timepanel/docs/readme.md">timepanel</a></p>
 <h2>Usage</h2><pre><code class="lang-html">&lt;fugu-timepicker ng-model=<span class="hljs-string">"time"</span>
-    [ hour-step=<span class="hljs-string">"number"</span> ]
-    [ minute-step=<span class="hljs-string">"number"</span> ]
-    [ second-step=<span class="hljs-string">"number"</span> ]
+    [ hour-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
+    [ minute-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
+    [ <span class="hljs-built_in">second</span>-<span class="hljs-keyword">step</span>=<span class="hljs-string">"number"</span> ]
     [ placeholder=<span class="hljs-string">"string"</span> ]
     [ format=<span class="hljs-string">"string"</span> ]
+    [ <span class="hljs-built_in">readonly</span>-input=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">min</span>-<span class="hljs-built_in">time</span>=<span class="hljs-string">"date"</span> ]
+    [ <span class="hljs-built_in">max</span>-<span class="hljs-built_in">time</span>=<span class="hljs-string">"date"</span> ]
     [ ng-disabled=<span class="hljs-string">"boolean"</span> ]&gt;
 &lt;/fugu-timepicker&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>绑定日期对象</td></tr><tr><td>hourStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的小时数</td></tr><tr><td>minuteStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的分钟数</td></tr><tr><td>secondStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的秒数</td></tr><tr><td>placeholder(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>显示在输入框的提示文本</td></tr><tr><td>format(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>hh:mm:ss</code></td><td>显示在输入框的格式化日期，与angular自带的<a href="https://docs.angularjs.org/api/ng/filter/date">dateFilter</a>可选的格式一样。</td></tr><tr><td>ngDisabled(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>是否禁用</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>绑定日期对象</td></tr><tr><td>hourStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的小时数</td></tr><tr><td>minuteStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的分钟数</td></tr><tr><td>secondStep(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>1</code></td><td>每次增加或减少的秒数</td></tr><tr><td>placeholder(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>显示在输入框的提示文本</td></tr><tr><td>format(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>hh:mm:ss</code></td><td>显示在输入框的格式化日期，与angular自带的<a href="https://docs.angularjs.org/api/ng/filter/date">dateFilter</a>可选的格式一样。</td></tr><tr><td>readonlyInput(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>输入框是否是只读模式</td></tr><tr><td>minTime(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可选择的最小时间</td></tr><tr><td>maxTime(optional)</td><td><label class="label label-default label-date">date</label>&nbsp;</td><td></td><td>可选择的最大时间</td></tr><tr><td>ngDisabled(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>是否禁用</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -40,16 +43,50 @@
             <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>time2:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>time2 | <span class="hljs-name">date</span>:'HH:mm:ss'&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-9"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-timepicker</span> <span class="hljs-attr">readonly-input</span>=<span class="hljs-string">"readonlyInput"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"time2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-timepicker</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"readonlyInput"</span>&gt;</span>
+                readonlyInput: <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"readonlyInput"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"readonlyInput"</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>readonlyInput&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-9"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-timepicker</span> <span class="hljs-attr">min-time</span>=<span class="hljs-string">"minTime"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"time"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-timepicker</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>minTime:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>minTime | <span class="hljs-name">date</span>:'HH:mm:ss'&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-9"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">fugu-timepicker</span> <span class="hljs-attr">max-time</span>=<span class="hljs-string">"maxTime"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"time2"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-timepicker</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>maxTime:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>maxTime | <span class="hljs-name">date</span>:'HH:mm:ss'&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'timepickerDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
-    $scope.time = <span class="hljs-keyword">new</span> Date();
-    $scope.time2 = <span class="hljs-keyword">new</span> Date();
-    $scope.isDisabled = <span class="hljs-keyword">true</span>;
-}]);</code></pre>
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'timepickerDemoCtrl'</span>,<span class="hljs-meta">[</span><span class="hljs-string">'$scope'</span>, function ($scope) {
+    $scope.time = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>();
+    $scope.time2 = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>();
+    $scope.isDisabled = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">var</span> <span class="hljs-keyword">min</span> = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-keyword">min</span>.setHours(<span class="hljs-number">5</span>);
+    $scope.minTime = <span class="hljs-keyword">min</span>;
+    <span class="hljs-built_in">var</span> <span class="hljs-keyword">max</span> = <span class="hljs-literal">new</span> <span class="hljs-built_in">Date</span>();
+    <span class="hljs-keyword">max</span>.setHours(<span class="hljs-number">22</span>);
+    <span class="hljs-keyword">max</span>.setMinutes(<span class="hljs-number">45</span>);
+    $scope.maxTime = <span class="hljs-keyword">max</span>;
+}<span class="hljs-meta">]</span>);</code></pre>
     </div>
     
     
@@ -86,8 +123,42 @@
             <pre>time2:{{time2 | date:'HH:mm:ss'}}</pre>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker readonly-input="readonlyInput" ng-model="time2"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <label for="readonlyInput">
+                readonlyInput: <input id="readonlyInput" type="checkbox" ng-model="readonlyInput">
+            </label>
+            <pre>{{readonlyInput}}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker min-time="minTime" ng-model="time"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <pre>minTime:{{minTime | date:'HH:mm:ss'}}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <fugu-timepicker max-time="maxTime" ng-model="time2"></fugu-timepicker>
+        </div>
+        <div class="col-md-3">
+            <pre>maxTime:{{maxTime | date:'HH:mm:ss'}}</pre>
+        </div>
+    </div>
 </div></div><script>angular.module('fuguDemo').controller('timepickerDemoCtrl',['$scope', function ($scope) {
     $scope.time = new Date();
     $scope.time2 = new Date();
     $scope.isDisabled = true;
+    var min = new Date();
+    min.setHours(5);
+    $scope.minTime = min;
+    var max = new Date();
+    max.setHours(22);
+    max.setMinutes(45);
+    $scope.maxTime = max;
 }]);</script>
