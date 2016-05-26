@@ -4,7 +4,7 @@
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
+angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
     .constant('fuguTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
@@ -44,7 +44,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         }
 
     }])
-    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter', function($scope, $element, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter) {
+    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter','$timeout','$fuguPosition',
+    function($scope, $element, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter,$timeout,$fuguPosition) {
         var ngModelCtrl = { $setViewValue: angular.noop };
         this.init = function (_ngModelCtrl) {
             ngModelCtrl = _ngModelCtrl;
@@ -55,7 +56,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         };
         var _this = this;
         /*
-         fix 父组件的controller优先于子组件初始化,hourStep三个属性需要在子组件初始化的是即传递进去
+         fix 父组件的controller优先于子组件初始化,hourStep三个属性需要在子组件初始化的时候就传递进去
          不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
          http://xgfe.github.io/2015/12/22/penglu/link-controller/
          */
@@ -74,6 +75,11 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         $scope.showTimepanel = false;
         this.toggle = function(open) {
             $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
+            if($scope.showTimepanel){
+                $timeout(function () {
+                    adjustPosition();
+                });
+            }
         };
         this.showTimepanel = function() {
             return $scope.showTimepanel;
@@ -117,6 +123,20 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel'])
         $scope.$on('$locationChangeSuccess', function() {
             $scope.showTimepanel = false;
         });
+        function adjustPosition(){
+            var popoverEle = angular.element($element[0].querySelector('.popover'));
+            var elePosition = $fuguPosition.positionElements($element,popoverEle,'auto bottom-left');
+            popoverEle.removeClass('top bottom');
+            if (elePosition.placement.indexOf('top') !== -1) {
+                popoverEle.addClass('top');
+            } else {
+                popoverEle.addClass('bottom');
+            }
+            popoverEle.css({
+                top: elePosition.top+'px',
+                left: 0
+            });
+        }
     }])
     .directive('fuguTimepicker', function () {
         return {

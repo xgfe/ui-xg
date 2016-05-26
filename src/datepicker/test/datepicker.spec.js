@@ -6,6 +6,7 @@ describe('ui.fugu.datepicker', function () {
         datepickerConfig;
 
     beforeEach(function () {
+        module('ui.fugu.position');
         module('ui.fugu.timepanel');
         module('ui.fugu.calendar');
         module('ui.fugu.datepicker');

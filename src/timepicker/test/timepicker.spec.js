@@ -6,6 +6,7 @@ describe('ui.fugu.timepicker', function () {
         element;    //指令DOM结点;
 
     beforeEach(function () {
+        module('ui.fugu.position');
         module('ui.fugu.timepanel');
         module('timepanel/templates/timepanel.html');
         module('ui.fugu.timepicker');
@@ -37,12 +38,14 @@ describe('ui.fugu.timepicker', function () {
     }
     function clickInput(){
         element.find('.fugu-timepicker-input').click();
+        scope.$digest();
     }
     function clickButton(){
         element.find('.input-group button').click();
+        scope.$digest();
     }
-    function getTimapanel(){
-        return element.find('.fugu-timepanel');
+    function getTimepanel(){
+        return element.find('.fugu-timepicker-popover');
     }
     function increaseHour() {
         var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
@@ -87,11 +90,11 @@ describe('ui.fugu.timepicker', function () {
         var el = '<fugu-timepicker ng-model="time"></fugu-timepicker>';
         scope.time = getDate();
         createTimepicker(el);
-        expect(getTimapanel()).toBeHidden();
+        expect(getTimepanel()).not.toHaveClass('in');
         clickInput();
-        expect(getTimapanel()).not.toBeHidden();
+        expect(getTimepanel()).toHaveClass('in');
         clickButton();
-        expect(getTimapanel()).toBeHidden();
+        expect(getTimepanel()).not.toHaveClass('in');
     });
 
     it('ngModel should be two-way data binding', function () {
@@ -145,11 +148,11 @@ describe('ui.fugu.timepicker', function () {
         scope.time = getDate();
         scope.isDisabled = true;
         createTimepicker(el);
-        expect(getTimapanel()).toBeHidden();
+        expect(getTimepanel()).not.toHaveClass('in');
         clickInput();
-        expect(getTimapanel()).toBeHidden();
+        expect(getTimepanel()).not.toHaveClass('in');
         clickButton();
-        expect(getTimapanel()).toBeHidden();
+        expect(getTimepanel()).not.toHaveClass('in');
     });
 
 });

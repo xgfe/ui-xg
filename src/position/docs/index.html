@@ -1,0 +1,34 @@
+<div ng-controller="dropdownDemoCtrl">
+    <h4>$fuguPosition service</h4>
+    <div id="posdemoparent" ng-style="{'overflow': (parentScrollable && 'scroll'), 'position': (parentRelative && 'relative')}">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="parentScrollable"> Parent scrollable
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="parentRelative"> Parent relative
+            </label>
+        </div>
+        <button id="posdemobtn" class="btn btn-default" ng-click="getValues()">Get values</button>
+
+        <div id="posdemodiv">
+            Demo element
+        </div>
+    </div>
+    <br />
+    offsetParent: {{elemVals.offsetParent}}
+    <br />
+    scrollParent: {{elemVals.scrollParent}}
+    <br />
+    scrollbarWidth: {{scrollbarWidth}}
+    <br />
+    position: {{elemVals.position}}
+    <br />
+    offset: {{elemVals.offset}}
+    <br />
+    viewportOffset: {{elemVals.viewportOffset}}
+    <br />
+    positionElements: {{elemVals.positionElements}}
+</div>
