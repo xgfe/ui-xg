@@ -7,47 +7,10 @@ $panel-height:120px;
     button{
         outline: none;
     }
+    .fugu-timepicker-popover.in{
+        display: block;
+    }
     .fugu-timepanel{
-        position: absolute;
-        left: 0;
-        z-index: 1000;
-        &:before{
-            border-left: $arrow-top + 1 solid rgba(0, 0, 0, 0);
-            border-right: $arrow-top + 1 solid rgba(0, 0, 0, 0);
-            content: "";
-            display: inline-block;
-            position: absolute;
-            left: $arrow-left;
-        }
-        &:after{
-            position: absolute;
-            left: $arrow-left + 1;
-            border-left: $arrow-top solid rgba(0, 0, 0, 0);
-            border-right: $arrow-top solid rgba(0, 0, 0, 0);
-            content: "";
-            display: inline-block;
-        }
-    }
-    .fugu-timepicker-timepanel-bottom{
-        top: 35px;
-        &:before{
-            border-bottom: $arrow-top + 1 solid #ddd;
-            top: - ($arrow-top + 1);
-        }
-        &:after{
-            top: - $arrow-top;
-            border-bottom: $arrow-top solid #fff;
-        }
-    }
-    .fugu-timepicker-timepanel-top{
-        top: - ($panel-height + $arrow-top);
-        &:before{
-            border-top: $arrow-top + 1 solid #ddd;
-            top: $panel-height - 2;
-        }
-        &:after{
-            top: $panel-height - 2;
-            border-top: $arrow-top solid #fff;
-        }
+        border:0;
     }
 }

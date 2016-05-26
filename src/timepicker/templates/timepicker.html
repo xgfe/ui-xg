@@ -7,7 +7,12 @@
             </button>
         </span>
     </div>
-    <fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"
-                    class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"
-                    ng-show="showTimepanel" min-time="minTime" max-time="maxTime"></fugu-timepanel>
+    <div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">
+        <div class="arrow"></div>
+        <div class="popover-inner">
+            <fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"
+                            class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"
+                            min-time="minTime" max-time="maxTime"></fugu-timepanel>
+        </div>
+    </div>
 </div>

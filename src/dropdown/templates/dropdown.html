@@ -1,5 +1,5 @@
-<div class="fugu-dropdown" ng-class="[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]">
-    <div class="fugu-dropdown-toggle" ng-click="toggleDropdown($event)"></div>
-    <ul class="fugu-dropdown-menu"
+<div class="fugu-dropdown dropdown" ng-class="[{true:multiColClass}[count>colsNum],{true:openClass}[isOpen]]">
+    <div class="fugu-dropdown-toggle dropdown-toggle" ng-click="toggleDropdown($event)"></div>
+    <ul class="fugu-dropdown-menu dropdown-menu"
         ng-style="dropdownMenuStyles" ng-transclude=""></ul>
 </div>

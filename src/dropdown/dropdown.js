@@ -4,7 +4,7 @@
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown',[])
+angular.module('ui.fugu.dropdown',['ui.fugu.position'])
 .constant('fuguDropdownConfig', {
     eachItemWidth: 120, //每一个项目的宽度
     openClass:'open', //打开dropdown的calss
@@ -23,17 +23,6 @@ angular.module('ui.fugu.dropdown',[])
         }
     }
 })
-.factory('fuguDropdownOffset', ['$document', '$window', function ($document, $window) {
-    return function (element) {
-        var boundingClientRect = element[0].getBoundingClientRect();
-        return {
-            width: boundingClientRect.width || element.prop('offsetWidth'),
-            height: boundingClientRect.height || element.prop('offsetHeight'),
-            top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-            left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
-        };
-    };
-}])
 .service('fuguDropdownService', ['$document', function($document) {
     var openScope = null;
     this.open = function(dropdownScope) {
@@ -64,8 +53,8 @@ angular.module('ui.fugu.dropdown',[])
     }
 
 }])
-.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','fuguDropdownOffset','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
-    function ($scope,$timeout,$attrs,$element,fuguDropdownOffset,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
+.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','$fuguPosition','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
+    function ($scope,$timeout,$attrs,$element,$fuguPosition,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
         $scope.colsNum = angular.isDefined($attrs.colsNum) ?
             angular.copy($scope.$parent.$eval($attrs.colsNum)) :fuguDropdownProvider.getColsNum();
         $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
@@ -88,35 +77,18 @@ angular.module('ui.fugu.dropdown',[])
             return $scope.isOpen;
         };
         $scope.dropdownMenuStyles = {};
-        function adjustPostion(){
-            var offset = fuguDropdownOffset($element);
-
-            var top = offset.top;
-            var bottom = window.innerHeight - top - offset.height;
-
-            var dropdownMenu = angular.element($element[0].querySelector('.fugu-dropdown-menu'));
-            if(top > dropdownMenu[0].clientHeight && bottom < dropdownMenu[0].clientHeight){
-                var toggle = $scope.getToggleElement();
-                $scope.dropdownMenuStyles.top = '';
-                $scope.dropdownMenuStyles.bottom = toggle?toggle.clientHeight+'px':'';
-            }else{
-                $scope.dropdownMenuStyles.top = '100%';
-                $scope.dropdownMenuStyles.bottom = '';
-            }
-        }
         $scope.$watch('isOpen', function(isOpen) {
             if (isOpen) {
                 fuguDropdownService.open($scope);
-                // timeout 等ng-repeat
-                $timeout(function () {
-                    adjustPostion();
-                });
             } else {
                 fuguDropdownService.close($scope);
             }
         });
         $scope.getToggleElement = function () {
             return $element[0].querySelector('.fugu-dropdown-toggle');
+        };
+        $scope.getDropdownMenu = function () {
+            return $element[0].querySelector('.fugu-dropdown-menu');
         };
         $scope.count = 0;
         this.addChild = function () {

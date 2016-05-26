@@ -10,45 +10,18 @@
     button:active{
         outline: none;
     }
-    & > .fugu-dropdown-menu{
-        z-index: 1010;
-        margin:2px 0;
-        position: absolute;
-        left: 0;
-        display: none;
-        float: left;
-        min-width: 160px;
-        padding: 5px 0;
-        font-size: 14px;
-        text-align: left;
-        list-style: none;
-        background-color: #fff;
-        -webkit-background-clip: padding-box;
-        background-clip: padding-box;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-        box-shadow: 0 6px 12px rgba(0,0,0,.175);
-        li{
-            border-right: 1px solid #eaeff0;
-            padding-right: 10px;
-            padding-left: 10px;
-            max-width: 160px;
-        }
-        a{
-            text-decoration: none;
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            display: block;
-            padding: 3px 0;
-            clear: both;
-            font-weight: 400;
-            line-height: 1.42857143;
-            color: #333;
-            white-space: nowrap;
-            &:hover{
-                background: #ddd;
-            }
+    & > .fugu-dropdown-menu > li{
+        border-right: 1px solid #eaeff0;
+        padding-right: 10px;
+        padding-left: 10px;
+        max-width: 160px;
+    }
+    & > .fugu-dropdown-menu > li > a{
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        padding: 3px 0;
+        &:hover{
+            background: #ddd;
         }
     }
 }
