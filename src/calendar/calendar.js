@@ -326,8 +326,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         function createDate(year, month, day){
             var date = new Date();
             date.setFullYear(year);
+            date.setDate(day || 1); // set date before set month
             date.setMonth(month || 0);
-            date.setDate(day || 1);
             return date;
         }
             // date1 是否比date2小,
