@@ -4,6 +4,7 @@
  Author: heqingyang@meituan.com
  */
 .fugu-alert{
+    word-wrap: break-word;
     .alert-icon{
         float: left;
     }
@@ -16,19 +17,5 @@
     }
     .show-icon{
         padding-left: 20px;
-    }
-}
-//简单兼容移动端样式
-@media screen and (max-width: 767px) {
-    .fugu-dropdown{
-        & > .dropdown-menu{
-            width: 250px;
-            li{
-                width: 50%;
-            }
-        }
-    }
-    .fugu-dropdown.open{
-        width: 100%;
     }
 }
