@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-05-30
+ * Version: 0.1.0 - 2016-06-02
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -1022,6 +1022,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         //创建日期
         function createDate(year, month, day){
             var date = new Date();
+            date.setMonth(0);
+            date.setDate(31); // set date to 1.31 first
             date.setFullYear(year);
             date.setDate(day || 1); // set date before set month
             date.setMonth(month || 0);
