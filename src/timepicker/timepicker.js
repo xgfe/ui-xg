@@ -10,7 +10,9 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         minuteStep: 1,
         secondStep: 1,
         readonlyInput:false,
-        format:'HH:mm:ss'
+        format:'HH:mm:ss',
+        size: 'md',
+        showSeconds: false
     })
     .service('fuguTimepickerService', ['$document', function($document) {
         var openScope = null;
@@ -69,6 +71,13 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         if ($attrs.readonlyInput) {
             $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
                 $scope.readonlyInput = !!value;
+            });
+        }
+        // show-seconds
+        $scope.showSeconds = timepickerConfig.showSeconds;
+        if ($attrs.showSeconds) {
+            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                $scope.showSeconds = !!value;
             });
         }
 
@@ -148,6 +157,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
                 isDisabled:'=?ngDisabled',
                 minTime:'=?',
                 maxTime:'=?',
+                size: '@',
                 placeholder:'@'
             },
             controller: 'fuguTimepickerCtrl',
