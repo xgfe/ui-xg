@@ -5102,7 +5102,9 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         minuteStep: 1,
         secondStep: 1,
         readonlyInput:false,
-        format:'HH:mm:ss'
+        format:'HH:mm:ss',
+        size: 'md',
+        showSeconds: false
     })
     .service('fuguTimepickerService', ['$document', function($document) {
         var openScope = null;
@@ -5161,6 +5163,13 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         if ($attrs.readonlyInput) {
             $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
                 $scope.readonlyInput = !!value;
+            });
+        }
+        // show-seconds
+        $scope.showSeconds = timepickerConfig.showSeconds;
+        if ($attrs.showSeconds) {
+            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                $scope.showSeconds = !!value;
             });
         }
 
@@ -5240,6 +5249,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
                 isDisabled:'=?ngDisabled',
                 minTime:'=?',
                 maxTime:'=?',
+                size: '@',
                 placeholder:'@'
             },
             controller: 'fuguTimepickerCtrl',
@@ -5969,9 +5979,9 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/timepicker.html",
     "<div class=\"fugu-timepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" class=\"input-sm form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" class=\"form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
     "        <span class=\"input-group-btn\">"+
-    "            <button ng-disabled=\"isDisabled\" class=\"btn btn-sm btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
+    "            <button ng-disabled=\"isDisabled\" ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" class=\"btn btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
     "                <i class=\"glyphicon glyphicon-time\"></i>"+
     "            </button>"+
     "        </span>"+
@@ -5981,7 +5991,7 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     "        <div class=\"popover-inner\">"+
     "            <fugu-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\""+
     "                            class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\""+
-    "                            min-time=\"minTime\" max-time=\"maxTime\"></fugu-timepanel>"+
+    "                            min-time=\"minTime\" max-time=\"maxTime\" show-seconds=\"showSeconds\"></fugu-timepanel>"+
     "        </div>"+
     "    </div>"+
     "</div>"+

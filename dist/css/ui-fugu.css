@@ -512,65 +512,6 @@ body > .fugu-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
-.fugu-timepanel {
-  display: inline-block;
-  border-radius: 3px;
-  color: #666;
-  cursor: default;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  white-space: normal;
-  -webkit-appearance: none;
-  padding: 5px 8px;
-  box-sizing: content-box; }
-  .fugu-timepanel .fugu-timepanel-col {
-    width: 50px;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.5;
-    padding: 0 4px;
-    box-sizing: border-box; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-middle,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    padding: 5px 10px;
-    cursor: pointer;
-    position: relative; }
-  .fugu-timepanel .fugu-timepanel-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    float: left;
-    position: relative;
-    text-align: center; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    color: #bbb;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  .fugu-timepanel .fugu-timepanel-top {
-    border-bottom: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-bottom {
-    border-top: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-label {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 10px; }
-
-.fugu-timepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-timepicker button {
-    outline: none; }
-  .fugu-timepicker .fugu-timepicker-popover.in {
-    display: block; }
-  .fugu-timepicker .fugu-timepanel {
-    border: 0; }
-
 .fugu-switch {
   cursor: pointer;
   position: relative;
@@ -659,6 +600,97 @@ body > .fugu-select.open {
   .fugu-switch-lg i:after {
     width: 28px; }
 
+.fugu-timepanel {
+  display: inline-block;
+  border-radius: 3px;
+  color: #666;
+  cursor: default;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  white-space: normal;
+  -webkit-appearance: none;
+  padding: 5px 8px;
+  box-sizing: content-box; }
+  .fugu-timepanel .fugu-timepanel-col {
+    width: 50px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 4px;
+    box-sizing: border-box; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-middle,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative; }
+  .fugu-timepanel .fugu-timepanel-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    float: left;
+    position: relative;
+    text-align: center; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    color: #bbb;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .fugu-timepanel .fugu-timepanel-top {
+    border-bottom: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-bottom {
+    border-top: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-label {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 10px; }
+
+.fugu-timepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-timepicker button {
+    outline: none; }
+  .fugu-timepicker .fugu-timepicker-popover.in {
+    display: block; }
+  .fugu-timepicker .fugu-timepanel {
+    border: 0; }
+
+.tree {
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Tahoma;
+  font-size: 13px;
+  color: #555;
+  text-decoration: none; }
+  .tree ol, .tree li {
+    list-style-type: none;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .tree ol {
+    padding-left: 20px; }
+  .tree .cur {
+    cursor: pointer;
+    position: relative; }
+  .tree .cur > span {
+    padding-right: 2px; }
+  .tree .nopadder {
+    padding: 0; }
+  .tree .m-30 {
+    margin-left: 30px; }
+  .tree .m-10-neg {
+    margin-right: -10px; }
+  .tree .w-400 {
+    width: 400px; }
+  .tree .v-m {
+    vertical-align: middle; }
+
 /*!
  fugu-tooltip.scss
  Version: 0.0.1
@@ -734,35 +766,3 @@ body > .fugu-select.open {
     height: 0;
     border-color: transparent;
     border-style: solid; }
-
-.tree {
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: Tahoma;
-  font-size: 13px;
-  color: #555;
-  text-decoration: none; }
-  .tree ol, .tree li {
-    list-style-type: none;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0; }
-  .tree ol {
-    padding-left: 20px; }
-  .tree .cur {
-    cursor: pointer;
-    position: relative; }
-  .tree .cur > span {
-    padding-right: 2px; }
-  .tree .nopadder {
-    padding: 0; }
-  .tree .m-30 {
-    margin-left: 30px; }
-  .tree .m-10-neg {
-    margin-right: -10px; }
-  .tree .w-400 {
-    width: 400px; }
-  .tree .v-m {
-    vertical-align: middle; }

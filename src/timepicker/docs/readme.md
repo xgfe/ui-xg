@@ -15,6 +15,8 @@
     [ readonly-input="boolean" ]
     [ min-time="date" ]
     [ max-time="date" ]
+    [ size="{{string}}" ]
+    [ show-seconds="boolean" ]
     [ ng-disabled="boolean" ]>
 </fugu-timepicker>
 ```
@@ -45,6 +47,12 @@
     - type:`date`
 - maxTime(optional):可选择的最大时间
     - type:`date`
+- size(optional):大小,可选值`sm`,`md`和`lg`
+    - type:`stirng`
+    - default:`"md"`
+- showSeconds(optional):是否显示秒
+    - type:`boolean`
+    - default:`false`
 - ngDisabled(optional):是否禁用
     - type:`boolean`
     - default:`false`
