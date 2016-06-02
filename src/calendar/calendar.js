@@ -325,6 +325,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
         //创建日期
         function createDate(year, month, day){
             var date = new Date();
+            date.setMonth(0);
+            date.setDate(31); // set date to 1.31 first
             date.setFullYear(year);
             date.setDate(day || 1); // set date before set month
             date.setMonth(month || 0);
