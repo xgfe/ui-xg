@@ -16,6 +16,7 @@
     [ auto-close="boolean" ]
     [ show-time="boolean" ]
     [ size="{{string}}" ]
+    [ on-change="fn()" ]
     [ ng-disabled="boolean" ]>
 </fugu-datepicker>
 ```
@@ -48,6 +49,8 @@
 - size(optional):指定尺寸,可选择`'sm'`,`'md'`,`'lg'`
     - type:`string`
     - default:`'md'`
+- onChange(optional):日期变化之后的回调
+    - type:`function`
 - ngDisabled(optional): 是否禁用
     - type:`boolean`
     - default:`false`

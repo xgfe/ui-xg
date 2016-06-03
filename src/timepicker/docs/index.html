@@ -30,7 +30,7 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker min-time="minTime" ng-model="time"></fugu-timepicker>
+            <fugu-timepicker on-change="onChange()" min-time="minTime" ng-model="time"></fugu-timepicker>
         </div>
         <div class="col-md-3">
             <pre>minTime:{{minTime | date:'HH:mm:ss'}}</pre>

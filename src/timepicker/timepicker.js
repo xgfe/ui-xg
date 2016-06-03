@@ -107,6 +107,10 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         $scope.changeTime = function (time) {
             ngModelCtrl.$setViewValue(time);
             ngModelCtrl.$render();
+            var fn = $scope.onChange();
+            if(angular.isDefined(fn)){
+                fn();
+            }
         };
         $scope.toggleTimepanel = function (evt) {
             $element.find('input')[0].blur();
@@ -158,7 +162,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
                 minTime:'=?',
                 maxTime:'=?',
                 size: '@',
-                placeholder:'@'
+                placeholder:'@',
+                onChange: '&?'
             },
             controller: 'fuguTimepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
