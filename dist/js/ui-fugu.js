@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-06-02
+ * Version: 0.1.0 - 2016-06-03
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -1783,6 +1783,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 }
                 ngModelCtrl.$setViewValue(date);
                 ngModelCtrl.$render();
+                var fn = $scope.onChange();
+                if(angular.isDefined(fn)){
+                    fn();
+                }
             };
             $scope.$on('$locationChangeSuccess', function () {
                 $scope.showCalendar = false;
@@ -1801,7 +1805,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 placeholder: '@',
                 size: '@',
                 isDisabled: '=?ngDisabled',
-                onChange: '&ngChange'
+                onChange: '&'
             },
             controller: 'fuguDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -5199,6 +5203,10 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         $scope.changeTime = function (time) {
             ngModelCtrl.$setViewValue(time);
             ngModelCtrl.$render();
+            var fn = $scope.onChange();
+            if(angular.isDefined(fn)){
+                fn();
+            }
         };
         $scope.toggleTimepanel = function (evt) {
             $element.find('input')[0].blur();
@@ -5250,7 +5258,8 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
                 minTime:'=?',
                 maxTime:'=?',
                 size: '@',
-                placeholder:'@'
+                placeholder:'@',
+                onChange: '&?'
             },
             controller: 'fuguTimepickerCtrl',
             link: function (scope, el, attrs, ctrls) {

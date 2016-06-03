@@ -17,6 +17,7 @@
     [ max-time="date" ]
     [ size="{{string}}" ]
     [ show-seconds="boolean" ]
+    [ on-change="fn()" ]
     [ ng-disabled="boolean" ]>
 </fugu-timepicker>
 ```
@@ -53,6 +54,8 @@
 - showSeconds(optional):是否显示秒
     - type:`boolean`
     - default:`false`
+- onChange(optional):时间变化之后的回调
+    - type:`function`
 - ngDisabled(optional):是否禁用
     - type:`boolean`
     - default:`false`
