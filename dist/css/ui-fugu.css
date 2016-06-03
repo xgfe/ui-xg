@@ -15,7 +15,6 @@
   .fugu-alert .show-icon {
     padding-left: 20px; }
 
-
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -93,6 +92,57 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
+
+
+.fugu-datepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-datepicker .popover.in {
+    display: block; }
+  .fugu-datepicker .fugu-calendar {
+    border: 0; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
+/*!
+ fugu-dropdown.css
+ Version: 0.0.1
+ Author: yangjiyuan@meituan.com
+ */
+.fugu-dropdown {
+  position: relative;
+  display: inline-block; }
+  .fugu-dropdown button:focus,
+  .fugu-dropdown button:active {
+    outline: none; }
+  .fugu-dropdown > .fugu-dropdown-menu > li {
+    border-right: 1px solid #eaeff0;
+    padding-right: 10px;
+    padding-left: 10px;
+    max-width: 160px; }
+  .fugu-dropdown > .fugu-dropdown-menu > li > a {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding: 3px 0; }
+    .fugu-dropdown > .fugu-dropdown-menu > li > a:hover {
+      background: #ddd; }
+
+.fugu-dropdown-multi .fugu-dropdown-menu > li {
+  float: left; }
+
+.fugu-dropdown.open .fugu-dropdown-menu {
+  display: block; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown-multi > .fugu-dropdown-menu {
+    width: 250px !important; }
+    .fugu-dropdown-multi > .fugu-dropdown-menu li {
+      width: 50% !important; }
+  .fugu-dropdown.open {
+    width: 100%; } }
 
 .fugu-calendar {
   display: inline-block;
@@ -240,56 +290,6 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
-
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker .popover.in {
-    display: block; }
-  .fugu-datepicker .fugu-calendar {
-    border: 0; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-/*!
- fugu-dropdown.css
- Version: 0.0.1
- Author: yangjiyuan@meituan.com
- */
-.fugu-dropdown {
-  position: relative;
-  display: inline-block; }
-  .fugu-dropdown button:focus,
-  .fugu-dropdown button:active {
-    outline: none; }
-  .fugu-dropdown > .fugu-dropdown-menu > li {
-    border-right: 1px solid #eaeff0;
-    padding-right: 10px;
-    padding-left: 10px;
-    max-width: 160px; }
-  .fugu-dropdown > .fugu-dropdown-menu > li > a {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    padding: 3px 0; }
-    .fugu-dropdown > .fugu-dropdown-menu > li > a:hover {
-      background: #ddd; }
-
-.fugu-dropdown-multi .fugu-dropdown-menu > li {
-  float: left; }
-
-.fugu-dropdown.open .fugu-dropdown-menu {
-  display: block; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown-multi > .fugu-dropdown-menu {
-    width: 250px !important; }
-    .fugu-dropdown-multi > .fugu-dropdown-menu li {
-      width: 50% !important; }
-  .fugu-dropdown.open {
-    width: 100%; } }
 
 .notice-item {
   width: 250px; }
@@ -610,7 +610,8 @@ body > .fugu-select.open {
   white-space: normal;
   -webkit-appearance: none;
   padding: 5px 8px;
-  box-sizing: content-box; }
+  box-sizing: content-box;
+  min-width: 150px; }
   .fugu-timepanel .fugu-timepanel-col {
     width: 50px;
     float: left;

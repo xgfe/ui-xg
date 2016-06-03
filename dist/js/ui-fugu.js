@@ -432,9 +432,9 @@ angular.module('ui.fugu.timepanel', [])
             $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
                 $scope.showSeconds = !!value;
                 if (!$scope.showSeconds) {
-                    $scope.panelStyles = {width: '80px'};
+                    $scope.panelStyles = {width: '75px'};
                 } else {
-                    $scope.panelStyles = {};
+                    $scope.panelStyles = {width: '50px'};
                 }
             });
         }
