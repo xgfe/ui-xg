@@ -15,135 +15,6 @@
   .fugu-alert .show-icon {
     padding-left: 20px; }
 
-.glyphicon-refresh-animate {
-  -animation: spin .7s infinite linear;
-  -ms-animation: spin .7s infinite linear;
-  -webkit-animation: spinw .7s infinite linear;
-  -moz-animation: spinm .7s infinite linear; }
-
-@keyframes spin {
-  from {
-    transform: scale(1) rotate(0deg); }
-  to {
-    transform: scale(1) rotate(360deg); } }
-
-@-webkit-keyframes spinw {
-  from {
-    -webkit-transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg); } }
-
-@-moz-keyframes spinm {
-  from {
-    -moz-transform: rotate(0deg); }
-  to {
-    -moz-transform: rotate(360deg); } }
-
-.btn-addon i {
-  margin: -7px -12px;
-  margin-right: 12px;
-  background-color: rgba(0, 0, 0, 0.1);
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  float: left;
-  position: relative;
-  border-radius: 2px 0 0 2px; }
-
-.btn-addon i.pull-right {
-  margin-right: -12px;
-  margin-left: 12px;
-  border-radius: 0 2px 2px 0; }
-
-.btn-addon.btn-sm i {
-  margin: -6px -10px;
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px; }
-
-.btn-addon.btn-sm i.pull-right {
-  margin-right: -10px;
-  margin-left: 10px; }
-
-.btn-addon.btn-lg i {
-  margin: -11px -16px;
-  margin-right: 16px;
-  width: 45px;
-  height: 45px;
-  line-height: 45px; }
-
-.btn-addon.btn-lg i.pull-right {
-  margin-right: -16px;
-  margin-left: 16px; }
-
-.btn-addon.btn-default i {
-  background-color: transparent;
-  border-right: 1px solid #dee5e7; }
-
-.btn-addon.btn-xs i {
-  margin: -2px -5px;
-  margin-right: 6px;
-  width: 19px;
-  height: 19px;
-  line-height: 19px; }
-
-.btn-addon.btn-xs i.pull-right {
-  margin-right: -6px;
-  margin-left: 6px; }
-
-
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker .popover.in {
-    display: block; }
-  .fugu-datepicker .fugu-calendar {
-    border: 0; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-/*!
- fugu-dropdown.css
- Version: 0.0.1
- Author: yangjiyuan@meituan.com
- */
-.fugu-dropdown {
-  position: relative;
-  display: inline-block; }
-  .fugu-dropdown button:focus,
-  .fugu-dropdown button:active {
-    outline: none; }
-  .fugu-dropdown > .fugu-dropdown-menu > li {
-    border-right: 1px solid #eaeff0;
-    padding-right: 10px;
-    padding-left: 10px;
-    max-width: 160px; }
-  .fugu-dropdown > .fugu-dropdown-menu > li > a {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    padding: 3px 0; }
-    .fugu-dropdown > .fugu-dropdown-menu > li > a:hover {
-      background: #ddd; }
-
-.fugu-dropdown-multi .fugu-dropdown-menu > li {
-  float: left; }
-
-.fugu-dropdown.open .fugu-dropdown-menu {
-  display: block; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown-multi > .fugu-dropdown-menu {
-    width: 250px !important; }
-    .fugu-dropdown-multi > .fugu-dropdown-menu li {
-      width: 50% !important; }
-  .fugu-dropdown.open {
-    width: 100%; } }
-
 .fugu-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -290,6 +161,136 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
+
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -ms-animation: spin .7s infinite linear;
+  -webkit-animation: spinw .7s infinite linear;
+  -moz-animation: spinm .7s infinite linear; }
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg); }
+  to {
+    transform: scale(1) rotate(360deg); } }
+
+@-webkit-keyframes spinw {
+  from {
+    -webkit-transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes spinm {
+  from {
+    -moz-transform: rotate(0deg); }
+  to {
+    -moz-transform: rotate(360deg); } }
+
+.btn-addon i {
+  margin: -7px -12px;
+  margin-right: 12px;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  float: left;
+  position: relative;
+  border-radius: 2px 0 0 2px; }
+
+.btn-addon i.pull-right {
+  margin-right: -12px;
+  margin-left: 12px;
+  border-radius: 0 2px 2px 0; }
+
+.btn-addon.btn-sm i {
+  margin: -6px -10px;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px; }
+
+.btn-addon.btn-sm i.pull-right {
+  margin-right: -10px;
+  margin-left: 10px; }
+
+.btn-addon.btn-lg i {
+  margin: -11px -16px;
+  margin-right: 16px;
+  width: 45px;
+  height: 45px;
+  line-height: 45px; }
+
+.btn-addon.btn-lg i.pull-right {
+  margin-right: -16px;
+  margin-left: 16px; }
+
+.btn-addon.btn-default i {
+  background-color: transparent;
+  border-right: 1px solid #dee5e7; }
+
+.btn-addon.btn-xs i {
+  margin: -2px -5px;
+  margin-right: 6px;
+  width: 19px;
+  height: 19px;
+  line-height: 19px; }
+
+.btn-addon.btn-xs i.pull-right {
+  margin-right: -6px;
+  margin-left: 6px; }
+
+
+/*!
+ fugu-dropdown.css
+ Version: 0.0.1
+ Author: yangjiyuan@meituan.com
+ */
+.fugu-dropdown {
+  position: relative;
+  display: inline-block; }
+  .fugu-dropdown button:focus,
+  .fugu-dropdown button:active {
+    outline: none; }
+  .fugu-dropdown > .fugu-dropdown-menu > li {
+    border-right: 1px solid #eaeff0;
+    padding-right: 10px;
+    padding-left: 10px;
+    max-width: 160px; }
+  .fugu-dropdown > .fugu-dropdown-menu > li > a {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    padding: 3px 0; }
+    .fugu-dropdown > .fugu-dropdown-menu > li > a:hover {
+      background: #ddd; }
+
+.fugu-dropdown-multi .fugu-dropdown-menu > li {
+  float: left; }
+
+.fugu-dropdown.open .fugu-dropdown-menu {
+  display: block; }
+
+@media screen and (max-width: 767px) {
+  .fugu-dropdown-multi > .fugu-dropdown-menu {
+    width: 250px !important; }
+    .fugu-dropdown-multi > .fugu-dropdown-menu li {
+      width: 50% !important; }
+  .fugu-dropdown.open {
+    width: 100%; } }
+
+.fugu-datepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
+.fugu-datepicker ~ .fugu-datepicker-popover.in {
+  display: block; }
+  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
+    border: 0; }
 
 .notice-item {
   width: 250px; }
@@ -655,10 +656,43 @@ body > .fugu-select.open {
   display: inline-block; }
   .fugu-timepicker button {
     outline: none; }
-  .fugu-timepicker .fugu-timepicker-popover.in {
-    display: block; }
-  .fugu-timepicker .fugu-timepanel {
+
+.fugu-timepicker-popover.in {
+  display: block; }
+  .fugu-timepicker-popover.in .fugu-timepanel {
     border: 0; }
+
+.tree {
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-family: Tahoma;
+  font-size: 13px;
+  color: #555;
+  text-decoration: none; }
+  .tree ol, .tree li {
+    list-style-type: none;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .tree ol {
+    padding-left: 20px; }
+  .tree .cur {
+    cursor: pointer;
+    position: relative; }
+  .tree .cur > span {
+    padding-right: 2px; }
+  .tree .nopadder {
+    padding: 0; }
+  .tree .m-30 {
+    margin-left: 30px; }
+  .tree .m-10-neg {
+    margin-right: -10px; }
+  .tree .w-400 {
+    width: 400px; }
+  .tree .v-m {
+    vertical-align: middle; }
 
 /*!
  fugu-tooltip.scss
@@ -735,35 +769,3 @@ body > .fugu-select.open {
     height: 0;
     border-color: transparent;
     border-style: solid; }
-
-.tree {
-  -moz-user-select: -moz-none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  font-family: Tahoma;
-  font-size: 13px;
-  color: #555;
-  text-decoration: none; }
-  .tree ol, .tree li {
-    list-style-type: none;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0; }
-  .tree ol {
-    padding-left: 20px; }
-  .tree .cur {
-    cursor: pointer;
-    position: relative; }
-  .tree .cur > span {
-    padding-right: 2px; }
-  .tree .nopadder {
-    padding: 0; }
-  .tree .m-30 {
-    margin-left: 30px; }
-  .tree .m-10-neg {
-    margin-right: -10px; }
-  .tree .w-400 {
-    width: 400px; }
-  .tree .v-m {
-    vertical-align: middle; }

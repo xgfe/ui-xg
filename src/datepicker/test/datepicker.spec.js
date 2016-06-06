@@ -49,7 +49,7 @@ describe('ui.fugu.datepicker', function () {
     }
     //获取calendar
     function getCalendarPanel(){
-        return element.find('.fugu-calendar');
+        return element.next('.fugu-datepicker-popover').find('.fugu-calendar');
     }
     // 点击输入框
     function clickInput(){
@@ -366,7 +366,7 @@ describe('ui.fugu.datepicker', function () {
     });
     describe('showTime attribute', function () {
         function findTimeHandler(){
-            return element.find('.fugu-cal-time');
+            return getCalendarPanel().find('.fugu-cal-time');
         }
         it('should show time by default', function () {
             var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';

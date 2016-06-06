@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-06-03
+ * Version: 0.1.0 - 2016-06-06
  * License: ISC
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
@@ -1688,28 +1688,34 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
-        function ($scope, $element, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
+    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
+        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var self = this;
+            var template = '<div class="fugu-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+                '<div class="arrow"></div>' +
+                '<div class="popover-inner">' +
+                '<fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></fugu-calendar>' +
+                '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
                 ngModelCtrl.$render = this.render;
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     return modelValue ? new Date(modelValue) : null;
                 });
+                var calendarDOM = $compile(template)($scope);
+                $element.after(calendarDOM);
             };
             $scope.showCalendar = false;
             this.toggle = function (open) {
-                $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
-                if ($scope.showCalendar) {
-                    $timeout(function () {
-                        adjuestPosition();
-                    });
+                var show = arguments.length ? !!open : !$scope.showCalendar;
+                if(show){
+                    adjustPosition();
                 }
+                $scope.showCalendar = show;
             };
-            function adjuestPosition() {
-                var popoverEle = angular.element($element[0].querySelector('.popover'));
+            function adjustPosition() {
+                var popoverEle = $element.next('.fugu-datepicker-popover');
                 var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
@@ -1719,7 +1725,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 }
                 popoverEle.css({
                     top: elePosition.top + 'px',
-                    left: 0
+                    left: elePosition.left + 'px'
                 });
             }
 
@@ -1753,7 +1759,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
 
             // 获取日历面板和被点击的元素
             $scope.getCanledarElement = function () {
-                return angular.element($element[0].querySelector('.fugu-calendar'));
+                return $element.next('.fugu-datepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return angular.element($element[0].querySelector('.input-group'));
@@ -5142,15 +5148,22 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         }
 
     }])
-    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter','$timeout','$fuguPosition',
-    function($scope, $element, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter,$timeout,$fuguPosition) {
+    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter','$timeout','$fuguPosition',
+    function($scope, $element, $compile, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter,$timeout,$fuguPosition) {
         var ngModelCtrl = { $setViewValue: angular.noop };
+        var template = '<div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
+            '<div class="arrow"></div>' +
+            '<div class="popover-inner">' +
+            '<fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></fugu-timepanel>' +
+            '</div></div>';
         this.init = function (_ngModelCtrl) {
             ngModelCtrl = _ngModelCtrl;
             ngModelCtrl.$render = this.render;
             ngModelCtrl.$formatters.unshift(function(modelValue) {
                 return modelValue ? new Date(modelValue) : null;
             });
+            var timepanelDOM = $compile(template)($scope);
+            $element.after(timepanelDOM);
         };
         var _this = this;
         /*
@@ -5179,12 +5192,11 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
 
         $scope.showTimepanel = false;
         this.toggle = function(open) {
-            $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
-            if($scope.showTimepanel){
-                $timeout(function () {
-                    adjustPosition();
-                });
+            var show = arguments.length ? !!open : !$scope.showTimepanel;
+            if(show){
+                adjustPosition();
             }
+            $scope.showTimepanel = show;
         };
         this.showTimepanel = function() {
             return $scope.showTimepanel;
@@ -5216,8 +5228,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
             }
         };
         $scope.getTimepanelElement = function () {
-            // do not use $element.find() it only can find a element by tag name
-            return $element[0].querySelector('.fugu-timepanel');
+            return $element.next('.fugu-timepicker-popover')[0];
         };
         $scope.getToggleElement = function () {
             return $element[0].querySelector('.input-group');
@@ -5233,7 +5244,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
             $scope.showTimepanel = false;
         });
         function adjustPosition(){
-            var popoverEle = angular.element($element[0].querySelector('.popover'));
+            var popoverEle = $element.next('.popover');
             var elePosition = $fuguPosition.positionElements($element,popoverEle,'auto bottom-left');
             popoverEle.removeClass('top bottom');
             if (elePosition.placement.indexOf('top') !== -1) {
@@ -5243,7 +5254,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
             }
             popoverEle.css({
                 top: elePosition.top+'px',
-                left: 0
+                left: elePosition.left+'px'
             });
         }
     }])
@@ -5802,13 +5813,6 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "            </button>"+
     "        </span>"+
     "    </div>"+
-    "    <div class=\"popover\" ng-class=\"{in:showCalendar}\">"+
-    "        <div class=\"arrow\"></div>"+
-    "        <div class=\"popover-inner\">"+
-    "            <fugu-calendar ng-model=\"selectDate\" ng-if=\"showCalendar\" on-change=\"changeDateHandler\""+
-    "                           exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\" show-time=\"showTime\"></fugu-calendar>"+
-    "        </div>"+
-    "    </div>"+
     "</div>"+
     "");
 }]);
@@ -5994,14 +5998,6 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     "                <i class=\"glyphicon glyphicon-time\"></i>"+
     "            </button>"+
     "        </span>"+
-    "    </div>"+
-    "    <div class=\"fugu-timepicker-popover popover\" ng-class=\"{in:showTimepanel}\">"+
-    "        <div class=\"arrow\"></div>"+
-    "        <div class=\"popover-inner\">"+
-    "            <fugu-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\" second-step=\"secondStep\""+
-    "                            class=\"fugu-timepicker-timepanel-bottom\" ng-model=\"selectedTime\" on-change=\"changeTime\""+
-    "                            min-time=\"minTime\" max-time=\"maxTime\" show-seconds=\"showSeconds\"></fugu-timepanel>"+
-    "        </div>"+
     "    </div>"+
     "</div>"+
     "");
