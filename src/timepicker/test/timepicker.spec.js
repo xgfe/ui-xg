@@ -45,24 +45,24 @@ describe('ui.fugu.timepicker', function () {
         scope.$digest();
     }
     function getTimepanel(){
-        return element.find('.fugu-timepicker-popover');
+        return element.next('.fugu-timepicker-popover');
     }
     function increaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
+        var el = getTimepanel().find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
         el.click();
         scope.$digest();
     }
 
     function decreaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
+        var el = getTimepanel().find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
         el.click();
         scope.$digest();
     }
     function getTimes() {
-        var inputs = element.find('input');
-        var hourInputEl = inputs.eq(1),
-            minuteInputEl = inputs.eq(2),
-            secondInputEl = inputs.eq(3);
+        var inputs = getTimepanel().find('input');
+        var hourInputEl = inputs.eq(0),
+            minuteInputEl = inputs.eq(1),
+            secondInputEl = inputs.eq(2);
         return {
             hour: hourInputEl.val(),
             hour_smaller: hourInputEl.parent().next().text(),

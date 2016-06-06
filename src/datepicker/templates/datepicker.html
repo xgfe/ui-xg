@@ -12,11 +12,4 @@
             </button>
         </span>
     </div>
-    <div class="popover" ng-class="{in:showCalendar}">
-        <div class="arrow"></div>
-        <div class="popover-inner">
-            <fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler"
-                           exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></fugu-calendar>
-        </div>
-    </div>
 </div>

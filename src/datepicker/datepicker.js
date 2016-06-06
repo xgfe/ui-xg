@@ -52,28 +52,34 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
-        function ($scope, $element, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
+    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
+        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var self = this;
+            var template = '<div class="fugu-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+                '<div class="arrow"></div>' +
+                '<div class="popover-inner">' +
+                '<fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></fugu-calendar>' +
+                '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
                 ngModelCtrl.$render = this.render;
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     return modelValue ? new Date(modelValue) : null;
                 });
+                var calendarDOM = $compile(template)($scope);
+                $element.after(calendarDOM);
             };
             $scope.showCalendar = false;
             this.toggle = function (open) {
-                $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
-                if ($scope.showCalendar) {
-                    $timeout(function () {
-                        adjuestPosition();
-                    });
+                var show = arguments.length ? !!open : !$scope.showCalendar;
+                if(show){
+                    adjustPosition();
                 }
+                $scope.showCalendar = show;
             };
-            function adjuestPosition() {
-                var popoverEle = angular.element($element[0].querySelector('.popover'));
+            function adjustPosition() {
+                var popoverEle = $element.next('.fugu-datepicker-popover');
                 var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
@@ -83,7 +89,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 }
                 popoverEle.css({
                     top: elePosition.top + 'px',
-                    left: 0
+                    left: elePosition.left + 'px'
                 });
             }
 
@@ -117,7 +123,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
 
             // 获取日历面板和被点击的元素
             $scope.getCanledarElement = function () {
-                return angular.element($element[0].querySelector('.fugu-calendar'));
+                return $element.next('.fugu-datepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return angular.element($element[0].querySelector('.input-group'));

@@ -3,7 +3,8 @@
   display: inline-block; }
   .fugu-timepicker button {
     outline: none; }
-  .fugu-timepicker .fugu-timepicker-popover.in {
-    display: block; }
-  .fugu-timepicker .fugu-timepanel {
+
+.fugu-timepicker-popover.in {
+  display: block; }
+  .fugu-timepicker-popover.in .fugu-timepanel {
     border: 0; }

@@ -1,12 +1,13 @@
 .fugu-datepicker {
   position: relative;
   display: inline-block; }
-  .fugu-datepicker .popover.in {
-    display: block; }
-  .fugu-datepicker .fugu-calendar {
-    border: 0; }
   .fugu-datepicker button:focus {
     outline: 0; }
   .fugu-datepicker .fugu-datepicker-remove {
     border-radius: 0;
     border-left: 0; }
+
+.fugu-datepicker ~ .fugu-datepicker-popover.in {
+  display: block; }
+  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
+    border: 0; }
