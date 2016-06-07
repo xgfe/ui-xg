@@ -1,17 +1,62 @@
 <div ng-controller="tooltipDemoCtrl">
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip tooltip-is-open="template" content="'这是一个提示！'">我是第一个有tooltip的文本(点击生效)</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip trigger="hover">我是第二个有tooltip的文本(悬浮生效)</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip trigger="hover" content="text">我是第三个有tooltip的文本(悬浮生效且文本绑定作用域属性)</span>
-    <br/>
-    <button ng-click="clickTooltip()">点击添加</button>
+    <h4>方位选择</h4>
+    <div class="form-group">
+        <label>Tooltip 方位</label>
+        <select class="form-control" ng-model="placement.selected" ng-options="o as o for o in placement.options"></select>
+    </div>
+    <button tooltip-placement="{{placement.selected}}" fugu-tooltip="On the {{placement.selected}}" type="button" class="btn btn-default">Tooltip {{placement.selected}}</button>
+    <hr />
+    <div class="form-group">
+        <label>动态的tooltip</label>
+        <input type="text" ng-model="dynamicTooltipText" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>动态的tooltip内容</label>
+        <input type="text" ng-model="dynamicTooltip" class="form-control">
+    </div>
+    <p>
+        修改上述内容生成显示<a href="#" fugu-tooltip="{{dynamicTooltip}}">{{dynamicTooltipText}}</a>,
+        去除动画效果的<a href="#" tooltip-animation="false" fugu-tooltip="我没有动画效果">tooltip</a>
+    </p>
+    <hr>
+    <h4>显示/隐藏延迟效果</h4>
+    <div class="form-group">
+        <label>延迟时间</label>
+        <div class="input-group">
+            <input type="number" class="form-control" ng-model="delayTime">
+                <span class="input-group-btn">
+                    <button class="btn btn-default">ms</button>
+                </span>
+        </div>
+    </div>
+    <p>
+        为tooltip设置显示延迟时间<a href="#" tooltip-popup-delay="{{delayTime}}" fugu-tooltip="延迟{{delayTime}}ms显示">show delay</a>.
+        设置隐藏延迟时间<a href="#" tooltip-popup-close-delay="{{delayTime}}" fugu-tooltip="延迟{{delayTime}}ms隐藏">hide delay</a>
+    </p>
+
+
+    <p>
+        包含HTML内容的工具提示. <a href="#" fugu-tooltip-html="htmlTooltip">戳一戳!</a>
+    </p>
+
+    <p>
+        设置自定义class指定样式.I can have a custom class. <a href="#" fugu-tooltip="I can have a custom class applied to me!" tooltip-class="customClass">Check me out!</a>
+    </p>
+
+    <form role="form">
+        <div class="form-group">
+            <label>使用focus事件来显示tooltip,blur事件隐藏</label>
+            <input type="text" value="Click me!" fugu-tooltip="See? Now click away..." tooltip-trigger="focus" tooltip-placement="bottom" class="form-control" />
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' : !inputModel}">
+            <label>有条件地显示隐藏tooltip:</label>
+            <input type="text" ng-model="inputModel" class="form-control"
+                   placeholder="输入框内容为空并且mouseenter的时候才会显示tooltip"
+                   fugu-tooltip="Enter something in this input field to disable this tooltip"
+                   tooltip-placement="top"
+                   tooltip-trigger="mouseenter"
+                   tooltip-enable="!inputModel" />
+        </div>
+    </form>
 </div>

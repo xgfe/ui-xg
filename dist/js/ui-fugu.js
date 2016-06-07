@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-06-06
+ * Version: 0.1.0 - 2016-06-07
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tooltip","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -1970,6 +1970,62 @@ angular.module('ui.fugu.dropdown',['ui.fugu.position'])
     }
 });
 /**
+ * stackedMap
+ * stackedMap factory
+ * Author: yjy972080142@gmail.com
+ * Date:2016-06-06
+ */
+angular.module('ui.fugu.stackedMap', [])
+    .factory('$fuguStackedMap', function () {
+        return {
+            createNew: function () {
+                var stack = [];
+
+                return {
+                    add: function (key, value) {
+                        stack.push({
+                            key: key,
+                            value: value
+                        });
+                    },
+                    get: function (key) {
+                        for (var i = 0; i < stack.length; i++) {
+                            if (key === stack[i].key) {
+                                return stack[i];
+                            }
+                        }
+                    },
+                    keys: function() {
+                        var keys = [];
+                        for (var i = 0; i < stack.length; i++) {
+                            keys.push(stack[i].key);
+                        }
+                        return keys;
+                    },
+                    top: function () {
+                        return stack[stack.length - 1];
+                    },
+                    remove: function (key) {
+                        var idx = -1;
+                        for (var i = 0; i < stack.length; i++) {
+                            if (key === stack[i].key) {
+                                idx = i;
+                                break;
+                            }
+                        }
+                        return stack.splice(idx, 1)[0];
+                    },
+                    removeTop: function () {
+                        return stack.splice(stack.length - 1, 1)[0];
+                    },
+                    length: function () {
+                        return stack.length;
+                    }
+                };
+            }
+        };
+    });
+/**
  * modal
  * modal directive
  * 不太会写,基本是照搬的 ui-bootstrap v0.12.1 https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js
@@ -1978,7 +2034,7 @@ angular.module('ui.fugu.dropdown',['ui.fugu.position'])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.fugu.modal', [])
+angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
@@ -2010,59 +2066,6 @@ angular.module('ui.fugu.modal', [])
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
-    })
-    /**
-     * A helper, internal data structure that acts as a map but also allows getting / removing
-     * elements in the LIFO order
-     */
-    .factory('$$stackedMap', function () {
-        return {
-            createNew: function () {
-                var stack = [];
-
-                return {
-                    add: function (key, value) {
-                        stack.push({
-                            key: key,
-                            value: value
-                        });
-                    },
-                    get: function (key) {
-                        for (var i = 0; i < stack.length; i++) {
-                            if (key == stack[i].key) {
-                                return stack[i];
-                            }
-                        }
-                    },
-                    keys: function() {
-                        var keys = [];
-                        for (var i = 0; i < stack.length; i++) {
-                            keys.push(stack[i].key);
-                        }
-                        return keys;
-                    },
-                    top: function () {
-                        return stack[stack.length - 1];
-                    },
-                    remove: function (key) {
-                        var idx = -1;
-                        for (var i = 0; i < stack.length; i++) {
-                            if (key == stack[i].key) {
-                                idx = i;
-                                break;
-                            }
-                        }
-                        return stack.splice(idx, 1)[0];
-                    },
-                    removeTop: function () {
-                        return stack.splice(stack.length - 1, 1)[0];
-                    },
-                    length: function () {
-                        return stack.length;
-                    }
-                };
-            }
-        };
     })
 
     /**
@@ -2141,7 +2144,7 @@ angular.module('ui.fugu.modal', [])
         };
     })
 
-    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$$stackedMap',
+    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$fuguStackedMap',
         function ($transition, $timeout, $document, $compile, $rootScope, $$stackedMap) {
 
             var OPENED_MODAL_CLASS = 'modal-open';
@@ -2833,89 +2836,747 @@ angular.module('ui.fugu.pager',[])
     }
 }]);
 /**
+ * tooltip
+ * 提示指令
+ * Author:heqingyang@meituan.com
+ * Update:yjy972080142@gmail.com
+ * Date:2016-02-18
+ */
+angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
+
+    /**
+     * The $tooltip service creates tooltip- and popover-like directives as well as
+     * houses global options for them.
+     */
+    .provider('$fuguTooltip', function () {
+        // The default options tooltip and popover.
+        var defaultOptions = {
+            placement: 'top',
+            placementClassPrefix: '',
+            animation: true,
+            popupDelay: 0,
+            popupCloseDelay: 0,
+            useContentExp: false
+        };
+
+        // Default hide triggers for each show trigger
+        var triggerMap = {
+            'mouseenter': 'mouseleave',
+            'click': 'click',
+            'outsideClick': 'outsideClick',
+            'focus': 'blur',
+            'none': ''
+        };
+
+        // The options specified to the provider globally.
+        var globalOptions = {};
+
+        /**
+         * `options({})` allows global configuration of all tooltips in the
+         * application.
+         *
+         *   var app = angular.module( 'App', ['ui.bootstrap.tooltip'], function( $tooltipProvider ) {
+   *     // place tooltips left instead of top by default
+   *     $tooltipProvider.options( { placement: 'left' } );
+   *   });
+         */
+        this.options = function (value) {
+            angular.extend(globalOptions, value);
+        };
+
+        /**
+         * This allows you to extend the set of trigger mappings available. E.g.:
+         *
+         *   $tooltipProvider.setTriggers( 'openTrigger': 'closeTrigger' );
+         */
+        this.setTriggers = function setTriggers(triggers) {
+            angular.extend(triggerMap, triggers);
+        };
+
+        /**
+         * This is a helper function for translating camel-case to snake-case.
+         */
+        function snake_case(name) {
+            var regexp = /[A-Z]/g;
+            var separator = '-';
+            return name.replace(regexp, function (letter, pos) {
+                return (pos ? separator : '') + letter.toLowerCase();
+            });
+        }
+
+        /**
+         * Returns the actual instance of the $tooltip service.
+         * TODO support multiple triggers
+         */
+        this.$get = ['$window', '$compile', '$timeout', '$document', '$fuguPosition', '$interpolate', '$rootScope', '$parse', '$fuguStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
+            var openedTooltips = $$stackedMap.createNew();
+            $document.on('keypress', keypressListener);
+
+            $rootScope.$on('$destroy', function () {
+                $document.off('keypress', keypressListener);
+            });
+
+            function keypressListener(e) {
+                if (e.which === 27) {
+                    var last = openedTooltips.top();
+                    if (last) {
+                        last.value.close();
+                        openedTooltips.removeTop();
+                        last = null;
+                    }
+                }
+            }
+
+            return function $tooltip(ttType, prefix, defaultTriggerShow, options) {
+                options = angular.extend({}, defaultOptions, globalOptions, options);
+
+                /**
+                 * Returns an object of show and hide triggers.
+                 *
+                 * If a trigger is supplied,
+                 * it is used to show the tooltip; otherwise, it will use the `trigger`
+                 * option passed to the `$tooltipProvider.options` method; else it will
+                 * default to the trigger supplied to this directive factory.
+                 *
+                 * The hide trigger is based on the show trigger. If the `trigger` option
+                 * was passed to the `$tooltipProvider.options` method, it will use the
+                 * mapped trigger from `triggerMap` or the passed trigger if the map is
+                 * undefined; otherwise, it uses the `triggerMap` value of the show
+                 * trigger; else it will just use the show trigger.
+                 */
+                function getTriggers(trigger) {
+                    var show = (trigger || options.trigger || defaultTriggerShow).split(' ');
+                    var hide = show.map(function (trigger) {
+                        return triggerMap[trigger] || trigger;
+                    });
+                    return {
+                        show: show,
+                        hide: hide
+                    };
+                }
+
+                var directiveName = snake_case(ttType);
+
+                var startSym = $interpolate.startSymbol();
+                var endSym = $interpolate.endSymbol();
+                var template =
+                    '<div ' + directiveName + '-popup ' +
+                    'title="' + startSym + 'title' + endSym + '" ' +
+                    (options.useContentExp ?
+                        'content-exp="contentExp()" ' :
+                    'content="' + startSym + 'content' + endSym + '" ') +
+                    'placement="' + startSym + 'placement' + endSym + '" ' +
+                    'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
+                    'animation="animation" ' +
+                    'is-open="isOpen"' +
+                    'origin-scope="origScope" ' +
+                    'style="visibility: hidden; display: block; top: -9999px; left: -9999px;"' +
+                    '>' +
+                    '</div>';
+
+                return {
+                    compile: function () {
+                        var tooltipLinker = $compile(template);
+
+                        return function link(scope, element, attrs) {
+                            var tooltip;
+                            var tooltipLinkedScope;
+                            var transitionTimeout;
+                            var showTimeout;
+                            var hideTimeout;
+                            var positionTimeout;
+                            var appendToBody = angular.isDefined(options.appendToBody) ? options.appendToBody : false;
+                            var triggers = getTriggers();
+                            var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
+                            var ttScope = scope.$new(true);
+                            var repositionScheduled = false;
+                            var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen']) ? $parse(attrs[prefix + 'IsOpen']) : false;
+                            var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
+                            var observers = [];
+
+                            var positionTooltip = function () {
+                                // check if tooltip exists and is not empty
+                                if (!tooltip || !tooltip.html()) {
+                                    return;
+                                }
+                                if (!positionTimeout) {
+                                    positionTimeout = $timeout(function () {
+                                        if (!tooltip) {
+                                            return;
+                                        }
+                                        // Reset the positioning.
+                                        tooltip.css({top: 0, left: 0});
+
+                                        // Now set the calculated positioning.
+                                        var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
+                                        tooltip.css({
+                                            top: ttPosition.top + 'px',
+                                            left: ttPosition.left + 'px',
+                                            visibility: 'visible'
+                                        });
+
+                                        // If the placement class is prefixed, still need
+                                        // to remove the TWBS standard class.
+                                        if (options.placementClassPrefix) {
+                                            tooltip.removeClass('top bottom left right');
+                                        }
+
+                                        tooltip.removeClass(
+                                            options.placementClassPrefix + 'top ' +
+                                            options.placementClassPrefix + 'top-left ' +
+                                            options.placementClassPrefix + 'top-right ' +
+                                            options.placementClassPrefix + 'bottom ' +
+                                            options.placementClassPrefix + 'bottom-left ' +
+                                            options.placementClassPrefix + 'bottom-right ' +
+                                            options.placementClassPrefix + 'left ' +
+                                            options.placementClassPrefix + 'left-top ' +
+                                            options.placementClassPrefix + 'left-bottom ' +
+                                            options.placementClassPrefix + 'right ' +
+                                            options.placementClassPrefix + 'right-top ' +
+                                            options.placementClassPrefix + 'right-bottom');
+
+                                        var placement = ttPosition.placement.split('-');
+                                        tooltip.addClass(placement[0], options.placementClassPrefix + ttPosition.placement);
+                                        $position.positionArrow(tooltip, ttPosition.placement);
+
+                                        positionTimeout = null;
+                                    }, 0, false);
+                                }
+                            };
+
+                            // Set up the correct scope to allow transclusion later
+                            ttScope.origScope = scope;
+
+                            // By default, the tooltip is not open.
+                            // TODO add ability to start tooltip opened
+                            ttScope.isOpen = false;
+                            openedTooltips.add(ttScope, {
+                                close: hide
+                            });
+
+                            function toggleTooltipBind() {
+                                if (!ttScope.isOpen) {
+                                    showTooltipBind();
+                                } else {
+                                    hideTooltipBind();
+                                }
+                            }
+
+                            // Show the tooltip with delay if specified, otherwise show it immediately
+                            function showTooltipBind() {
+                                if (hasEnableExp && !scope.$eval(attrs[prefix + 'Enable'])) {
+                                    return;
+                                }
+
+                                cancelHide();
+                                prepareTooltip();
+
+                                if (ttScope.popupDelay) {
+                                    // Do nothing if the tooltip was already scheduled to pop-up.
+                                    // This happens if show is triggered multiple times before any hide is triggered.
+                                    if (!showTimeout) {
+                                        showTimeout = $timeout(show, ttScope.popupDelay, false);
+                                    }
+                                } else {
+                                    show();
+                                }
+                            }
+
+                            function hideTooltipBind() {
+                                cancelShow();
+
+                                if (ttScope.popupCloseDelay) {
+                                    if (!hideTimeout) {
+                                        hideTimeout = $timeout(hide, ttScope.popupCloseDelay, false);
+                                    }
+                                } else {
+                                    hide();
+                                }
+                            }
+
+                            // Show the tooltip popup element.
+                            function show() {
+                                cancelShow();
+                                cancelHide();
+
+                                // Don't show empty tooltips.
+                                if (!ttScope.content) {
+                                    return angular.noop;
+                                }
+
+                                createTooltip();
+
+                                // And show the tooltip.
+                                ttScope.$evalAsync(function () {
+                                    ttScope.isOpen = true;
+                                    assignIsOpen(true);
+                                    positionTooltip();
+                                });
+                            }
+
+                            function cancelShow() {
+                                if (showTimeout) {
+                                    $timeout.cancel(showTimeout);
+                                    showTimeout = null;
+                                }
+
+                                if (positionTimeout) {
+                                    $timeout.cancel(positionTimeout);
+                                    positionTimeout = null;
+                                }
+                            }
+
+                            // Hide the tooltip popup element.
+                            function hide() {
+                                if (!ttScope) {
+                                    return;
+                                }
+
+                                // First things first: we don't show it anymore.
+                                ttScope.$evalAsync(function () {
+                                    ttScope.isOpen = false;
+                                    assignIsOpen(false);
+                                    // And now we remove it from the DOM. However, if we have animation, we
+                                    // need to wait for it to expire beforehand.
+                                    // FIXME: this is a placeholder for a port of the transitions library.
+                                    // The fade transition in TWBS is 150ms.
+                                    if (ttScope.animation) {
+                                        if (!transitionTimeout) {
+                                            transitionTimeout = $timeout(removeTooltip, 150, false);
+                                        }
+                                    } else {
+                                        removeTooltip();
+                                    }
+                                });
+                            }
+
+                            function cancelHide() {
+                                if (hideTimeout) {
+                                    $timeout.cancel(hideTimeout);
+                                    hideTimeout = null;
+                                }
+                                if (transitionTimeout) {
+                                    $timeout.cancel(transitionTimeout);
+                                    transitionTimeout = null;
+                                }
+                            }
+
+                            function createTooltip() {
+                                // There can only be one tooltip element per directive shown at once.
+                                if (tooltip) {
+                                    return;
+                                }
+
+                                tooltipLinkedScope = ttScope.$new();
+                                tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
+                                    if (appendToBody) {
+                                        $document.find('body').append(tooltip);
+                                    } else {
+                                        element.after(tooltip);
+                                    }
+                                });
+
+                                prepObservers();
+                            }
+
+                            function removeTooltip() {
+                                cancelShow();
+                                cancelHide();
+                                unregisterObservers();
+
+                                if (tooltip) {
+                                    tooltip.remove();
+                                    tooltip = null;
+                                }
+                                if (tooltipLinkedScope) {
+                                    tooltipLinkedScope.$destroy();
+                                    tooltipLinkedScope = null;
+                                }
+                            }
+
+                            /**
+                             * Set the inital scope values. Once
+                             * the tooltip is created, the observers
+                             * will be added to keep things in synch.
+                             */
+                            function prepareTooltip() {
+                                ttScope.title = attrs[prefix + 'Title'];
+                                if (contentParse) {
+                                    ttScope.content = contentParse(scope);
+                                } else {
+                                    ttScope.content = attrs[ttType];
+                                }
+
+                                ttScope.popupClass = attrs[prefix + 'Class'];
+                                ttScope.placement = angular.isDefined(attrs[prefix + 'Placement']) ? attrs[prefix + 'Placement'] : options.placement;
+
+                                var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
+                                var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
+                                ttScope.popupDelay = !isNaN(delay) ? delay : options.popupDelay;
+                                ttScope.popupCloseDelay = !isNaN(closeDelay) ? closeDelay : options.popupCloseDelay;
+                            }
+
+                            function assignIsOpen(isOpen) {
+                                if (isOpenParse && angular.isFunction(isOpenParse.assign)) {
+                                    isOpenParse.assign(scope, isOpen);
+                                }
+                            }
+
+                            ttScope.contentExp = function () {
+                                return ttScope.content;
+                            };
+
+                            /**
+                             * Observe the relevant attributes.
+                             */
+                            attrs.$observe('disabled', function (val) {
+                                if (val) {
+                                    cancelShow();
+                                }
+
+                                if (val && ttScope.isOpen) {
+                                    hide();
+                                }
+                            });
+
+                            if (isOpenParse) {
+                                scope.$watch(isOpenParse, function (val) {
+                                    if (ttScope && !val === ttScope.isOpen) {
+                                        toggleTooltipBind();
+                                    }
+                                });
+                            }
+
+                            function prepObservers() {
+                                observers.length = 0;
+
+                                if (contentParse) {
+                                    observers.push(
+                                        scope.$watch(contentParse, function (val) {
+                                            ttScope.content = val;
+                                            if (!val && ttScope.isOpen) {
+                                                hide();
+                                            }
+                                        })
+                                    );
+
+                                    observers.push(
+                                        tooltipLinkedScope.$watch(function () {
+                                            if (!repositionScheduled) {
+                                                repositionScheduled = true;
+                                                tooltipLinkedScope.$$postDigest(function () {
+                                                    repositionScheduled = false;
+                                                    if (ttScope && ttScope.isOpen) {
+                                                        positionTooltip();
+                                                    }
+                                                });
+                                            }
+                                        })
+                                    );
+                                } else {
+                                    observers.push(
+                                        attrs.$observe(ttType, function (val) {
+                                            ttScope.content = val;
+                                            if (!val && ttScope.isOpen) {
+                                                hide();
+                                            } else {
+                                                positionTooltip();
+                                            }
+                                        })
+                                    );
+                                }
+
+                                observers.push(
+                                    attrs.$observe(prefix + 'Title', function (val) {
+                                        ttScope.title = val;
+                                        if (ttScope.isOpen) {
+                                            positionTooltip();
+                                        }
+                                    })
+                                );
+
+                                observers.push(
+                                    attrs.$observe(prefix + 'Placement', function (val) {
+                                        ttScope.placement = val ? val : options.placement;
+                                        if (ttScope.isOpen) {
+                                            positionTooltip();
+                                        }
+                                    })
+                                );
+                            }
+
+                            function unregisterObservers() {
+                                if (observers.length) {
+                                    angular.forEach(observers, function (observer) {
+                                        observer();
+                                    });
+                                    observers.length = 0;
+                                }
+                            }
+
+                            // hide tooltips/popovers for outsideClick trigger
+                            function bodyHideTooltipBind(e) {
+                                if (!ttScope || !ttScope.isOpen || !tooltip) {
+                                    return;
+                                }
+                                // make sure the tooltip/popover link or tool tooltip/popover itself were not clicked
+                                if (!element[0].contains(e.target) && !tooltip[0].contains(e.target)) {
+                                    hideTooltipBind();
+                                }
+                            }
+
+                            var unregisterTriggers = function () {
+                                triggers.show.forEach(function (trigger) {
+                                    if (trigger === 'outsideClick') {
+                                        element[0].removeEventListener('click', toggleTooltipBind);
+                                    } else {
+                                        element[0].removeEventListener(trigger, showTooltipBind);
+                                        element[0].removeEventListener(trigger, toggleTooltipBind);
+                                    }
+                                });
+                                triggers.hide.forEach(function (trigger) {
+                                    trigger.split(' ').forEach(function (hideTrigger) {
+                                        if (trigger === 'outsideClick') {
+                                            $document[0].removeEventListener('click', bodyHideTooltipBind);
+                                        } else {
+                                            element[0].removeEventListener(hideTrigger, hideTooltipBind);
+                                        }
+                                    });
+                                });
+                            };
+
+                            function prepTriggers() {
+                                var val = attrs[prefix + 'Trigger'];
+                                unregisterTriggers();
+
+                                triggers = getTriggers(val);
+
+                                if (triggers.show !== 'none') {
+                                    triggers.show.forEach(function (trigger, idx) {
+                                        // Using raw addEventListener due to jqLite/jQuery bug - #4060
+                                        if (trigger === 'outsideClick') {
+                                            element[0].addEventListener('click', toggleTooltipBind);
+                                            $document[0].addEventListener('click', bodyHideTooltipBind);
+                                        } else if (trigger === triggers.hide[idx]) {
+                                            element[0].addEventListener(trigger, toggleTooltipBind);
+                                        } else if (trigger) {
+                                            element[0].addEventListener(trigger, showTooltipBind);
+                                            triggers.hide[idx].split(' ').forEach(function (trigger) {
+                                                element[0].addEventListener(trigger, hideTooltipBind);
+                                            });
+                                        }
+
+                                        element.on('keypress', function (e) {
+                                            if (e.which === 27) {
+                                                hideTooltipBind();
+                                            }
+                                        });
+                                    });
+                                }
+                            }
+
+                            prepTriggers();
+
+                            var animation = scope.$eval(attrs[prefix + 'Animation']);
+                            ttScope.animation = angular.isDefined(animation) ? !!animation : options.animation;
+
+                            var appendToBodyVal;
+                            var appendKey = prefix + 'AppendToBody';
+                            if (appendKey in attrs && angular.isUndefined(attrs[appendKey])) {
+                                appendToBodyVal = true;
+                            } else {
+                                appendToBodyVal = scope.$eval(attrs[appendKey]);
+                            }
+
+                            appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
+
+                            // if a tooltip is attached to <body> we need to remove it on
+                            // location change as its parent scope will probably not be destroyed
+                            // by the change.
+                            if (appendToBody) {
+                                scope.$on('$locationChangeSuccess', function closeTooltipOnLocationChangeSuccess() {
+                                    if (ttScope.isOpen) {
+                                        hide();
+                                    }
+                                });
+                            }
+
+                            // Make sure tooltip is destroyed and removed.
+                            scope.$on('$destroy', function onDestroyTooltip() {
+                                unregisterTriggers();
+                                removeTooltip();
+                                openedTooltips.remove(ttScope);
+                                ttScope = null;
+                            });
+                        };
+                    }
+                };
+            };
+        }];
+    })
+
+    // This is mostly ngInclude code but with a custom scope
+    .directive('fuguTooltipTemplateTransclude', [
+        '$animate', '$sce', '$compile', '$templateRequest',
+        function ($animate, $sce, $compile, $templateRequest) {
+            return {
+                link: function (scope, elem, attrs) {
+                    var origScope = scope.$eval(attrs.tooltipTemplateTranscludeScope);
+
+                    var changeCounter = 0,
+                        currentScope,
+                        previousElement,
+                        currentElement;
+
+                    var cleanupLastIncludeContent = function () {
+                        if (previousElement) {
+                            previousElement.remove();
+                            previousElement = null;
+                        }
+
+                        if (currentScope) {
+                            currentScope.$destroy();
+                            currentScope = null;
+                        }
+
+                        if (currentElement) {
+                            $animate.leave(currentElement).then(function () {
+                                previousElement = null;
+                            });
+                            previousElement = currentElement;
+                            currentElement = null;
+                        }
+                    };
+
+                    scope.$watch($sce.parseAsResourceUrl(attrs.fuguTooltipTemplateTransclude), function (src) {
+                        var thisChangeId = ++changeCounter;
+
+                        if (src) {
+                            //set the 2nd param to true to ignore the template request error so that the inner
+                            //contents and scope can be cleaned up.
+                            $templateRequest(src, true).then(function (response) {
+                                if (thisChangeId !== changeCounter) {
+                                    return;
+                                }
+                                var newScope = origScope.$new();
+                                var template = response;
+
+                                var clone = $compile(template)(newScope, function (clone) {
+                                    cleanupLastIncludeContent();
+                                    $animate.enter(clone, elem);
+                                });
+
+                                currentScope = newScope;
+                                currentElement = clone;
+
+                                currentScope.$emit('$includeContentLoaded', src);
+                            }, function () {
+                                if (thisChangeId === changeCounter) {
+                                    cleanupLastIncludeContent();
+                                    scope.$emit('$includeContentError', src);
+                                }
+                            });
+                            scope.$emit('$includeContentRequested', src);
+                        } else {
+                            cleanupLastIncludeContent();
+                        }
+                    });
+
+                    scope.$on('$destroy', cleanupLastIncludeContent);
+                }
+            };
+        }])
+    /**
+     * Note that it's intentional that these classes are *not* applied through $animate.
+     * They must not be animated as they're expected to be present on the tooltip on
+     * initialization.
+     */
+    .directive('fuguTooltipClasses', ['$fuguPosition', function($fuguPosition) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                // need to set the primary position so the
+                // arrow has space during position measure.
+                // tooltip.positionTooltip()
+                if (scope.placement) {
+                    // // There are no top-left etc... classes
+                    // // in TWBS, so we need the primary position.
+                    var position = $fuguPosition.parsePlacement(scope.placement);
+                    element.addClass(position[0]);
+                } else {
+                    element.addClass('top');
+                }
+
+                if (scope.popupClass) {
+                    element.addClass(scope.popupClass);
+                }
+
+                if (scope.animation()) {
+                    element.addClass(attrs.tooltipAnimationClass);
+                }
+            }
+        };
+    }])
+
+    .directive('fuguTooltipPopup', function () {
+        return {
+            replace: true,
+            scope: {content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
+            templateUrl: 'templates/fugu-tooltip-popup.html'
+        };
+    })
+
+    .directive('fuguTooltip', ['$fuguTooltip', function ($fuguTooltip) {
+        return $fuguTooltip('fuguTooltip', 'tooltip', 'mouseenter');
+    }])
+
+    .directive('fuguTooltipHtmlPopup', function () {
+        return {
+            replace: true,
+            scope: {contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
+            templateUrl: 'templates/fugu-tooltip-html-popup.html'
+        };
+    })
+
+    .directive('fuguTooltipHtml', ['$fuguTooltip', function ($fuguTooltip) {
+        return $fuguTooltip('fuguTooltipHtml', 'tooltip', 'mouseenter', {
+            useContentExp: true
+        });
+    }]);
+/**
  * popover
  * 提示指令
  * Author:heqingyang@meituan.com
+ * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.fugu.popover',['ui.fugu.position'])
+angular.module('ui.fugu.popover',['ui.fugu.tooltip'])
 
-.controller('fuguPopoverCtrl',['$scope','$element','$compile', '$attrs', '$timeout','$interpolate','$fuguPosition',
-        function ($scope,$element,$compile,$attrs,$timeout,$interpolate,$position) {
+    .directive('fuguPopoverHtmlPopup', function() {
+        return {
+            replace: true,
+            scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+            templateUrl: 'templates/fugu-popover-html-popup.html'
+        };
+    })
 
-            //指令初始化
-            function initConfig() {
-                $scope.trigger = ($scope.trigger&&($scope.trigger==="hover"))?"hover":"click";
-                $scope.content = $scope.content||"请设置提示文字";
-                // 设置初始值
-                $scope.isHover = false;
-                $scope.popoverIsOpen = $scope.popoverIsOpen||false;
-            }
-            initConfig();
+    .directive('fuguPopoverHtml', ['$fuguTooltip', function($fuguTooltip) {
+        return $fuguTooltip('fuguPopoverHtml', 'popover', 'click', {
+            useContentExp: true
+        });
+    }])
 
-            //popover模板
-            var elementTemplate =
-                '<div class="fugu-popover popover"'+
-                    'ng-class="{ in: popoverIsOpen||isHover }">'+
-                    '<div class="popover-arrow"></div>'+
+    .directive('fuguPopoverPopup', function() {
+        return {
+            replace: true,
+            scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+            templateUrl: 'templates/fugu-popover-popup.html'
+        };
+    })
 
-                    '<div class="popover-inner">'+
-                        '<h3 class="popover-title" ng-bind="uibTitle" ng-if="uibTitle"></h3>'+
-                        '<div class="popover-content" ng-bind="content"></div>'+
-                    '</div>'+
-                '</div>';
-            var element = angular.element(elementTemplate);
-            element = $compile(element)($scope);
-
-            //判断触发方式
-            if($scope.trigger==="hover") {
-                $element.on('mouseenter',function(){
-                    addDom();
-                    element.css({display:'block'});
-                    $scope.$digest();
-                })
-                $element.on('mouseleave',function(){
-                    addDom();
-                    element.css({display:'none'});
-                    $scope.$digest();
-                })
-            }
-
-            //计算位移并添加至DOM中
-            function addDom() {
-
-                //将计算的偏移量进行填充
-                var elePosition = $position.positionElements($element,element,'bottom','false');
-                $position.positionArrow(element, elePosition.placement);
-                element.addClass("bottom");
-                element.css({ top: elePosition.top + 'px', left:elePosition.left + 'px', visibility: 'visible'})
-                $element.after(element);
-                if(elePosition.left>element.width()){
-                    element.css({ 'margin-left': '-'+element.width()/2+'px'});
-                }
-            }
-
-            $scope.$watch('popoverIsOpen',function(){
-                addDom();
-                if($scope.popoverIsOpen){
-                    element.css({display:'block'});
-                }else{
-                    element.css({display:'none'});
-                }
-            })
-}])
-.directive('fuguPopover',function () {
-    return {
-        restrict: 'AE',
-        scope:{
-            content:'=?',
-            trigger:'@',
-            popoverIsOpen:'=?'
-        },
-        controller:'fuguPopoverCtrl',
-        controllerAs: 'popover'
-    }
-});
+    .directive('fuguPopover', ['$fuguTooltip', function($fuguTooltip) {
+        return $fuguTooltip('fuguPopover', 'popover', 'click');
+    }]);
 /**
  * searchBox
  * 搜索框
@@ -5280,90 +5941,6 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         }
     });
 /**
- * tooltip
- * 提示指令
- * Author:heqingyang@meituan.com
- * Date:2016-02-18
- */
-angular.module('ui.fugu.tooltip',['ui.fugu.position'])
-
-.controller('fuguTooltipCtrl',['$scope','$element','$compile', '$attrs', '$timeout','$interpolate','$fuguPosition',
-        function ($scope,$element,$compile,$attrs,$timeout,$interpolate,$position) {
-
-            //指令初始化
-            function initConfig() {
-                $scope.trigger = ($scope.trigger&&($scope.trigger==="hover"))?"hover":"click";
-                $scope.content = $scope.content||"请设置提示文字";
-                // 设置初始值
-                $scope.isHover = false;
-                $scope.tooltipIsOpen = $scope.tooltipIsOpen||false;
-            }
-            initConfig();
-
-            //tooltip模板
-            var elementTemplate =
-                '<div class="tooltip fugu-tooltip"'+
-                'ng-class="{in:tooltipIsOpen||isHover}">'+
-                '<div class="tooltip-arrow"></div>'+
-                '<div class="tooltip-inner" ng-bind="content"></div>'+
-                '</div>';
-            var element;
-            element = angular.element(elementTemplate);
-            element = $compile(element)($scope);
-            element.addClass("bottom");
-            $element.after(element);
-            changeDom();
-
-            //判断触发方式
-            if($scope.trigger==="hover") {
-                $element.on('mouseenter',function(){
-                    changeDom();
-                    $scope.isHover = true;
-                    $scope.$digest();
-                })
-                $element.on('mouseleave',function(){
-                    $scope.isHover = false;
-                    $scope.$digest();
-                })
-            }
-
-            //调整tooltip的位置
-            function changeDom() {
-                //将计算的偏移量进行填充
-                var elePosition = $position.positionElements($element,element,'bottom','false');
-                $position.positionArrow(element, elePosition.placement);
-                var posParentElm = $position.offsetParent($element), oldParentElm;
-                var offsetTop = elePosition.top,//垂直偏移：定位垂直偏移-定位父元素垂直偏移
-                    offsetLeft = elePosition.left; //水平偏移：定位水平偏移-定位父元素水平偏移
-                //重复递归定位父节点，减去父节点的offset距离
-                while(posParentElm != oldParentElm) {
-                    offsetTop = offsetTop - posParentElm.offsetTop;
-                    offsetLeft = offsetLeft-posParentElm.offsetLeft;
-                    oldParentElm = posParentElm;
-                    posParentElm = $position.offsetParent(posParentElm);
-                }
-                element.css({ top: offsetTop, left: offsetLeft, visibility: 'visible' })
-            }
-
-            $scope.$watch('tooltipIsOpen',function(newValue){
-                if(newValue){
-                    changeDom();
-                }
-            })
-}])
-.directive('fuguTooltip',function () {
-    return {
-        restrict: 'AE',
-        scope:{
-            content:'=?',
-            trigger:'@',
-            tooltipIsOpen:'=?'
-        },
-        controller:'fuguTooltipCtrl',
-        controllerAs: 'tooltip'
-    }
-});
-/**
  * tree
  * 树形菜单指令
  * Author:penglu02@meituan.com
@@ -5877,6 +6454,58 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("tooltip/templates/fugu-tooltip-html-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/fugu-tooltip-html-popup.html",
+    "<div class=\"tooltip\""+
+    "     tooltip-animation-class=\"fade\""+
+    "     fugu-tooltip-classes"+
+    "     ng-class=\"{ in: isOpen() }\">"+
+    "    <div class=\"tooltip-arrow\"></div>"+
+    "    <div class=\"tooltip-inner\" ng-bind-html=\"contentExp()\"></div>"+
+    "</div>"+
+    "");
+}]);
+angular.module("tooltip/templates/fugu-tooltip-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/fugu-tooltip-popup.html",
+    "<div class=\"tooltip\""+
+    "     tooltip-animation-class=\"fade\""+
+    "     fugu-tooltip-classes"+
+    "     ng-class=\"{ in: isOpen() }\">"+
+    "    <div class=\"tooltip-arrow\"></div>"+
+    "    <div class=\"tooltip-inner\" ng-bind=\"content\"></div>"+
+    "</div>"+
+    "");
+}]);
+angular.module("popover/templates/fugu-popover-html-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/fugu-popover-html-popup.html",
+    "<div class=\"popover\""+
+    "     tooltip-animation-class=\"fade\""+
+    "     fugu-tooltip-classes"+
+    "     ng-class=\"{ in: isOpen() }\">"+
+    "    <div class=\"arrow\"></div>"+
+    ""+
+    "    <div class=\"popover-inner\">"+
+    "        <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>"+
+    "        <div class=\"popover-content\" ng-bind-html=\"contentExp()\"></div>"+
+    "    </div>"+
+    "</div>"+
+    "");
+}]);
+angular.module("popover/templates/fugu-popover-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/fugu-popover-popup.html",
+    "<div class=\"popover\""+
+    "     tooltip-animation-class=\"fade\""+
+    "     fugu-tooltip-classes"+
+    "     ng-class=\"{ in: isOpen() }\">"+
+    "    <div class=\"arrow\"></div>"+
+    ""+
+    "    <div class=\"popover-inner\">"+
+    "        <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>"+
+    "        <div class=\"popover-content\" ng-bind=\"content\"></div>"+
+    "    </div>"+
+    "</div>"+
+    "");
 }]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",

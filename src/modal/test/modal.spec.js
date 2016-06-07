@@ -4,13 +4,14 @@ describe('ui.fugu.modal', function () {
 
     beforeEach(function () {
         module('ui.fugu.modal');
+        module('ui.fugu.stackedMap');
         module('modal/templates/backdrop.html');
         module('modal/templates/window.html');
         module(function(_$controllerProvider_, _$fgModalProvider_){
             $controllerProvider = _$controllerProvider_;
             $fgModalProvider = _$fgModalProvider_;
         });
-        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_, _$timeout_, _$q_, _$fgModal_,$$stackedMap) {
+        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_, _$timeout_, _$q_, _$fgModal_,$fuguStackedMap) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;
@@ -18,7 +19,7 @@ describe('ui.fugu.modal', function () {
             $timeout = _$timeout_;
             $q = _$q_;
             $fgModal = _$fgModal_;
-            stackedMap = $$stackedMap.createNew();
+            stackedMap = $fuguStackedMap.createNew();
         })
     });
     beforeEach(function () {
