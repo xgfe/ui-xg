@@ -15,6 +15,84 @@
   .fugu-alert .show-icon {
     padding-left: 20px; }
 
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -ms-animation: spin .7s infinite linear;
+  -webkit-animation: spinw .7s infinite linear;
+  -moz-animation: spinm .7s infinite linear; }
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg); }
+  to {
+    transform: scale(1) rotate(360deg); } }
+
+@-webkit-keyframes spinw {
+  from {
+    -webkit-transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes spinm {
+  from {
+    -moz-transform: rotate(0deg); }
+  to {
+    -moz-transform: rotate(360deg); } }
+
+.btn-addon i {
+  margin: -7px -12px;
+  margin-right: 12px;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  float: left;
+  position: relative;
+  border-radius: 2px 0 0 2px; }
+
+.btn-addon i.pull-right {
+  margin-right: -12px;
+  margin-left: 12px;
+  border-radius: 0 2px 2px 0; }
+
+.btn-addon.btn-sm i {
+  margin: -6px -10px;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px; }
+
+.btn-addon.btn-sm i.pull-right {
+  margin-right: -10px;
+  margin-left: 10px; }
+
+.btn-addon.btn-lg i {
+  margin: -11px -16px;
+  margin-right: 16px;
+  width: 45px;
+  height: 45px;
+  line-height: 45px; }
+
+.btn-addon.btn-lg i.pull-right {
+  margin-right: -16px;
+  margin-left: 16px; }
+
+.btn-addon.btn-default i {
+  background-color: transparent;
+  border-right: 1px solid #dee5e7; }
+
+.btn-addon.btn-xs i {
+  margin: -2px -5px;
+  margin-right: 6px;
+  width: 19px;
+  height: 19px;
+  line-height: 19px; }
+
+.btn-addon.btn-xs i.pull-right {
+  margin-right: -6px;
+  margin-left: 6px; }
+
 .fugu-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -162,83 +240,19 @@
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
 
-.glyphicon-refresh-animate {
-  -animation: spin .7s infinite linear;
-  -ms-animation: spin .7s infinite linear;
-  -webkit-animation: spinw .7s infinite linear;
-  -moz-animation: spinm .7s infinite linear; }
-
-@keyframes spin {
-  from {
-    transform: scale(1) rotate(0deg); }
-  to {
-    transform: scale(1) rotate(360deg); } }
-
-@-webkit-keyframes spinw {
-  from {
-    -webkit-transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg); } }
-
-@-moz-keyframes spinm {
-  from {
-    -moz-transform: rotate(0deg); }
-  to {
-    -moz-transform: rotate(360deg); } }
-
-.btn-addon i {
-  margin: -7px -12px;
-  margin-right: 12px;
-  background-color: rgba(0, 0, 0, 0.1);
-  width: 34px;
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  float: left;
+.fugu-datepicker {
   position: relative;
-  border-radius: 2px 0 0 2px; }
+  display: inline-block; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
 
-.btn-addon i.pull-right {
-  margin-right: -12px;
-  margin-left: 12px;
-  border-radius: 0 2px 2px 0; }
-
-.btn-addon.btn-sm i {
-  margin: -6px -10px;
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px; }
-
-.btn-addon.btn-sm i.pull-right {
-  margin-right: -10px;
-  margin-left: 10px; }
-
-.btn-addon.btn-lg i {
-  margin: -11px -16px;
-  margin-right: 16px;
-  width: 45px;
-  height: 45px;
-  line-height: 45px; }
-
-.btn-addon.btn-lg i.pull-right {
-  margin-right: -16px;
-  margin-left: 16px; }
-
-.btn-addon.btn-default i {
-  background-color: transparent;
-  border-right: 1px solid #dee5e7; }
-
-.btn-addon.btn-xs i {
-  margin: -2px -5px;
-  margin-right: 6px;
-  width: 19px;
-  height: 19px;
-  line-height: 19px; }
-
-.btn-addon.btn-xs i.pull-right {
-  margin-right: -6px;
-  margin-left: 6px; }
+.fugu-datepicker ~ .fugu-datepicker-popover.in {
+  display: block; }
+  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
+    border: 0; }
 
 
 /*!
@@ -278,20 +292,6 @@
   .fugu-dropdown.open {
     width: 100%; } }
 
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.fugu-datepicker ~ .fugu-datepicker-popover.in {
-  display: block; }
-  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
-    border: 0; }
-
 .notice-item {
   width: 250px; }
 
@@ -305,79 +305,6 @@
   background-color: transparent;
   max-height: 100%;
   overflow-y: scroll; }
-
-/*!
- fugu-tooltip.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-popover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1060;
-  display: none;
-  max-width: 276px;
-  padding: 1px;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.42857143;
-  text-align: left;
-  text-align: start;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
-  letter-spacing: normal;
-  word-break: normal;
-  word-spacing: normal;
-  word-wrap: normal;
-  white-space: normal;
-  background-color: #fff;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 6px;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  line-break: auto; }
-  .fugu-popover.bottom {
-    margin-top: 10px; }
-    .fugu-popover.bottom .popover-arrow {
-      top: -11px;
-      left: 50%;
-      margin-left: -11px;
-      border-top-width: 0;
-      border-bottom-color: #999;
-      border-bottom-color: rgba(0, 0, 0, 0.25); }
-    .fugu-popover.bottom .popover-arrow:after {
-      top: 1px;
-      margin-left: -10px;
-      content: " ";
-      border-top-width: 0;
-      border-bottom-color: #fff; }
-  .fugu-popover .popover-content {
-    word-wrap: break-word;
-    padding: 9px 14px; }
-  .fugu-popover .popover-arrow {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 11px; }
-  .fugu-popover .popover-arrow:after {
-    position: absolute;
-    display: block;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    content: "";
-    border-width: 10px; }
 
 /* Fix Bootstrap dropdown position when inside a input-group */
 .input-group > .fugu-select.dropdown {
@@ -513,6 +440,56 @@ body > .fugu-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
+.fugu-timepanel {
+  display: inline-block;
+  border-radius: 3px;
+  color: #666;
+  cursor: default;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  white-space: normal;
+  -webkit-appearance: none;
+  padding: 5px 8px;
+  box-sizing: content-box;
+  min-width: 150px; }
+  .fugu-timepanel .fugu-timepanel-col {
+    width: 50px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 4px;
+    box-sizing: border-box; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-middle,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative; }
+  .fugu-timepanel .fugu-timepanel-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    float: left;
+    position: relative;
+    text-align: center; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    color: #bbb;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .fugu-timepanel .fugu-timepanel-top {
+    border-bottom: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-bottom {
+    border-top: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-label {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 10px; }
+
 .fugu-switch {
   cursor: pointer;
   position: relative;
@@ -601,56 +578,6 @@ body > .fugu-select.open {
   .fugu-switch-lg i:after {
     width: 28px; }
 
-.fugu-timepanel {
-  display: inline-block;
-  border-radius: 3px;
-  color: #666;
-  cursor: default;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  white-space: normal;
-  -webkit-appearance: none;
-  padding: 5px 8px;
-  box-sizing: content-box;
-  min-width: 150px; }
-  .fugu-timepanel .fugu-timepanel-col {
-    width: 50px;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.5;
-    padding: 0 4px;
-    box-sizing: border-box; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-middle,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    padding: 5px 10px;
-    cursor: pointer;
-    position: relative; }
-  .fugu-timepanel .fugu-timepanel-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    float: left;
-    position: relative;
-    text-align: center; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    color: #bbb;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  .fugu-timepanel .fugu-timepanel-top {
-    border-bottom: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-bottom {
-    border-top: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-label {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 10px; }
-
 .fugu-timepicker {
   position: relative;
   display: inline-block; }
@@ -693,79 +620,3 @@ body > .fugu-select.open {
     width: 400px; }
   .tree .v-m {
     vertical-align: middle; }
-
-/*!
- fugu-tooltip.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-tooltip {
-  position: absolute;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.42857143;
-  text-align: left;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
-  letter-spacing: normal;
-  word-break: normal;
-  word-spacing: normal;
-  word-wrap: normal;
-  white-space: normal;
-  filter: alpha(opacity=0);
-  display: none;
-  line-break: auto; }
-  .fugu-tooltip.in {
-    display: block; }
-  .fugu-tooltip.bottom {
-    padding: 5px 0;
-    margin-top: 3px; }
-    .fugu-tooltip.bottom .tooltip-arrow {
-      top: 0;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 0 5px 5px;
-      border-bottom-color: #000; }
-  .fugu-tooltip.top {
-    padding: 5px 0;
-    margin-top: -3px; }
-    .fugu-tooltip.top .tooltip-arrow {
-      bottom: 0;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px 5px 0;
-      border-top-color: #000; }
-  .fugu-tooltip.left {
-    padding: 0 5px;
-    margin-left: -3px; }
-    .fugu-tooltip.left .tooltip-arrow {
-      top: 50%;
-      right: 0;
-      margin-top: -5px;
-      border-width: 5px 0 5px 5px;
-      border-left-color: #000; }
-  .fugu-tooltip.right {
-    padding: 0 5px;
-    margin-left: 3px; }
-    .fugu-tooltip.right .tooltip-arrow {
-      top: 50%;
-      left: 0;
-      margin-top: -5px;
-      border-width: 5px 5px 5px 0;
-      border-right-color: #000; }
-  .fugu-tooltip .tooltip-inner {
-    max-width: 200px;
-    padding: 3px 8px;
-    color: #fff;
-    text-align: center;
-    background-color: #000;
-    border-radius: 4px; }
-  .fugu-tooltip .tooltip-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid; }

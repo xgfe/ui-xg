@@ -94,14 +94,26 @@ function findModule(name) {
         tplModules: _.matchFile(config.src + '/'+name+'/templates/*.html').map(getTplModule),
         dependencies: dependenciesForModule(name),
         docs:{
+            md:'',
+            html:'',
+            js:'',
+            css:''
+        }
+    };
+    module.hasDoc = hasDoc(name);
+    if(module.hasDoc){
+        module.docs = {
             md:getDocsReadme(name),
             html:getDocsFile(name,'index.html'),
             js:getDocsFile(name,'script.js'),
             css:getDocsFile(name,'style.css')
-        }
-    };
+        };
+    }
     module.dependencies.forEach(findModule);
     config.modules.push(module);
+}
+function hasDoc(name){
+    return _.isExists(config.src+'/'+name+'/docs/readme.md');
 }
 function getDocsReadme(name){
     var path = config.src+'/'+name+'/docs/readme.md';
@@ -302,6 +314,9 @@ gulp.task('docs',['copy'], function () {
     }
     var moduleNames=[],template,code;
     config.modules.forEach(function (module) {
+        if(!module.hasDoc){
+            return;
+        }
         // 构建组件文档页面
         createPartial(module,docPath);
         moduleNames.push(module.name);

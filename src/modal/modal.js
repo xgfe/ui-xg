@@ -7,7 +7,7 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.fugu.modal', [])
+angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
@@ -39,59 +39,6 @@ angular.module('ui.fugu.modal', [])
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
-    })
-    /**
-     * A helper, internal data structure that acts as a map but also allows getting / removing
-     * elements in the LIFO order
-     */
-    .factory('$$stackedMap', function () {
-        return {
-            createNew: function () {
-                var stack = [];
-
-                return {
-                    add: function (key, value) {
-                        stack.push({
-                            key: key,
-                            value: value
-                        });
-                    },
-                    get: function (key) {
-                        for (var i = 0; i < stack.length; i++) {
-                            if (key == stack[i].key) {
-                                return stack[i];
-                            }
-                        }
-                    },
-                    keys: function() {
-                        var keys = [];
-                        for (var i = 0; i < stack.length; i++) {
-                            keys.push(stack[i].key);
-                        }
-                        return keys;
-                    },
-                    top: function () {
-                        return stack[stack.length - 1];
-                    },
-                    remove: function (key) {
-                        var idx = -1;
-                        for (var i = 0; i < stack.length; i++) {
-                            if (key == stack[i].key) {
-                                idx = i;
-                                break;
-                            }
-                        }
-                        return stack.splice(idx, 1)[0];
-                    },
-                    removeTop: function () {
-                        return stack.splice(stack.length - 1, 1)[0];
-                    },
-                    length: function () {
-                        return stack.length;
-                    }
-                };
-            }
-        };
     })
 
     /**
@@ -170,7 +117,7 @@ angular.module('ui.fugu.modal', [])
         };
     })
 
-    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$$stackedMap',
+    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$fuguStackedMap',
         function ($transition, $timeout, $document, $compile, $rootScope, $$stackedMap) {
 
             var OPENED_MODAL_CLASS = 'modal-open';
