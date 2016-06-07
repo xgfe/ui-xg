@@ -1,11 +1,27 @@
-<h1>Tooltip</h1><h2>Description</h2><p>一个轻量级的可扩展的提示指令，支持click和hover两种形式。</p>
-<h2>Usage</h2><pre><code class="lang-javascript">&lt;<span class="hljs-selector-tag">span</span> fugu-tooltip <span class="hljs-attribute">content</span>=<span class="hljs-string">"tooltip message"</span>
-    [ tooltip-is-open=<span class="hljs-string">"string"</span> ]
-    [ trigger=<span class="hljs-string">"string"</span> ]&gt;
+<h1>Tooltip</h1><h2>Description</h2><p>工具提示组件,依赖于<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a>,基本搬运的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>中的<a href="https://github.com/angular-ui/bootstrap/tree/1.0.0/src/tooltip">tooltip</a>组件(捂脸~).不包含<code>tooltip-template</code>指令</p>
+<h2>Usage</h2><pre><code class="lang-javascript">基本用法
+&lt;span fugu-<span class="hljs-built_in">tooltip</span>=<span class="hljs-string">"<span>&#123;&#123;</span>string&#125;&#125;"</span>
+    [ <span class="hljs-built_in">tooltip</span>-is-open=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-enable=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-placement=<span class="hljs-string">"<span>&#123;&#123;</span>string&#125;&#125;"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-class=<span class="hljs-string">"<span>&#123;&#123;</span>string&#125;&#125;"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-popup-close-delay=<span class="hljs-string">"<span>&#123;&#123;</span>number&#125;&#125;"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-popup-delay=<span class="hljs-string">"<span>&#123;&#123;</span>number&#125;&#125;"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-animation=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-append-<span class="hljs-keyword">to</span>-body=<span class="hljs-string">"boolean"</span> ]
+    [ <span class="hljs-built_in">tooltip</span>-trigger=<span class="hljs-string">"<span>&#123;&#123;</span>string&#125;&#125;"</span> ]&gt;
+&lt;/span&gt;
+生成含有HTML代码的提示
+&lt;span fugu-<span class="hljs-built_in">tooltip</span>-html=<span class="hljs-string">"<span>&#123;&#123;</span>string&#125;&#125;"</span>
+    ...
+&gt;
 &lt;/span&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>content</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>请设置提示文字</code></td><td>指定tooltip的提示文字,若不设置，则默认显示<code>请设置提示文字</code>。</td></tr><tr><td>trigger(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>click</code></td><td>可以设置tooltip的触发方式，目前支持<code>click</code>和<code>hover</code>两种方式，若选择<code>hover</code>需要单独指定。</td></tr><tr><td>tooltipIsOpen(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>当trigger设置为<code>click</code>时，可以由<code>tooltip-is-open</code>属性设置tooltip是否显示。</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Provider</h2><ul><li>$fuguTooltipProvider：设置tooltip的全局属性以及扩展类似于tooltip的指定，如<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a><ul><li><code>setTriggers(obj)</code>：设置显示和隐藏的触发事件，如<code>{ &#39;openTrigger&#39;:&#39;closeTrigger&#39; }</code></li>
+<li><code>options(obj)</code>：设置全局的属性，如默认定位，是否启用动画效果等。</li>
+</ul></li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>fuguTooltip</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>指定tooltip的提示文字,若不设置,则不显示</td></tr><tr><td>fuguTooltipHtml</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>指定tooltip的提示文字，可以包含html代码,若不设置,则不显示</td></tr><tr><td>tooltipIsOpen(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>当<code>trigger</code>设置为<code>none</code>时，可以由<code>tooltip-is-open</code>属性设置tooltip是否显示。</td></tr><tr><td>tooltipEnable(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>设置tooltip是否启用，当该选项设置为<code>false</code>的时候，即使<code>tooltipIsOpen</code>是<code>true</code>也不会显示。</td></tr><tr><td>tooltipPlacement(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&quot;top&quot;</code></td><td>设置tooltip的展示方位，可选值参考<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a></td></tr><tr><td>tooltipClass(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>自定义的class</td></tr><tr><td>tooltipPopupDelay(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>0</code></td><td>tooltip显示时的延迟时间</td></tr><tr><td>tooltipPopupCloseDelay(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>0</code></td><td>tooltip隐藏时的延迟时间</td></tr><tr><td>tooltipAnimation(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>true</code></td><td>是否运用动画效果</td></tr><tr><td>tooltipAppendToBody(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>生成的tooltip是否插入到页面<code>body</code>元素中，设置为<code>false</code>的话默认和绑定指定的元素同级。</td></tr><tr><td>tooltipTrigger(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>mouseenter</code></td><td>可以设置tooltip的触发方式，支持<code>click</code>（单击显示和隐藏）、<code>mouseenter</code>（鼠标进入显示，离开隐藏）、<code>outsideClick</code>（点击显示，再次单击其他区域隐藏），<code>focus</code>（获取焦点显示，失去焦点隐藏）和<code>none</code>（不会受任何影响，由<code>tooltip-is-open</code>控制显示隐藏）五种方式，。</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -13,40 +29,116 @@
     <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
     
     
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
 </ul>
 <div class="tab-content" id="codeTabPabels">
     
     <div class="tab-pane active" id="index_html">
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"tooltipDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">fugu-tooltip</span> <span class="hljs-attr">tooltip-is-open</span>=<span class="hljs-string">"template"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"'这是一个提示！'"</span>&gt;</span>我是第一个有tooltip的文本(点击生效)<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">fugu-tooltip</span> <span class="hljs-attr">trigger</span>=<span class="hljs-string">"hover"</span>&gt;</span>我是第二个有tooltip的文本(悬浮生效)<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>我是一个自由的文本<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">fugu-tooltip</span> <span class="hljs-attr">trigger</span>=<span class="hljs-string">"hover"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"text"</span>&gt;</span>我是第三个有tooltip的文本(悬浮生效且文本绑定作用域属性)<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"clickTooltip()"</span>&gt;</span>点击添加<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"tooltipDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>方位选择<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Tooltip 方位<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"placement.selected"</span> <span class="hljs-attr">ng-options</span>=<span class="hljs-string">"o as o for o in placement.options"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">tooltip-placement</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{placement.selected}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"On the </span></span></span><span class="hljs-template-variable">{{placement.selected}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span>&gt;</span>Tooltip </span><span class="hljs-template-variable">{{placement.selected}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>动态的tooltip<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"dynamicTooltipText"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>动态的tooltip内容<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"dynamicTooltip"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        修改上述内容生成显示<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{dynamicTooltip}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}"</span>&gt;</span></span><span class="hljs-template-variable">{{dynamicTooltipText}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>,
+        去除动画效果的<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">tooltip-animation</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"我没有动画效果"</span>&gt;</span>tooltip<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>显示/隐藏延迟效果<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>延迟时间<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"input-group"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"number"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"delayTime"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"input-group-btn"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span>&gt;</span>ms<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        为tooltip设置显示延迟时间<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">tooltip-popup-delay</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{delayTime}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"延迟</span></span></span><span class="hljs-template-variable">{{delayTime}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}ms显示"</span>&gt;</span>show delay<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>.
+        设置隐藏延迟时间<span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">tooltip-popup-close-delay</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{delayTime}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"延迟</span></span></span><span class="hljs-template-variable">{{delayTime}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">}ms隐藏"</span>&gt;</span>hide delay<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        包含HTML内容的工具提示. <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">fugu-tooltip-html</span>=<span class="hljs-string">"htmlTooltip"</span>&gt;</span>戳一戳!<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        设置自定义class指定样式.I can have a custom class. <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"I can have a custom class applied to me!"</span> <span class="hljs-attr">tooltip-class</span>=<span class="hljs-string">"customClass"</span>&gt;</span>Check me out!<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"form"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>使用focus事件来显示tooltip,blur事件隐藏<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Click me!"</span> <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"See? Now click away..."</span> <span class="hljs-attr">tooltip-trigger</span>=<span class="hljs-string">"focus"</span> <span class="hljs-attr">tooltip-placement</span>=<span class="hljs-string">"bottom"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-group"</span> <span class="hljs-attr">ng-class</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{'has-error' : !inputModel}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>有条件地显示隐藏tooltip:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"inputModel"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span>
+                   <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"输入框内容为空并且mouseenter的时候才会显示tooltip"</span>
+                   <span class="hljs-attr">fugu-tooltip</span>=<span class="hljs-string">"Enter something in this input field to disable this tooltip"</span>
+                   <span class="hljs-attr">tooltip-placement</span>=<span class="hljs-string">"top"</span>
+                   <span class="hljs-attr">tooltip-trigger</span>=<span class="hljs-string">"mouseenter"</span>
+                   <span class="hljs-attr">tooltip-enable</span>=<span class="hljs-string">"!inputModel"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'tooltipDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
-    $scope.text = <span class="hljs-string">"这是另一个提示！"</span>;
-    $scope.template = <span class="hljs-keyword">false</span>;
-    $scope.clickTooltip = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
-        $scope.template = !$scope.template;
-    }
+<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'tooltipDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$sce'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $sce)</span> </span>{
+    $scope.dynamicTooltip = <span class="hljs-string">'Hello, World!'</span>;
+    $scope.dynamicTooltipText = <span class="hljs-string">'动态的tooltip'</span>;
+    $scope.delayTime = <span class="hljs-number">1000</span>;
+    $scope.htmlTooltip = $sce.trustAsHtml(<span class="hljs-string">'I\'ve been &lt;i&gt;made&lt;/i&gt; &lt;b&gt;bold&lt;/b&gt;!'</span>);
+    $scope.placement = {
+        options: [
+            <span class="hljs-string">'top'</span>,
+            <span class="hljs-string">'top-left'</span>,
+            <span class="hljs-string">'top-right'</span>,
+            <span class="hljs-string">'bottom'</span>,
+            <span class="hljs-string">'bottom-left'</span>,
+            <span class="hljs-string">'bottom-right'</span>,
+            <span class="hljs-string">'left'</span>,
+            <span class="hljs-string">'left-top'</span>,
+            <span class="hljs-string">'left-bottom'</span>,
+            <span class="hljs-string">'right'</span>,
+            <span class="hljs-string">'right-top'</span>,
+            <span class="hljs-string">'right-bottom'</span>
+        ],
+        selected: <span class="hljs-string">'top'</span>
+    };
 }]);</code></pre>
     </div>
     
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-comment">/* 自定义样式 */</span>
+<span class="hljs-selector-class">.tooltip</span><span class="hljs-selector-class">.customClass</span> <span class="hljs-selector-class">.tooltip-inner</span> {
+    <span class="hljs-attribute">color</span>: <span class="hljs-number">#880000</span>;
+    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ffff66</span>;
+    <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> <span class="hljs-number">6px</span> <span class="hljs-number">12px</span> <span class="hljs-built_in">rgba</span>(0,0,0,.175);
+}
+<span class="hljs-comment">/* Hide arrow */</span>
+<span class="hljs-selector-class">.tooltip</span><span class="hljs-selector-class">.customClass</span> <span class="hljs-selector-class">.tooltip-arrow</span> {
+    <span class="hljs-attribute">display</span>: none;
+}</code></pre>
+    </div>
     
 </div>
 <script>
@@ -62,26 +154,96 @@
             $('#'+id).addClass('active');
         });
     });
-</script></div><div class="example"><div ng-controller="tooltipDemoCtrl">
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip tooltip-is-open="template" content="'这是一个提示！'">我是第一个有tooltip的文本(点击生效)</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip trigger="hover">我是第二个有tooltip的文本(悬浮生效)</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span>我是一个自由的文本</span>
-    <span fugu-tooltip trigger="hover" content="text">我是第三个有tooltip的文本(悬浮生效且文本绑定作用域属性)</span>
-    <br/>
-    <button ng-click="clickTooltip()">点击添加</button>
-</div></div><script>angular.module('fuguDemo').controller('tooltipDemoCtrl',['$scope', function ($scope) {
-    $scope.text = "这是另一个提示！";
-    $scope.template = false;
-    $scope.clickTooltip = function(){
-        $scope.template = !$scope.template;
-    }
+</script></div><style>/* 自定义样式 */
+.tooltip.customClass .tooltip-inner {
+    color: #880000;
+    background-color: #ffff66;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+/* Hide arrow */
+.tooltip.customClass .tooltip-arrow {
+    display: none;
+}</style><div class="example"><div ng-controller="tooltipDemoCtrl">
+    <h4>方位选择</h4>
+    <div class="form-group">
+        <label>Tooltip 方位</label>
+        <select class="form-control" ng-model="placement.selected" ng-options="o as o for o in placement.options"></select>
+    </div>
+    <button tooltip-placement="{{placement.selected}}" fugu-tooltip="On the {{placement.selected}}" type="button" class="btn btn-default">Tooltip {{placement.selected}}</button>
+    <hr />
+    <div class="form-group">
+        <label>动态的tooltip</label>
+        <input type="text" ng-model="dynamicTooltipText" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>动态的tooltip内容</label>
+        <input type="text" ng-model="dynamicTooltip" class="form-control">
+    </div>
+    <p>
+        修改上述内容生成显示<a href="#" fugu-tooltip="{{dynamicTooltip}}">{{dynamicTooltipText}}</a>,
+        去除动画效果的<a href="#" tooltip-animation="false" fugu-tooltip="我没有动画效果">tooltip</a>
+    </p>
+    <hr>
+    <h4>显示/隐藏延迟效果</h4>
+    <div class="form-group">
+        <label>延迟时间</label>
+        <div class="input-group">
+            <input type="number" class="form-control" ng-model="delayTime">
+                <span class="input-group-btn">
+                    <button class="btn btn-default">ms</button>
+                </span>
+        </div>
+    </div>
+    <p>
+        为tooltip设置显示延迟时间<a href="#" tooltip-popup-delay="{{delayTime}}" fugu-tooltip="延迟{{delayTime}}ms显示">show delay</a>.
+        设置隐藏延迟时间<a href="#" tooltip-popup-close-delay="{{delayTime}}" fugu-tooltip="延迟{{delayTime}}ms隐藏">hide delay</a>
+    </p>
+
+
+    <p>
+        包含HTML内容的工具提示. <a href="#" fugu-tooltip-html="htmlTooltip">戳一戳!</a>
+    </p>
+
+    <p>
+        设置自定义class指定样式.I can have a custom class. <a href="#" fugu-tooltip="I can have a custom class applied to me!" tooltip-class="customClass">Check me out!</a>
+    </p>
+
+    <form role="form">
+        <div class="form-group">
+            <label>使用focus事件来显示tooltip,blur事件隐藏</label>
+            <input type="text" value="Click me!" fugu-tooltip="See? Now click away..." tooltip-trigger="focus" tooltip-placement="bottom" class="form-control" />
+        </div>
+
+        <div class="form-group" ng-class="{'has-error' : !inputModel}">
+            <label>有条件地显示隐藏tooltip:</label>
+            <input type="text" ng-model="inputModel" class="form-control"
+                   placeholder="输入框内容为空并且mouseenter的时候才会显示tooltip"
+                   fugu-tooltip="Enter something in this input field to disable this tooltip"
+                   tooltip-placement="top"
+                   tooltip-trigger="mouseenter"
+                   tooltip-enable="!inputModel" />
+        </div>
+    </form>
+</div></div><script>angular.module('fuguDemo').controller('tooltipDemoCtrl',['$scope', '$sce', function ($scope, $sce) {
+    $scope.dynamicTooltip = 'Hello, World!';
+    $scope.dynamicTooltipText = '动态的tooltip';
+    $scope.delayTime = 1000;
+    $scope.htmlTooltip = $sce.trustAsHtml('I\'ve been <i>made</i> <b>bold</b>!');
+    $scope.placement = {
+        options: [
+            'top',
+            'top-left',
+            'top-right',
+            'bottom',
+            'bottom-left',
+            'bottom-right',
+            'left',
+            'left-top',
+            'left-bottom',
+            'right',
+            'right-top',
+            'right-bottom'
+        ],
+        selected: 'top'
+    };
 }]);</script>

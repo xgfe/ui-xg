@@ -36,6 +36,8 @@ define([
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
             
+                $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
+            
                 $stateProvider.state('app.api.popover',{url: "/popover",templateUrl: 'partials/api/popover.html'});
             
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
@@ -47,8 +49,6 @@ define([
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
-            
-                $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
             
                 $stateProvider.state('app.api.tree',{url: "/tree",templateUrl: 'partials/api/tree.html'});
             
