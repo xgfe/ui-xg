@@ -1,3 +1,21 @@
+/*!
+ fugu-alert.scss
+ Version: 0.0.1
+ Author: heqingyang@meituan.com
+ */
+.fugu-alert {
+  word-wrap: break-word; }
+  .fugu-alert .alert-icon {
+    float: left; }
+  .fugu-alert .alert-icon-span {
+    position: relative;
+    top: 2px; }
+  .fugu-alert .cancel-text {
+    font-size: 20px; }
+  .fugu-alert .show-icon {
+    padding-left: 20px; }
+
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -76,23 +94,19 @@
   margin-right: -6px;
   margin-left: 6px; }
 
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-alert {
-  word-wrap: break-word; }
-  .fugu-alert .alert-icon {
-    float: left; }
-  .fugu-alert .alert-icon-span {
-    position: relative;
-    top: 2px; }
-  .fugu-alert .cancel-text {
-    font-size: 20px; }
-  .fugu-alert .show-icon {
-    padding-left: 20px; }
+.fugu-datepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
 
+.fugu-datepicker ~ .fugu-datepicker-popover.in {
+  display: block; }
+  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
+    border: 0; }
 
 .fugu-calendar {
   display: inline-block;
@@ -240,20 +254,6 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
-
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.fugu-datepicker ~ .fugu-datepicker-popover.in {
-  display: block; }
-  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
-    border: 0; }
 
 /*!
  fugu-dropdown.css
@@ -440,6 +440,56 @@ body > .fugu-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
+.fugu-timepanel {
+  display: inline-block;
+  border-radius: 3px;
+  color: #666;
+  cursor: default;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  white-space: normal;
+  -webkit-appearance: none;
+  padding: 5px 8px;
+  box-sizing: content-box;
+  min-width: 150px; }
+  .fugu-timepanel .fugu-timepanel-col {
+    width: 50px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 4px;
+    box-sizing: border-box; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-middle,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    padding: 5px 10px;
+    cursor: pointer;
+    position: relative; }
+  .fugu-timepanel .fugu-timepanel-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    float: left;
+    position: relative;
+    text-align: center; }
+  .fugu-timepanel .fugu-timepanel-top,
+  .fugu-timepanel .fugu-timepanel-bottom {
+    color: #bbb;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  .fugu-timepanel .fugu-timepanel-top {
+    border-bottom: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-bottom {
+    border-top: 2px solid #1cafdb; }
+  .fugu-timepanel .fugu-timepanel-label {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 10px; }
+
 .fugu-switch {
   cursor: pointer;
   position: relative;
@@ -527,56 +577,6 @@ body > .fugu-select.open {
     margin-left: 21px; }
   .fugu-switch-lg i:after {
     width: 28px; }
-
-.fugu-timepanel {
-  display: inline-block;
-  border-radius: 3px;
-  color: #666;
-  cursor: default;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  white-space: normal;
-  -webkit-appearance: none;
-  padding: 5px 8px;
-  box-sizing: content-box;
-  min-width: 150px; }
-  .fugu-timepanel .fugu-timepanel-col {
-    width: 50px;
-    float: left;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.5;
-    padding: 0 4px;
-    box-sizing: border-box; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-middle,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    padding: 5px 10px;
-    cursor: pointer;
-    position: relative; }
-  .fugu-timepanel .fugu-timepanel-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    float: left;
-    position: relative;
-    text-align: center; }
-  .fugu-timepanel .fugu-timepanel-top,
-  .fugu-timepanel .fugu-timepanel-bottom {
-    color: #bbb;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none; }
-  .fugu-timepanel .fugu-timepanel-top {
-    border-bottom: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-bottom {
-    border-top: 2px solid #1cafdb; }
-  .fugu-timepanel .fugu-timepanel-label {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 10px; }
 
 .fugu-timepicker {
   position: relative;
