@@ -1,6 +1,6 @@
 /**
  * select
- * select directive
+ * select directive fork from ui-select[https://github.com/angular-ui/ui-select]
  * Author: yjy972080142@gmail.com
  * Date:2016-03-29
  */
@@ -245,7 +245,7 @@ angular.module('ui.fugu.select', [])
 
             // Most of the time the user does not want to empty the search input when in typeahead mode
             function _resetSearchInput() {
-                if (ctrl.resetSearchInput || (!ctrl.resetSearchInput && fuguSelectConfig.resetSearchInput)) {
+                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && fuguSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
                     //reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
@@ -273,7 +273,7 @@ angular.module('ui.fugu.select', [])
                         _resetSearchInput();
                     }
 
-                    $scope.$broadcast('fugus:activate');
+                    $scope.$broadcast('fuguSelect:activate');
 
                     ctrl.open = true;
 
@@ -344,17 +344,19 @@ angular.module('ui.fugu.select', [])
                     //TODO should implement for single mode removeSelected
                     if ((angular.isArray(selectedItems) && !selectedItems.length) || !ctrl.removeSelected) {
                         ctrl.setItemsFn(data);
-                    } else if (data) {
-                        var filteredItems = data.filter(function (i) {
-                            return selectedItems.indexOf(i) < 0;
-                        });
-                        ctrl.setItemsFn(filteredItems);
+                    } else {
+                        if (angular.isDefined(data) && data !== null) {
+                            var filteredItems = data.filter(function (i) {
+                                return selectedItems.indexOf(i) < 0;
+                            });
+                            ctrl.setItemsFn(filteredItems);
+                        }
                     }
                 };
 
                 // See https://github.com/angular/angular.js/blob/v1.2.15/src/ng/directive/ngRepeat.js#L259
                 $scope.$watchCollection(ctrl.parserResult.source, function (items) {
-                    if (!items) {
+                    if (angular.isUndefined(items) || items === null) {
                         // If the user specifies undefined or null => reset the collection
                         // Special case: items can be undefined if the user did not initialized the collection on the scope
                         // i.e $scope.addresses = [] is missing
@@ -381,7 +383,7 @@ angular.module('ui.fugu.select', [])
              * See Expose $select.search for external / remote filtering https://github.com/angular-ui/fugu-select/pull/31
              */
             ctrl.refresh = function (refreshAttr) {
-                if (!angular.isUndefined(refreshAttr)) {
+                if (angular.isDefined(refreshAttr)) {
 
                     // Debounce
                     // See https://github.com/angular-ui/bootstrap/blob/0.10.0/src/typeahead/typeahead.js#L155
@@ -450,7 +452,7 @@ angular.module('ui.fugu.select', [])
                             // if taggingLabel is disabled, we pull from ctrl.search val
                             if (ctrl.taggingLabel === false) {
                                 if (ctrl.activeIndex < 0) {
-                                    item = !angular.isUndefined(ctrl.tagging.fct) ? ctrl.tagging.fct(ctrl.search) : ctrl.search;
+                                    item = ctrl.tagging.fct === null ? ctrl.search : ctrl.tagging.fct(ctrl.search);
                                     if (!item || angular.equals(ctrl.items[0], item)) {
                                         return;
                                     }
@@ -470,7 +472,7 @@ angular.module('ui.fugu.select', [])
 
                                     // create new item on the fly if we don't already have one;
                                     // use tagging function if we have one
-                                    if (angular.isDefined(ctrl.tagging.fct) && typeof item === 'string') {
+                                    if (angular.isDefined(ctrl.tagging.fct) && ctrl.tagging.fct !== null && typeof item === 'string') {
                                         item = ctrl.tagging.fct(ctrl.search);
                                         if (!item) {
                                             return;
@@ -491,7 +493,7 @@ angular.module('ui.fugu.select', [])
                             }
                         }
 
-                        $scope.$broadcast('fugus:select', item);
+                        $scope.$broadcast('fuguSelect:select', item);
 
                         var locals = {};
                         locals[ctrl.parserResult.itemName] = item;
@@ -524,7 +526,7 @@ angular.module('ui.fugu.select', [])
                 _resetSearchInput();
                 ctrl.open = false;
 
-                $scope.$broadcast('fugus:close', skipFocusser);
+                $scope.$broadcast('fuguSelect:close', skipFocusser);
 
             };
 
@@ -800,54 +802,54 @@ angular.module('ui.fugu.select', [])
 
                         scope.$watch('searchEnabled', function () {
                             var searchEnabled = scope.$eval(attrs.searchEnabled);
-                            $select.searchEnabled = !angular.isUndefined(searchEnabled) ? searchEnabled : fuguSelectConfig.searchEnabled;
+                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : fuguSelectConfig.searchEnabled;
                         });
 
                         scope.$watch('sortable', function () {
                             var sortable = scope.$eval(attrs.sortable);
-                            $select.sortable = !angular.isUndefined(sortable) ? sortable : fuguSelectConfig.sortable;
+                            $select.sortable = angular.isDefined(sortable) ? sortable : fuguSelectConfig.sortable;
                         });
 
                         attrs.$observe('disabled', function () {
                             // No need to use $eval() (thanks to ng-disabled) since we already get a boolean instead of a string
-                            $select.disabled = !angular.isUndefined(attrs.disabled) ? attrs.disabled : false;
+                            $select.disabled = angular.isDefined(attrs.disabled) ? attrs.disabled : false;
                         });
 
                         attrs.$observe('resetSearchInput', function () {
                             // $eval() is needed otherwise we get a string instead of a boolean
                             var resetSearchInput = scope.$eval(attrs.resetSearchInput);
-                            $select.resetSearchInput = angular.isUndefined(resetSearchInput) ? true:resetSearchInput;
+                            $select.resetSearchInput = angular.isDefined(resetSearchInput) ? resetSearchInput : true;
                         });
 
                         attrs.$observe('tagging', function () {
-                            if (!angular.isUndefined(attrs.tagging)) {
+                            if (angular.isDefined(attrs.tagging)) {
                                 // $eval() is needed otherwise we get a string instead of a boolean
                                 var taggingEval = scope.$eval(attrs.tagging);
-                                $select.tagging = {isActivated: true};
-                                if(taggingEval !== true ){
-                                    $select.tagging.fct  = taggingEval
-                                }
-                            }else {
+                                $select.tagging = {
+                                    isActivated: true,
+                                    fct: taggingEval !== true ? taggingEval : null
+                                };
+                            } else {
                                 $select.tagging = {isActivated: false};
                             }
                         });
 
                         attrs.$observe('taggingLabel', function () {
-                            if (attrs.tagging) {
+                            if (angular.isDefined(attrs.tagging)) {
                                 // check eval for FALSE, in this case, we disable the labels
                                 // associated with tagging
                                 if (attrs.taggingLabel === 'false') {
                                     $select.taggingLabel = false;
                                 }
                                 else {
-                                    $select.taggingLabel = attrs.taggingLabel ? attrs.taggingLabel : '(new)';
+                                    $select.taggingLabel = angular.isDefined(attrs.taggingLabel) ? attrs.taggingLabel : '(new)';
                                 }
                             }
                         });
 
                         attrs.$observe('taggingTokens', function () {
-                            if (attrs.tagging) {
-                                var tokens = attrs.taggingTokens ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
+                            if (angular.isDefined(attrs.tagging)) {
+                                var tokens = angular.isDefined(attrs.taggingTokens) ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
                                 $select.taggingTokens = {isActivated: true, tokens: tokens};
                             }
                         });
@@ -931,7 +933,7 @@ angular.module('ui.fugu.select', [])
 
                         // Support for appending the select field to the body when its open
                         var appendToBody = scope.$eval(attrs.appendToBody);
-                        if (appendToBody ? appendToBody : fuguSelectConfig.appendToBody) {
+                        if (angular.isDefined(appendToBody) ? appendToBody : fuguSelectConfig.appendToBody) {
                             scope.$watch('$select.open', function (isOpen) {
                                 if (isOpen) {
                                     positionDropdown();
@@ -1096,7 +1098,7 @@ angular.module('ui.fugu.select', [])
                         attrs.$observe('refreshDelay', function () {
                             // $eval() is needed otherwise we get a string instead of a number
                             var refreshDelay = scope.$eval(attrs.refreshDelay);
-                            $select.refreshDelay = refreshDelay ? refreshDelay : fuguSelectConfig.refreshDelay;
+                            $select.refreshDelay = angular.isDefined(refreshDelay) ? refreshDelay : fuguSelectConfig.refreshDelay;
                         });
                     };
                 }
@@ -1115,7 +1117,7 @@ angular.module('ui.fugu.select', [])
             link: function (scope, element, attrs, $select) {
                 $select.lockChoiceExpression = attrs.lockChoice;
                 attrs.$observe('placeholder', function (placeholder) {
-                    $select.placeholder = placeholder? placeholder : fuguSelectConfig.placeholder;
+                    $select.placeholder = angular.isDefined(placeholder) ? placeholder : fuguSelectConfig.placeholder;
                 });
 
                 function setAllowClear(allow) {
@@ -1303,12 +1305,12 @@ angular.module('ui.fugu.select', [])
                         scope.$evalAsync(); //To force $digest
                     };
 
-                    scope.$on('fugus:select', function (event, item) {
+                    scope.$on('fuguSelect:select', function (event, item) {
                         $select.selected.push(item);
                         $selectMultiple.updateModel();
                     });
 
-                    scope.$on('fugus:activate', function () {
+                    scope.$on('fuguSelect:activate', function () {
                         $selectMultiple.activeMatchIndex = -1;
                     });
 
@@ -1364,41 +1366,44 @@ angular.module('ui.fugu.select', [])
                         $select.close();
 
                         function getNewActiveMatchIndex() {
+                            var res;
                             switch (key) {
                                 case KEY.LEFT:
                                     // Select previous/first item
                                     if ($selectMultiple.activeMatchIndex !== -1) {
-                                        return prev;
+                                        res = prev;
                                     } else {// Select last item
-                                        return last;
+                                        res = last;
                                     }
                                     break;
                                 case KEY.RIGHT:
                                     // Open drop-down
                                     if ($selectMultiple.activeMatchIndex === -1 || curr === last) {
                                         $select.activate();
-                                        return false;
+                                        res = false;
                                     } else {// Select next/last item
-                                        return next;
+                                        res = next;
                                     }
                                     break;
                                 case KEY.BACKSPACE:
                                     // Remove selected item and select previous/first
                                     if ($selectMultiple.activeMatchIndex !== -1) {
                                         $selectMultiple.removeChoice(curr);
-                                        return prev;
-                                    }else{
-                                        return last;// Select last item
+                                        res = prev;
+                                    } else {
+                                        res = last;// Select last item
                                     }
                                     break;
                                 case KEY.DELETE:
                                     // Remove selected item and select next item
                                     if ($selectMultiple.activeMatchIndex !== -1) {
                                         $selectMultiple.removeChoice($selectMultiple.activeMatchIndex);
-                                        return curr;
+                                        res = curr;
+                                    }else{
+                                        res = false;
                                     }
-                                    return false;
                             }
+                            return res;
                         }
 
                         newIndex = getNewActiveMatchIndex();
@@ -1443,7 +1448,7 @@ angular.module('ui.fugu.select', [])
                             var tagItem;
 
                             // case for object tagging via transform `$select.tagging.fct` function
-                            if ($select.tagging.fct) {
+                            if ($select.tagging.fct !== null || angular.isDefined($select.tagging.fct)) {
                                 tagItems = $select.$filter('filter')(items, {'isTag': true});
                                 if (tagItems.length > 0) {
                                     tagItem = tagItems[0];
@@ -1523,11 +1528,11 @@ angular.module('ui.fugu.select', [])
                         }
                     });
                     function _findCaseInsensitiveDupe(arr) {
-                        if (!arr || !$select.search) {
+                        if (angular.isUndefined(arr) || arr === null || angular.isUndefined($select.search) || $select.search === null) {
                             return false;
                         }
                         return arr.filter(function (origItem) {
-                                if (!$select.search.toUpperCase() || !origItem) {
+                                if (angular.isUndefined($select.search.toUpperCase()) || angular.isUndefined(origItem)) {
                                     return false;
                                 }
                                 return origItem.toUpperCase() === $select.search.toUpperCase();
@@ -1541,7 +1546,7 @@ angular.module('ui.fugu.select', [])
                             for (var i = 0; i < tempArr.length; i++) {
                                 // handle the simple string version of tagging
                                 // search the array for the match
-                                if (!$select.tagging.fct && tempArr[i] + ' ' + $select.taggingLabel === needle) {
+                                if (($select.tagging.fct === null || angular.isUndefined($select.tagging.fct)) && tempArr[i] + ' ' + $select.taggingLabel === needle) {
                                     dupeIndex = i;
                                     // handle the object tagging implementation
                                 } else {
@@ -1618,11 +1623,11 @@ angular.module('ui.fugu.select', [])
                     $select.selected = ngModel.$viewValue;
                 };
 
-                scope.$on('fugus:select', function (event, item) {
+                scope.$on('fuguSelect:select', function (event, item) {
                     $select.selected = item;
                 });
 
-                scope.$on('fugus:close', function (event, skipFocusser) {
+                scope.$on('fuguSelect:close', function (event, skipFocusser) {
                     $timeout(function () {
                         $select.focusser.prop('disabled', false);
                         if (!skipFocusser) {
@@ -1634,7 +1639,7 @@ angular.module('ui.fugu.select', [])
                 //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
                 var focusser = angular.element("<input ng-disabled='$select.disabled' class='fugu-select-focusser fugu-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
 
-                scope.$on('fugus:activate', function () {
+                scope.$on('fuguSelect:activate', function () {
                     focusser.prop('disabled', true); //Will reactivate it on .close()
                 });
 
@@ -1703,8 +1708,8 @@ angular.module('ui.fugu.select', [])
                 }
 
                 var options = angular.extend({
-                        axis: 'horizontal'
-                    },scope.$eval(attrs.fuguSelectSortOptions));
+                    axis: 'horizontal'
+                }, scope.$eval(attrs.fuguSelectSortOptions));
 
                 var axis = options.axis,
                     draggingClassName = 'dragging',
@@ -1777,9 +1782,9 @@ angular.module('ui.fugu.select', [])
                         } else {
                             newIndex = scope.$index;
                         }
-                    } else if(droppedItemIndex < scope.$index){
+                    } else if (droppedItemIndex < scope.$index) {
                         newIndex = scope.$index;
-                    }else{
+                    } else {
                         newIndex = scope.$index + 1;
                     }
 
