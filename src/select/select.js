@@ -191,12 +191,13 @@ angular.module('ui.fugu.select', [])
     // 位置偏移
     .factory('fuguSelectOffset', ['$document', '$window', function ($document, $window) {
         return function (element) {
-            var boundingClientRect = element[0].getBoundingClientRect();
+            var elem = element[0] || element;
+            var elemBCR = elem.getBoundingClientRect();
             return {
-                width: boundingClientRect.width || element.prop('offsetWidth'),
-                height: boundingClientRect.height || element.prop('offsetHeight'),
-                top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
-                left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
+                width: Math.round(angular.isNumber(elemBCR.width) ? elemBCR.width : elem.offsetWidth),
+                height: Math.round(angular.isNumber(elemBCR.height) ? elemBCR.height : elem.offsetHeight),
+                top: Math.round(elemBCR.top + ($window.pageYOffset || $document[0].documentElement.scrollTop)),
+                left: Math.round(elemBCR.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft))
             };
         };
     }])
