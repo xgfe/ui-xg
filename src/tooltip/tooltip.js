@@ -580,8 +580,8 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
 
     // This is mostly ngInclude code but with a custom scope
     .directive('fuguTooltipTemplateTransclude', [
-        '$animate', '$sce', '$compile', '$templateRequest',
-        function ($animate, $sce, $compile, $templateRequest) {
+        '$animate', '$sce', '$compile', '$templateCache', '$http',
+        function ($animate, $sce, $compile, $templateCache, $http) {
             return {
                 link: function (scope, elem, attrs) {
                     var origScope = scope.$eval(attrs.tooltipTemplateTranscludeScope);
@@ -591,7 +591,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                         previousElement,
                         currentElement;
 
-                    var cleanupLastIncludeContent = function () {
+                    function cleanupLastIncludeContent() {
                         if (previousElement) {
                             previousElement.remove();
                             previousElement = null;
@@ -603,43 +603,55 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                         }
 
                         if (currentElement) {
-                            $animate.leave(currentElement).then(function () {
+                            $animate.leave(currentElement, function () {
                                 previousElement = null;
                             });
                             previousElement = currentElement;
                             currentElement = null;
                         }
-                    };
+                    }
+
+                    var thisChangeId = changeCounter;
+
+                    function compileTemplate(template, src) {
+                        if (thisChangeId !== changeCounter) {
+                            return;
+                        }
+                        var newScope = origScope.$new();
+
+                        var clone = $compile(template)(newScope, function (clone) {
+                            cleanupLastIncludeContent();
+                            $animate.enter(clone, elem);
+                        });
+
+                        currentScope = newScope;
+                        currentElement = clone;
+
+                        currentScope.$emit('$includeContentLoaded', src);
+                        scope.$emit('$includeContentRequested', src);
+                    }
 
                     scope.$watch($sce.parseAsResourceUrl(attrs.fuguTooltipTemplateTransclude), function (src) {
-                        var thisChangeId = ++changeCounter;
-
+                        thisChangeId = ++changeCounter;
                         if (src) {
-                            //set the 2nd param to true to ignore the template request error so that the inner
-                            //contents and scope can be cleaned up.
-                            $templateRequest(src, true).then(function (response) {
-                                if (thisChangeId !== changeCounter) {
-                                    return;
-                                }
-                                var newScope = origScope.$new();
-                                var template = response;
-
-                                var clone = $compile(template)(newScope, function (clone) {
-                                    cleanupLastIncludeContent();
-                                    $animate.enter(clone, elem);
+                            // ng1.2没有templateRequestProvider,用$templateCache+$http代替
+                            // 先判断$templateCache中有没有,因为templateCache可以拿到ng-template脚本中的代码片段
+                            // 如果没有的话,则使用$http获取,并把获取到的内容存放到templateCache中
+                            var template = $templateCache.get(src);
+                            if (angular.isDefined(template)) {
+                                compileTemplate(template, src);
+                            } else {
+                                $http.get(src).then(function (response) {
+                                    template = response.data;
+                                    $templateCache.put(src,template);
+                                    compileTemplate(template, src);
+                                }, function () {
+                                    if (thisChangeId === changeCounter) {
+                                        cleanupLastIncludeContent();
+                                        scope.$emit('$includeContentError', src);
+                                    }
                                 });
-
-                                currentScope = newScope;
-                                currentElement = clone;
-
-                                currentScope.$emit('$includeContentLoaded', src);
-                            }, function () {
-                                if (thisChangeId === changeCounter) {
-                                    cleanupLastIncludeContent();
-                                    scope.$emit('$includeContentError', src);
-                                }
-                            });
-                            scope.$emit('$includeContentRequested', src);
+                            }
                         } else {
                             cleanupLastIncludeContent();
                         }
@@ -654,10 +666,10 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
      * They must not be animated as they're expected to be present on the tooltip on
      * initialization.
      */
-    .directive('fuguTooltipClasses', ['$fuguPosition', function($fuguPosition) {
+    .directive('fuguTooltipClasses', ['$fuguPosition', function ($fuguPosition) {
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 // need to set the primary position so the
                 // arrow has space during position measure.
                 // tooltip.positionTooltip()
@@ -703,6 +715,22 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
 
     .directive('fuguTooltipHtml', ['$fuguTooltip', function ($fuguTooltip) {
         return $fuguTooltip('fuguTooltipHtml', 'tooltip', 'mouseenter', {
+            useContentExp: true
+        });
+    }])
+    .directive('fuguTooltipTemplatePopup', function () {
+        return {
+            replace: true,
+            scope: {
+                contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+                originScope: '&'
+            },
+            templateUrl: 'templates/fugu-tooltip-template-popup.html'
+        };
+    })
+
+    .directive('fuguTooltipTemplate', ['$fuguTooltip', function ($fuguTooltip) {
+        return $fuguTooltip('fuguTooltipTemplate', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }]);

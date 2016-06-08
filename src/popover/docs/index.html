@@ -25,6 +25,12 @@
     <input type="text" value="Click me!" fugu-popover="获取焦点的时候才会显示"  popover-trigger="focus" class="form-control">
 
     <hr />
+    <h4>自定义模板</h4>
+    <button fugu-popover-template="'templateId.html'" type="button" class="btn btn-default">Popover With Template</button>
+    <script type="text/ng-template" id="templateId.html">
+        <p>This is the content of the template</p>
+        <h1>Hello Template!</h1>
+    </script>
     <h4>其他</h4>
     <button popover-animation="true" fugu-popover="I fade in and out!" type="button" class="btn btn-default">fading</button>
     <button fugu-popover="I have a title!" popover-title="我是title." type="button" class="btn btn-default">title</button>

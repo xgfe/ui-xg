@@ -1,6 +1,6 @@
 # Tooltip
 ## Description
-工具提示组件,依赖于<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[tooltip](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/tooltip)组件(捂脸~).不包含`tooltip-template`指令
+工具提示组件,依赖于<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[tooltip](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/tooltip)组件(捂脸~).
 
 ## Usage
 
@@ -22,6 +22,11 @@
 	...
 >
 </span>
+生成含有模板内容的提示
+<span fugu-tooltip-template="string"
+	...
+>
+</span>
 ```
 ## Restrict
 - 'AE'
@@ -36,6 +41,8 @@
 - fuguTooltip:指定tooltip的提示文字,若不设置,则不显示
     - type:`string`
 - fuguTooltipHtml:指定tooltip的提示文字，可以包含html代码,若不设置,则不显示
+    - type:`string`
+- fuguTooltipTemplate:指定tooltip的提示文字，可以指定模板,如`ng-template`或者外部文件
     - type:`string`
 - tooltipIsOpen(optional):当`trigger`设置为`none`时，可以由`tooltip-is-open`属性设置tooltip是否显示。
     - type:`boolean`

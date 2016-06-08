@@ -1,6 +1,6 @@
 # Popover
 ## Description
-工具提示组件,依赖于<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[popover](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/popover)组件。不包含`popover-template`指令
+工具提示组件,依赖于<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[popover](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/popover)组件。
 
 ## Usage
 
@@ -22,6 +22,11 @@
 	...
 >
 </span>
+生成含有模板的popover
+<span fugu-popover-template="string"
+	...
+>
+</span>
 ```
 ## Restrict
 - 'AE'
@@ -31,6 +36,8 @@
 - fuguPopover:指定popover的提示文字,若不设置,则不显示
     - type:`string`
 - fuguPopoverHtml:指定popover的提示文字，可以包含html代码,若不设置,则不显示
+    - type:`string`
+- fuguPopoverTemplate:指定popover的提示文字，可以指定模板,如`ng-template`或者外部文件
     - type:`string`
 - popoverIsOpen(optional):当`trigger`设置为`none`时，可以由`popover-is-open`属性设置popover是否显示。
     - type:`boolean`

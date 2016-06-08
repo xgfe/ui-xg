@@ -7,6 +7,20 @@
  */
 angular.module('ui.fugu.popover',['ui.fugu.tooltip'])
 
+    .directive('fuguPopoverTemplatePopup', function() {
+        return {
+            replace: true,
+            scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+                originScope: '&' },
+            templateUrl: 'templates/fugu-popover-template-popup.html'
+        };
+    })
+
+    .directive('fuguPopoverTemplate', ['$fuguTooltip', function($fuguTooltip) {
+        return $fuguTooltip('fuguPopoverTemplate', 'popover', 'click', {
+            useContentExp: true
+        });
+    }])
     .directive('fuguPopoverHtmlPopup', function() {
         return {
             replace: true,
