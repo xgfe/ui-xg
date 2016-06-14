@@ -1,0 +1,11 @@
+<div class="fugu-notify-container" ng-class="wrapperClasses()">
+    <div class="fugu-notify-item alert" ng-repeat="message in notifyServices.directives[referenceId].messages"
+         ng-class="alertClasses(message)" ng-click="stopTimeoutClose(message)">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                ng-click="notifyServices.deleteMessage(message)" ng-show="!message.disableCloseButton">&times;</button>
+        <button type="button" class="close" aria-hidden="true" ng-show="showCountDown(message)">{{message.countdown}}
+        </button>
+        <h4 class="fugu-notify-title" ng-show="message.title" ng-bind="message.title"></h4>
+        <div class="fugu-notify-message" ng-bind-html="message.text"></div>
+    </div>
+</div>

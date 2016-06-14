@@ -1,14 +1,14 @@
-# notification
+# notify
 ## Description
 消息通知组件。全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示.
 
 ## Usage
 
 ```
-在需要使用通知页面对应controller中注入notification(provider),通过使用notification上方法进行调用.
-angular.module('XXXXApp').controller('YYYYCtrl',['notification', function (notification) {}])
+在需要使用通知页面对应controller中注入notify(provider),通过使用notify上方法进行调用.
+angular.module('XXXXApp').controller('YYYYCtrl',['notify', function (notify) {}])
 ```
-## notification
+## notify
 - inject: controller中注入
 - methods
     - `warning(text, config)`: 显示警告通知,text为提示内容,config为当前显示通知配置项.
@@ -27,7 +27,7 @@ angular.module('XXXXApp').controller('YYYYCtrl',['notification', function (notif
 - 'A'
 
 ## Provider
-- notificationProvider: 全局配置notification相关的设置.
+- notifyProvider: 全局配置notify相关的设置.
 - methods
     - `globalDurationTime(number|object)`: 设置通知显示时间,默认为-1表示一直显示.number表示设置显示时间(毫秒),则所有类型统一设置;object格式为`{error:number,info:number,warning:number,success:number}`,也可以只设置某几个属性.
     - `globalDisableCloseBtn(boolean)`: 设置是否显示关闭图标,默认为true表示显示.
