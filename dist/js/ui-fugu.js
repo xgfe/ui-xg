@@ -1,10 +1,10 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-06-08
+ * Version: 0.1.0 - 2016-06-14
  * License: ISC
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notification","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notification/templates/notification.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
 /**
  * alert
  * 警告提示指令
@@ -2426,244 +2426,405 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
 
 
 /**
- * notification
+ * notify
  * 通知指令
  * Author:penglu02@meituan.com
  * Date:2016-03-22
  */
-angular.module('ui.fugu.notification', ['ui.fugu.alert'])
-    .service('notificationServices', ['$sce', '$interval', '$interpolate', '$document', '$compile', '$rootScope', function($sce, $interval, $interpolate, $document, $compile, $rootScope){
-        var self = this;
-        this.directive = {};
+angular.module('ui.fugu.notify', [])
+    .service('notifyServices', [
+        '$sce',
+        '$interval',
+        function ($sce, $interval) {
+            var self = this;
+            this.directives = {};
+            var preloadDirectives = {};
 
-        function initNotification(){
-            var body = $document.find('body').eq(0),
-                noticeScope = $rootScope.$new(true),
-                noticeEle = angular.element('<div fugu-notice></div>');
-            body.append($compile(noticeEle)(noticeScope));
-        }
-        initNotification();  // 初始化组件
-
-        this.initDirective = function () {
-            this.directive.notifications = [];
-            return this.directive;
-        };
-
-        this.addNotifications = function(notification){
-            var notifications, unique = true, notificationText;
-
-            // 错误类型处理
-            if (notification.type === 'error') {
-                notification.type = 'danger';
+            function preLoad(referenceId) {
+                var directive;
+                if (preloadDirectives[referenceId]) {
+                    directive = preloadDirectives[referenceId];
+                } else {
+                    directive = preloadDirectives[referenceId] = {messages: []};
+                }
+                return directive;
             }
-            // 内容处理
-            notification.text = $interpolate(notification.text)(notification.variables);  //{{}}插值解析
 
-            // TODO:使用alert不存在ng-bind-html，因此不需要对其进行特殊处理
-            //notification.text = $sce.trustAsHtml(String( notification.text));   // html内容处理，用于ng-bind-html等
+            function directiveForRefId(referenceId) {
+                var refId = referenceId || 0;
+                return self.directives[refId] || preloadDirectives[refId];
+            }
 
-            notifications = this.directive.notifications;
-
-            // 提示信息是否不重复,this.unique在provider中设置
-            if(this.unique){
-                angular.forEach(notifications, function(notify){
-                    notificationText = notify.text;
-
-                    //// 处理内容获取:trustAsHtml与getTrustedHtml对变量进行了一次包裹
-                    //notificationText = $sce.getTrustedHtml(notify.text);
-
-                    // 通过对比:提示内容，提示类型，提示标题来判断两个通知是否相同
-                    if(notification.text === notificationText && notification.title === notify.title && notification.type === notify.type){
-                        unique = false;
+            this.initDirective = function (referenceId, limitMessages) {
+                if (preloadDirectives[referenceId]) {
+                    this.directives[referenceId] = preloadDirectives[referenceId];
+                    this.directives[referenceId].limitMessages = limitMessages;
+                } else {
+                    this.directives[referenceId] = {
+                        messages: [],
+                        limitMessages: limitMessages
+                    };
+                }
+                return this.directives[referenceId];
+            };
+            this.getAllMessages = function (referenceId) {
+                referenceId = referenceId || 0;
+                var messages;
+                if (directiveForRefId(referenceId)) {
+                    messages = directiveForRefId(referenceId).messages;
+                } else {
+                    messages = [];
+                }
+                return messages;
+            };
+            this.destroyAllMessages = function (referenceId) {
+                var messages = this.getAllMessages(referenceId);
+                for (var i = messages.length - 1; i >= 0; i--) {
+                    messages[i].destroy();
+                }
+                var directive = directiveForRefId(referenceId);
+                if (directive) {
+                    directive.messages = [];
+                }
+            };
+            this.addMessage = function (message) {
+                var directive, messages, found, msgText;
+                if (this.directives[message.referenceId]) {
+                    directive = this.directives[message.referenceId];
+                } else {
+                    directive = preLoad(message.referenceId);
+                }
+                messages = directive.messages;
+                if (this.onlyUnique) {
+                    angular.forEach(messages, function (msg) {
+                        msgText = $sce.getTrustedHtml(msg.text);
+                        if (message.text === msgText && message.severity === msg.severity && message.title === msg.title) {
+                            found = true;
+                        }
+                    });
+                    if (found) {
+                        return;
                     }
-                });
-                if(!unique){
-                    return;
                 }
-            }
-
-            if(notification.duration && notification.duration !== -1){ // 设置持续显示时间,-1表示一直显示
-                //  持续时间之后直接删除
-                $interval(angular.bind(this, function(){
-                    self.deleteNotifications(notification);
-                }), notification.duration, 1);
-            }
-
-            // 如果有长度限制，则移除超过长度的
-            if(this.limitNum !== -1){
-                var diff = notifications.length - (this.limitNum - 1);
-                if(diff > 0){
-                    notifications.splice(0, diff);
+                message.text = $sce.trustAsHtml(String(message.text));
+                if (message.ttl && message.ttl !== -1) {
+                    message.countdown = message.ttl / 1000;
+                    message.promises = [];
+                    message.close = false;
+                    message.countdownFunction = function () {
+                        if (message.countdown > 1) {
+                            message.countdown--;
+                            message.promises.push($interval(message.countdownFunction, 1000, 1, 1));
+                        } else {
+                            message.countdown--;
+                        }
+                    };
                 }
-            }
-            notifications.push(notification); //插入新数值
-            return notification;
-        };
-
-
-        /**
-         * 删除传入通知对象
-         * @param {object} notification
-         */
-        this.deleteNotifications = function(notification){
-            var notifications = this.directive.notifications, //获取所有通知
-                index = notifications.indexOf(notification);
-            if(index !== -1){
-                notifications.splice(index, 1); //删除
-            }
+                if (angular.isDefined(directive.limitMessages)) {
+                    var diff = messages.length - (directive.limitMessages - 1);
+                    if (diff > 0) {
+                        messages.splice(directive.limitMessages - 1, diff);
+                    }
+                }
+                if (this.reverseOrder) {
+                    messages.unshift(message);
+                } else {
+                    messages.push(message);
+                }
+                if (typeof message.onopen === 'function') {
+                    message.onopen();
+                }
+                if (message.ttl && message.ttl !== -1) {
+                    var self = this;
+                    message.promises.push($interval(angular.bind(this, function () {
+                        self.deleteMessage(message);
+                    }), message.ttl, 1, 1));
+                    message.promises.push($interval(message.countdownFunction, 1000, 1, 1));
+                }
+                return message;
+            };
+            this.deleteMessage = function (message) {
+                var messages = this.getAllMessages(message.referenceId), index = messages.indexOf(message);
+                if (index > -1) {
+                    messages[index].close = true;
+                    messages.splice(index, 1);
+                }
+                if (typeof message.onclose === 'function') {
+                    message.onclose();
+                }
+            };
         }
-    }])
-    .controller('notificationController', ['$scope', '$interval', 'notification', 'notificationServices', function($scope, $interval, notification, notificationServices){
-        notificationServices.initDirective();
-        $scope.notifications = notificationServices.directive.notifications;
+    ])
+    .controller('notifyController', [
+        '$scope',
+        '$interval',
+        'notify',
+        'notifyServices',
+        function ($scope, $interval, notify, notifyServices) {
+            $scope.referenceId = $scope.reference || 0;
+            notifyServices.initDirective($scope.referenceId, $scope.limitMessages);
+            $scope.notifyServices = notifyServices;
+            $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : notify.inlineMessages();
+            $scope.$watch('limitMessages', function (limitMessages) {
+                var directive = notifyServices.directives[$scope.referenceId];
+                if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
+                    directive.limitMessages = limitMessages;
+                }
+            });
+            $scope.stopTimeoutClose = function (message) {
+                if (!message.clickToClose) {
+                    angular.forEach(message.promises, function (promise) {
+                        $interval.cancel(promise);
+                    });
+                    if (message.close) {
+                        notifyServices.deleteMessage(message);
+                    } else {
+                        message.close = true;
+                    }
+                }
+            };
+            $scope.alertClasses = function (message) {
+                return {
+                    'alert-success': message.severity === 'success',
+                    'alert-error': message.severity === 'error',
+                    'alert-danger': message.severity === 'error',
+                    'alert-info': message.severity === 'info',
+                    'alert-warning': message.severity === 'warning',
+                    'icon': message.disableIcons === false,
+                    'alert-dismissable': !message.disableCloseButton
+                };
+            };
+            $scope.showCountDown = function (message) {
+                return !message.disableCountDown && message.ttl > 0;
+            };
+            $scope.wrapperClasses = function () {
+                var classes = {};
+                classes['fugu-notify-fixed'] = !$scope.inlineMessage;
+                classes[notify.position()] = true;
+                return classes;
+            };
+            $scope.computeTitle = function (message) {
+                var ret = {
+                    'success': 'Success',
+                    'error': 'Error',
+                    'info': 'Information',
+                    'warn': 'Warning'
+                };
+                return ret[message.severity];
+            };
+        }
+    ])
+    .provider('notify', function () {
 
-        $scope.closeFn = function(notification){
-            notificationServices.deleteNotifications(notification);
-        }
-    }])
-    .directive('fuguNotice', [function(){
-        return {
-            restrict: 'A',
-            replace: false,
-            scope: {},
-            templateUrl: 'templates/notification.html',
-            controller: 'notificationController'
-        }
-    }])
-    .provider('notification', [function(){
-        // private variables
-        var _types = {
+        var _ttl = {
                 success: null,
                 error: null,
                 warning: null,
                 info: null
-            },
-            _unique = true,
-            _disableCloseBtn = false,
-            _disableIcon = false,
-            _limitNum = -1; // 默认不限制显示条数
-
-
-        // this绑定的方法是可以在注入之前进行调用设置
-        /**
-         * 设置通知全局持续显示时间
-         * @param {number} duration 持续时间毫秒,如果为-1则表示一直显示
-         */
-        this.globalDurationTime = function (duration){
-            if(typeof duration === 'object'){
-                // 以对象的形式分开设置持续时间
-                for (var key in duration){
-                    if(duration.hasOwnProperty(key)){
-                        _types[key] = duration[key];
+            }, _messagesKey = 'messages', _messageTextKey = 'text', _messageTitleKey = 'title',
+            _messageSeverityKey = 'severity', _onlyUniqueMessages = true, _messageVariableKey = 'variables',
+            _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false,
+            _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
+        this.globalTimeToLive = function (ttl) {
+            if (typeof ttl === 'object') {
+                for (var k in ttl) {
+                    if (ttl.hasOwnProperty(k)) {
+                        _ttl[k] = ttl[k];
                     }
                 }
             } else {
-                // 统一设置
-                for(var type in _types){
-                    if(_types.hasOwnProperty(type)) {
-                        _types[type] = duration;
+                for (var severity in _ttl) {
+                    if (_ttl.hasOwnProperty(severity)) {
+                        _ttl[severity] = ttl;
                     }
                 }
             }
             return this;
         };
-
-        /**
-         * 统一配置是否显示关闭按钮
-         * @param {boolean} disableCloseBtn
-         * @returns {*}
-         */
-        this.globalDisableCloseBtn = function (disableCloseBtn){
-            _disableCloseBtn = disableCloseBtn;
+        this.globalTranslateMessages = function (translateMessages) {
+            _translateMessages = translateMessages;
             return this;
         };
-
-        /**
-         * 统一配置是否显示图标
-         * @param {boolean} disableIcon
-         * @returns {*}
-         */
-        this.globalDisableIcon = function (disableIcon) {
-            _disableIcon = disableIcon;
+        this.globalDisableCloseButton = function (disableCloseButton) {
+            _disableCloseButton = disableCloseButton;
             return this;
         };
-
-
-        /**
-         * 统一配置提示框是否重复显示
-         * @param {boolean} unique
-         * @returns {*}
-         */
-        this.globalUnique = function(unique) {
-            _unique = unique;
+        this.globalDisableIcons = function (disableIcons) {
+            _disableIcons = disableIcons;
             return this;
         };
+        this.globalReversedOrder = function (reverseOrder) {
+            _reverseOrder = reverseOrder;
+            return this;
+        };
+        this.globalDisableCountDown = function (countDown) {
+            _disableCountDown = countDown;
+            return this;
+        };
+        this.messageVariableKey = function (messageVariableKey) {
+            _messageVariableKey = messageVariableKey;
+            return this;
+        };
+        this.globalInlineMessages = function (inline) {
+            _inline = inline;
+            return this;
+        };
+        this.globalPosition = function (position) {
+            _position = position;
+            return this;
+        };
+        this.messagesKey = function (messagesKey) {
+            _messagesKey = messagesKey;
+            return this;
+        };
+        this.messageTextKey = function (messageTextKey) {
+            _messageTextKey = messageTextKey;
+            return this;
+        };
+        this.messageTitleKey = function (messageTitleKey) {
+            _messageTitleKey = messageTitleKey;
+            return this;
+        };
+        this.messageSeverityKey = function (messageSeverityKey) {
+            _messageSeverityKey = messageSeverityKey;
+            return this;
+        };
+        this.onlyUniqueMessages = function (onlyUniqueMessages) {
+            _onlyUniqueMessages = onlyUniqueMessages;
+            return this;
+        };
+        this.serverMessagesInterceptor = [
+            '$q',
+            'notify',
+            function ($q, notify) {
+                function checkResponse(response) {
+                    if (angular.isDefined(response) && response.data && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
+                        notify.addServerMessages(response.data[_messagesKey]);
+                    }
+                }
 
-        this.globalLimitNum = function(limitNum) {
-            if(limitNum > 0){
-                _limitNum = limitNum;
+                return {
+                    'response': function (response) {
+                        checkResponse(response);
+                        return response;
+                    },
+                    'responseError': function (rejection) {
+                        checkResponse(rejection);
+                        return $q.reject(rejection);
+                    }
+                };
             }
-            return this;
-        };
-
-
-        // $get方法返回的内容,注入的时候可以获取
+        ];
         this.$get = [
             '$rootScope',
             '$interpolate',
             '$sce',
             '$filter',
             '$interval',
-            'notificationServices',
-            function ($rootScope, $interpolate, $sce, $filter, $interval, notificationServices) {
-                notificationServices.unique = _unique;  //根据当前配置，设置显示的唯一性(统一)
-                notificationServices.limitNum = _limitNum;  //根据当前配置，设置显示条数限制
+            'notifyServices',
+            function ($rootScope, $interpolate, $sce, $filter, $interval, notifyServices) {
+                var translate;
+                notifyServices.onlyUnique = _onlyUniqueMessages;
+                notifyServices.reverseOrder = _reverseOrder;
+                try {
+                    translate = $filter('translate');
+                } catch (e) {
+                    translate = null;
+                }
+                function broadcastMessage(message) {
+                    if (translate && message.translateMessage) {
+                        message.text = translate(message.text, message.variables) || message.text;
+                        message.title = translate(message.title) || message.title;
+                    } else {
+                        var polation = $interpolate(message.text);
+                        message.text = polation(message.variables);
+                    }
+                    var addedMessage = notifyServices.addMessage(message);
+                    $rootScope.$broadcast('notifyMessage', message);
+                    $interval(function () {
+                    }, 0, 1);
+                    return addedMessage;
+                }
 
-                function sendNotification(text, config, type) {
-                    var _config = config || {}, notification, addNotification;
-
-                    // 组装新添加通知信息
-                    notification = {
+                function sendMessage(text, config, severity) {
+                    var _config = config || {}, message;
+                    message = {
                         text: text,
-                        type: type,
-                        duration: _config.duration || _types[type],
-                        disableCloseBtn: angular.isDefined(_config.disableCloseBtn) ? _config.disableCloseBtn : _disableCloseBtn,
-                        disableIcon: angular.isDefined(_config.disableIcon) ? _config.disableIcon : _disableIcon,
-                        variables: _config.variables || {},   // 解析text中{{}}中变量
-                        destory: function () {
-                            notificationServices.deleteNotifications(notification);
+                        title: _config.title,
+                        severity: severity,
+                        ttl: _config.ttl || _ttl[severity],
+                        variables: _config.variables || {},
+                        disableCloseButton:  angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
+                        disableIcons: angular.isUndefined(_config.disableIcons) ? _disableIcons : _config.disableIcons,
+                        disableCountDown: angular.isUndefined(_config.disableCountDown) ? _disableCountDown : _config.disableCountDown,
+                        position: _config.position || _position,
+                        referenceId: _config.referenceId || _referenceId,
+                        translateMessage: angular.isUndefined(_config.translateMessage) ? _translateMessages : _config.translateMessage,
+                        destroy: function () {
+                            notifyServices.deleteMessage(message);
                         },
                         setText: function (newText) {
-                            //// 对内容进行包裹用于ng-bind-html显示,后期使用getTrustedHtml获取
-                            //this.text = $sce.trustAsHtml(String(newText));
-
-                            this.text = newText;
-                        }
+                            message.text = $sce.trustAsHtml(String(newText));
+                        },
+                        onclose: _config.onclose,
+                        onopen: _config.onopen
                     };
-
-                    addNotification = notificationServices.addNotifications(notification);
-                    return addNotification;
+                    return broadcastMessage(message);
                 }
 
-                function warning(text, config){
-                    return sendNotification(text, config, 'warning');
+                function warning(text, config) {
+                    return sendMessage(text, config, 'warning');
                 }
 
-                function error(text, config){
-                    return sendNotification(text, config, 'error');
+                function error(text, config) {
+                    return sendMessage(text, config, 'error');
                 }
 
-                function info(text, config){
-                    return sendNotification(text, config, 'info');
+                function info(text, config) {
+                    return sendMessage(text, config, 'info');
                 }
 
-                function success(text, config){
-                    return sendNotification(text, config, 'success');
+                function success(text, config) {
+                    return sendMessage(text, config, 'success');
                 }
 
-                function common(text, config, type){
-                    var noticeType = type ? type.toLowerCase() : 'error';  // 默认为‘error’提示框
-                    return sendNotification(text, config, noticeType);
+                function general(text, config, severity) {
+                    severity = (severity || 'error').toLowerCase();
+                    return sendMessage(text, config, severity);
+                }
+
+                function addServerMessages(messages) {
+                    if (!messages || !messages.length) {
+                        return;
+                    }
+                    var i, message, severity, length;
+                    length = messages.length;
+                    for (i = 0; i < length; i++) {
+                        message = messages[i];
+                        if (message[_messageTextKey]) {
+                            severity = (message[_messageSeverityKey] || 'error').toLowerCase();
+                            var config = {};
+                            config.variables = message[_messageVariableKey] || {};
+                            config.title = message[_messageTitleKey];
+                            sendMessage(message[_messageTextKey], config, severity);
+                        }
+                    }
+                }
+
+                function onlyUnique() {
+                    return _onlyUniqueMessages;
+                }
+
+                function reverseOrder() {
+                    return _reverseOrder;
+                }
+
+                function inlineMessages() {
+                    return _inline;
+                }
+
+                function position() {
+                    return _position;
                 }
 
                 return {
@@ -2671,10 +2832,28 @@ angular.module('ui.fugu.notification', ['ui.fugu.alert'])
                     error: error,
                     info: info,
                     success: success,
-                    common: common
+                    general: general,
+                    addServerMessages: addServerMessages,
+                    onlyUnique: onlyUnique,
+                    reverseOrder: reverseOrder,
+                    inlineMessages: inlineMessages,
+                    position: position
                 };
             }
         ];
+    })
+    .directive('fuguNotify', [function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'templates/notify.html',
+            replace: false,
+            scope: {
+                reference: '@',
+                inline: '=',
+                limitMessages: '='
+            },
+            controller: 'notifyController'
+        };
     }]);
 
 angular.module('ui.fugu.pager',[])
@@ -6471,14 +6650,20 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     "    </div>"+
     "</div>");
 }]);
-angular.module("notification/templates/notification.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/notification.html",
-    "<div class=\"notice-container\">"+
-    "    <div class=\"notice-item\" ng-repeat=\"notification in notifications\">"+
-    "        <!--<fugu-alert type=\"{{notification.type}}\" has-icon=\"{{notification.disableIcon}}\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>-->"+
-    "        <fugu-alert type=\"{{notification.type}}\" has-icon=\"true\" close=\"{{!notification.disableCloseBtn}}\" close-func=\"closeFn(notification)\" class=\"media-heading\">{{notification.text}}</fugu-alert>"+
+angular.module("notify/templates/notify.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/notify.html",
+    "<div class=\"fugu-notify-container\" ng-class=\"wrapperClasses()\">"+
+    "    <div class=\"fugu-notify-item alert\" ng-repeat=\"message in notifyServices.directives[referenceId].messages\""+
+    "         ng-class=\"alertClasses(message)\" ng-click=\"stopTimeoutClose(message)\">"+
+    "        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\""+
+    "                ng-click=\"notifyServices.deleteMessage(message)\" ng-show=\"!message.disableCloseButton\">&times;</button>"+
+    "        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"showCountDown(message)\">{{message.countdown}}"+
+    "        </button>"+
+    "        <h4 class=\"fugu-notify-title\" ng-show=\"message.title\" ng-bind=\"message.title\"></h4>"+
+    "        <div class=\"fugu-notify-message\" ng-bind-html=\"message.text\"></div>"+
     "    </div>"+
-    "</div>");
+    "</div>"+
+    "");
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
