@@ -15,6 +15,7 @@
   .fugu-alert .show-icon {
     padding-left: 20px; }
 
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -92,7 +93,6 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
-
 
 .fugu-calendar {
   display: inline-block;
