@@ -73,7 +73,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             $scope.showCalendar = false;
             this.toggle = function (open) {
                 var show = arguments.length ? !!open : !$scope.showCalendar;
-                if(show){
+                if (show) {
                     adjustPosition();
                 }
                 $scope.showCalendar = show;
@@ -153,8 +153,9 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 }
                 ngModelCtrl.$setViewValue(date);
                 ngModelCtrl.$render();
-                var fn = $scope.onChange();
-                if(angular.isDefined(fn)){
+
+                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                if (angular.isDefined(fn)) {
                     fn();
                 }
             };
@@ -175,7 +176,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 placeholder: '@',
                 size: '@',
                 isDisabled: '=?ngDisabled',
-                onChange: '&'
+                onChange: '&?'
             },
             controller: 'fuguDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {

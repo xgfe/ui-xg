@@ -4,7 +4,7 @@
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown',['ui.fugu.position'])
+angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
     eachItemWidth: 120, //每一个项目的宽度
     openClass:'open', //打开dropdown的calss
@@ -53,8 +53,8 @@ angular.module('ui.fugu.dropdown',['ui.fugu.position'])
     }
 
 }])
-.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','$fuguPosition','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
-    function ($scope,$timeout,$attrs,$element,$fuguPosition,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
+.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
+    function ($scope,$timeout,$attrs,$element,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
         $scope.colsNum = angular.isDefined($attrs.colsNum) ?
             angular.copy($scope.$parent.$eval($attrs.colsNum)) :fuguDropdownProvider.getColsNum();
         $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
