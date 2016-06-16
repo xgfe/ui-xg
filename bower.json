@@ -1,0 +1,30 @@
+{
+  "name": "angular-ui-fugu",
+  "version":"1.0.0",
+  "description": "UI directives based on angular and bootstrap",
+  "main": "dist/js/ui-fugu.js",
+  "authors": [
+    "xgfe"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "UI",
+    "angular",
+    "angular",
+    "directives",
+    "bootstrap"
+  ],
+  "homepage": "https://github.com/xgfe/angular-ui-fugu",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": ">=1.2.25",
+    "bootstrap": "~3.3.6"
+  }
+}

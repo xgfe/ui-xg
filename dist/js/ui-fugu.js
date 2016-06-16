@@ -1,7 +1,7 @@
 /*
  * angular-ui-fugu
- * Version: 0.1.0 - 2016-06-16
- * License: ISC
+ * Version: 1.0.0 - 2016-06-16
+ * License: MIT
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
 angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
