@@ -3,8 +3,8 @@
  * Version: 1.0.0 - 2016-06-16
  * License: MIT
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker","ui.fugu.tree"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html","tree/templates/tree-node.html","tree/templates/tree.html"]);
+angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker"]);
+angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","dropdown/templates/dropdown-choices.html","dropdown/templates/dropdown.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
 /**
  * alert
  * 警告提示指令
@@ -702,34 +702,32 @@ angular.module('ui.fugu.timepanel', [])
  * Date:2016-02-14
  */
 angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
-    .constant('fuguCalendarConfig',{
-        startingDay:0, // 一周的开始天,0-周日,1-周一,以此类推
-        showTime:true, // 是否显示时间选择
+    .constant('fuguCalendarConfig', {
+        startingDay: 0, // 一周的开始天,0-周日,1-周一,以此类推
+        showTime: true, // 是否显示时间选择
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
-        exceptions:[]  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
+        exceptions: []  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
     })
     .provider('fuguCalendar', function () {
         var FORMATS = {};
-        this.setFormats = function (formats,subFormats) {
-            if(subFormats){
+        this.setFormats = function (formats, subFormats) {
+            if (subFormats) {
                 FORMATS[formats] = subFormats;
-            }else{
+            } else {
                 FORMATS = formats;
             }
         };
 
-        this.$get  = ['$locale','$log',function ($locale,$log) {
+        this.$get = ['$locale', '$log', function ($locale, $log) {
             return {
                 getFormats: function () {
-                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS),FORMATS);
-                    if(!angular.isArray(FORMATS.SHORTMONTH) ||
-                        FORMATS.SHORTMONTH.length!=12 ||
-                        !angular.isArray(FORMATS.MONTH) ||
-                        FORMATS.MONTH.length!=12 ||
-                        !angular.isArray(FORMATS.SHORTDAY) ||
-                        FORMATS.SHORTDAY.length!=7
-                    ){
+                    FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS), FORMATS);
+                    if (!angular.isArray(FORMATS.SHORTMONTH) ||
+                        FORMATS.SHORTMONTH.length != 12 || !angular.isArray(FORMATS.MONTH) ||
+                        FORMATS.MONTH.length != 12 || !angular.isArray(FORMATS.SHORTDAY) ||
+                        FORMATS.SHORTDAY.length != 7
+                    ) {
                         $log.warn('invalid date time formats');
                         FORMATS = $locale.DATETIME_FORMATS;
                     }
@@ -738,364 +736,375 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             }
         }]
     })
-    .controller('fuguCalendarCtrl', ['$scope', '$attrs','$log','fuguCalendar','fuguCalendarConfig',
-        function ($scope, $attrs,$log,fuguCalendarProvider,calendarConfig) {
-        var FORMATS = fuguCalendarProvider.getFormats();
-        var MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31]; //每个月的天数,2月会根据闰年调整
-        var ngModelCtrl = {$setViewValue: angular.noop};
+    .controller('fuguCalendarCtrl', ['$scope', '$attrs', '$log', 'fuguCalendar', 'fuguCalendarConfig',
+        function ($scope, $attrs, $log, fuguCalendarProvider, calendarConfig) {
+            var FORMATS = fuguCalendarProvider.getFormats();
+            var MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //每个月的天数,2月会根据闰年调整
+            var ngModelCtrl = {$setViewValue: angular.noop};
 
-        $scope.FORMATS = FORMATS;
-        $scope.panels = {
-            year:false,
-            month:false,
-            day:true,
-            time:false
-        };
-        var self = this;
-        angular.forEach(['startingDay','exceptions'], function(key) {
-            self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
-        });
-        $scope.showTime = angular.isDefined($attrs.showTime) ?
-            $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
-
-
-        if(self.startingDay > 6 || self.startingDay <0){
-            self.startingDay = calendarConfig.startingDay;
-        }
-
-        $scope.dayNames = dayNames(this.startingDay);
-        $scope.allDays = [];
-        this.init = function (_ngModelCtrl) {
-            ngModelCtrl = _ngModelCtrl;
-            ngModelCtrl.$render = this.render;
-            ngModelCtrl.$formatters.unshift(function (modelValue) {
-                return modelValue ? new Date(modelValue) : null;
+            $scope.FORMATS = FORMATS;
+            $scope.panels = {
+                year: false,
+                month: false,
+                day: true,
+                time: false
+            };
+            var self = this;
+            angular.forEach(['startingDay', 'exceptions'], function (key) {
+                self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
             });
-        };
-        this.render = function () {
-            var date = ngModelCtrl.$modelValue;
-            if (isNaN(date) || !date) {
-                $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
-            }
-            date = new Date(date);
-            $scope.selectDate = angular.copy(date);
+            $scope.showTime = angular.isDefined($attrs.showTime) ?
+                $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
 
-            $scope.currentYear = $scope.selectDate.getFullYear();
-            $scope.currentMonth = $scope.selectDate.getMonth();
-            $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
 
-            $scope.allDays = getDays($scope.selectDate);
-        };
-        // 选择某一个面板
-        $scope.selectPanel = function (panel) {
-            angular.forEach($scope.panels, function (a,i) {
-                $scope.panels[i] = false;
-            });
-            $scope.panels[panel] = true;
-        };
-        // 切换上一个月
-        $scope.prevMonth = function () {
-            if($scope.currentMonth === 0){
-                $scope.currentYear -= 1;
-                $scope.currentMonth = 11;
-            }else {
-                $scope.currentMonth -= 1;
+            if (self.startingDay > 6 || self.startingDay < 0) {
+                self.startingDay = calendarConfig.startingDay;
             }
-            buildDayPanel();
-        };
-        // 切换到下一个月
-        $scope.nextMonth = function () {
-            if($scope.currentMonth === 11){
-                $scope.currentYear += 1;
-                $scope.currentMonth = 0;
-            }else {
-                $scope.currentMonth += 1;
-            }
-            buildDayPanel();
-        };
-        // 选择日期
-        $scope.selectDayHandler = function (day) {
-            if(day.isDisabled){
-                return;
-            }
-            $scope.selectDate.setFullYear(day.year);
-            $scope.selectDate.setMonth(day.month);
-            $scope.selectDate.setDate(day.day);
-            if(!day.inMonth){
-                if(day.isNext){
-                    $scope.nextMonth();
-                }else{
-                    $scope.prevMonth();
+
+            $scope.dayNames = dayNames(this.startingDay);
+            $scope.allDays = [];
+            this.init = function (_ngModelCtrl) {
+                ngModelCtrl = _ngModelCtrl;
+                ngModelCtrl.$render = this.render;
+                ngModelCtrl.$formatters.unshift(function (modelValue) {
+                    return modelValue ? new Date(modelValue) : null;
+                });
+            };
+            this.render = function () {
+                var date = ngModelCtrl.$modelValue;
+                if (isNaN(date) || !date) {
+                    $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                    date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
                 }
-            }
-            $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
-            fireRender();
-        };
-        // 选择今天
-        $scope.chooseToday = function () {
-            var today = splitDate(new Date());
+                date = new Date(date);
+                $scope.selectDate = angular.copy(date);
 
-            $scope.selectDate.setFullYear(today.year);
-            $scope.selectDate.setMonth(today.month);
-            $scope.selectDate.setDate(today.day);
+                $scope.currentYear = $scope.selectDate.getFullYear();
+                $scope.currentMonth = $scope.selectDate.getMonth();
+                $scope.currentDay = $scope.currentYear + '-' + $scope.currentMonth + '-' + $scope.selectDate.getDate();
 
-            $scope.currentYear = today.year;
-            $scope.currentMonth = today.month;
-            $scope.currentDay = $scope.currentYear+'-'+$scope.currentMonth+'-'+$scope.selectDate.getDate();
+                $scope.allDays = getDays($scope.selectDate);
+            };
+            // 选择某一个面板
+            $scope.selectPanel = function (panel) {
+                angular.forEach($scope.panels, function (a, i) {
+                    $scope.panels[i] = false;
+                });
+                $scope.panels[panel] = true;
+            };
+            // 切换上一个月
+            $scope.prevMonth = function () {
+                if ($scope.currentMonth === 0) {
+                    $scope.currentYear -= 1;
+                    $scope.currentMonth = 11;
+                } else {
+                    $scope.currentMonth -= 1;
+                }
+                buildDayPanel();
+            };
+            // 切换到下一个月
+            $scope.nextMonth = function () {
+                if ($scope.currentMonth === 11) {
+                    $scope.currentYear += 1;
+                    $scope.currentMonth = 0;
+                } else {
+                    $scope.currentMonth += 1;
+                }
+                buildDayPanel();
+            };
+            // 选择日期
+            $scope.selectDayHandler = function (day) {
+                if (day.isDisabled) {
+                    return;
+                }
+                $scope.selectDate.setFullYear(day.year);
+                $scope.selectDate.setMonth(day.month);
+                $scope.selectDate.setDate(day.day);
+                if (!day.inMonth) {
+                    if (day.isNext) {
+                        $scope.nextMonth();
+                    } else {
+                        $scope.prevMonth();
+                    }
+                }
+                $scope.currentDay = $scope.currentYear + '-' + $scope.currentMonth + '-' + $scope.selectDate.getDate();
+                fireRender();
+            };
+            // 选择今天
+            $scope.chooseToday = function () {
+                var today = splitDate(new Date());
 
-            buildDayPanel();
-            fireRender();
-        };
-        var cacheTime;
-        // 点击时间进入选择时间面板
-        $scope.selectTimePanelHandler = function () {
-            $scope.selectPanel('time');
-            cacheTime = angular.copy($scope.selectDate);
-        };
+                $scope.selectDate.setFullYear(today.year);
+                $scope.selectDate.setMonth(today.month);
+                $scope.selectDate.setDate(today.day);
 
-        // 时间面板返回
-        $scope.timePanelBack = function () {
-            $scope.selectDate = angular.copy(cacheTime);
-            $scope.selectPanel('day');
-        };
-        // 确定选择时间
-        $scope.timePanelOk = function () {
-            $scope.selectPanel('day');
-            fireRender();
-        };
-        // 选择此刻
-        $scope.timePanelSelectNow = function () {
-            var dt = new Date();
-            var date = angular.copy($scope.selectDate);
-            date.setHours(dt.getHours());
-            date.setMinutes(dt.getMinutes());
-            date.setSeconds(dt.getSeconds());
-            $scope.selectDate = date;
-        };
-        // 获取所有月份,分4列
-        $scope.allMonths = (function(){
-            var res = [],
-                MONTHS  = FORMATS.MONTH,
-                temp = [];
-            for(var i= 0,len=MONTHS.length;i<len;i++){
-                if(temp.length>=3){
-                    res.push(temp);
+                $scope.currentYear = today.year;
+                $scope.currentMonth = today.month;
+                $scope.currentDay = $scope.currentYear + '-' + $scope.currentMonth + '-' + $scope.selectDate.getDate();
+
+                buildDayPanel();
+                fireRender();
+            };
+            var cacheTime;
+            // 点击时间进入选择时间面板
+            $scope.selectTimePanelHandler = function () {
+                $scope.selectPanel('time');
+                cacheTime = angular.copy($scope.selectDate);
+            };
+
+            // 时间面板返回
+            $scope.timePanelBack = function () {
+                $scope.selectDate = angular.copy(cacheTime);
+                $scope.selectPanel('day');
+            };
+            // 确定选择时间
+            $scope.timePanelOk = function () {
+                $scope.selectPanel('day');
+                fireRender();
+            };
+            // 选择此刻
+            $scope.timePanelSelectNow = function () {
+                var dt = new Date();
+                var date = angular.copy($scope.selectDate);
+                date.setHours(dt.getHours());
+                date.setMinutes(dt.getMinutes());
+                date.setSeconds(dt.getSeconds());
+                $scope.selectDate = date;
+            };
+            // 获取所有月份,分4列
+            $scope.allMonths = (function () {
+                var res = [],
+                    MONTHS = FORMATS.MONTH,
                     temp = [];
+                for (var i = 0, len = MONTHS.length; i < len; i++) {
+                    if (temp.length >= 3) {
+                        res.push(temp);
+                        temp = [];
+                    }
+                    temp.push({
+                        name: MONTHS[i],
+                        index: i
+                    });
                 }
-                temp.push({
-                    name:MONTHS[i],
-                    index:i
+                res.push(temp);
+                return res;
+            })();
+            // 在月份视图显示某一月份
+            $scope.chooseMonthHandler = function (month) {
+                $scope.currentMonth = month;
+                buildDayPanel();
+                $scope.selectPanel('day');
+            };
+
+            $scope.allYears = [];
+            $scope.selectYearPanelHandler = function () {
+                $scope.selectPanel('year');
+                var year = $scope.currentYear;
+                $scope.allYears = getYears(year);
+            };
+            // 获取上一个12年
+            $scope.prev12Years = function () {
+                var year = $scope.allYears[0][0] - 8;
+                $scope.allYears = getYears(year);
+            };
+            // 获取下一个12年
+            $scope.next12Years = function () {
+                var year = $scope.allYears[3][2] + 5;
+                $scope.allYears = getYears(year);
+            };
+            // 在月份视图显示某一月份
+            $scope.chooseYearHandler = function (year) {
+                $scope.currentYear = year;
+                buildDayPanel();
+                $scope.selectPanel('month');
+            };
+
+            function fireRender() {
+                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                if (fn && angular.isFunction(fn)) {
+                    fn($scope.selectDate);
+                }
+                ngModelCtrl.$setViewValue($scope.selectDate);
+                ngModelCtrl.$render();
+            }
+
+            // 根据年,月构建日视图
+            function buildDayPanel() {
+                var date = createDate($scope.currentYear, $scope.currentMonth);
+                $scope.allDays = getDays(date);
+            }
+
+            // 获取所有的最近的12年
+            function getYears(year) {
+                var res = [], temp = [];
+                for (var i = -4; i < 8; i++) {
+                    if (temp.length >= 3) {
+                        res.push(temp);
+                        temp = [];
+                    }
+                    temp.push(year + i);
+                }
+                res.push(temp);
+                return res;
+            }
+
+            // 获取周一到周日的名字
+            function dayNames(startingDay) {
+                var shortDays = angular.copy(FORMATS.SHORTDAY).map(function (day) {
+                    return day
+                });
+                var delDays = shortDays.splice(0, startingDay);
+                return shortDays.concat(delDays);
+            }
+
+            // 根据日期获取当月的所有日期
+            function getDays(date) {
+                var dayRows = [];
+                var currentYear = date.getFullYear();
+                var currentMonth = date.getMonth();
+                // 添加当月之前的天数
+                var firstDayOfMonth = createDate(currentYear, currentMonth, 1);
+                var day = firstDayOfMonth.getDay();
+                var len = day >= self.startingDay ? day - self.startingDay : (7 - self.startingDay + day);
+                for (var i = 0; i < len; i++) {
+                    pushDay(dayRows, dayBefore(firstDayOfMonth, len - i));
+                }
+                // 添加本月的天
+                var lastDayOfMonth = getLastDayOfMonth(currentYear, currentMonth);
+                var tempDay;
+                for (var j = 1; j <= lastDayOfMonth; j++) {
+                    tempDay = createDate(currentYear, currentMonth, j);
+                    pushDay(dayRows, tempDay);
+                }
+                // 补全本月之后的天
+                len = 7 - dayRows[dayRows.length - 1].length;
+                for (var k = 1; k <= len; k++) {
+                    pushDay(dayRows, dayAfter(tempDay, k));
+                }
+                return dayRows;
+            }
+
+            // 存储计算出的日期
+            function pushDay(dayRows, date) {
+                var hasInsert = false;
+                angular.forEach(dayRows, function (row) {
+                    if (row && row.length < 7) {
+                        row.push(formatDate(date));
+                        hasInsert = true;
+                    }
+                });
+                if (hasInsert) {
+                    return;
+                }
+                dayRows.push([formatDate(date)]);
+            }
+
+            // 根据日期date获取gapDay之后的日期
+            function dayAfter(date, gapDay) {
+                gapDay = gapDay || 1;
+                var time = date.getTime();
+                time += gapDay * 24 * 60 * 60 * 1000;
+                return new Date(time);
+            }
+
+            // 根据日期date获取gapDay之前几天的日期
+            function dayBefore(date, gapDay) {
+                gapDay = gapDay || 1;
+                var time = date.getTime();
+                time -= gapDay * 24 * 60 * 60 * 1000;
+                return new Date(time);
+            }
+
+            //获取一个月里最后一天是几号
+            function getLastDayOfMonth(year, month) {
+                var months = MONTH_DAYS.slice(0);
+                if (year % 100 === 0 && year % 400 === 0 || year % 100 !== 0 && year % 4 === 0) {
+                    months[1] = 29;
+                }
+                return months[month];
+            }
+
+            //创建日期
+            function createDate(year, month, day) {
+                var date = new Date();
+                date.setMonth(0);
+                date.setDate(31); // set date to 1.31 first
+                date.setFullYear(year);
+                date.setDate(day || 1); // set date before set month
+                date.setMonth(month || 0);
+                return date;
+            }
+
+            // date1 是否比date2小,
+            function earlierThan(date1, date2) {
+                var tempDate1 = splitDate(date1);
+                var tempDate2 = splitDate(date2);
+                if (tempDate1.year < tempDate2.year) {
+                    return true;
+                } else if (tempDate1.year > tempDate2.year) {
+                    return false;
+                }
+                if (tempDate1.month < tempDate2.month) {
+                    return true;
+                } else if (tempDate1.month > tempDate2.month) {
+                    return false;
+                }
+                return tempDate1.day < tempDate2.day;
+            }
+
+            //对日期进行格式化
+            function formatDate(date) {
+                var tempDate = splitDate(date);
+                var selectedDt = splitDate($scope.selectDate);
+                var today = splitDate(new Date());
+                var isToday = tempDate.year === today.year && tempDate.month === today.month && tempDate.day === today.day;
+                var isSelected = tempDate.year === selectedDt.year && tempDate.month === selectedDt.month
+                    && tempDate.day === selectedDt.day;
+                var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date))
+                    || ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
+                var day = date.getDay();
+                return {
+                    date: date,
+                    year: tempDate.year,
+                    month: tempDate.month,
+                    day: tempDate.day,
+                    isWeekend: day === 0 || day === 6,
+                    isToday: isToday,
+                    inMonth: tempDate.month === $scope.currentMonth,
+                    isNext: tempDate.month > $scope.currentMonth,
+                    isSelected: isSelected,
+                    isDisabled: isDisabled,
+                    index: tempDate.year + '-' + tempDate.month + '-' + tempDate.day
+                }
+            }
+
+            function isExceptionDay(date) {
+                self.exceptions = [].concat(self.exceptions);
+                var day1, day2 = splitDate(date);
+                return self.exceptions.some(function (excepDay) {
+                    day1 = splitDate(excepDay);
+                    return day1.year === day2.year && day1.month === day2.month && day1.day === day2.day;
                 });
             }
-            res.push(temp);
-            return res;
-        })();
-        // 在月份视图显示某一月份
-        $scope.chooseMonthHandler = function (month) {
-            $scope.currentMonth = month;
-            buildDayPanel();
-            $scope.selectPanel('day');
-        };
 
-        $scope.allYears = [];
-        $scope.selectYearPanelHandler = function () {
-            $scope.selectPanel('year');
-            var year = $scope.currentYear;
-            $scope.allYears = getYears(year);
-        };
-        // 获取上一个12年
-        $scope.prev12Years = function () {
-            var year = $scope.allYears[0][0]-8;
-            $scope.allYears = getYears(year);
-        };
-        // 获取下一个12年
-        $scope.next12Years = function () {
-            var year = $scope.allYears[3][2]+5;
-            $scope.allYears = getYears(year);
-        };
-        // 在月份视图显示某一月份
-        $scope.chooseYearHandler = function (year) {
-            $scope.currentYear = year;
-            buildDayPanel();
-            $scope.selectPanel('month');
-        };
-
-        function fireRender(){
-            var fn = $scope.onChange();
-            if(fn && angular.isFunction(fn)){
-                fn($scope.selectDate);
-            }
-            ngModelCtrl.$setViewValue($scope.selectDate);
-            ngModelCtrl.$render();
-        }
-
-        // 根据年,月构建日视图
-        function buildDayPanel(){
-            var date = createDate($scope.currentYear,$scope.currentMonth);
-            $scope.allDays = getDays(date);
-        }
-        // 获取所有的最近的12年
-        function getYears(year){
-            var res = [],temp = [];
-            for(var i=-4;i<8;i++){
-                if(temp.length>=3){
-                    res.push(temp);
-                    temp = [];
+            function splitDate(date) {
+                return {
+                    year: date.getFullYear(),
+                    month: date.getMonth(),
+                    day: date.getDate()
                 }
-                temp.push(year + i);
             }
-            res.push(temp);
-            return res;
-        }
-
-        // 获取周一到周日的名字
-        function dayNames(startingDay){
-            var shortDays = angular.copy(FORMATS.SHORTDAY).map(function (day) {
-                return day
-            });
-            var delDays = shortDays.splice(0,startingDay);
-            return shortDays.concat(delDays);
-        }
-        // 根据日期获取当月的所有日期
-        function getDays(date){
-            var dayRows = [];
-            var currentYear = date.getFullYear();
-            var currentMonth = date.getMonth();
-            // 添加当月之前的天数
-            var firstDayOfMonth = createDate(currentYear,currentMonth,1);
-            var day =  firstDayOfMonth.getDay();
-            var len = day>=self.startingDay?day-self.startingDay:(7-self.startingDay+day);
-            for(var i= 0;i<len;i++){
-                pushDay(dayRows,dayBefore(firstDayOfMonth,len-i));
-            }
-            // 添加本月的天
-            var lastDayOfMonth = getLastDayOfMonth(currentYear,currentMonth);
-            var tempDay;
-            for(var j= 1;j<=lastDayOfMonth;j++){
-                tempDay = createDate(currentYear,currentMonth,j);
-                pushDay(dayRows,tempDay);
-            }
-            // 补全本月之后的天
-            len = 7 - dayRows[dayRows.length-1].length;
-            for(var k=1;k<=len;k++){
-                pushDay(dayRows,dayAfter(tempDay,k));
-            }
-            return dayRows;
-        }
-        // 存储计算出的日期
-        function pushDay(dayRows,date){
-            var hasInsert = false;
-            angular.forEach(dayRows, function (row) {
-                if(row && row.length<7){
-                    row.push(formatDate(date));
-                    hasInsert = true;
-                }
-            });
-            if(hasInsert){
-                return;
-            }
-            dayRows.push([formatDate(date)]);
-        }
-        // 根据日期date获取gapDay之后的日期
-        function dayAfter(date,gapDay){
-            gapDay = gapDay || 1;
-            var time = date.getTime();
-            time += gapDay * 24 * 60 * 60 * 1000;
-            return new Date(time);
-        }
-        // 根据日期date获取gapDay之前几天的日期
-        function dayBefore(date,gapDay){
-            gapDay = gapDay || 1;
-            var time = date.getTime();
-            time -= gapDay * 24 * 60 * 60 * 1000;
-            return new Date(time);
-        }
-        //获取一个月里最后一天是几号
-        function getLastDayOfMonth(year,month){
-            var months = MONTH_DAYS.slice(0);
-            if(year % 100===0 && year % 400===0 || year % 100 !==0&& year % 4===0){
-                months[1] = 29;
-            }
-            return months[month];
-        }
-        //创建日期
-        function createDate(year, month, day){
-            var date = new Date();
-            date.setMonth(0);
-            date.setDate(31); // set date to 1.31 first
-            date.setFullYear(year);
-            date.setDate(day || 1); // set date before set month
-            date.setMonth(month || 0);
-            return date;
-        }
-            // date1 是否比date2小,
-        function earlierThan(date1,date2){
-            var tempDate1 = splitDate(date1);
-            var tempDate2 = splitDate(date2);
-            if(tempDate1.year < tempDate2.year){
-                return true;
-            }else if(tempDate1.year > tempDate2.year){
-                return false;
-            }
-            if(tempDate1.month < tempDate2.month){
-                return true;
-            }else if(tempDate1.month > tempDate2.month){
-                return false;
-            }
-            return tempDate1.day < tempDate2.day;
-        }
-        //对日期进行格式化
-        function formatDate(date){
-            var tempDate = splitDate(date);
-            var selectedDt = splitDate($scope.selectDate);
-            var today = splitDate(new Date());
-            var isToday =tempDate.year===today.year&&tempDate.month===today.month&&tempDate.day===today.day;
-            var isSelected =tempDate.year===selectedDt.year&&tempDate.month===selectedDt.month
-                &&tempDate.day===selectedDt.day;
-            var isDisabled = ($scope.minDate && earlierThan(date,$scope.minDate) && !isExceptionDay(date))
-                || ($scope.maxDate && earlierThan($scope.maxDate,date) && !isExceptionDay(date));
-            var day = date.getDay();
-            return {
-                date:date,
-                year:tempDate.year,
-                month:tempDate.month,
-                day:tempDate.day,
-                isWeekend:day===0||day===6,
-                isToday:isToday,
-                inMonth:tempDate.month===$scope.currentMonth,
-                isNext:tempDate.month>$scope.currentMonth,
-                isSelected:isSelected,
-                isDisabled:isDisabled,
-                index:tempDate.year+'-'+tempDate.month+'-'+tempDate.day
-            }
-        }
-        function isExceptionDay(date){
-            self.exceptions = [].concat(self.exceptions);
-            var day1,day2 = splitDate(date);
-            return self.exceptions.some(function (excepDay) {
-                day1 = splitDate(excepDay);
-                return day1.year === day2.year&&day1.month === day2.month&&day1.day === day2.day;
-            });
-        }
-        function splitDate(date){
-            return {
-                year:date.getFullYear(),
-                month:date.getMonth(),
-                day:date.getDate()
-            }
-        }
-    }])
+        }])
     .directive('fuguCalendar', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/calendar.html',
             replace: true,
-            require: ['fuguCalendar','ngModel'],
+            require: ['fuguCalendar', 'ngModel'],
             scope: {
-                minDate:'=?',
-                maxDate:'=?',
-                onChange:'&'
+                minDate: '=?',
+                maxDate: '=?',
+                onChange: '&?'
             },
             controller: 'fuguCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -1709,7 +1718,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             $scope.showCalendar = false;
             this.toggle = function (open) {
                 var show = arguments.length ? !!open : !$scope.showCalendar;
-                if(show){
+                if (show) {
                     adjustPosition();
                 }
                 $scope.showCalendar = show;
@@ -1789,8 +1798,9 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 }
                 ngModelCtrl.$setViewValue(date);
                 ngModelCtrl.$render();
-                var fn = $scope.onChange();
-                if(angular.isDefined(fn)){
+
+                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                if (angular.isDefined(fn)) {
                     fn();
                 }
             };
@@ -1811,7 +1821,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 placeholder: '@',
                 size: '@',
                 isDisabled: '=?ngDisabled',
-                onChange: '&'
+                onChange: '&?'
             },
             controller: 'fuguDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -1827,7 +1837,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown',['ui.fugu.position'])
+angular.module('ui.fugu.dropdown',[])
 .constant('fuguDropdownConfig', {
     eachItemWidth: 120, //每一个项目的宽度
     openClass:'open', //打开dropdown的calss
@@ -1876,8 +1886,8 @@ angular.module('ui.fugu.dropdown',['ui.fugu.position'])
     }
 
 }])
-.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','$fuguPosition','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
-    function ($scope,$timeout,$attrs,$element,$fuguPosition,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
+.controller('fuguDropdownCtrl',['$scope','$timeout','$attrs','$element','fuguDropdownConfig','fuguDropdownService','fuguDropdown',
+    function ($scope,$timeout,$attrs,$element,fuguDropdownConfig,fuguDropdownService,fuguDropdownProvider) {
         $scope.colsNum = angular.isDefined($attrs.colsNum) ?
             angular.copy($scope.$parent.$eval($attrs.colsNum)) :fuguDropdownProvider.getColsNum();
         $scope.eachItemWidth = fuguDropdownConfig.eachItemWidth;
@@ -5994,19 +6004,19 @@ angular.module('ui.fugu.switch', [])
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
+angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
     .constant('fuguTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
-        readonlyInput:false,
-        format:'HH:mm:ss',
+        readonlyInput: false,
+        format: 'HH:mm:ss',
         size: 'md',
         showSeconds: false
     })
-    .service('fuguTimepickerService', ['$document', function($document) {
+    .service('fuguTimepickerService', ['$document', function ($document) {
         var openScope = null;
-        this.open = function(timepickerScope) {
+        this.open = function (timepickerScope) {
             if (!openScope) {
                 $document.on('click', closeTimepicker);
             }
@@ -6016,7 +6026,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
             openScope = timepickerScope;
         };
 
-        this.close = function(timepickerScope) {
+        this.close = function (timepickerScope) {
             if (openScope === timepickerScope) {
                 openScope = null;
                 $document.off('click', closeTimepicker);
@@ -6024,11 +6034,13 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         };
 
         function closeTimepicker(evt) {
-            if (!openScope) { return; }
+            if (!openScope) {
+                return;
+            }
             var panelElement = openScope.getTimepanelElement();
             var toggleElement = openScope.getToggleElement();
-            if(panelElement && panelElement.contains(evt.target) ||
-                toggleElement && toggleElement.contains(evt.target)){
+            if (panelElement && panelElement.contains(evt.target) ||
+                toggleElement && toggleElement.contains(evt.target)) {
                 return;
             }
             openScope.showTimepanel = false;
@@ -6036,435 +6048,137 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel','ui.fugu.position'])
         }
 
     }])
-    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig','dateFilter','$timeout','$fuguPosition',
-    function($scope, $element, $compile, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig,dateFilter,$timeout,$fuguPosition) {
-        var ngModelCtrl = { $setViewValue: angular.noop };
-        var template = '<div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
-            '<div class="arrow"></div>' +
-            '<div class="popover-inner">' +
-            '<fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></fugu-timepanel>' +
-            '</div></div>';
-        this.init = function (_ngModelCtrl) {
-            ngModelCtrl = _ngModelCtrl;
-            ngModelCtrl.$render = this.render;
-            ngModelCtrl.$formatters.unshift(function(modelValue) {
-                return modelValue ? new Date(modelValue) : null;
-            });
-            var timepanelDOM = $compile(template)($scope);
-            $element.after(timepanelDOM);
-        };
-        var _this = this;
-        /*
-         fix 父组件的controller优先于子组件初始化,hourStep三个属性需要在子组件初始化的时候就传递进去
-         不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
-         http://xgfe.github.io/2015/12/22/penglu/link-controller/
-         */
-        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
+    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig', 'dateFilter', '$timeout', '$fuguPosition',
+        function ($scope, $element, $compile, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig, dateFilter, $timeout, $fuguPosition) {
+            var ngModelCtrl = {$setViewValue: angular.noop};
+            var template = '<div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
+                '<div class="arrow"></div>' +
+                '<div class="popover-inner">' +
+                '<fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></fugu-timepanel>' +
+                '</div></div>';
+            this.init = function (_ngModelCtrl) {
+                ngModelCtrl = _ngModelCtrl;
+                ngModelCtrl.$render = this.render;
+                ngModelCtrl.$formatters.unshift(function (modelValue) {
+                    return modelValue ? new Date(modelValue) : null;
+                });
+                var timepanelDOM = $compile(template)($scope);
+                $element.after(timepanelDOM);
+            };
+            var _this = this;
+            /*
+             fix 父组件的controller优先于子组件初始化,hourStep三个属性需要在子组件初始化的时候就传递进去
+             不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
+             http://xgfe.github.io/2015/12/22/penglu/link-controller/
+             */
+            $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
+            $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
+            $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
 
-        // readonly input
-        $scope.readonlyInput = timepickerConfig.readonlyInput;
-        if ($attrs.readonlyInput) {
-            $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
-                $scope.readonlyInput = !!value;
-            });
-        }
-        // show-seconds
-        $scope.showSeconds = timepickerConfig.showSeconds;
-        if ($attrs.showSeconds) {
-            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
-                $scope.showSeconds = !!value;
-            });
-        }
+            // readonly input
+            $scope.readonlyInput = timepickerConfig.readonlyInput;
+            if ($attrs.readonlyInput) {
+                $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
+                    $scope.readonlyInput = !!value;
+                });
+            }
+            // show-seconds
+            $scope.showSeconds = timepickerConfig.showSeconds;
+            if ($attrs.showSeconds) {
+                $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                    $scope.showSeconds = !!value;
+                });
+            }
 
-        $scope.showTimepanel = false;
-        this.toggle = function(open) {
-            var show = arguments.length ? !!open : !$scope.showTimepanel;
-            if(show){
-                adjustPosition();
-            }
-            $scope.showTimepanel = show;
-        };
-        this.showTimepanel = function() {
-            return $scope.showTimepanel;
-        };
-        var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
-        this.render = function () {
-            var date = ngModelCtrl.$viewValue;
-            if (isNaN(date)) {
-                $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-            } else if(date){
-                $scope.selectedTime = date;
-                $scope.inputValue = dateFilter(date,format);
-            }
-        };
-        // 这里使用onChange，而不是watch selectedTime属性，因为watch的话，会出现循环赋值，待解决
-        $scope.changeTime = function (time) {
-            ngModelCtrl.$setViewValue(time);
-            ngModelCtrl.$render();
-            var fn = $scope.onChange();
-            if(angular.isDefined(fn)){
-                fn();
-            }
-        };
-        $scope.toggleTimepanel = function (evt) {
-            $element.find('input')[0].blur();
-            evt.preventDefault();
-            if (!$scope.isDisabled) {
-                _this.toggle();
-            }
-        };
-        $scope.getTimepanelElement = function () {
-            return $element.next('.fugu-timepicker-popover')[0];
-        };
-        $scope.getToggleElement = function () {
-            return $element[0].querySelector('.input-group');
-        };
-        $scope.$watch('showTimepanel', function(showTimepanel) {
-            if (showTimepanel) {
-                fuguTimepickerService.open($scope);
-            } else {
-                fuguTimepickerService.close($scope);
-            }
-        });
-        $scope.$on('$locationChangeSuccess', function() {
             $scope.showTimepanel = false;
-        });
-        function adjustPosition(){
-            var popoverEle = $element.next('.popover');
-            var elePosition = $fuguPosition.positionElements($element,popoverEle,'auto bottom-left');
-            popoverEle.removeClass('top bottom');
-            if (elePosition.placement.indexOf('top') !== -1) {
-                popoverEle.addClass('top');
-            } else {
-                popoverEle.addClass('bottom');
-            }
-            popoverEle.css({
-                top: elePosition.top+'px',
-                left: elePosition.left+'px'
+            this.toggle = function (open) {
+                var show = arguments.length ? !!open : !$scope.showTimepanel;
+                if (show) {
+                    adjustPosition();
+                }
+                $scope.showTimepanel = show;
+            };
+            this.showTimepanel = function () {
+                return $scope.showTimepanel;
+            };
+            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+            this.render = function () {
+                var date = ngModelCtrl.$viewValue;
+                if (isNaN(date)) {
+                    $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                } else if (date) {
+                    $scope.selectedTime = date;
+                    $scope.inputValue = dateFilter(date, format);
+                }
+            };
+            // 这里使用onChange，而不是watch selectedTime属性，因为watch的话，会出现循环赋值，待解决
+            $scope.changeTime = function (time) {
+                ngModelCtrl.$setViewValue(time);
+                ngModelCtrl.$render();
+                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                if (angular.isDefined(fn)) {
+                    fn();
+                }
+            };
+            $scope.toggleTimepanel = function (evt) {
+                $element.find('input')[0].blur();
+                evt.preventDefault();
+                if (!$scope.isDisabled) {
+                    _this.toggle();
+                }
+            };
+            $scope.getTimepanelElement = function () {
+                return $element.next('.fugu-timepicker-popover')[0];
+            };
+            $scope.getToggleElement = function () {
+                return $element[0].querySelector('.input-group');
+            };
+            $scope.$watch('showTimepanel', function (showTimepanel) {
+                if (showTimepanel) {
+                    fuguTimepickerService.open($scope);
+                } else {
+                    fuguTimepickerService.close($scope);
+                }
             });
-        }
-    }])
+            $scope.$on('$locationChangeSuccess', function () {
+                $scope.showTimepanel = false;
+            });
+            function adjustPosition() {
+                var popoverEle = $element.next('.popover');
+                var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                popoverEle.removeClass('top bottom');
+                if (elePosition.placement.indexOf('top') !== -1) {
+                    popoverEle.addClass('top');
+                } else {
+                    popoverEle.addClass('bottom');
+                }
+                popoverEle.css({
+                    top: elePosition.top + 'px',
+                    left: elePosition.left + 'px'
+                });
+            }
+        }])
     .directive('fuguTimepicker', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/timepicker.html',
             replace: true,
-            require: ['fuguTimepicker','ngModel'],
+            require: ['fuguTimepicker', 'ngModel'],
             scope: {
-                isDisabled:'=?ngDisabled',
-                minTime:'=?',
-                maxTime:'=?',
+                isDisabled: '=?ngDisabled',
+                minTime: '=?',
+                maxTime: '=?',
                 size: '@',
-                placeholder:'@',
+                placeholder: '@',
                 onChange: '&?'
             },
             controller: 'fuguTimepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
-                var timepickerCtrl = ctrls[0],ngModelCtrl = ctrls[1];
+                var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepickerCtrl.init(ngModelCtrl);
             }
         }
     });
-/**
- * tree
- * 树形菜单指令
- * Author:penglu02@meituan.com
- * Date:2016-01-28
- */
-angular.module('ui.fugu.tree', [])
-    .constant('fuguTreeConfig', {
-        showIcon: true,
-        checkable: true,
-        collapsedAll: false,
-        editable: false
-    })
-    .controller('treeController', ['$scope', '$element', '$attrs', 'fuguTreeConfig', function ($scope, $element, $attrs, fuguTreeConfig) {
-        var flag = true;
-        this.checkedNodes = {}; // 选中节点集合
-        // 变量初始化,如果没有设置,则使用默认值
-        this.showIcon = angular.isDefined($scope.showIcon) ? $scope.showIcon : fuguTreeConfig.showIcon;
-        this.checkable = angular.isDefined($scope.checkable) ? $scope.checkable : fuguTreeConfig.checkable;
-        this.expandAll = angular.isDefined($scope.expandAll) ? !$scope.expandAll : fuguTreeConfig.collapsedAll;
-        this.editable = angular.isDefined($scope.editable) ? $scope.editable : fuguTreeConfig.editable;
-        $scope.nodes = checkNodesStyle($scope.$parent.$eval($attrs.ngModel)) ? $scope.$parent.$eval($attrs.ngModel) : [];  // 获取ng-model绑定节点对象
-
-        /**
-         *  检查传递的树结构数组是否正确,如果结构正确返回true否则返回false
-         * @param {array} nodes ngModel绑定树结构数组对象
-         */
-        function checkNodesStyle(nodes){
-            var i = 0;
-            if(nodes instanceof Array){
-                for(i=0; i<nodes.length; i++){
-                    if(!nodes[i].label){
-                        flag = false;
-                    }else{
-                        if(nodes[i].children && nodes[i].children.length > 0){
-                            return checkNodesStyle(nodes[i].children);
-                        }else{
-                            if(Object.getOwnPropertyNames(nodes[i]).length > 1){
-                                flag = false;
-                            }
-                         }
-                    }
-                }
-                return flag;
-            }else{
-                return false;  // 非对象格式
-            }
-        }
-    }])
-    .directive('fuguTree', ['fuguTreeConfig', '$parse', function () {
-        return {
-            restrict: 'AE',
-            scope: {
-                showIcon: '=?',
-                checkable: '=?',
-                expandAll: '=?',
-                editable: '=?',
-                onClick: '&?',
-                onCheckChange: '&?'
-            },
-            replace: true,
-            require: ['ngModel'],
-            templateUrl: 'templates/tree.html',
-            controller: 'treeController',
-            link: function (scope) {
-                var clickFn = scope.onClick(),  //获取绑定在tree上的click事件回调
-                    checkFn = scope.onCheckChange();  //获取绑定在tree上的check事件回调
-                /**
-                 * 捕获click事件，进行绑定事件处理
-                 */
-                scope.$on('on-click', function (e, data) {
-                    if (angular.isDefined(clickFn)) {
-                        clickFn(data);
-                    }
-                });
-
-                /**
-                 * 捕获check改变事件，绑定事件处理
-                 */
-                scope.$on('on-check', function(e, data){
-                    if (angular.isDefined(checkFn)) {
-                        checkFn(data);
-                    }
-                });
-            }
-        }
-    }])
-    .controller('treeNodeController', ['$scope', function ($scope) {
-
-
-        /**
-         * 阻止事件传播
-         * @param {object} event 事件对象
-         */
-        $scope.preventClick = function (event) {
-            event.stopPropagation();
-        };
-
-        /**
-         * 向上派发单击事件,传递当前单击对象节点信息以及其子节点
-         * @param {object} e 事件对象
-         */
-        $scope.clickFn = function (e) {
-            $scope.$emit('on-click', e.node); // 向上派发事件,同时暴露出当前点击节点信息
-        };
-
-        $scope.toggleCollapsed = function(e, scope){
-            e.stopPropagation();
-            if(scope.node.children && scope.node.children.length > 0){
-                $scope.collapsed = !$scope.collapsed;  // 闭合元素
-            }
-        };
-
-        /**
-         * 向上|向下派发事件(注意节点自身派发出去的事件，会被自身先捕获一次)
-         * @param {boolean} selected checkbox选中|取消状态
-         * @param self 选中|取消checkbox自己
-         */
-        $scope.checkFn = function (selected) {
-            // 派发的先后顺序对代码执行会有影响
-            $scope.$broadcast('check-change', selected);   // 向下派发事件
-            $scope.$emit('check-change', selected);  // 向上派发事件
-            $scope.$emit('on-check', $scope.treeCtrl.checkedNodes);  // 向上派发事件,同时向上暴露选中节点集合
-        };
-
-        /**
-         * 捕获勾选状态修改事件,执行勾选|取消勾选操作,修改勾选集合
-         */
-        $scope.$on('check-change', function (event, selected) {
-            var currentScope = event.currentScope,    //当前事件节点scope
-                targetScope = event.targetScope,    // 原始触发选中|取消节点scope
-                leafFlag = !(currentScope.node.children && currentScope.node.children.length > 0),  // 叶子节点标识
-                parentFlag = false,   //子节点触发父节点(true)｜父节点触发子节点(false)标识
-                selfFlag = true,    //节点本身勾选|不选标识
-                targetParentScope = targetScope.$parent.$parent,  // 获取当前节点的父节点scope
-                checkNodes = currentScope.treeCtrl.checkedNodes,  // 选中节点集合
-                i = 0,
-                childrensEle = null,   //当前节点非叶子节点时的孩子节点
-                selectFlag = true,    // 孩子节点是否全部勾选标识
-                childrenScope = null,  //遍历孩子节点的scope
-                subElements = null;   //子节点对象集合
-
-            // 判断是父节点触发还是子节点触发,还是自身触发
-            if (targetScope.$id === currentScope.$id) {  //通过勾选|取消勾选触发
-                parentFlag = false;
-                selfFlag = true;
-            } else {
-                selfFlag = false;
-
-                // 判断是否为子节点触发父节点:向上触发
-                while (targetParentScope) {
-                    if (targetParentScope.$id === currentScope.$id) {  // 目标触发节点是父节点
-                        parentFlag = true;
-                        break;
-                    } else {
-                        targetParentScope = targetParentScope.$parent ? targetParentScope.$parent.$parent : targetParentScope.$parent;   //获取父scope
-                    }
-                }
-            }
-
-            // 节点分为叶子节点和非叶子节点进行处理
-            if (!leafFlag) {  // 非叶子节点
-
-                if (selected) {   // 选中
-
-                    // 判断是够为向上触发:子触发父
-                    if (parentFlag) {
-                        childrensEle = currentScope.ele.children('ol').children('li');  // 获取子节点
-                        for (i = 0; i < childrensEle.length; i++) {
-                            childrenScope = childrensEle.eq(i).children('div').children('div').children('input').scope();  // 获取当前遍历节点勾选框的scope
-                            if (childrenScope.selected !== selected) { //判断孩子节点是否为选中状态
-                                selectFlag = false;   //存在未否选孩子节点
-                                break;
-                            }
-                        }
-                        // 子选父:子节点全部勾选,则选中父节点
-                        if (selectFlag) {
-                            reselect(childrensEle, checkNodes);  //重新保存选中集合(父加入集合，则需要移除原有的子孙集合)
-                            currentScope.selected = selected;
-                            currentScope.ele.children('div').children('input').checked = selected;  // 实现勾选
-                            checkNodes[currentScope.$id] = currentScope.node;  // 保存节点信息到集合
-                        }
-                    }
-
-                    //判断是否为向下触发:父选择触发子选择
-                    if (!parentFlag && !selfFlag) { //触发子非叶子节点
-                        // 只需要修改勾选状态
-                        event.currentScope.selected = selected;
-                        event.currentScope.ele.children('div').children('input').checked = selected;
-                    }
-
-                    // 自己勾选触发事件
-                    if (selfFlag) {
-                        event.currentScope.selected = selected;  //修改勾选状态
-                        event.currentScope.ele.children('div').children('input').checked = selected;
-                        checkNodes[event.currentScope.$id] = event.currentScope.node;   // 保存节点信息
-                        reselect(event.currentScope.ele.children('ol').children('li'), checkNodes);  //重新保存选中集合(父加入集合，则需要移除原有的子孙集合)
-                    }
-
-                } else {
-                    // 修改勾选状态
-                    currentScope.selected = selected;
-                    currentScope.ele.children('div').children('input').checked = selected;
-                    if (angular.isDefined(checkNodes[currentScope.$id])) {  // 判断当前节点是否再勾选集合中
-                        delete  checkNodes[event.currentScope.$id];  // 删除勾选集合中当前元素
-                    }
-
-                    // 取消勾选子触发父节点也不选中
-                    if (parentFlag) {
-                        childrensEle = event.currentScope.ele.children('ol').children('li'); // 获取当前节点的孩子节点
-                        for (i = 0; i < childrensEle.length; i++) {
-                            subElements = childrensEle.eq(i).children('div').children('div').children('input');
-                            if (subElements.scope().selected) {  // 判断子节点是否为选中
-                                // 选中子节点的节点信息存入选中集合
-                                checkNodes[subElements.scope().$id] = subElements.scope().node;
-                            }
-                        }
-                    }
-                }
-
-            } else {   // 叶子节点
-
-                // 父选子:向下触发,只需改变勾选状态,不用修改节点集合
-                if (!parentFlag && !selfFlag) {
-                    event.currentScope.selected = selected;
-                    event.currentScope.ele.children('div').children('input').checked = selected;
-                }
-
-                // 自己选自己:修改勾选状态
-                if (selfFlag) {
-                    event.currentScope.selected = selected;
-                    event.currentScope.ele.children('div').children('input').checked = selected;
-                    if (selected) {  // 勾选的保存信息到节点集合
-                        checkNodes[event.currentScope.$id] = event.currentScope.node;  // 保存节点信息
-                    }
-                }
-
-                // 取消勾选时,从勾选节点集合中移除
-                if (!selected) {
-                    if (angular.isDefined(checkNodes[event.currentScope.$id])) {
-                        delete  checkNodes[event.currentScope.$id];
-                    }
-                }
-            }
-        });
-
-        /**
-         * 选中父节点时,需要对选中节点数组进行重新选择，保证数组中出现的节点不重复(添加父亲node，则无需添加子node)
-         * @param {array} ele:子元素对象数组
-         * @param {array} checkNodes:tree选中节点数组集合
-         */
-        function reselect(ele, checkNodes) {
-            var i = 0,
-                subElements = null,
-                subScope = null,
-                innerEle = null;
-            for (; i < ele.length; i++) {
-                subElements = ele.eq(i).children('div').children('div').children('input');  // 获取子节点选择框
-                subScope = subElements.scope(); //获取子节点
-                if (subElements.length > 0 && angular.isDefined(checkNodes[subScope.$id])) {  // 判断取消节点是否为当前节点
-                    delete checkNodes[subScope.$id]; // 如果当前子节点选中，则存入
-                } else {
-                    innerEle = ele.eq(i).children('div').children('ol').children('li');
-                    if (innerEle.length > 0) {
-                        reselect(innerEle, checkNodes);
-                    }
-                }
-            }
-        }
-    }])
-    .directive('treeNode', ['$parse', '$compile', function ($parse, $compile) {
-        return {
-            restrict: 'AE',
-            scope: {
-                node: '='
-            },
-            replace: true,
-            require: ['^fuguTree'],
-            templateUrl: 'templates/tree-node.html',
-            controller: 'treeNodeController',
-            link: function (scope, element, attrs, ctrls) {
-                var tpl = null,
-                    htmlTpl = null;
-                scope.treeCtrl = ctrls[0];  // 保存树ctrl
-                scope.ele = element;  // 保存节点元素
-                scope.collapsed = scope.treeCtrl.expandAll;  // 文件夹展开|收起标识
-                scope.showIcon = scope.treeCtrl.showIcon;  // 是否显示图标标识
-                scope.checkable = scope.treeCtrl.checkable;  // 是否勾选标识
-
-                // 动态插入子节点
-                if (scope.node.children && scope.node.children.length > 0) {
-                    tpl = '<li ng-repeat="node in  node.children"><tree-node data-node="node"></tree-node><ol></ol></li>';
-                    htmlTpl = $compile(tpl)(scope);
-                    element.find('ol').append(htmlTpl);
-                }
-            }
-        }
-    }]);
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
@@ -6893,43 +6607,4 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     "    </div>"+
     "</div>"+
     "");
-}]);
-angular.module("tree/templates/tree-node.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/tree-node.html",
-    "<div>"+
-    "    <div class=\"cur\" ng-click=\"clickFn(this)\">"+
-    "        <input type=\"checkbox\" ng-model=\"selected\" ng-change=\"checkFn(selected)\" ng-click=\"preventClick($event)\" ng-show=\"checkable\"/>"+
-    "        <span ng-if=\"node.children && node.children.length > 0\" ng-click=\"toggleCollapsed($event, this)\">"+
-    "            <i class=\"glyphicon\" ng-class=\"{'glyphicon-folder-close': collapsed&&showIcon, 'glyphicon-folder-open': !collapsed&&showIcon}\" ></i>"+
-    "        </span>"+
-    "        <span ng-if=\"!node.children || node.children.length == 0\" ng-click=\"preventClick($event)\">"+
-    "            <i class=\"glyphicon glyphicon-file\" ng-show=\"showIcon\"></i>"+
-    "        </span>"+
-    "        {{node.label}}"+
-    "        <span ng-show=\"editable\">"+
-    "            <span class=\"btn btn-xs m-10-neg\" ng-click=\"add($event, this)\">"+
-    "                <i class=\"glyphicon glyphicon-plus-sign\"></i>"+
-    "            </span>"+
-    "            <span class=\"btn btn-xs m-10-neg\" ng-click=\"delete($event, this)\">"+
-    "                <i class=\"glyphicon glyphicon-trash\"></i>"+
-    "            </span>"+
-    "             <span class=\"btn btn-xs\" ng-click=\"edit($event, this)\">"+
-    "                <i class=\"glyphicon glyphicon-edit\"></i>"+
-    "            </span>"+
-    "        </span>"+
-    "    </div>"+
-    "    <ol ng-show=\"!collapsed\">"+
-    "    </ol>"+
-    "</div>");
-}]);
-angular.module("tree/templates/tree.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/tree.html",
-    "<div class=\"tree\">"+
-    "    <ol ng-show=\"nodes && nodes.length > 0 && !collapsedAll\" class=\"tree-content\">"+
-    "        <li ng-repeat=\"node in nodes\">"+
-    "            <tree-node  data-node=\"node\" ng-if=\"node.children && node.children.length > 0\"></tree-node>"+
-    "            <tree-node data-node=\"node\" ng-if=\"!node.children || node.children.length == 0\"></tree-node>"+
-    "        </li>"+
-    "    </ol>"+
-    "</div>");
 }]);

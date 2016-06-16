@@ -7,6 +7,10 @@
     "type": "git",
     "url": "https://github.com/xgfe/angular-ui-fugu.git"
   },
+  "scripts": {
+    "test": "gulp test",
+    "postinstall": "bower install"
+  },
   "keywords": [
     "UI",
     "angular",
@@ -16,7 +20,8 @@
   "author": "xgfe",
   "license": "MIT",
   "devDependencies": {
-    "angular-mocks": "1.2.25",
+    "angular": "1.2.29",
+    "angular-mocks": "1.2.29",
     "angular-sanitize": "1.2.29",
     "ejs": "^2.4.1",
     "glob": "^6.0.3",
@@ -33,6 +38,7 @@
     "gulp-uglify": "^1.5.1",
     "highlight.js": "^9.1.0",
     "jasmine-core": "^2.4.1",
+    "jquery": "^1.11.3",
     "karma": "^0.13.16",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^1.0.0",
