@@ -1,14 +1,26 @@
-#notify
+# notify
+
 ## Description
  消息通知组件.全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示、是否允许提示html信息、是否显示关闭按钮、提示信息是否在一行显示、是否显示动画效果等. 
+
 ## Usage
- ``` <div fugu-notify [ reference="number" ] [ inline="boolean" ] [ limitMessages="boolean" ]></div> ```
+
+```
+<div fugu-notify
+    [ reference="number" ]
+    [ inline="boolean" ]
+    [ limitMessages="boolean" ]
+></div>
+```
+
 ## Arguments
 - reference: 指定插入指令标志,默认为0.(类似id)
 - inline: 指定插入指令所添加的提示信息是否在一行显示.
 - limitMessages: 指定一个指令可以显示多少条提示信息,默认不限制.
+
 ## Restrict
 - 'A'
+
 ## Provider
 - notifyProvider: 全局配置notify相关的设置.
 - methods
@@ -20,6 +32,7 @@
 	- `globalInlineMessages(boolean)`: 设置所有提示信息是否在一行显示,默认为false表示一行显示一条。
 	- `globalPosition`: 设置提示信息显示位置,取值有:`top-right|bottom-right|middle-right|top-left|bottom-left|middle-left|top-center|bottom-center|middle-center`默认为`top-right`表示显示在右上角.
 	- `onlyUniqueMessages`: 设置提示信息是否不能重复显示,默认为true表示不重复.
+
 ## notify
 - inject: controller中注入
 - methods
