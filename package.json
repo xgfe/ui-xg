@@ -1,6 +1,6 @@
 {
   "name": "angular-ui-fugu",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "UI Fugu",
   "main": "dist/js/ui-fugu.js",
   "repository": {
@@ -14,7 +14,7 @@
     "bootstrap"
   ],
   "author": "xgfe",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "angular-mocks": "1.2.25",
     "angular-sanitize": "1.2.29",
@@ -40,10 +40,5 @@
     "karma-junit-reporter": "^0.3.8",
     "marked": "^0.3.5",
     "xg-htmlhint": "0.0.9"
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   }
 }

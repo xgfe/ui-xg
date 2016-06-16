@@ -46,6 +46,8 @@ Icon
 
 # npm package
 node_modules
+# bower package
+bower_components/
 
 # Thumbnails
 ._*
