@@ -1,8 +1,8 @@
 <div ng-controller="notifyDemoCtrl">
     <div fugu-notify></div>
     <div fugu-notify reference="{{reference}}" inline="inline" limit-messages="limitMessages"></div>
-    <button ng-click="addNotify('info')">Info</button>
-    <button ng-click="addNotify('success')">Success</button>
-    <button ng-click="addNotify()">All</button>
-    <button ng-click="notifyMethod()">notifyMethod</button>
+    <button type="button" class="btn btn-info" ng-click="addNotify('info')">Info</button>
+    <button type="button" class="btn btn-success" ng-click="addNotify('success')">Success</button>
+    <button type="button" class="btn btn-default" ng-click="addNotify()">All</button>
+    <button type="button" class="btn btn-danger" ng-click="notifyMethod()">notifyMethod</button>
 </div>
