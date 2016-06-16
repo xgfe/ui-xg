@@ -50,8 +50,6 @@ define([
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             
-                $stateProvider.state('app.api.tree',{url: "/tree",templateUrl: 'partials/api/tree.html'});
-            
         
     }
 });
