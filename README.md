@@ -1,5 +1,7 @@
 # angular-ui-fugu - AngularJS directives 
 
+[![Build Status](https://travis-ci.org/xgfe/angular-ui-fugu.svg?branch=master)](https://travis-ci.org/xgfe/angular-ui-fugu)
+
 ## 依赖说明
 本组件的开发主要依赖于以下几个库:
 
