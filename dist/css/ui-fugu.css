@@ -1,3 +1,20 @@
+/*!
+ fugu-alert.scss
+ Version: 0.0.1
+ Author: heqingyang@meituan.com
+ */
+.fugu-alert {
+  word-wrap: break-word; }
+  .fugu-alert .alert-icon {
+    float: left; }
+  .fugu-alert .alert-icon-span {
+    position: relative;
+    top: 2px; }
+  .fugu-alert .cancel-text {
+    font-size: 20px; }
+  .fugu-alert .show-icon {
+    padding-left: 20px; }
+
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -75,24 +92,6 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
-
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
-.fugu-alert {
-  word-wrap: break-word; }
-  .fugu-alert .alert-icon {
-    float: left; }
-  .fugu-alert .alert-icon-span {
-    position: relative;
-    top: 2px; }
-  .fugu-alert .cancel-text {
-    font-size: 20px; }
-  .fugu-alert .show-icon {
-    padding-left: 20px; }
-
 
 .fugu-calendar {
   display: inline-block;
@@ -240,6 +239,7 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
+
 
 .fugu-datepicker {
   position: relative;

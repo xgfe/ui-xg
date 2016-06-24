@@ -1,6 +1,6 @@
 /*
  * angular-ui-fugu
- * Version: 1.0.0 - 2016-06-16
+ * Version: 1.0.0 - 2016-06-24
  * License: MIT
  */
 angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker"]);
