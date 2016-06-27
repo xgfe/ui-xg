@@ -1,8 +1,3 @@
-/*!
- fugu-alert.scss
- Version: 0.0.1
- Author: heqingyang@meituan.com
- */
 .fugu-alert {
   word-wrap: break-word; }
   .fugu-alert .alert-icon {
@@ -14,6 +9,7 @@
     font-size: 20px; }
   .fugu-alert .show-icon {
     padding-left: 20px; }
+
 
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
@@ -240,7 +236,6 @@
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
 
-
 .fugu-datepicker {
   position: relative;
   display: inline-block; }
@@ -255,11 +250,6 @@
   .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
     border: 0; }
 
-/*!
- fugu-dropdown.css
- Version: 0.0.1
- Author: yangjiyuan@meituan.com
- */
 .fugu-dropdown {
   position: relative;
   display: inline-block; }
@@ -628,6 +618,17 @@ body > .fugu-select.open {
   .fugu-switch-lg i:after {
     width: 28px; }
 
+.fugu-timepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-timepicker button {
+    outline: none; }
+
+.fugu-timepicker-popover.in {
+  display: block; }
+  .fugu-timepicker-popover.in .fugu-timepanel {
+    border: 0; }
+
 .fugu-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -677,14 +678,3 @@ body > .fugu-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
-
-.fugu-timepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-timepicker button {
-    outline: none; }
-
-.fugu-timepicker-popover.in {
-  display: block; }
-  .fugu-timepicker-popover.in .fugu-timepanel {
-    border: 0; }
