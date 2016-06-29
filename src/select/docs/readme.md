@@ -6,17 +6,17 @@ select directive.参考[ui-select](https://github.com/angular-ui/ui-select),去�
 ## Usage
 
 ``` html
-<fugu-select ng-model="model"
+<uix-select ng-model="model"
     [ ng-disable="boolean" ]
     [ multiple="boolean" ]
     ... >
-    <fugu-select-match
+    <uix-select-match
         [ placeholder="string" ]
-        [ allow-clear="boolean" ] ...>{{$select.selected.name}}</fugu-select-match>
-    <fugu-select-choices repeat="item in list | filter:$select.search">
+        [ allow-clear="boolean" ] ...>{{$select.selected.name}}</uix-select-match>
+    <uix-select-choices repeat="item in list | filter:$select.search">
         <span>{{item.name}}</span>
-    </fugu-select-choices>
-</fugu-select>
+    </uix-select-choices>
+</uix-select>
 ```
 ## Restrict
 - 'E'

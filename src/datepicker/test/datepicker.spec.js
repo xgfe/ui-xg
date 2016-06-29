@@ -1,4 +1,4 @@
-describe('ui.fugu.datepicker', function () {
+describe('ui.xg.datepicker', function () {
     var compile,
         scope,
         element,
@@ -6,17 +6,17 @@ describe('ui.fugu.datepicker', function () {
         datepickerConfig;
 
     beforeEach(function () {
-        module('ui.fugu.position');
-        module('ui.fugu.timepanel');
-        module('ui.fugu.calendar');
-        module('ui.fugu.datepicker');
+        module('ui.xg.position');
+        module('ui.xg.timepanel');
+        module('ui.xg.calendar');
+        module('ui.xg.datepicker');
         module('timepanel/templates/timepanel.html');
         module('calendar/templates/calendar.html');
         module('datepicker/templates/datepicker.html');
-        inject(function( $compile, $rootScope,fuguDatepickerConfig,_dateFilter_) {
+        inject(function( $compile, $rootScope,uixDatepickerConfig,_dateFilter_) {
             compile = $compile;
             scope = $rootScope.$new();
-            datepickerConfig = fuguDatepickerConfig;
+            datepickerConfig = uixDatepickerConfig;
             dateFilter = _dateFilter_
         });
     });
@@ -25,7 +25,7 @@ describe('ui.fugu.datepicker', function () {
     });
     function createDatepicker(el) {
         if(!el){
-            el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
         }
         element = compile(el)(scope);
@@ -33,15 +33,15 @@ describe('ui.fugu.datepicker', function () {
     }
     // 获取input
     function getInput(){
-        return element.find('.fugu-datepicker-input');
+        return element.find('.uix-datepicker-input');
     }
     // 获取button
     function getToggleButton(){
-        return element.find('.fugu-datepicker-toggle');
+        return element.find('.uix-datepicker-toggle');
     }
     // 获取clear button
     function getClearButton(){
-        return element.find('.fugu-datepicker-remove');
+        return element.find('.uix-datepicker-remove');
     }
     // 获取input的值
     function getInputVal(){
@@ -49,7 +49,7 @@ describe('ui.fugu.datepicker', function () {
     }
     //获取calendar
     function getCalendarPanel(){
-        return element.next('.fugu-datepicker-popover').find('.fugu-calendar');
+        return element.next('.uix-datepicker-popover').find('.uix-calendar');
     }
     // 点击输入框
     function clickInput(){
@@ -83,9 +83,9 @@ describe('ui.fugu.datepicker', function () {
      * @param outside - 是否不是当月,如点击上一月
      */
     function clickDay(date,outside){
-        var selector = '.fugu-cal-day';
+        var selector = '.uix-cal-day';
         if(outside){
-            selector += '.fugu-cal-outside';
+            selector += '.uix-cal-outside';
         }
         selector += ':contains("' + date + '")';
         var day = getCalendarPanel().find(selector);
@@ -102,9 +102,9 @@ describe('ui.fugu.datepicker', function () {
     }
 
     describe('basic usage',function () {
-        it('should have fugu-datepicker class', function () {
+        it('should have uix-datepicker class', function () {
             createDatepicker();
-            expect(element).toHaveClass('fugu-datepicker');
+            expect(element).toHaveClass('uix-datepicker');
         });
         it('should have a input and a button by default', function () {
             createDatepicker();
@@ -112,7 +112,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getToggleButton().length).toBe(1);
         });
         it('should show calendar when click input', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
             expect(getCalendarPanel().length).toBe(0);
@@ -120,7 +120,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getCalendarPanel().length).toBe(1);
         });
         it('should show calendar when click toggle button', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
             expect(getCalendarPanel().length).toBe(0);
@@ -131,13 +131,13 @@ describe('ui.fugu.datepicker', function () {
 
     describe('ngModel attribute', function () {
         it('should do not show input val when ngModel is undefined', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             createDatepicker(el);
             expect(getInputVal()).toBe('');
         });
 
         it('should change ngModel when click day', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
             clickToggleButton();
@@ -149,7 +149,7 @@ describe('ui.fugu.datepicker', function () {
         });
 
         it('should not change ngModel if set minDate when click day', function () {
-            var el = '<fugu-datepicker min-date="minDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker min-date="minDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             var cache = angular.copy(scope.time);
             scope.minDate = getDate({
@@ -161,7 +161,7 @@ describe('ui.fugu.datepicker', function () {
             expect(scope.time).toEqual(cache);
         });
         it('should not change ngModel if set maxDate when click day', function () {
-            var el = '<fugu-datepicker max-date="maxDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker max-date="maxDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             var cache = angular.copy(scope.time);
             scope.maxDate = getDate({
@@ -176,7 +176,7 @@ describe('ui.fugu.datepicker', function () {
 
     describe('format attribute', function () {
         it('should show format time by default',function(){
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             var dt = getDate();
             scope.time = dt;
             createDatepicker(el);
@@ -184,7 +184,7 @@ describe('ui.fugu.datepicker', function () {
             expect(val).toEqual(dateFilter(dt,datepickerConfig.format));
         });
         it('should show set custom format time',function(){
-            var el = '<fugu-datepicker format="format" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker format="format" ng-model="time"></uix-datepicker>';
             var dt = getDate();
             scope.time = dt;
             scope.format = 'yyyy-MM-dd hh:mm';
@@ -200,7 +200,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getInput().attr('placeholder')).toBe('');
         });
         it('should have placeholder when set',function(){
-            var el = '<fugu-datepicker placeholder="{{ph}}" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker placeholder="{{ph}}" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.ph = '我是一个placeholder';
             createDatepicker(el);
@@ -210,14 +210,14 @@ describe('ui.fugu.datepicker', function () {
 
     describe('clearBtn attribute', function () {
         it('should have clear button when set clearBtn to be true',function(){
-            var el = '<fugu-datepicker clear-btn="clearBtn" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker clear-btn="clearBtn" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.clearBtn = true;
             createDatepicker(el);
             expect(getClearButton().length).toBe(1);
         });
         it('should clear ngModel when click clear button',function(){
-            var el = '<fugu-datepicker clear-btn="clearBtn" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker clear-btn="clearBtn" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.clearBtn = true;
             createDatepicker(el);
@@ -228,7 +228,7 @@ describe('ui.fugu.datepicker', function () {
 
     describe('ngDisable attribute', function () {
         it('should be disable when set ng-disabled to be true',function(){
-            var el = '<fugu-datepicker ng-disabled="isDisbaled" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-disabled="isDisbaled" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.isDisbaled = true;
             createDatepicker(el);
@@ -236,7 +236,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getToggleButton()).toHaveAttr('disabled','disabled');
         });
         it('should not show calendar click on input when ng-disabled to be true',function(){
-            var el = '<fugu-datepicker ng-disabled="isDisbaled" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-disabled="isDisbaled" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.isDisbaled = true;
             createDatepicker(el);
@@ -245,7 +245,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getCalendarPanel().length).toBe(0);
         });
         it('should not show calendar click on toggle button when ng-disabled to be true',function(){
-            var el = '<fugu-datepicker ng-disabled="isDisbaled" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-disabled="isDisbaled" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.isDisbaled = true;
             createDatepicker(el);
@@ -269,7 +269,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getCalendarPanel().length).toBe(0);
         });
         it('should not close calendar when a day is early then minDate', function () {
-            var el = '<fugu-datepicker min-date="minDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker min-date="minDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.minDate = getDate({
                 day:14
@@ -280,7 +280,7 @@ describe('ui.fugu.datepicker', function () {
             expect(getCalendarPanel().length).toBe(1);
         });
         it('should not close calendar when a day is later then maxDate', function () {
-            var el = '<fugu-datepicker max-date="maxDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker max-date="maxDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.maxDate = getDate({
                 day:20
@@ -294,7 +294,7 @@ describe('ui.fugu.datepicker', function () {
 
     describe('exceptions attribute', function () {
         it('should change ngModel if set minDate and has exceptions', function () {
-            var el = '<fugu-datepicker exceptions="exceptions" min-date="minDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker exceptions="exceptions" min-date="minDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.minDate = getDate({
                 day:10
@@ -309,7 +309,7 @@ describe('ui.fugu.datepicker', function () {
         });
 
         it('should change ngModel if set minDate and has exceptions array', function () {
-            var el = '<fugu-datepicker exceptions="exceptions" min-date="minDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker exceptions="exceptions" min-date="minDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.minDate = getDate({
                 day:10
@@ -330,7 +330,7 @@ describe('ui.fugu.datepicker', function () {
         });
 
         it('should change ngModel if set maxDate and has exceptions', function () {
-            var el = '<fugu-datepicker exceptions="exceptions" max-date="maxDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker exceptions="exceptions" max-date="maxDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.maxDate = getDate({
                 day:20
@@ -345,7 +345,7 @@ describe('ui.fugu.datepicker', function () {
         });
 
         it('should change ngModel if set maxDate and has exceptions array', function () {
-            var el = '<fugu-datepicker exceptions="exceptions" max-date="maxDate" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker exceptions="exceptions" max-date="maxDate" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.maxDate = getDate({
                 day:20
@@ -366,17 +366,17 @@ describe('ui.fugu.datepicker', function () {
     });
     describe('showTime attribute', function () {
         function findTimeHandler(){
-            return getCalendarPanel().find('.fugu-cal-time');
+            return getCalendarPanel().find('.uix-cal-time');
         }
         it('should show time by default', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
             clickToggleButton();
             expect(findTimeHandler().length).toBe(1);
         });
         it('should not show time', function () {
-            var el = '<fugu-datepicker show-time="false" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker show-time="false" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
             clickToggleButton();
@@ -385,10 +385,10 @@ describe('ui.fugu.datepicker', function () {
     });
     describe('size attribute', function () {
         it('should be middle size by default', function () {
-            var el = '<fugu-datepicker ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             createDatepicker(el);
-            var input = element.find('.fugu-datepicker-input');
+            var input = element.find('.uix-datepicker-input');
             expect(input).not.toHaveClass('input-sm');
             expect(input).not.toHaveClass('input-lg');
             var btn = element.find('.input-group-btn > button');
@@ -396,21 +396,21 @@ describe('ui.fugu.datepicker', function () {
             expect(btn).not.toHaveClass('btn-lg');
         });
         it('should be small size', function () {
-            var el = '<fugu-datepicker size="{{size}}" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker size="{{size}}" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.size = 'sm';
             createDatepicker(el);
-            var input = element.find('.fugu-datepicker-input');
+            var input = element.find('.uix-datepicker-input');
             expect(input).toHaveClass('input-sm');
             var btn = element.find('.input-group-btn > button');
             expect(btn).toHaveClass('btn-sm');
         });
         it('should be large size', function () {
-            var el = '<fugu-datepicker size="{{size}}" ng-model="time"></fugu-datepicker>';
+            var el = '<uix-datepicker size="{{size}}" ng-model="time"></uix-datepicker>';
             scope.time = getDate();
             scope.size = 'lg';
             createDatepicker(el);
-            var input = element.find('.fugu-datepicker-input');
+            var input = element.find('.uix-datepicker-input');
             expect(input).toHaveClass('input-lg');
             var btn = element.find('.input-group-btn > button');
             expect(btn).toHaveClass('btn-lg');

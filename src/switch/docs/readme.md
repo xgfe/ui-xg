@@ -5,13 +5,13 @@
 ## Usage
 
 ``` html
-<fugu-switch ng-model="boolean"
+<uix-switch ng-model="boolean"
     [ size="{{string}}" ]
     [ type="{{string}}" ]
     [ true-value="value" ]
     [ false-value="value" ]
     [ on-change="function" ]>
-    </fugu-switch>
+    </uix-switch>
 ```
 ## Restrict
 - 'E'

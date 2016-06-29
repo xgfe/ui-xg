@@ -4,8 +4,8 @@
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
-    .constant('fuguTimepickerConfig', {
+angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
+    .constant('uixTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
@@ -14,7 +14,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
         size: 'md',
         showSeconds: false
     })
-    .service('fuguTimepickerService', ['$document', function ($document) {
+    .service('uixTimepickerService', ['$document', function ($document) {
         var openScope = null;
         this.open = function (timepickerScope) {
             if (!openScope) {
@@ -48,13 +48,13 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig', 'dateFilter', '$timeout', '$fuguPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig, dateFilter, $timeout, $fuguPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$timeout', '$uixPosition',
+        function ($scope, $element, $compile, $attrs, $parse, $log, uixTimepickerService, timepickerConfig, dateFilter, $timeout, $uixPosition) {
             var ngModelCtrl = {$setViewValue: angular.noop};
-            var template = '<div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
+            var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></fugu-timepanel>' +
+                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></uix-timepanel>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -128,16 +128,16 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 }
             };
             $scope.getTimepanelElement = function () {
-                return $element.next('.fugu-timepicker-popover')[0];
+                return $element.next('.uix-timepicker-popover')[0];
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');
             };
             $scope.$watch('showTimepanel', function (showTimepanel) {
                 if (showTimepanel) {
-                    fuguTimepickerService.open($scope);
+                    uixTimepickerService.open($scope);
                 } else {
-                    fuguTimepickerService.close($scope);
+                    uixTimepickerService.close($scope);
                 }
             });
             $scope.$on('$locationChangeSuccess', function () {
@@ -145,7 +145,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
             });
             function adjustPosition() {
                 var popoverEle = $element.next('.popover');
-                var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
                     popoverEle.addClass('top');
@@ -158,12 +158,12 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 });
             }
         }])
-    .directive('fuguTimepicker', function () {
+    .directive('uixTimepicker', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/timepicker.html',
             replace: true,
-            require: ['fuguTimepicker', 'ngModel'],
+            require: ['uixTimepicker', 'ngModel'],
             scope: {
                 isDisabled: '=?ngDisabled',
                 minTime: '=?',
@@ -172,7 +172,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 placeholder: '@',
                 onChange: '&?'
             },
-            controller: 'fuguTimepickerCtrl',
+            controller: 'uixTimepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepickerCtrl.init(ngModelCtrl);

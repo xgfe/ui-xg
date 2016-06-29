@@ -1,8 +1,8 @@
 <div ng-controller="timepickerDemoCtrl">
-    <fugu-timepicker ng-disabled="isDisabled" format="'HH:mm:ss'" ng-model="time" placeholder="我是placeholder"></fugu-timepicker>
+    <uix-timepicker ng-disabled="isDisabled" format="'HH:mm:ss'" ng-model="time" placeholder="我是placeholder"></uix-timepicker>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker minute-step="10" format="'hh:mm:ss a'" ng-model="time" placeholder="timepicker"></fugu-timepicker>
+            <uix-timepicker minute-step="10" format="'hh:mm:ss a'" ng-model="time" placeholder="timepicker"></uix-timepicker>
         </div>
         <div class="col-md-3">
             <pre>time:{{time | date:'HH:mm:ss'}}</pre>
@@ -11,7 +11,7 @@
     <hr/>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker format="'HH:mm:ss'" ng-model="time2"></fugu-timepicker>
+            <uix-timepicker format="'HH:mm:ss'" ng-model="time2"></uix-timepicker>
         </div>
         <div class="col-md-3">
             <pre>time2:{{time2 | date:'HH:mm:ss'}}</pre>
@@ -19,7 +19,7 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker readonly-input="readonlyInput" ng-model="time2"></fugu-timepicker>
+            <uix-timepicker readonly-input="readonlyInput" ng-model="time2"></uix-timepicker>
         </div>
         <div class="col-md-3">
             <label for="readonlyInput">
@@ -30,7 +30,7 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker on-change="onChange()" min-time="minTime" ng-model="time"></fugu-timepicker>
+            <uix-timepicker on-change="onChange()" min-time="minTime" ng-model="time"></uix-timepicker>
         </div>
         <div class="col-md-3">
             <pre>minTime:{{minTime | date:'HH:mm:ss'}}</pre>
@@ -38,7 +38,7 @@
     </div>
     <div class="row">
         <div class="col-md-9">
-            <fugu-timepicker max-time="maxTime" ng-model="time2"></fugu-timepicker>
+            <uix-timepicker max-time="maxTime" ng-model="time2"></uix-timepicker>
         </div>
         <div class="col-md-3">
             <pre>maxTime:{{maxTime | date:'HH:mm:ss'}}</pre>

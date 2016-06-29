@@ -8,30 +8,30 @@
         <label>标题:</label>
         <input type="text" ng-model="dynamicPopover.title" class="form-control">
     </div>
-    <button fugu-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}" type="button" class="btn btn-default">动态Popover</button>
+    <button uix-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}" type="button" class="btn btn-default">动态Popover</button>
     <hr />
     <h4>方位选择</h4>
     <div class="form-group">
         <label>Popover 位置</label>
         <select class="form-control" ng-model="placement.selected" ng-options="o as o for o in placement.options"></select>
     </div>
-    <button popover-placement="{{placement.selected}}" fugu-popover="On the {{placement.selected}}" type="button" class="btn btn-default">Popover {{placement.selected}}</button>
+    <button popover-placement="{{placement.selected}}" uix-popover="On the {{placement.selected}}" type="button" class="btn btn-default">Popover {{placement.selected}}</button>
 
     <hr />
     <h4>触发事件</h4>
     <p>
-        <button fugu-popover="I appeared on mouse enter!" popover-trigger="mouseenter" type="button" class="btn btn-default">Mouseenter</button>
+        <button uix-popover="I appeared on mouse enter!" popover-trigger="mouseenter" type="button" class="btn btn-default">Mouseenter</button>
     </p>
-    <input type="text" value="Click me!" fugu-popover="获取焦点的时候才会显示"  popover-trigger="focus" class="form-control">
+    <input type="text" value="Click me!" uix-popover="获取焦点的时候才会显示"  popover-trigger="focus" class="form-control">
 
     <hr />
     <h4>自定义模板</h4>
-    <button fugu-popover-template="'templateId.html'" type="button" class="btn btn-default">Popover With Template</button>
+    <button uix-popover-template="'templateId.html'" type="button" class="btn btn-default">Popover With Template</button>
     <script type="text/ng-template" id="templateId.html">
         <p>This is the content of the template</p>
         <h1>Hello Template!</h1>
     </script>
     <h4>其他</h4>
-    <button popover-animation="true" fugu-popover="I fade in and out!" type="button" class="btn btn-default">fading</button>
-    <button fugu-popover="I have a title!" popover-title="我是title." type="button" class="btn btn-default">title</button>
+    <button popover-animation="true" uix-popover="I fade in and out!" type="button" class="btn btn-default">fading</button>
+    <button uix-popover="I have a title!" popover-title="我是title." type="button" class="btn btn-default">title</button>
 </div>

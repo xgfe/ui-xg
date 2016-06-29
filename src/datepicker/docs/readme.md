@@ -6,7 +6,7 @@
 ## Usage
 
 ``` html
-<fugu-datepicker ng-model="date"
+<uix-datepicker ng-model="date"
     [ min-date="date" ]
     [ max-date="date" ]
     [ placeholder="string" ]
@@ -18,7 +18,7 @@
     [ size="{{string}}" ]
     [ on-change="fn()" ]
     [ ng-disabled="boolean" ]>
-</fugu-datepicker>
+</uix-datepicker>
 ```
 ## Restrict
 - 'E'

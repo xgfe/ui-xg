@@ -5,7 +5,7 @@ require.config({
         'angular':'//cdn.bootcss.com/angular.js/1.2.25/angular.min',
         'ngAnimate':'//cdn.bootcss.com/angular.js/1.2.25/angular-animate.min',
         'uiRouter':'//cdn.bootcss.com/angular-ui-router/0.2.15/angular-ui-router.min',
-        'uiFugu': 'lib/ui-fugu.min'
+        'uiXg': 'lib/ui-xg.min'
     },
     shim:{
         'angular': {
@@ -18,7 +18,7 @@ require.config({
         'uiRouter':{
             'deps': ['angular']
         },
-        'uiFugu':{
+        'uiXg':{
             'deps': ['angular']
         }
     }

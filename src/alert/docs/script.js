@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
     $scope.isIcon = false;
     $scope.boolean = true;
     $scope.alerts = [

@@ -1,16 +1,16 @@
-describe('ui.fugu.timepanel', function () {
+describe('ui.xg.timepanel', function () {
     var compile,
         scope,
         timepanelConfig, //timepanel的常量配置
         element;    //指令DOM结点;
 
     beforeEach(function () {
-        module('ui.fugu.timepanel');
+        module('ui.xg.timepanel');
         module('timepanel/templates/timepanel.html');
-        inject(function ($compile, $rootScope, fuguTimepanelConfig) {
+        inject(function ($compile, $rootScope, uixTimepanelConfig) {
             compile = $compile;
             scope = $rootScope.$new();
-            timepanelConfig = fuguTimepanelConfig;
+            timepanelConfig = uixTimepanelConfig;
         });
     });
     afterEach(function () {
@@ -41,13 +41,13 @@ describe('ui.fugu.timepanel', function () {
     }
 
     function increaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
+        var el = element.find('.uix-timepanel-col').eq(0).find('.uix-timepanel-top');
         el.click();
         scope.$digest();
     }
 
     function decreaseHour() {
-        var el = element.find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
+        var el = element.find('.uix-timepanel-col').eq(0).find('.uix-timepanel-bottom');
         el.click();
         scope.$digest();
     }
@@ -85,14 +85,14 @@ describe('ui.fugu.timepanel', function () {
     }
 
     it('should show correct number', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var hour = dt.getHours();
         var minute = dt.getMinutes();
         var second = dt.getSeconds();
         scope.time = dt;
         createTimepanel(el);
-        expect(element).toHaveClass('fugu-timepanel');
+        expect(element).toHaveClass('uix-timepanel');
         var times = getTimes();
         expect(hour - timepanelConfig.hourStep).toEqual(parseInt(times.hour_smaller, 10));
         expect(hour).toEqual(parseInt(times.hour, 10));
@@ -108,7 +108,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('time should increase when click larger value', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var hour = dt.getHours();
         scope.time = dt;
@@ -121,7 +121,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('time should decrease when click smaller value', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var hour = dt.getHours();
         scope.time = dt;
@@ -134,7 +134,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('time should be changed when input value been changed', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         createTimepanel(el);
         var hourInput = element.find('input').eq(0);
@@ -148,7 +148,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('ngModel should be two-way data binding', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         scope.time = dt;
         createTimepanel(el);
@@ -158,7 +158,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('should be work when set *Step attr', function () {
-        var el = '<fugu-timepanel hour-step="hourStep" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel hour-step="hourStep" ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var hour = dt.getHours();
         scope.time = dt;
@@ -176,16 +176,16 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('do not show second col when showSeconds set to be false', function () {
-        var el = '<fugu-timepanel show-seconds="showSeconds" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel show-seconds="showSeconds" ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         scope.showSeconds = false;
         createTimepanel(el);
-        var secondCol = element.find('.fugu-timepanel-col').eq(2);
+        var secondCol = element.find('.uix-timepanel-col').eq(2);
         expect(secondCol).toBeHidden();
     });
 
     it('mousewheel should be worked by default', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var minute = dt.getMinutes();
         scope.time = dt;
@@ -208,7 +208,7 @@ describe('ui.fugu.timepanel', function () {
         expect(minute + timepanelConfig.minuteStep).toEqual(parseInt(times.minute_larger, 10));
     });
     it('mousewheel should not be worked when set to be false', function () {
-        var el = '<fugu-timepanel mousewheel="mousewheel" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel mousewheel="mousewheel" ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var minute = dt.getMinutes();
         scope.time = dt;
@@ -226,7 +226,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('up and down key should be worked by default', function () {
-        var el = '<fugu-timepanel ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel ng-model="time"></uix-timepanel>';
         var dt = getDate();
         var minute = dt.getMinutes();
         scope.time = dt;
@@ -250,7 +250,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('should trigger onChange function when click smaller or larger value', function () {
-        var el = '<fugu-timepanel on-change="changeHanlder" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel on-change="changeHanlder" ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         scope.changeHanlder = jasmine.createSpy('changeHanlder');
         createTimepanel(el);
@@ -258,7 +258,7 @@ describe('ui.fugu.timepanel', function () {
         expect(scope.changeHanlder).toHaveBeenCalled();
     });
     it('should trigger onChange function when change input value', function () {
-        var el = '<fugu-timepanel on-change="changeHanlder" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel on-change="changeHanlder" ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         scope.changeHanlder = jasmine.createSpy('changeHanlder');
         createTimepanel(el);
@@ -272,7 +272,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('should trigger onChange function when mousewheel scroll', function () {
-        var el = '<fugu-timepanel on-change="changeHanlder" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel on-change="changeHanlder" ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         scope.changeHanlder = jasmine.createSpy('changeHanlder');
         createTimepanel(el);
@@ -285,7 +285,7 @@ describe('ui.fugu.timepanel', function () {
     });
 
     it('should trigger onChange function when press up key', function () {
-        var el = '<fugu-timepanel on-change="changeHanlder" ng-model="time"></fugu-timepanel>';
+        var el = '<uix-timepanel on-change="changeHanlder" ng-model="time"></uix-timepanel>';
         scope.time = getDate();
         scope.changeHanlder = jasmine.createSpy('changeHanlder');
         createTimepanel(el);

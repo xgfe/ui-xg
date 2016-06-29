@@ -1,4 +1,4 @@
-describe('fugu-tooltip', function() {
+describe('uix-tooltip', function() {
     var elm,
         elmBody,
         scope,
@@ -8,16 +8,16 @@ describe('fugu-tooltip', function() {
 
     // load the tooltip code
     beforeEach(function () {
-        module('ui.fugu.tooltip');
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('tooltip/templates/fugu-tooltip-popup.html');
-        module('tooltip/templates/fugu-tooltip-html-popup.html');
+        module('ui.xg.tooltip');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('tooltip/templates/tooltip-popup.html');
+        module('tooltip/templates/tooltip-html-popup.html');
     });
 
     beforeEach(inject(function($rootScope, $compile, _$document_) {
         elmBody = angular.element(
-            '<div><span fugu-tooltip="tooltip text" tooltip-animation="false">Selector Text</span></div>'
+            '<div><span uix-tooltip="tooltip text" tooltip-animation="false">Selector Text</span></div>'
         );
 
         $document = _$document_;
@@ -74,7 +74,7 @@ describe('fugu-tooltip', function() {
 
     it('should allow specification of placement', inject(function($compile) {
         elm = $compile(angular.element(
-            '<span fugu-tooltip="tooltip text" tooltip-placement="bottom">Selector Text</span>'
+            '<span uix-tooltip="tooltip text" tooltip-placement="bottom">Selector Text</span>'
         ))(scope);
         scope.$apply();
         elmScope = elm.scope();
@@ -87,7 +87,7 @@ describe('fugu-tooltip', function() {
     it('should update placement dynamically', inject(function($compile, $timeout) {
         scope.place = 'bottom';
         elm = $compile(angular.element(
-            '<span fugu-tooltip="tooltip text" tooltip-placement="{{place}}">Selector Text</span>'
+            '<span uix-tooltip="tooltip text" tooltip-placement="{{place}}">Selector Text</span>'
         ))(scope);
         scope.$apply();
         elmScope = elm.scope();
@@ -106,7 +106,7 @@ describe('fugu-tooltip', function() {
         elm = $compile(angular.element(
             '<ul>'+
             '<li ng-repeat="item in items">'+
-            '<span fugu-tooltip="{{item.tooltip}}">{{item.name}}</span>'+
+            '<span uix-tooltip="{{item.tooltip}}">{{item.name}}</span>'+
             '</li>'+
             '</ul>'
         ))(scope);
@@ -133,7 +133,7 @@ describe('fugu-tooltip', function() {
         elm = $compile(angular.element(
             '<ul>'+
             '<li ng-repeat="item in items">'+
-            '<span fugu-tooltip="{{item.tooltip}}">{{item.name}}</span>'+
+            '<span uix-tooltip="{{item.tooltip}}">{{item.name}}</span>'+
             '</li>'+
             '</ul>'
         ))(scope);
@@ -172,7 +172,7 @@ describe('fugu-tooltip', function() {
         scope.alt = 'Alt Message';
 
         elmBody = $compile(angular.element(
-            '<div><span alt={{alt}} fugu-tooltip="{{tooltipMsg}}" tooltip-animation="false">Selector Text</span></div>'
+            '<div><span alt={{alt}} uix-tooltip="{{tooltipMsg}}" tooltip-animation="false">Selector Text</span></div>'
         ))(scope);
 
         $compile(elmBody)(scope);
@@ -199,7 +199,7 @@ describe('fugu-tooltip', function() {
 
     it('should not show tooltips if there is nothing to show - issue #129', inject(function($compile) {
         elmBody = $compile(angular.element(
-            '<div><span fugu-tooltip="">Selector Text</span></div>'
+            '<div><span uix-tooltip="">Selector Text</span></div>'
         ))(scope);
         scope.$digest();
         elmBody.find('span').trigger('mouseenter');
@@ -238,7 +238,7 @@ describe('fugu-tooltip', function() {
         beforeEach(inject(function($compile) {
             scope.enable = false;
             elmBody = $compile(angular.element(
-                '<div><span fugu-tooltip="tooltip text" tooltip-enable="enable">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text" tooltip-enable="enable">Selector Text</span></div>'
             ))(scope);
             scope.$digest();
             elm = elmBody.find('span');
@@ -267,7 +267,7 @@ describe('fugu-tooltip', function() {
             $timeout = _$timeout_;
             scope.delay = '1000';
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-popup-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-popup-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
             ))(scope);
             elmScope = elm.scope();
             tooltipScope = elmScope.$$childTail;
@@ -331,7 +331,7 @@ describe('fugu-tooltip', function() {
         });
 
         it('should close the tooltips in order', inject(function($compile) {
-            var elm2 = $compile('<div><span fugu-tooltip="tooltip #2" tooltip-is-open="isOpen2">Selector Text</span></div>')(scope);
+            var elm2 = $compile('<div><span uix-tooltip="tooltip #2" tooltip-is-open="isOpen2">Selector Text</span></div>')(scope);
             scope.$digest();
             elm2 = elm2.find('span');
             var tooltipScope2 = elm2.scope().$$childTail;
@@ -378,7 +378,7 @@ describe('fugu-tooltip', function() {
             $timeout = _$timeout_;
             scope.delay = '1000';
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-popup-close-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-popup-close-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
             ))(scope);
             elmScope = elm.scope();
             tooltipScope = elmScope.$$childTail;
@@ -432,7 +432,7 @@ describe('fugu-tooltip', function() {
             $timeout = _$timeout_;
             scope.delay = '1000';
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-popup-close-delay="{{delay}}" tooltip-popup-close-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-popup-close-delay="{{delay}}" tooltip-popup-close-delay="{{delay}}" ng-disabled="disabled">Selector Text</span>'
             ))(scope);
             elmScope = elm.scope();
             tooltipScope = elmScope.$$childTail;
@@ -453,7 +453,7 @@ describe('fugu-tooltip', function() {
         beforeEach(inject(function ($compile) {
             scope.isOpen = false;
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-is-open="isOpen" >Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-is-open="isOpen" >Selector Text</span>'
             ))(scope);
             elmScope = elm.scope();
             tooltipScope = elmScope.$$childTail;
@@ -482,7 +482,7 @@ describe('fugu-tooltip', function() {
         beforeEach(inject(function($compile) {
             scope.isOpen = false;
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-is-open="isOpen === true" >Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-is-open="isOpen === true" >Selector Text</span>'
             ))(scope);
             elmScope = elm.scope();
             tooltipScope = elmScope.$$childTail;
@@ -509,7 +509,7 @@ describe('fugu-tooltip', function() {
 
         it('should use it to show but set the hide trigger based on the map for mapped triggers', inject(function($compile) {
             elmBody = angular.element(
-                '<div><input fugu-tooltip="Hello!" tooltip-trigger="focus" /></div>'
+                '<div><input uix-tooltip="Hello!" tooltip-trigger="focus" /></div>'
             );
             $compile(elmBody)(scope);
             scope.$apply();
@@ -526,7 +526,7 @@ describe('fugu-tooltip', function() {
 
         it('should use it as both the show and hide triggers for unmapped triggers', inject(function($compile) {
             elmBody = angular.element(
-                '<div><input fugu-tooltip="Hello!" tooltip-trigger="fakeTriggerAttr" /></div>'
+                '<div><input uix-tooltip="Hello!" tooltip-trigger="fakeTriggerAttr" /></div>'
             );
             $compile(elmBody)(scope);
             scope.$apply();
@@ -545,8 +545,8 @@ describe('fugu-tooltip', function() {
             scope.test = true;
             elmBody = angular.element(
                 '<div>' +
-                '<input fugu-tooltip="Hello!" tooltip-trigger="{{ (test && \'mouseenter\' || \'click\') }}" />' +
-                '<input fugu-tooltip="Hello!" tooltip-trigger="{{ (test && \'mouseenter\' || \'click\') }}" />' +
+                '<input uix-tooltip="Hello!" tooltip-trigger="{{ (test && \'mouseenter\' || \'click\') }}" />' +
+                '<input uix-tooltip="Hello!" tooltip-trigger="{{ (test && \'mouseenter\' || \'click\') }}" />' +
                 '</div>'
             );
 
@@ -569,7 +569,7 @@ describe('fugu-tooltip', function() {
 
         it('should accept multiple triggers based on the map for mapped triggers', inject(function($compile) {
             elmBody = angular.element(
-                '<div><input fugu-tooltip="Hello!" tooltip-trigger="focus fakeTriggerAttr" /></div>'
+                '<div><input uix-tooltip="Hello!" tooltip-trigger="focus fakeTriggerAttr" /></div>'
             );
             $compile(elmBody)(scope);
             scope.$apply();
@@ -590,7 +590,7 @@ describe('fugu-tooltip', function() {
 
         it('should not show when trigger is set to "none"', inject(function($compile) {
             elmBody = angular.element(
-                '<div><input fugu-tooltip="Hello!" tooltip-trigger="none" /></div>'
+                '<div><input uix-tooltip="Hello!" tooltip-trigger="none" /></div>'
             );
             $compile(elmBody)(scope);
             scope.$apply();
@@ -604,7 +604,7 @@ describe('fugu-tooltip', function() {
 
         it('should toggle on click and hide when anything else is clicked when trigger is set to "outsideClick"', inject(function($compile, $document) {
             elm = $compile(angular.element(
-                '<span fugu-tooltip="tooltip text" tooltip-trigger="outsideClick">Selector Text</span>'
+                '<span uix-tooltip="tooltip text" tooltip-trigger="outsideClick">Selector Text</span>'
             ))(scope);
             scope.$apply();
             elmScope = elm.scope();
@@ -642,7 +642,7 @@ describe('fugu-tooltip', function() {
         it('should append to the body', inject(function($compile, $document) {
             $body = $document.find('body');
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text" tooltip-append-to-body="true">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text" tooltip-append-to-body="true">Selector Text</span></div>'
             );
 
             $compile(elmBody)(scope);
@@ -676,7 +676,7 @@ describe('fugu-tooltip', function() {
         }
 
         beforeEach(inject(function($compile, $rootScope) {
-            elmBody = angular.element('<div><input fugu-tooltip="Hello!" tooltip-trigger="fooTrigger" /></div>');
+            elmBody = angular.element('<div><input uix-tooltip="Hello!" tooltip-trigger="fooTrigger" /></div>');
 
             $compile(elmBody)($rootScope);
             $rootScope.$apply();
@@ -701,7 +701,7 @@ describe('fugu-tooltip', function() {
             scope = $rootScope;
             scope.content = 'tooltip content';
             scope.placement = 'top';
-            elmBody = angular.element('<div><input fugu-tooltip="{{content}}" tooltip-placement={{placement}} /></div>');
+            elmBody = angular.element('<div><input uix-tooltip="{{content}}" tooltip-placement={{placement}} /></div>');
             $compile(elmBody)(scope);
             scope.$apply();
 
@@ -740,11 +740,11 @@ describe('tooltipWithDifferentSymbols', function() {
 
     // load the tooltip code
     beforeEach(function () {
-        module('ui.fugu.tooltip');
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('tooltip/templates/fugu-tooltip-popup.html');
-        module('tooltip/templates/fugu-tooltip-html-popup.html');
+        module('ui.xg.tooltip');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('tooltip/templates/tooltip-popup.html');
+        module('tooltip/templates/tooltip-html-popup.html');
     });
 
     // configure interpolate provider to use [[ ]] instead of {{ }}
@@ -762,7 +762,7 @@ describe('tooltipWithDifferentSymbols', function() {
 
     it('should show the correct tooltip text', inject(function($compile, $rootScope) {
         elmBody = angular.element(
-            '<div><input type="text" fugu-tooltip="My tooltip" tooltip-trigger="focus" tooltip-placement="right" /></div>'
+            '<div><input type="text" uix-tooltip="My tooltip" tooltip-trigger="focus" tooltip-placement="right" /></div>'
         );
         $compile(elmBody)($rootScope);
         $rootScope.$apply();
@@ -779,24 +779,24 @@ describe('tooltip positioning', function() {
 
     // load the tooltip code
     beforeEach(function () {
-        module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-            $fuguTooltipProvider.options({ animation: false });
+        module('ui.xg.tooltip', function($uixTooltipProvider) {
+            $uixTooltipProvider.options({ animation: false });
         });
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('tooltip/templates/fugu-tooltip-popup.html');
-        module('tooltip/templates/fugu-tooltip-html-popup.html');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('tooltip/templates/tooltip-popup.html');
+        module('tooltip/templates/tooltip-html-popup.html');
     });
 
-    beforeEach(inject(function($rootScope, $compile, $fuguPosition) {
-        $position = $fuguPosition;
+    beforeEach(inject(function($rootScope, $compile, $uixPosition) {
+        $position = $uixPosition;
         spyOn($position, 'positionElements').and.callThrough();
 
         scope = $rootScope;
         scope.text = 'Some Text';
 
         elmBody = $compile(angular.element(
-            '<div><span fugu-tooltip="{{ text }}">Selector Text</span></div>'
+            '<div><span uix-tooltip="{{ text }}">Selector Text</span></div>'
         ))(scope);
         scope.$digest();
         elm = elmBody.find('span');
@@ -819,7 +819,7 @@ describe('tooltip positioning', function() {
         scope.text = 'New Text';
         scope.$digest();
         $timeout.flush();
-        expect(elm.attr('fugu-tooltip')).toBe('New Text');
+        expect(elm.attr('uix-tooltip')).toBe('New Text');
         expect($position.positionElements.calls.count()).toEqual(startingPositionCalls + 1);
         // Check that positionElements was called with elm
         expect($position.positionElements.calls.argsFor(startingPositionCalls)[0][0])
@@ -840,13 +840,13 @@ describe('tooltipHtml', function() {
 
     // load the tooltip code
     beforeEach(function () {
-        module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-            $fuguTooltipProvider.options({ animation: false });
+        module('ui.xg.tooltip', function($uixTooltipProvider) {
+            $uixTooltipProvider.options({ animation: false });
         });
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('tooltip/templates/fugu-tooltip-popup.html');
-        module('tooltip/templates/fugu-tooltip-html-popup.html');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('tooltip/templates/tooltip-popup.html');
+        module('tooltip/templates/tooltip-html-popup.html');
     });
 
     beforeEach(inject(function($rootScope, $compile, $sce) {
@@ -855,7 +855,7 @@ describe('tooltipHtml', function() {
         scope.safeHtml = $sce.trustAsHtml(scope.html);
 
         elmBody = $compile(angular.element(
-            '<div><span fugu-tooltip-html="safeHtml">Selector Text</span></div>'
+            '<div><span uix-tooltip-html="safeHtml">Selector Text</span></div>'
         ))(scope);
         scope.$digest();
         elm = elmBody.find('span');
@@ -897,7 +897,7 @@ describe('tooltipHtml', function() {
     }));
 });
 
-describe('$fuguTooltipProvider', function() {
+describe('$uixTooltipProvider', function() {
     var elm,
         elmBody,
         scope,
@@ -913,18 +913,18 @@ describe('$fuguTooltipProvider', function() {
 
     describe('popupDelay', function() {
         beforeEach(function () {
-            module('ui.fugu.tooltip',function($fuguTooltipProvider) {
-                $fuguTooltipProvider.options({popupDelay: 1000});
+            module('ui.xg.tooltip',function($uixTooltipProvider) {
+                $uixTooltipProvider.options({popupDelay: 1000});
             });
-            module('ui.fugu.position');
-            module('ui.fugu.stackedMap');
-            module('tooltip/templates/fugu-tooltip-popup.html');
-            module('tooltip/templates/fugu-tooltip-html-popup.html');
+            module('ui.xg.position');
+            module('ui.xg.stackedMap');
+            module('tooltip/templates/tooltip-popup.html');
+            module('tooltip/templates/tooltip-html-popup.html');
         });
 
         beforeEach(inject(function($rootScope, $compile) {
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text">Selector Text</span></div>'
             );
 
             scope = $rootScope;
@@ -948,13 +948,13 @@ describe('$fuguTooltipProvider', function() {
         var $body;
 
         beforeEach(function () {
-            module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-                $fuguTooltipProvider.options({ appendToBody: true });
+            module('ui.xg.tooltip', function($uixTooltipProvider) {
+                $uixTooltipProvider.options({ appendToBody: true });
             });
-            module('ui.fugu.position');
-            module('ui.fugu.stackedMap');
-            module('tooltip/templates/fugu-tooltip-popup.html');
-            module('tooltip/templates/fugu-tooltip-html-popup.html');
+            module('ui.xg.position');
+            module('ui.xg.stackedMap');
+            module('tooltip/templates/tooltip-popup.html');
+            module('tooltip/templates/tooltip-html-popup.html');
         });
 
         afterEach(function() {
@@ -964,7 +964,7 @@ describe('$fuguTooltipProvider', function() {
         it('should append to the body', inject(function($rootScope, $compile, $document) {
             $body = $document.find('body');
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text">Selector Text</span></div>'
             );
 
             scope = $rootScope;
@@ -985,7 +985,7 @@ describe('$fuguTooltipProvider', function() {
         it('should append to the body when only attribute present', inject(function($rootScope, $compile, $document) {
             $body = $document.find('body');
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text" tooltip-append-to-body>Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text" tooltip-append-to-body>Selector Text</span></div>'
             );
 
             scope = $rootScope;
@@ -1006,7 +1006,7 @@ describe('$fuguTooltipProvider', function() {
         it('should not append to the body when attribute value is false', inject(function($rootScope, $compile, $document) {
             $body = $document.find('body');
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text" tooltip-append-to-body="false">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text" tooltip-append-to-body="false">Selector Text</span></div>'
             );
 
             scope = $rootScope;
@@ -1026,7 +1026,7 @@ describe('$fuguTooltipProvider', function() {
 
         it('should close on location change', inject(function($rootScope, $compile) {
             elmBody = angular.element(
-                '<div><span fugu-tooltip="tooltip text">Selector Text</span></div>'
+                '<div><span uix-tooltip="tooltip text">Selector Text</span></div>'
             );
 
             scope = $rootScope;
@@ -1048,18 +1048,18 @@ describe('$fuguTooltipProvider', function() {
     describe('triggers', function() {
         describe('triggers with a mapped value', function() {
             beforeEach(function () {
-                module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-                    $fuguTooltipProvider.options({trigger: 'focus'});
+                module('ui.xg.tooltip', function($uixTooltipProvider) {
+                    $uixTooltipProvider.options({trigger: 'focus'});
                 });
-                module('ui.fugu.position');
-                module('ui.fugu.stackedMap');
-                module('tooltip/templates/fugu-tooltip-popup.html');
-                module('tooltip/templates/fugu-tooltip-html-popup.html');
+                module('ui.xg.position');
+                module('ui.xg.stackedMap');
+                module('tooltip/templates/tooltip-popup.html');
+                module('tooltip/templates/tooltip-html-popup.html');
             });
 
             it('should use the show trigger and the mapped value for the hide trigger', inject(function($rootScope, $compile) {
                 elmBody = angular.element(
-                    '<div><input fugu-tooltip="tooltip text" /></div>'
+                    '<div><input uix-tooltip="tooltip text" /></div>'
                 );
 
                 scope = $rootScope;
@@ -1078,7 +1078,7 @@ describe('$fuguTooltipProvider', function() {
 
             it('should override the show and hide triggers if there is an attribute', inject(function($rootScope, $compile) {
                 elmBody = angular.element(
-                    '<div><input fugu-tooltip="tooltip text" tooltip-trigger="mouseenter"/></div>'
+                    '<div><input uix-tooltip="tooltip text" tooltip-trigger="mouseenter"/></div>'
                 );
 
                 scope = $rootScope;
@@ -1098,19 +1098,19 @@ describe('$fuguTooltipProvider', function() {
 
         describe('triggers with a custom mapped value', function() {
             beforeEach(function () {
-                module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-                    $fuguTooltipProvider.setTriggers({ customOpenTrigger: 'foo bar' });
-                    $fuguTooltipProvider.options({trigger: 'customOpenTrigger'});
+                module('ui.xg.tooltip', function($uixTooltipProvider) {
+                    $uixTooltipProvider.setTriggers({ customOpenTrigger: 'foo bar' });
+                    $uixTooltipProvider.options({trigger: 'customOpenTrigger'});
                 });
-                module('ui.fugu.position');
-                module('ui.fugu.stackedMap');
-                module('tooltip/templates/fugu-tooltip-popup.html');
-                module('tooltip/templates/fugu-tooltip-html-popup.html');
+                module('ui.xg.position');
+                module('ui.xg.stackedMap');
+                module('tooltip/templates/tooltip-popup.html');
+                module('tooltip/templates/tooltip-html-popup.html');
             });
 
             it('should use the show trigger and the mapped value for the hide trigger', inject(function($rootScope, $compile) {
                 elmBody = angular.element(
-                    '<div><input fugu-tooltip="tooltip text" /></div>'
+                    '<div><input uix-tooltip="tooltip text" /></div>'
                 );
 
                 scope = $rootScope;
@@ -1134,19 +1134,19 @@ describe('$fuguTooltipProvider', function() {
 
         describe('triggers without a mapped value', function() {
             beforeEach(function () {
-                module('ui.fugu.tooltip', function($fuguTooltipProvider) {
-                    $fuguTooltipProvider.options({trigger: 'fakeTrigger'});
+                module('ui.xg.tooltip', function($uixTooltipProvider) {
+                    $uixTooltipProvider.options({trigger: 'fakeTrigger'});
                 });
-                module('ui.fugu.position');
-                module('ui.fugu.stackedMap');
-                module('tooltip/templates/fugu-tooltip-popup.html');
-                module('tooltip/templates/fugu-tooltip-html-popup.html');
+                module('ui.xg.position');
+                module('ui.xg.stackedMap');
+                module('tooltip/templates/tooltip-popup.html');
+                module('tooltip/templates/tooltip-html-popup.html');
             });
 
 
             it('should use the show trigger to hide', inject(function($rootScope, $compile) {
                 elmBody = angular.element(
-                    '<div><span fugu-tooltip="tooltip text">Selector Text</span></div>'
+                    '<div><span uix-tooltip="tooltip text">Selector Text</span></div>'
                 );
 
                 scope = $rootScope;

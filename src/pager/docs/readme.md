@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-<fugu-pager total-items="number"
+<uix-pager total-items="number"
     page-no="number"
     [items-per-page="number"]
     [max-size="number"]
@@ -14,7 +14,7 @@
     [previous-text="{{string}}"]
     [next-text="{{string}}"]
     [page-changed="function"]>
-    </fugu-pager>
+    </uix-pager>
 ```
 ## Restrict
 - 'E'

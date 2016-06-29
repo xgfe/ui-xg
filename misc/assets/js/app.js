@@ -3,13 +3,13 @@ define([
     'angular',
     'ngAnimate',
     'uiRouter',
-    'uiFugu'
+    'uiXg'
 ], function($,angular) {
 
     //定义angular模块
-    var app = angular.module('fuguDemo', [
+    var app = angular.module('uixDemo', [
         'ui.router',
-        'ui.fugu',
+        'ui.xg',
         'ngAnimate'
     ]);
     app.config(['$stateProvider','$urlRouterProvider', function ($stateProvider,$urlRouterProvider) {

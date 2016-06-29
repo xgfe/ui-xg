@@ -6,7 +6,7 @@
 ## Usage
 
 ``` html
-<ul fugu-sortable="array">
+<ul uix-sortable="array">
     <li ng-repeat="item in array track by $index">your html code here</li>
 </ul>
 ```
@@ -22,5 +22,5 @@
 
 ## Arguments
 
-- fuguSortable:需要被排序的数组,建议和repeat的数组保持一致
+- uixSortable:需要被排序的数组,建议和repeat的数组保持一致
     - type:`array`

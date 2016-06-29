@@ -8,12 +8,12 @@ describe('tooltip template', function() {
 
     // load the tooltip code
     beforeEach(function () {
-        module('ui.fugu.tooltip');
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('tooltip/templates/fugu-tooltip-popup.html');
-        module('tooltip/templates/fugu-tooltip-html-popup.html');
-        module('tooltip/templates/fugu-tooltip-template-popup.html');
+        module('ui.xg.tooltip');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('tooltip/templates/tooltip-popup.html');
+        module('tooltip/templates/tooltip-html-popup.html');
+        module('tooltip/templates/tooltip-template-popup.html');
     });
 
     beforeEach(inject(function($templateCache) {
@@ -23,7 +23,7 @@ describe('tooltip template', function() {
     beforeEach(inject(function($rootScope, $compile, _$document_) {
         $document = _$document_;
         elmBody = angular.element(
-            '<div><span fugu-tooltip-template="templateUrl">Selector Text</span></div>'
+            '<div><span uix-tooltip-template="templateUrl">Selector Text</span></div>'
         );
 
         scope = $rootScope;

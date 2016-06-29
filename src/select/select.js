@@ -4,8 +4,8 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-29
  */
-angular.module('ui.fugu.select', [])
-    .constant('fuguSelectConfig', {
+angular.module('ui.xg.select', [])
+    .constant('uixSelectConfig', {
         KEY: {
             TAB: 9,
             ENTER: 13,
@@ -159,8 +159,8 @@ angular.module('ui.fugu.select', [])
         appendToBody: false
     })
     // 当指令传递参数等发生错误时抛出异常
-    .service('fuguSelectMinErr', function () {
-        var minErr = angular.$$minErr('ui.fugu.select');
+    .service('uixSelectMinErr', function () {
+        var minErr = angular.$$minErr('ui.xg.select');
         return function () {
             var error = minErr.apply(this, arguments);
             var str = '\n?http://errors.angularjs.org/.*';
@@ -169,7 +169,7 @@ angular.module('ui.fugu.select', [])
         };
     })
     // 添加DOM节点到指定内
-    .directive('fuguTranscludeAppend', function () {
+    .directive('uixTranscludeAppend', function () {
         return {
             link: function (scope, element, attrs, ctrl, transclude) {
                 transclude(scope, function (clone) {
@@ -185,11 +185,11 @@ angular.module('ui.fugu.select', [])
         }
 
         return function (matchItem, query) {
-            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="fugu-select-highlight">$&</span>') : matchItem;
+            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="uix-select-highlight">$&</span>') : matchItem;
         };
     })
     // 位置偏移
-    .factory('fuguSelectOffset', ['$document', '$window', function ($document, $window) {
+    .factory('uixSelectOffset', ['$document', '$window', function ($document, $window) {
         return function (element) {
             var elem = element[0] || element;
             var elemBCR = elem.getBoundingClientRect();
@@ -201,20 +201,20 @@ angular.module('ui.fugu.select', [])
             };
         };
     }])
-    .controller('fuguSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'fuguSelectRepeatParser', 'fuguSelectMinErr', 'fuguSelectConfig',
-        function ($scope, $element, $timeout, $filter, RepeatParser, fuguSelectMinErr, fuguSelectConfig) {
-            var KEY = fuguSelectConfig.KEY;
+    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser', 'uixSelectMinErr', 'uixSelectConfig',
+        function ($scope, $element, $timeout, $filter, RepeatParser, uixSelectMinErr, uixSelectConfig) {
+            var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
             var EMPTY_SEARCH = '';
 
-            ctrl.placeholder = fuguSelectConfig.placeholder;
-            ctrl.searchEnabled = fuguSelectConfig.searchEnabled;
-            ctrl.sortable = fuguSelectConfig.sortable;
-            ctrl.refreshDelay = fuguSelectConfig.refreshDelay;
+            ctrl.placeholder = uixSelectConfig.placeholder;
+            ctrl.searchEnabled = uixSelectConfig.searchEnabled;
+            ctrl.sortable = uixSelectConfig.sortable;
+            ctrl.refreshDelay = uixSelectConfig.refreshDelay;
 
             ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list
-            ctrl.closeOnSelect = true; //Initialized inside fuguSelect directive link function
+            ctrl.closeOnSelect = true; //Initialized inside uixSelect directive link function
             ctrl.search = EMPTY_SEARCH;
 
             ctrl.activeIndex = 0; //Dropdown of choices
@@ -227,17 +227,17 @@ angular.module('ui.fugu.select', [])
 
             ctrl.focusser = null; //Reference to input element used to handle focus events
             ctrl.resetSearchInput = true;
-            ctrl.multiple = null; // Initialized inside fuguSelect directive link function
-            ctrl.disableChoiceExpression = null; // Initialized inside fuguSelectChoices directive link function
+            ctrl.multiple = null; // Initialized inside uixSelect directive link function
+            ctrl.disableChoiceExpression = null; // Initialized inside uixSelectChoices directive link function
             ctrl.tagging = {isActivated: false, fct: null};
             ctrl.taggingTokens = {isActivated: false, tokens: null};
-            ctrl.lockChoiceExpression = null; // Initialized inside fuguSelectMatch directive link function
+            ctrl.lockChoiceExpression = null; // Initialized inside uixSelectMatch directive link function
             ctrl.clickTriggeredSelect = false;
             ctrl.$filter = $filter;
 
-            ctrl.searchInput = angular.element($element[0].querySelectorAll('input.fugu-select-search'));
+            ctrl.searchInput = angular.element($element[0].querySelectorAll('input.uix-select-search'));
             if (ctrl.searchInput.length !== 1) {
-                throw fuguSelectMinErr('searchInput', "Expected 1 input.fugu-select-search but got '{0}'.", ctrl.searchInput.length);
+                throw uixSelectMinErr('searchInput', "Expected 1 input.uix-select-search but got '{0}'.", ctrl.searchInput.length);
             }
 
             ctrl.isEmpty = function () {
@@ -246,7 +246,7 @@ angular.module('ui.fugu.select', [])
 
             // Most of the time the user does not want to empty the search input when in typeahead mode
             function _resetSearchInput() {
-                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && fuguSelectConfig.resetSearchInput)) {
+                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && uixSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
                     //reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
@@ -267,14 +267,14 @@ angular.module('ui.fugu.select', [])
                 return result;
             }
 
-            // When the user clicks on fugu-select, displays the dropdown list
+            // When the user clicks on uix-select, displays the dropdown list
             ctrl.activate = function (initSearchValue, avoidReset) {
                 if (!ctrl.disabled && !ctrl.open) {
                     if (!avoidReset) {
                         _resetSearchInput();
                     }
 
-                    $scope.$broadcast('fuguSelect:activate');
+                    $scope.$broadcast('uixSelect:activate');
 
                     ctrl.open = true;
 
@@ -364,7 +364,7 @@ angular.module('ui.fugu.select', [])
                         ctrl.items = [];
                     } else {
                         if (!angular.isArray(items)) {
-                            throw fuguSelectMinErr('items', "Expected an array but got '{0}'.", items);
+                            throw uixSelectMinErr('items', "Expected an array but got '{0}'.", items);
                         } else {
                             //Remove already selected items (ex: while searching)
                             //TODO Should add a test
@@ -381,7 +381,7 @@ angular.module('ui.fugu.select', [])
             /**
              * Typeahead mode: lets the user refresh the collection using his own function.
              *
-             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/fugu-select/pull/31
+             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/uix-select/pull/31
              */
             ctrl.refresh = function (refreshAttr) {
                 if (angular.isDefined(refreshAttr)) {
@@ -433,7 +433,7 @@ angular.module('ui.fugu.select', [])
                 if (itemIndex >= 0 && !angular.isUndefined(ctrl.disableChoiceExpression)) {
                     item = ctrl.items[itemIndex];
                     isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
-                    item._fuguSelectChoiceDisabled = isDisabled; // store this for later reference
+                    item._uixSelectChoiceDisabled = isDisabled; // store this for later reference
                 }
 
                 return isDisabled;
@@ -442,13 +442,13 @@ angular.module('ui.fugu.select', [])
 
             // When the user selects an item with ENTER or clicks the dropdown
             ctrl.select = function (item, skipFocusser, $event) {
-                if (angular.isUndefined(item) || !item._fuguSelectChoiceDisabled) {
+                if (angular.isUndefined(item) || !item._uixSelectChoiceDisabled) {
 
                     if (!ctrl.items && !ctrl.search) {
                         return;
                     }
 
-                    if (!item || !item._fuguSelectChoiceDisabled) {
+                    if (!item || !item._uixSelectChoiceDisabled) {
                         if (ctrl.tagging.isActivated) {
                             // if taggingLabel is disabled, we pull from ctrl.search val
                             if (ctrl.taggingLabel === false) {
@@ -494,7 +494,7 @@ angular.module('ui.fugu.select', [])
                             }
                         }
 
-                        $scope.$broadcast('fuguSelect:select', item);
+                        $scope.$broadcast('uixSelect:select', item);
 
                         var locals = {};
                         locals[ctrl.parserResult.itemName] = item;
@@ -527,7 +527,7 @@ angular.module('ui.fugu.select', [])
                 _resetSearchInput();
                 ctrl.open = false;
 
-                $scope.$broadcast('fuguSelect:close', skipFocusser);
+                $scope.$broadcast('uixSelect:close', skipFocusser);
 
             };
 
@@ -561,7 +561,7 @@ angular.module('ui.fugu.select', [])
 
                 if (item && !angular.isUndefined(ctrl.lockChoiceExpression)) {
                     isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression)); // force the boolean value
-                    item._fuguSelectChoiceLocked = isLocked; // store this for later reference
+                    item._uixSelectChoiceLocked = isLocked; // store this for later reference
                 }
 
                 return isLocked;
@@ -718,10 +718,10 @@ angular.module('ui.fugu.select', [])
 
             // See https://github.com/ivaynberg/select2/blob/3.4.6/select2.js#L1431
             function _ensureHighlightVisible() {
-                var container = angular.element($element[0].querySelectorAll('.fugu-select-choices-content'));
-                var choices = angular.element(container[0].querySelectorAll('.fugu-select-choices-row'));
+                var container = angular.element($element[0].querySelectorAll('.uix-select-choices-content'));
+                var choices = angular.element(container[0].querySelectorAll('.uix-select-choices-row'));
                 if (choices.length < 1) {
-                    throw fuguSelectMinErr('choices', "Expected multiple .fugu-select-choices-row but got '{0}'.", choices.length);
+                    throw uixSelectMinErr('choices', "Expected multiple .uix-select-choices-row but got '{0}'.", choices.length);
                 }
 
                 if (ctrl.activeIndex < 0) {
@@ -747,8 +747,8 @@ angular.module('ui.fugu.select', [])
                 ctrl.searchInput.off('keyup keydown tagged blur paste');
             });
         }])
-    .directive('fuguSelect', ['$document', 'fuguSelectConfig', 'fuguSelectMinErr', 'fuguSelectOffset', '$compile', '$parse', '$timeout',
-        function ($document, fuguSelectConfig, fuguSelectMinErr, fuguSelectOffset, $compile, $parse, $timeout) {
+    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset', '$compile', '$parse', '$timeout',
+        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $compile, $parse, $timeout) {
             return {
                 restrict: 'EA',
                 templateUrl: function (tElement, tAttrs) {
@@ -756,16 +756,16 @@ angular.module('ui.fugu.select', [])
                 },
                 replace: true,
                 transclude: true,
-                require: ['fuguSelect', '^ngModel'],
+                require: ['uixSelect', '^ngModel'],
                 scope: true,
-                controller: 'fuguSelectCtrl',
+                controller: 'uixSelectCtrl',
                 controllerAs: '$select',
                 compile: function (tElement, tAttrs) {
                     //Multiple or Single depending if multiple attribute presence
                     if (angular.isDefined(tAttrs.multiple)) {
-                        tElement.append("<fugu-select-multiple/>").removeAttr('multiple');
+                        tElement.append("<uix-select-multiple/>").removeAttr('multiple');
                     } else {
-                        tElement.append("<fugu-select-single/>");
+                        tElement.append("<uix-select-single/>");
                     }
 
                     return function (scope, element, attrs, ctrls, transcludeFn) {
@@ -780,14 +780,14 @@ angular.module('ui.fugu.select', [])
                             if (angular.isDefined(attrs.closeOnSelect)) {
                                 return $parse(attrs.closeOnSelect)();
                             } else {
-                                return fuguSelectConfig.closeOnSelect;
+                                return uixSelectConfig.closeOnSelect;
                             }
                         })();
 
                         $select.onSelectCallback = $parse(attrs.onSelect);
                         $select.onRemoveCallback = $parse(attrs.onRemove);
 
-                        //Set reference to ngModel from fuguSelectCtrl
+                        //Set reference to ngModel from uixSelectCtrl
                         $select.ngModel = ngModel;
 
                         $select.choiceGrouped = function (group) {
@@ -803,12 +803,12 @@ angular.module('ui.fugu.select', [])
 
                         scope.$watch('searchEnabled', function () {
                             var searchEnabled = scope.$eval(attrs.searchEnabled);
-                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : fuguSelectConfig.searchEnabled;
+                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : uixSelectConfig.searchEnabled;
                         });
 
                         scope.$watch('sortable', function () {
                             var sortable = scope.$eval(attrs.sortable);
-                            $select.sortable = angular.isDefined(sortable) ? sortable : fuguSelectConfig.sortable;
+                            $select.sortable = angular.isDefined(sortable) ? sortable : uixSelectConfig.sortable;
                         });
 
                         attrs.$observe('disabled', function () {
@@ -889,8 +889,8 @@ angular.module('ui.fugu.select', [])
                             if (!contains && !$select.clickTriggeredSelect) {
                                 //Will lose focus only with certain targets
                                 var focusableControls = ['input', 'button', 'textarea'];
-                                var targetScope = angular.element(e.target).scope(); //To check if target is other fugu-select
-                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other fugu-select
+                                var targetScope = angular.element(e.target).scope(); //To check if target is other uix-select
+                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other uix-select
                                 if (!skipFocusser) {//Check if target is input, button or textarea
                                     skipFocusser = focusableControls.indexOf(e.target.tagName.toLowerCase()) !== -1;
                                 }
@@ -915,26 +915,26 @@ angular.module('ui.fugu.select', [])
                             // var transcludedElement = clone.filter('.my-class')
                             // instead of creating a hackish DOM element:
                             var transcluded = angular.element('<div>').append(clone);
-                            var transcludedMatch = angular.element(transcluded[0].querySelectorAll('.fugu-select-match'));
-                            transcludedMatch.removeAttr('fugu-select-match'); //To avoid loop in case directive as attr
-                            transcludedMatch.removeAttr('data-fugu-select-match'); // Properly handle HTML5 data-attributes
+                            var transcludedMatch = angular.element(transcluded[0].querySelectorAll('.uix-select-match'));
+                            transcludedMatch.removeAttr('uix-select-match'); //To avoid loop in case directive as attr
+                            transcludedMatch.removeAttr('data-uix-select-match'); // Properly handle HTML5 data-attributes
                             if (transcludedMatch.length !== 1) {
-                                throw fuguSelectMinErr('transcluded', "Expected 1 .fugu-select-match but got '{0}'.", transcludedMatch.length);
+                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-match but got '{0}'.", transcludedMatch.length);
                             }
-                            angular.element(element[0].querySelectorAll('.fugu-select-match')).replaceWith(transcludedMatch);
+                            angular.element(element[0].querySelectorAll('.uix-select-match')).replaceWith(transcludedMatch);
 
-                            var transcludedChoices = angular.element(transcluded[0].querySelectorAll('.fugu-select-choices'));
-                            transcludedChoices.removeAttr('fugu-select-choices'); //To avoid loop in case directive as attr
-                            transcludedChoices.removeAttr('data-fugu-select-choices'); // Properly handle HTML5 data-attributes
+                            var transcludedChoices = angular.element(transcluded[0].querySelectorAll('.uix-select-choices'));
+                            transcludedChoices.removeAttr('uix-select-choices'); //To avoid loop in case directive as attr
+                            transcludedChoices.removeAttr('data-uix-select-choices'); // Properly handle HTML5 data-attributes
                             if (transcludedChoices.length !== 1) {
-                                throw fuguSelectMinErr('transcluded', "Expected 1 .fugu-select-choices but got '{0}'.", transcludedChoices.length);
+                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-choices but got '{0}'.", transcludedChoices.length);
                             }
-                            angular.element(element[0].querySelectorAll('.fugu-select-choices')).replaceWith(transcludedChoices);
+                            angular.element(element[0].querySelectorAll('.uix-select-choices')).replaceWith(transcludedChoices);
                         });
 
                         // Support for appending the select field to the body when its open
                         var appendToBody = scope.$eval(attrs.appendToBody);
-                        if (angular.isDefined(appendToBody) ? appendToBody : fuguSelectConfig.appendToBody) {
+                        if (angular.isDefined(appendToBody) ? appendToBody : uixSelectConfig.appendToBody) {
                             scope.$watch('$select.open', function (isOpen) {
                                 if (isOpen) {
                                     positionDropdown();
@@ -949,16 +949,16 @@ angular.module('ui.fugu.select', [])
                             });
                         }
 
-                        // Hold on to a reference to the .fugu-select-container element for appendToBody support
+                        // Hold on to a reference to the .uix-select-container element for appendToBody support
                         var placeholder = null,
                             originalWidth = '';
 
                         function positionDropdown() {
                             // Remember the absolute position of the element
-                            var offset = fuguSelectOffset(element);
+                            var offset = uixSelectOffset(element);
 
                             // Clone the element into a placeholder element to take its original place in the DOM
-                            placeholder = angular.element('<div class="fugu-select-placeholder"></div>');
+                            placeholder = angular.element('<div class="uix-select-placeholder"></div>');
                             placeholder[0].style.width = offset.width + 'px';
                             placeholder[0].style.height = offset.height + 'px';
                             element.after(placeholder);
@@ -992,14 +992,14 @@ angular.module('ui.fugu.select', [])
                             element[0].style.width = originalWidth;
                         }
 
-                        // Hold on to a reference to the .fugu-select-dropdown element for direction support.
+                        // Hold on to a reference to the .uix-select-dropdown element for direction support.
                         var dropdown = null,
                             directionUpClassName = 'direction-up';
 
                         // Support changing the direction of the dropdown if there isn't enough space to render it.
                         scope.$watch('$select.open', function (isOpen) {
                             if (isOpen) {
-                                dropdown = angular.element(element[0].querySelectorAll('.fugu-select-dropdown'));
+                                dropdown = angular.element(element[0].querySelectorAll('.uix-select-dropdown'));
                                 if (dropdown === null) {
                                     return;
                                 }
@@ -1009,8 +1009,8 @@ angular.module('ui.fugu.select', [])
 
                                 // Delay positioning the dropdown until all choices have been added so its height is correct.
                                 $timeout(function () {
-                                    var offset = fuguSelectOffset(element);
-                                    var offsetDropdown = fuguSelectOffset(dropdown);
+                                    var offset = uixSelectOffset(element);
+                                    var offsetDropdown = uixSelectOffset(dropdown);
 
                                     // Determine if the direction of the dropdown needs to be changed.
                                     if (offset.top + offset.height + offsetDropdown.height > $document[0].documentElement.scrollTop + $document[0].documentElement.clientHeight) {
@@ -1037,19 +1037,19 @@ angular.module('ui.fugu.select', [])
                 }
             };
         }])
-    .directive('fuguSelectChoices', ['fuguSelectConfig', 'fuguSelectRepeatParser', 'fuguSelectMinErr', '$compile',
-        function (fuguSelectConfig, RepeatParser, fuguSelectMinErr, $compile) {
+    .directive('uixSelectChoices', ['uixSelectConfig', 'uixSelectRepeatParser', 'uixSelectMinErr', '$compile',
+        function (uixSelectConfig, RepeatParser, uixSelectMinErr, $compile) {
 
             return {
                 restrict: 'EA',
-                require: '^fuguSelect',
+                require: '^uixSelect',
                 replace: true,
                 transclude: true,
                 templateUrl: 'templates/choices.html',
                 compile: function (tElement, tAttrs) {
 
                     if (!tAttrs.repeat) {
-                        throw fuguSelectMinErr('repeat', "Expected 'repeat' expression.");
+                        throw uixSelectMinErr('repeat', "Expected 'repeat' expression.");
                     }
 
                     return function link(scope, element, attrs, $select, transcludeFn) {
@@ -1064,16 +1064,16 @@ angular.module('ui.fugu.select', [])
                         $select.onHighlightCallback = attrs.onHighlight;
 
                         if (groupByExp) {
-                            var groups = angular.element(element[0].querySelectorAll('.fugu-select-choices-group'));
+                            var groups = angular.element(element[0].querySelectorAll('.uix-select-choices-group'));
                             if (groups.length !== 1) {
-                                throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-group but got '{0}'.", groups.length);
+                                throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-group but got '{0}'.", groups.length);
                             }
                             groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
                         }
 
-                        var choices = angular.element(element[0].querySelectorAll('.fugu-select-choices-row'));
+                        var choices = angular.element(element[0].querySelectorAll('.uix-select-choices-row'));
                         if (choices.length !== 1) {
-                            throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-row but got '{0}'.", choices.length);
+                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row but got '{0}'.", choices.length);
                         }
 
                         choices.attr('ng-repeat', RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items', $select.parserResult.trackByExp, groupByExp))
@@ -1081,12 +1081,12 @@ angular.module('ui.fugu.select', [])
                             .attr('ng-mouseenter', '$select.setActiveItem(' + $select.parserResult.itemName + ')')
                             .attr('ng-click', '$select.select(' + $select.parserResult.itemName + ',false,$event)');
 
-                        var rowsInner = angular.element(element[0].querySelectorAll('.fugu-select-choices-row-inner'));
+                        var rowsInner = angular.element(element[0].querySelectorAll('.uix-select-choices-row-inner'));
                         if (rowsInner.length !== 1) {
-                            throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-row-inner but got '{0}'.", rowsInner.length);
+                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row-inner but got '{0}'.", rowsInner.length);
                         }
-                        rowsInner.attr('fugu-transclude-append', ''); //Adding fuguTranscludeAppend directive to row element after choices element has ngRepeat
-                        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from fuguTranscludeAppend
+                        rowsInner.attr('uix-transclude-append', ''); //Adding uixTranscludeAppend directive to row element after choices element has ngRepeat
+                        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uixTranscludeAppend
 
                         scope.$watch('$select.search', function (newValue) {
                             if (newValue && !$select.open && $select.multiple) {
@@ -1099,16 +1099,16 @@ angular.module('ui.fugu.select', [])
                         attrs.$observe('refreshDelay', function () {
                             // $eval() is needed otherwise we get a string instead of a number
                             var refreshDelay = scope.$eval(attrs.refreshDelay);
-                            $select.refreshDelay = angular.isDefined(refreshDelay) ? refreshDelay : fuguSelectConfig.refreshDelay;
+                            $select.refreshDelay = angular.isDefined(refreshDelay) ? refreshDelay : uixSelectConfig.refreshDelay;
                         });
                     };
                 }
             };
         }])
-    .directive('fuguSelectMatch', ['fuguSelectConfig', function (fuguSelectConfig) {
+    .directive('uixSelectMatch', ['uixSelectConfig', function (uixSelectConfig) {
         return {
             restrict: 'EA',
-            require: '^fuguSelect',
+            require: '^uixSelect',
             replace: true,
             transclude: true,
             templateUrl: function (tElement) {
@@ -1118,7 +1118,7 @@ angular.module('ui.fugu.select', [])
             link: function (scope, element, attrs, $select) {
                 $select.lockChoiceExpression = attrs.lockChoice;
                 attrs.$observe('placeholder', function (placeholder) {
-                    $select.placeholder = angular.isDefined(placeholder) ? placeholder : fuguSelectConfig.placeholder;
+                    $select.placeholder = angular.isDefined(placeholder) ? placeholder : uixSelectConfig.placeholder;
                 });
 
                 function setAllowClear(allow) {
@@ -1135,11 +1135,11 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .directive('fuguSelectMultiple', ['fuguSelectConfig', 'fuguSelectMinErr', '$timeout',
-        function (fuguSelectConfig, fuguSelectMinErr, $timeout) {
+    .directive('uixSelectMultiple', ['uixSelectConfig', 'uixSelectMinErr', '$timeout',
+        function (uixSelectConfig, uixSelectMinErr, $timeout) {
             return {
                 restrict: 'EA',
-                require: ['^fuguSelect', '^ngModel'],
+                require: ['^uixSelect', '^ngModel'],
 
                 controller: ['$scope', '$timeout', function ($scope, $timeout) {
 
@@ -1173,7 +1173,7 @@ angular.module('ui.fugu.select', [])
                         var removedChoice = $select.selected[index];
 
                         // if the choice is locked, can't remove it
-                        if (removedChoice._fuguSelectChoiceLocked) {
+                        if (removedChoice._uixSelectChoiceLocked) {
                             return;
                         }
 
@@ -1213,7 +1213,7 @@ angular.module('ui.fugu.select', [])
                     var $select = ctrls[0];
                     var ngModel = scope.ngModel = ctrls[1];
                     var $selectMultiple = scope.$selectMultiple;
-                    var KEY = fuguSelectConfig.KEY;
+                    var KEY = uixSelectConfig.KEY;
                     //$select.selected = raw selected objects (ignoring any property binding)
 
                     $select.multiple = true;
@@ -1299,19 +1299,19 @@ angular.module('ui.fugu.select', [])
                             if (angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null) {
                                 $select.selected = [];
                             } else {
-                                throw fuguSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
+                                throw uixSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
                             }
                         }
                         $select.selected = ngModel.$viewValue;
                         scope.$evalAsync(); //To force $digest
                     };
 
-                    scope.$on('fuguSelect:select', function (event, item) {
+                    scope.$on('uixSelect:select', function (event, item) {
                         $select.selected.push(item);
                         $selectMultiple.updateModel();
                     });
 
-                    scope.$on('fuguSelect:activate', function () {
+                    scope.$on('uixSelect:activate', function () {
                         $selectMultiple.activeMatchIndex = -1;
                     });
 
@@ -1571,12 +1571,12 @@ angular.module('ui.fugu.select', [])
                 }
             };
         }])
-    .directive('fuguSelectSingle', ['fuguSelectConfig', '$timeout', '$compile', function (fuguSelectConfig, $timeout, $compile) {
+    .directive('uixSelectSingle', ['uixSelectConfig', '$timeout', '$compile', function (uixSelectConfig, $timeout, $compile) {
         return {
             restrict: 'EA',
-            require: ['^fuguSelect', '^ngModel'],
+            require: ['^uixSelect', '^ngModel'],
             link: function (scope, element, attrs, ctrls) {
-                var KEY = fuguSelectConfig.KEY;
+                var KEY = uixSelectConfig.KEY;
                 var $select = ctrls[0];
                 var ngModel = ctrls[1];
 
@@ -1624,11 +1624,11 @@ angular.module('ui.fugu.select', [])
                     $select.selected = ngModel.$viewValue;
                 };
 
-                scope.$on('fuguSelect:select', function (event, item) {
+                scope.$on('uixSelect:select', function (event, item) {
                     $select.selected = item;
                 });
 
-                scope.$on('fuguSelect:close', function (event, skipFocusser) {
+                scope.$on('uixSelect:close', function (event, skipFocusser) {
                     $timeout(function () {
                         $select.focusser.prop('disabled', false);
                         if (!skipFocusser) {
@@ -1638,9 +1638,9 @@ angular.module('ui.fugu.select', [])
                 });
 
                 //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
-                var focusser = angular.element("<input ng-disabled='$select.disabled' class='fugu-select-focusser fugu-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
+                var focusser = angular.element("<input ng-disabled='$select.disabled' class='uix-select-focusser uix-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
 
-                scope.$on('fuguSelect:activate', function () {
+                scope.$on('uixSelect:activate', function () {
                     focusser.prop('disabled', true); //Will reactivate it on .close()
                 });
 
@@ -1700,17 +1700,17 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .directive('fuguSelectSort', ['$timeout', 'fuguSelectConfig', 'fuguSelectMinErr', function ($timeout, fuguSelectConfig, fuguSelectMinErr) {
+    .directive('uixSelectSort', ['$timeout', 'uixSelectConfig', 'uixSelectMinErr', function ($timeout, uixSelectConfig, uixSelectMinErr) {
         return {
-            require: '^fuguSelect',
+            require: '^uixSelect',
             link: function (scope, element, attrs, $select) {
-                if (scope[attrs.fuguSelectSort] === null) {
-                    throw fuguSelectMinErr('sort', "Expected a list to sort");
+                if (scope[attrs.uixSelectSort] === null) {
+                    throw uixSelectMinErr('sort', "Expected a list to sort");
                 }
 
                 var options = angular.extend({
                     axis: 'horizontal'
-                }, scope.$eval(attrs.fuguSelectSortOptions));
+                }, scope.$eval(attrs.uixSelectSortOptions));
 
                 var axis = options.axis,
                     draggingClassName = 'dragging',
@@ -1773,7 +1773,7 @@ angular.module('ui.fugu.select', [])
                 };
 
                 function _dropHandler(droppedItemIndex) {
-                    var theList = scope.$eval(attrs.fuguSelectSort),
+                    var theList = scope.$eval(attrs.uixSelectSort),
                         itemToMove = theList[droppedItemIndex],
                         newIndex = null;
 
@@ -1792,7 +1792,7 @@ angular.module('ui.fugu.select', [])
                     move.apply(theList, [droppedItemIndex, newIndex]);
 
                     scope.$apply(function () {
-                        scope.$emit('fuguSelectSort:change', {
+                        scope.$emit('uixSelectSort:change', {
                             array: theList,
                             item: itemToMove,
                             from: droppedItemIndex,
@@ -1832,7 +1832,7 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .service('fuguSelectRepeatParser', ['fuguSelectMinErr', '$parse', function (fuguSelectMinErr, $parse) {
+    .service('uixSelectRepeatParser', ['uixSelectMinErr', '$parse', function (uixSelectMinErr, $parse) {
         var self = this;
 
         /**
@@ -1847,7 +1847,7 @@ angular.module('ui.fugu.select', [])
             var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
             if (!match) {
-                throw fuguSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                throw uixSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
                     expression);
             }
 

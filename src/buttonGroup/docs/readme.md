@@ -5,7 +5,7 @@
 ## Usage
 
 ``` javascript
-<fugu-button-group ng-model="string|object"
+<uix-button-group ng-model="string|object"
     [ type="string" ]
     [ size="string" ]
     [ disabled="boolean" ]
@@ -14,7 +14,7 @@
     [ checkbox-false="boolean" ] >
     <button [btn-checkbox="string"]
         [btn-radio="string"]></button>
-</fugu-button-group>
+</uix-button-group>
 ```
 ## Restrict
 - 'AE'

@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('dropdownDemoCtrl',['$scope','$window','$fuguPosition', function ($scope,$window,$fuguPosition) {
+angular.module('uixDemo').controller('dropdownDemoCtrl',['$scope','$window','$uixPosition', function ($scope,$window,$uixPosition) {
     $scope.elemVals = {};
     $scope.parentScrollable = true;
     $scope.parentRelative = true;
@@ -7,20 +7,20 @@ angular.module('fuguDemo').controller('dropdownDemoCtrl',['$scope','$window','$f
         var divEl = $window.document.querySelector('#posdemodiv');
         var btnEl = $window.document.querySelector('#posdemobtn');
 
-        var offsetParent = $fuguPosition.offsetParent(divEl);
+        var offsetParent = $uixPosition.offsetParent(divEl);
         $scope.elemVals.offsetParent = 'type: ' + offsetParent.tagName + ', id: ' + offsetParent.id;
 
-        var scrollParent = $fuguPosition.scrollParent(divEl);
+        var scrollParent = $uixPosition.scrollParent(divEl);
         $scope.elemVals.scrollParent = 'type: ' + scrollParent.tagName + ', id: ' + scrollParent.id;
 
-        $scope.scrollbarWidth = $fuguPosition.scrollbarWidth();
+        $scope.scrollbarWidth = $uixPosition.scrollbarWidth();
 
-        $scope.elemVals.position = $fuguPosition.position(divEl);
+        $scope.elemVals.position = $uixPosition.position(divEl);
 
-        $scope.elemVals.offset = $fuguPosition.offset(divEl);
+        $scope.elemVals.offset = $uixPosition.offset(divEl);
 
-        $scope.elemVals.viewportOffset = $fuguPosition.viewportOffset(divEl);
+        $scope.elemVals.viewportOffset = $uixPosition.viewportOffset(divEl);
 
-        $scope.elemVals.positionElements = $fuguPosition.positionElements(btnEl, divEl, 'auto bottom-left');
+        $scope.elemVals.positionElements = $uixPosition.positionElements(btnEl, divEl, 'auto bottom-left');
     };
 }]);

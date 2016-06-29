@@ -6,7 +6,7 @@
 
 ``` javascript
 基本用法
-<span fugu-tooltip="{{string}}"
+<span uix-tooltip="{{string}}"
     [ tooltip-is-open="boolean" ]
     [ tooltip-enable="boolean" ]
     [ tooltip-placement="{{string}}" ]
@@ -18,12 +18,12 @@
     [ tooltip-trigger="{{string}}" ]>
 </span>
 生成含有HTML代码的提示
-<span fugu-tooltip-html="{{string}}"
+<span uix-tooltip-html="{{string}}"
 	...
 >
 </span>
 生成含有模板内容的提示
-<span fugu-tooltip-template="string"
+<span uix-tooltip-template="string"
 	...
 >
 </span>
@@ -32,17 +32,17 @@
 - 'AE'
 
 ## Provider
-- $fuguTooltipProvider：设置tooltip的全局属性以及扩展类似于tooltip的指定，如<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a>
+- $uixTooltipProvider：设置tooltip的全局属性以及扩展类似于tooltip的指定，如<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a>
 	- `setTriggers(obj)`：设置显示和隐藏的触发事件，如`{ 'openTrigger':'closeTrigger' }`
 	- `options(obj)`：设置全局的属性，如默认定位，是否启用动画效果等。
 
 ## Arguments
 
-- fuguTooltip:指定tooltip的提示文字,若不设置,则不显示
+- uixTooltip:指定tooltip的提示文字,若不设置,则不显示
     - type:`string`
-- fuguTooltipHtml:指定tooltip的提示文字，可以包含html代码,若不设置,则不显示
+- uixTooltipHtml:指定tooltip的提示文字，可以包含html代码,若不设置,则不显示
     - type:`string`
-- fuguTooltipTemplate:指定tooltip的提示文字，可以指定模板,如`ng-template`或者外部文件
+- uixTooltipTemplate:指定tooltip的提示文字，可以指定模板,如`ng-template`或者外部文件
     - type:`string`
 - tooltipIsOpen(optional):当`trigger`设置为`none`时，可以由`tooltip-is-open`属性设置tooltip是否显示。
     - type:`boolean`

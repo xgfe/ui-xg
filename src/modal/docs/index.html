@@ -10,7 +10,7 @@
             <button type="button" ng-click="openAnother()" class="btn btn-primary btn-sm">Open another</button>
         </div>
         <div class="modal-body">
-            <ul class="list-group" fugu-sortable="items">
+            <ul class="list-group" uix-sortable="items">
                 <li class="list-group-item m-b-md" ng-repeat="item in items track by $index"
                     ng-click="selected.item = item">
                     <span ng-show="selected.item === item" class="badge bg-primary">&nbsp;</span>

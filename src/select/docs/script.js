@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('selectDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('selectDemoCtrl',['$scope', function ($scope) {
     $scope.goods = {};
     $scope.brandList = [{
         brandName:'test1',

@@ -5,7 +5,7 @@
 ## Usage
 
 ``` javascript
-<fugu-button text="string"
+<uix-button text="string"
     [ type="string" ]
     [ btnClass="string" ]
     [ size="string" ]
@@ -15,7 +15,7 @@
     [ icon="boolean" ]
     [ active="boolean" ]
     [ click="function" ] >
-</fugu-button>
+</uix-button>
 ```
 ## Restrict
 - 'AE'

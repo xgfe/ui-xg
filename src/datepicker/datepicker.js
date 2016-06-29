@@ -4,8 +4,8 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
-    .constant('fuguDatepickerConfig', {
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
+    .constant('uixDatepickerConfig', {
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
@@ -15,7 +15,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         showTime: true,
         size: 'md'
     })
-    .service('fuguDatepickerService', ['$document', function ($document) {
+    .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
         this.open = function (datepickerScope) {
             if (!openScope) {
@@ -42,8 +42,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             var toggleElement = openScope.getToggleElement();
             if (panelElement && panelElement[0].contains(evt.target) ||
                 toggleElement && toggleElement[0].contains(evt.target) ||
-                angular.element(evt.target).hasClass('fugu-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
-                angular.element(evt.target).hasClass('fugu-cal-day')
+                angular.element(evt.target).hasClass('uix-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
+                angular.element(evt.target).hasClass('uix-cal-day')
             ) {
                 return;
             }
@@ -52,14 +52,14 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
-        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
+    .controller('uixDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$uixPosition', 'uixDatepickerService', 'uixDatepickerConfig',
+        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $uixPosition, uixDatepickerService, uixDatepickerConfig) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var self = this;
-            var template = '<div class="fugu-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+            var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></fugu-calendar>' +
+                '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></uix-calendar>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -79,8 +79,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 $scope.showCalendar = show;
             };
             function adjustPosition() {
-                var popoverEle = $element.next('.fugu-datepicker-popover');
-                var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                var popoverEle = $element.next('.uix-datepicker-popover');
+                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
                     popoverEle.addClass('top');
@@ -97,10 +97,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 return $scope.showCalendar;
             };
             angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
-                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
+                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
             });
 
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : fuguDatepickerConfig.format;
+            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
 
             this.render = function () {
                 var date = ngModelCtrl.$modelValue;
@@ -123,7 +123,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
 
             // 获取日历面板和被点击的元素
             $scope.getCanledarElement = function () {
-                return $element.next('.fugu-datepicker-popover');
+                return $element.next('.uix-datepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return angular.element($element[0].querySelector('.input-group'));
@@ -137,13 +137,13 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             };
             $scope.$watch('showCalendar', function (showCalendar) {
                 if (showCalendar) {
-                    fuguDatepickerService.open($scope);
+                    uixDatepickerService.open($scope);
                 } else {
-                    fuguDatepickerService.close($scope);
+                    uixDatepickerService.close($scope);
                 }
             });
 
-            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : fuguDatepickerConfig.autoClose;
+            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
             // 选择日期
             $scope.changeDateHandler = function (date) {
                 $scope.inputValue = dateFilter(date, format);
@@ -164,12 +164,12 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             });
 
         }])
-    .directive('fuguDatepicker', function () {
+    .directive('uixDatepicker', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/datepicker.html',
             replace: true,
-            require: ['fuguDatepicker', 'ngModel'],
+            require: ['uixDatepicker', 'ngModel'],
             scope: {
                 minDate: '=?',
                 maxDate: '=?',
@@ -178,7 +178,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 isDisabled: '=?ngDisabled',
                 onChange: '&?'
             },
-            controller: 'fuguDatepickerCtrl',
+            controller: 'uixDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var datepickerCtrl = ctrls[0],
                     ngModelCtrl = ctrls[1];

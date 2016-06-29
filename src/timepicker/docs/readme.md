@@ -6,7 +6,7 @@
 ## Usage
 
 ``` html
-<fugu-timepicker ng-model="time"
+<uix-timepicker ng-model="time"
     [ hour-step="number" ]
     [ minute-step="number" ]
     [ second-step="number" ]
@@ -19,7 +19,7 @@
     [ show-seconds="boolean" ]
     [ on-change="fn()" ]
     [ ng-disabled="boolean" ]>
-</fugu-timepicker>
+</uix-timepicker>
 ```
 ## Restrict
 - 'AE'

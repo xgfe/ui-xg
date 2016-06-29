@@ -1,7 +1,7 @@
 <div ng-controller="dropdownDemoCtrl">
     <!-- Simple dropdown -->
-    <span class="dropdown" fugu-dropdown on-toggle="toggled(open)">
-      <a href class="dropdown-toggle" fugu-dropdown-toggle>
+    <span class="dropdown" uix-dropdown on-toggle="toggled(open)">
+      <a href class="dropdown-toggle" uix-dropdown-toggle>
           Click me for a dropdown, yo!
       </a>
       <ul class="dropdown-menu">
@@ -11,8 +11,8 @@
       </ul>
     </span>
     <!-- Single button -->
-    <div class="btn-group" fugu-dropdown is-open="status.isopen">
-        <button type="button" class="btn btn-primary dropdown-toggle" fugu-dropdown-toggle ng-disabled="disabled">
+    <div class="btn-group" uix-dropdown is-open="status.isopen">
+        <button type="button" class="btn btn-primary dropdown-toggle" uix-dropdown-toggle ng-disabled="disabled">
             Button dropdown <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -22,8 +22,8 @@
         </ul>
     </div>
     <!-- multi cols button -->
-    <div class="btn-group" fugu-dropdown>
-        <button type="button" class="btn btn-primary dropdown-toggle" fugu-dropdown-toggle>
+    <div class="btn-group" uix-dropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle" uix-dropdown-toggle>
             Multi cols dropdown <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -35,9 +35,9 @@
         </ul>
     </div>
     <!-- Split button -->
-    <div class="btn-group" fugu-dropdown>
+    <div class="btn-group" uix-dropdown>
         <button type="button" class="btn btn-danger">Action</button>
-        <button type="button" class="btn btn-danger dropdown-toggle" fugu-dropdown-toggle>
+        <button type="button" class="btn btn-danger dropdown-toggle" uix-dropdown-toggle>
             <span class="caret"></span>
             <span class="sr-only">Split button!</span>
         </button>

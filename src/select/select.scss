@@ -1,31 +1,31 @@
 
 /* Fix Bootstrap dropdown position when inside a input-group */
-.input-group > .fugu-select.dropdown {
+.input-group > .uix-select.dropdown {
     /* Instead of relative */
     position: static;
 }
-.input-group > .fugu-select > input.fugu-select-search.form-control {
+.input-group > .uix-select > input.uix-select-search.form-control {
     border-radius: 4px; /* FIXME hardcoded value :-/ */
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-.input-group > .fugu-select > input.fugu-select-search.form-control {
+.input-group > .uix-select > input.uix-select-search.form-control {
     border-radius: 4px !important; /* FIXME hardcoded value :-/ */
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
-body > .fugu-select.open {
+body > .uix-select.open {
     z-index: 1000; /* Standard Bootstrap dropdown z-index */
 }
-.fugu-select{
-    .fugu-select-allowclear{
+.uix-select{
+    .uix-select-allowclear{
         margin-right: 10px
     }
-    .fugu-select-highlight {
+    .uix-select-highlight {
         font-weight: bold;
     }
     /* Helper class to show styles when focus */
-    .fugu-select-focus {
+    .uix-select-focus {
         color: #333;
         background-color: #EBEBEB;
         border-color: #ADADAD;
@@ -34,34 +34,34 @@ body > .fugu-select.open {
         outline-offset: -2px;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
     }
-    .fugu-select-toggle {
+    .uix-select-toggle {
         position: relative;
         outline: 0;
     }
-    .fugu-select-toggle > .caret {
+    .uix-select-toggle > .caret {
         position: absolute;
         height: 10px;
         top: 50%;
         right: 10px;
         margin-top: -2px;
     }
-    .fugu-select-match > .btn {
+    .uix-select-match > .btn {
         /* Instead of center because of .btn */
         text-align: left !important;
     }
-    .fugu-select-match > .caret {
+    .uix-select-match > .caret {
         position: absolute;
         top: 45%;
         right: 15px;
     }
-    .fugu-select-choices {
+    .uix-select-choices {
         width: 100%;
         height: auto;
         max-height: 200px;
         overflow-x: hidden;
         margin-top: -1px;
     }
-    .fugu-select-choices-row > a {
+    .uix-select-choices-row > a {
         display: block;
         padding: 3px 20px;
         clear: both;
@@ -70,35 +70,35 @@ body > .fugu-select.open {
         color: #333;
         white-space: nowrap;
     }
-    .fugu-select-choices-row > a:hover,
-    .fugu-select-choices-row > a:focus{
+    .uix-select-choices-row > a:hover,
+    .uix-select-choices-row > a:focus{
         text-decoration: none;
         color: #262626;
         background-color: #f5f5f5;
     }
-    .fugu-select-choices-row.active > a {
+    .uix-select-choices-row.active > a {
         color: #fff;
         text-decoration: none;
         outline: 0;
         background-color: #428bca;
     }
-    .fugu-select-choices-row.disabled > a,
-    .fugu-select-choices-row.active.disabled > a {
+    .uix-select-choices-row.disabled > a,
+    .uix-select-choices-row.active.disabled > a {
         color: #777;
         cursor: not-allowed;
         background-color: #fff;
     }
-    .fugu-select-match.ng-hide-add,
-    .fugu-select-search.ng-hide-add {
+    .uix-select-match.ng-hide-add,
+    .uix-select-search.ng-hide-add {
         display: none !important;
     }
-    &.ng-dirty.ng-invalid > button.btn.fugu-select-match {
+    &.ng-dirty.ng-invalid > button.btn.uix-select-match {
         border-color: #D44950;
     }
-    &.direction-up .fugu-select-dropdown {
+    &.direction-up .uix-select-dropdown {
         box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
     }
-    .fugu-select-offscreen {
+    .uix-select-offscreen {
         clip: rect(0 0 0 0)!important;
         width: 1px!important;
         height: 1px!important;
@@ -113,26 +113,26 @@ body > .fugu-select.open {
     }
 }
 
-.fugu-select-multiple {
+.uix-select-multiple {
     height: auto;
     padding: 3px 3px 0 3px;
-    &.fugu-select input.fugu-select-search {
+    &.uix-select input.uix-select-search {
         background-color: transparent !important; /* To prevent double background when disabled */
         border: none;
         outline: none;
         height: 1.666666em;
         margin-bottom: 3px;
     }
-    &.fugu-select .fugu-select-match .close {
+    &.uix-select .uix-select-match .close {
         font-size: 1.6em;
         line-height: 0.75;
     }
-    .fugu-select-match-item {
+    .uix-select-match-item {
         outline: 0;
         margin: 0 3px 3px 0;
         position: relative;
     }
-    .fugu-select-match-item.dropping-before:before {
+    .uix-select-match-item.dropping-before:before {
         content: "";
         position: absolute;
         top: 0;
@@ -141,7 +141,7 @@ body > .fugu-select.open {
         margin-right: 2px;
         border-left: 1px solid #428bca;
     }
-    .fugu-select-match-item.dropping-after:after {
+    .uix-select-match-item.dropping-after:after {
         content: "";
         position: absolute;
         top: 0;

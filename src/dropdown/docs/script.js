@@ -1,7 +1,7 @@
-angular.module('fuguDemo').config(['fuguDropdownProvider', function (fuguDropdownProvider) {
-    fuguDropdownProvider.setColsNum(3);
+angular.module('uixDemo').config(['uixDropdownProvider', function (uixDropdownProvider) {
+    uixDropdownProvider.setColsNum(3);
 }]);
-angular.module('fuguDemo').controller('dropdownDemoCtrl', ['$scope', '$log', function ($scope, $log) {
+angular.module('uixDemo').controller('dropdownDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.items = [
         'The first choice!',
         'And another choice for you.',

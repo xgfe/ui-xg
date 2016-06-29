@@ -1,20 +1,20 @@
 $arrow-right:9px;
 $arrow-top:-6px;
 $inpu-height:30px;
-.fugu-datepicker{
+.uix-datepicker{
     position: relative;
     display: inline-block;
     button:focus{
         outline:0;
     }
-    .fugu-datepicker-remove{
+    .uix-datepicker-remove{
         border-radius: 0;
         border-left: 0;
     }
 }
-.fugu-datepicker ~ .fugu-datepicker-popover.in{
+.uix-datepicker ~ .uix-datepicker-popover.in{
     display: block;
-    .fugu-calendar{
+    .uix-calendar{
         border:0;
     }
 }

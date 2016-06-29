@@ -6,19 +6,19 @@
 ## Usage
 
 ``` html
-<fugu-calendar ng-model="date"
+<uix-calendar ng-model="date"
     [ min-date="date" ]
     [ max-date="date" ]
     [ show-time="boolean" ]
     [ starting-day="number" ]
     [ exceptions="array">
-</fugu-calendar>
+</uix-calendar>
 ```
 ## Restrict
 - 'E'
 
 ## Provider
-- fuguCalendarProvider：配置calendar相关的设置
+- uixCalendarProvider：配置calendar相关的设置
 - methods
     - `setFormats(format[,val])`：设置日期,周末等显示内容,具体参看[$locale](https://code.angularjs.org/1.3.20/docs/api/ng/service/$locale)相关API.
 

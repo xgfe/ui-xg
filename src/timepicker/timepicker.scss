@@ -1,16 +1,16 @@
 $arrow-left:9px;
 $arrow-top:6px;
 $panel-height:120px;
-.fugu-timepicker{
+.uix-timepicker{
     position: relative;
     display: inline-block;
     button{
         outline: none;
     }
 }
-.fugu-timepicker-popover.in{
+.uix-timepicker-popover.in{
     display: block;
-    .fugu-timepanel{
+    .uix-timepanel{
         border:0;
     }
 }

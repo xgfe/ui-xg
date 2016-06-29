@@ -1,12 +1,12 @@
-<ul class="fugu-select-choices fugu-select-choices-content fugu-select-dropdown dropdown-menu"
+<ul class="uix-select-choices uix-select-choices-content uix-select-dropdown dropdown-menu"
     role="listbox"
     ng-show="$select.items.length > 0">
-  <li class="fugu-select-choices-group">
+  <li class="uix-select-choices-group">
     <div class="divider" ng-show="$select.isGrouped && $index > 0"></div>
-    <div ng-show="$select.isGrouped" class="fugu-select-choices-group-label dropdown-header" ng-bind="$group.name"></div>
-    <div class="fugu-select-choices-row"
+    <div ng-show="$select.isGrouped" class="uix-select-choices-group-label dropdown-header" ng-bind="$group.name"></div>
+    <div class="uix-select-choices-row"
     ng-class="{active: $select.isActive(this), disabled: $select.isDisabled(this)}" role="option">
-      <a href="javascript:void(0)" class="fugu-select-choices-row-inner"></a>
+      <a href="javascript:void(0)" class="uix-select-choices-row-inner"></a>
     </div>
   </li>
 </ul>

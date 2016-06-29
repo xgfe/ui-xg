@@ -6,7 +6,7 @@
 
 ``` javascript
 基本用法
-<span fugu-popover="{{string}}"
+<span uix-popover="{{string}}"
     [ popover-is-open="boolean" ]
     [ popover-enable="boolean" ]
     [ popover-placement="{{string}}" ]
@@ -18,12 +18,12 @@
     [ popover-trigger="{{string}}" ]>
 </span>
 生成含有HTML代码的提示
-<span fugu-popover-html="{{string}}"
+<span uix-popover-html="{{string}}"
 	...
 >
 </span>
 生成含有模板的popover
-<span fugu-popover-template="string"
+<span uix-popover-template="string"
 	...
 >
 </span>
@@ -33,11 +33,11 @@
 
 ## Arguments
 
-- fuguPopover:指定popover的提示文字,若不设置,则不显示
+- uixPopover:指定popover的提示文字,若不设置,则不显示
     - type:`string`
-- fuguPopoverHtml:指定popover的提示文字，可以包含html代码,若不设置,则不显示
+- uixPopoverHtml:指定popover的提示文字，可以包含html代码,若不设置,则不显示
     - type:`string`
-- fuguPopoverTemplate:指定popover的提示文字，可以指定模板,如`ng-template`或者外部文件
+- uixPopoverTemplate:指定popover的提示文字，可以指定模板,如`ng-template`或者外部文件
     - type:`string`
 - popoverIsOpen(optional):当`trigger`设置为`none`时，可以由`popover-is-open`属性设置popover是否显示。
     - type:`boolean`

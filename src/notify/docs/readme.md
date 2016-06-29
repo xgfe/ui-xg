@@ -6,7 +6,7 @@
 ## Usage
 
 ```
-<div fugu-notify
+<div uix-notify
     [ reference="number" ]
     [ inline="boolean" ]
     [ limitMessages="boolean" ]
@@ -22,7 +22,7 @@
 - 'A'
 
 ## Provider
-- notifyProvider: 全局配置notify相关的设置.
+- $uixNotifyProvider: 全局配置notify相关的设置.
 - methods
 	- `globalTimeToLive(number|object)`: 设置通知显示时间,默认为-1表示一直显示.number表示设置显示时间(毫秒),则所有类型统一设置;object格式为`{error:number,info:number,warning:number,success:number}`,也可以只设置某几个属性.
 	- `globalDisableCloseButton(boolean)`: 设置是否不显示关闭图标按钮,默认为false表示显示.
@@ -33,7 +33,7 @@
 	- `globalPosition`: 设置提示信息显示位置,取值有:`top-right|bottom-right|middle-right|top-left|bottom-left|middle-left|top-center|bottom-center|middle-center`默认为`top-right`表示显示在右上角.
 	- `onlyUniqueMessages`: 设置提示信息是否不能重复显示,默认为true表示不重复.
 
-## notify
+## $uixNotify
 - inject: controller中注入
 - methods
 	- `warning(text, config)`: 显示警告通知,text为提示内容,config为当前显示通知配置项.

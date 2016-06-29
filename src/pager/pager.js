@@ -1,5 +1,5 @@
-angular.module('ui.fugu.pager',[])
-.constant('fuguPagerConfig', {
+angular.module('ui.xg.pager',[])
+.constant('uixPagerConfig', {
     itemsPerPage: 20, //默认每页数目为20
     maxSize:5, //默认分页最大显示数目为5
     firstText:'首页',
@@ -7,16 +7,16 @@ angular.module('ui.fugu.pager',[])
     previousText:'上一页',
     nextText:'下一页'
 })
-.controller('fuguPagerCtrl',['$scope', function ($scope) {
+.controller('uixPagerCtrl',['$scope', function ($scope) {
 
     var pageOffset = 0,
         initialized = false;
 
-    this.init = function (fuguPagerConfig) {
-        $scope.itemsPerPage = $scope.itemsPerPage || fuguPagerConfig.itemsPerPage;
-        $scope.maxSize = $scope.maxSize || fuguPagerConfig.maxSize;
+    this.init = function (uixPagerConfig) {
+        $scope.itemsPerPage = $scope.itemsPerPage || uixPagerConfig.itemsPerPage;
+        $scope.maxSize = $scope.maxSize || uixPagerConfig.maxSize;
         $scope.getText = function (key){
-            return $scope[key + 'Text'] || fuguPagerConfig[key + 'Text'];
+            return $scope[key + 'Text'] || uixPagerConfig[key + 'Text'];
         };
     };
 
@@ -133,12 +133,12 @@ angular.module('ui.fugu.pager',[])
         this.selectPage($scope.currentPage + 1);
     };
 }])
-.directive('fuguPager', ['fuguPagerConfig', function (fuguPagerConfig) {
+.directive('uixPager', ['uixPagerConfig', function (uixPagerConfig) {
     return {
         restrict: 'E',
         templateUrl:'templates/pager.html',
         replace:true,
-        require:'fuguPager',
+        require:'uixPager',
         scope:{
             itemsPerPage:'=?',
             totalItems:'=',
@@ -150,9 +150,9 @@ angular.module('ui.fugu.pager',[])
             nextText:'@?',
             pageChanged:'&?'
         },
-        controller:'fuguPagerCtrl',
-        link: function (scope,el,attrs,fuguPagerCtrl) {
-            fuguPagerCtrl.init(fuguPagerConfig);
+        controller:'uixPagerCtrl',
+        link: function (scope,el,attrs,uixPagerCtrl) {
+            uixPagerCtrl.init(uixPagerConfig);
         }
     }
 }]);

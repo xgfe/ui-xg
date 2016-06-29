@@ -5,20 +5,20 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <fugu-select ng-model="goods.brand">
-                <fugu-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
-                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+            <uix-select ng-model="goods.brand">
+                <uix-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</uix-select-match>
+                <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
-                </fugu-select-choices>
-            </fugu-select>
+                </uix-select-choices>
+            </uix-select>
         </div>
         <div class="col-md-6">
-            <fugu-select ng-model="goods.brands" multiple>
-                <fugu-select-match placeholder="请选择品牌">{{$item.brandName}}</fugu-select-match>
-                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+            <uix-select ng-model="goods.brands" multiple>
+                <uix-select-match placeholder="请选择品牌">{{$item.brandName}}</uix-select-match>
+                <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
-                </fugu-select-choices>
-            </fugu-select>
+                </uix-select-choices>
+            </uix-select>
         </div>
     </div>
     <div class="row">
@@ -27,12 +27,12 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <fugu-select ng-model="goods.brand">
-                <fugu-select-match allow-clear="true" placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
-                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+            <uix-select ng-model="goods.brand">
+                <uix-select-match allow-clear="true" placeholder="请选择品牌">{{$select.selected.brandName}}</uix-select-match>
+                <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
-                </fugu-select-choices>
-            </fugu-select>
+                </uix-select-choices>
+            </uix-select>
         </div>
         <div class="col-md-6">Disabled Demo</div>
     </div>
@@ -41,12 +41,12 @@
             <pre>brand:{{goods.brand}}</pre>
         </div>
         <div class="col-md-6">
-            <fugu-select ng-model="goods.brand" ng-disabled="true">
-                <fugu-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</fugu-select-match>
-                <fugu-select-choices repeat="item in brandList | filter:$select.search">
+            <uix-select ng-model="goods.brand" ng-disabled="true">
+                <uix-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</uix-select-match>
+                <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
-                </fugu-select-choices>
-            </fugu-select>
+                </uix-select-choices>
+            </uix-select>
         </div>
     </div>
 </div>

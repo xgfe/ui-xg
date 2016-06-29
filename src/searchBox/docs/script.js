@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('searchBoxDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('searchBoxDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.showButton = false;
     $scope.text = 'search';
     $scope.query = 'text';
@@ -6,6 +6,6 @@ angular.module('fuguDemo').controller('searchBoxDemoCtrl',['$scope', function ($
         $scope.showButton = !$scope.showButton;
     };
     $scope.doSearch = function () {
-        alert('searching: '+$scope.query);
+        $log.log('searching: ' + $scope.query);
     }
 }]);

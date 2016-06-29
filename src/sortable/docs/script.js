@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('sortableDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('sortableDemoCtrl',['$scope', function ($scope) {
     $scope.mockList = [{
         name:'List Item -- 1',
         id:1

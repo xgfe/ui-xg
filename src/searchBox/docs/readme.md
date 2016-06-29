@@ -5,12 +5,12 @@
 ## Usage
 
 ``` javascript
-<fugu-search-box [ng-model="string"]
+<uix-search-box [ng-model="string"]
     [placeholder="{{string}}"]
     [show-btn="boolean"]
     [btn-text="{{string}}"]
     [search="function"]>
-    </fugu-search-box>
+    </uix-search-box>
 ```
 ## Restrict
 - 'AE'

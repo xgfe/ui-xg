@@ -1,4 +1,4 @@
-describe('fugu-select tests', function () {
+describe('uix-select tests', function () {
     var scope, $rootScope, $compile, $timeout, $injector;
 
     var Key = {
@@ -13,24 +13,24 @@ describe('fugu-select tests', function () {
         Escape: 27
     };
     beforeEach(function () {
-        module('ui.fugu.select');
+        module('ui.xg.select');
         module('select/templates/choices.html');
         module('select/templates/match.html');
         module('select/templates/match-multiple.html');
         module('select/templates/select.html');
         module('select/templates/select-multiple.html');
     });
-    //create a directive that wraps fugu-select
-    angular.module('wrapperDirective', ['ui.fugu.select']);
-    angular.module('wrapperDirective').directive('wrapperFuguSelect', function () {
+    //create a directive that wraps uix-select
+    angular.module('wrapperDirective', ['ui.xg.select']);
+    angular.module('wrapperDirective').directive('wrapperUixSelect', function () {
         return {
             restrict: 'EA',
-            template: '<fugu-select> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>' +
-            '<fugu-select-choices repeat="person in people | filter: $select.search">' +
+            template: '<uix-select> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>',
+            '</uix-select-choices> ' +
+            '</uix-select>',
             require: 'ngModel',
             scope: true
         };
@@ -41,7 +41,7 @@ describe('fugu-select tests', function () {
 
     beforeEach(function () {
         module(function ($provide) {
-            $provide.factory('fuguSelectOffset', function () {
+            $provide.factory('uixSelectOffset', function () {
                 return function () {
                     return {top: 100, left: 200, width: 300, height: 400};
                 };
@@ -136,18 +136,18 @@ describe('fugu-select tests', function () {
         }
 
         return compileTemplate(
-            '<fugu-select ng-model="selection.selected"' + attrsHtml + '> ' +
-            '<fugu-select-match placeholder="Pick one..."' + matchAttrsHtml + '>{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person in people | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"' + attrsHtml + '> ' +
+            '<uix-select-match placeholder="Pick one..."' + matchAttrsHtml + '>{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person in people | filter: $select.search"> ' +
             ' <div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices>' +
-            '</fugu-select>'
+            '</uix-select-choices>' +
+            '</uix-select>'
         );
     }
 
     function getMatchLabel(el) {
-        return $(el).find('.fugu-select-match > span:first > span[ng-transclude]:not(.ng-hide)').text();
+        return $(el).find('.uix-select-match > span:first > span[ng-transclude]:not(.ng-hide)').text();
     }
 
 
@@ -157,12 +157,12 @@ describe('fugu-select tests', function () {
             openDropdown(el);
         }
 
-        $(el).find('.fugu-select-choices-row div:contains("' + text + '")').click();
+        $(el).find('.uix-select-choices-row div:contains("' + text + '")').click();
         scope.$digest();
     }
 
     function clickMatch(el) {
-        $(el).find('.fugu-select-match > span:first').click();
+        $(el).find('.uix-select-match > span:first').click();
         scope.$digest();
     }
 
@@ -215,20 +215,20 @@ describe('fugu-select tests', function () {
 
     it('should compile child directives', function () {
         var el = createUiSelect();
-        var searchEl = $(el).find('.fugu-select-search');
+        var searchEl = $(el).find('.uix-select-search');
         expect(searchEl.length).toEqual(1);
 
-        var matchEl = $(el).find('.fugu-select-match');
+        var matchEl = $(el).find('.uix-select-match');
         expect(matchEl.length).toEqual(1);
 
-        var choicesContentEl = $(el).find('.fugu-select-choices-content');
+        var choicesContentEl = $(el).find('.uix-select-choices-content');
         expect(choicesContentEl.length).toEqual(1);
 
-        var choicesContainerEl = $(el).find('.fugu-select-choices');
+        var choicesContainerEl = $(el).find('.uix-select-choices');
         expect(choicesContainerEl.length).toEqual(1);
 
         openDropdown(el);
-        var choicesEls = $(el).find('.fugu-select-choices-row');
+        var choicesEls = $(el).find('.uix-select-choices-row');
         expect(choicesEls.length).toEqual(8);
     });
 
@@ -242,13 +242,13 @@ describe('fugu-select tests', function () {
 
     it('should correctly render initial state with track by feature', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person in people | filter: $select.search track by person.name"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person in people | filter: $select.search track by person.name"> ' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         scope.selection.selected = {
             name: 'Samantha',
@@ -261,7 +261,7 @@ describe('fugu-select tests', function () {
     });
 
     it('should utilize wrapper directive ng-model', function () {
-        var el = compileTemplate('<wrapper-fugu-select ng-model="selection.selected"/>');
+        var el = compileTemplate('<wrapper-uix-select ng-model="selection.selected"/>');
         scope.selection.selected = {
             name: 'Samantha',
             email: 'something different than array source',
@@ -269,7 +269,7 @@ describe('fugu-select tests', function () {
             age: 30
         };
         scope.$digest();
-        expect($(el).find('.fugu-select-container > .fugu-select-match > span:first > span[ng-transclude]:not(.ng-hide)').text()).toEqual('Samantha');
+        expect($(el).find('.uix-select-container > .uix-select-match > span:first > span[ng-transclude]:not(.ng-hide)').text()).toEqual('Samantha');
     });
 
     it('should display the choices when activated', function () {
@@ -327,10 +327,10 @@ describe('fugu-select tests', function () {
 
         expect($select.open).toEqual(false);
 
-        el.find(".fugu-select-toggle").click();
+        el.find(".uix-select-toggle").click();
         expect($select.open).toEqual(true);
 
-        el.find(".fugu-select-toggle").click();
+        el.find(".uix-select-toggle").click();
         expect($select.open).toEqual(true);
     });
 
@@ -344,11 +344,11 @@ describe('fugu-select tests', function () {
         expect($select.allowClear).toEqual(true);
 
         // Trigger clear.
-        el.find('.fugu-select-allowclear').click();
+        el.find('.uix-select-allowclear').click();
         expect(scope.selection.selected).toBeUndefined();
 
         // If there is no selection it the X icon should be hidden.
-        expect(el.find('.fugu-select-allowclear').length).toEqual(0);
+        expect(el.find('.uix-select-allowclear').length).toEqual(0);
 
     });
 
@@ -360,21 +360,21 @@ describe('fugu-select tests', function () {
         var $select = el.scope().$select;
 
         expect($select.allowClear).toEqual(false);
-        expect(el.find('.fugu-select-allowclear').length).toEqual(0);
+        expect(el.find('.uix-select-allowclear').length).toEqual(0);
 
         // Turn clear on
         scope.isClearAllowed = true;
         scope.$digest();
 
         expect($select.allowClear).toEqual(true);
-        expect(el.find('.fugu-select-allowclear').length).toEqual(1);
+        expect(el.find('.uix-select-allowclear').length).toEqual(1);
     });
 
 
     it('should pass tabindex to focusser', function () {
         var el = createUiSelect({tabindex: 5});
 
-        expect($(el).find('.fugu-select-focusser').attr('tabindex')).toEqual('5');
+        expect($(el).find('.uix-select-focusser').attr('tabindex')).toEqual('5');
         expect($(el).attr('tabindex')).toBeUndefined();
     });
 
@@ -382,14 +382,14 @@ describe('fugu-select tests', function () {
         scope.tabValue = 22;
         var el = createUiSelect({tabindex: '{{tabValue + 10}}'});
 
-        expect($(el).find('.fugu-select-focusser').attr('tabindex')).toEqual('32');
+        expect($(el).find('.uix-select-focusser').attr('tabindex')).toEqual('32');
         expect($(el).attr('tabindex')).toBeUndefined();
     });
 
-    it('should not give focusser a tabindex when fugu-select does not have one', function () {
+    it('should not give focusser a tabindex when uix-select does not have one', function () {
         var el = createUiSelect();
 
-        expect($(el).find('.fugu-select-focusser').attr('tabindex')).toBeUndefined();
+        expect($(el).find('.uix-select-focusser').attr('tabindex')).toBeUndefined();
         expect($(el).attr('tabindex')).toBeUndefined();
     });
 
@@ -459,17 +459,17 @@ describe('fugu-select tests', function () {
         });
     });
 
-    // See when an item that evaluates to false (such as "false" or "no") is selected, the placeholder is shown https://github.com/angular-ui/fugu-select/pull/32
+    // See when an item that evaluates to false (such as "false" or "no") is selected, the placeholder is shown https://github.com/angular-ui/uix-select/pull/32
     it('should not display the placeholder when item evaluates to false', function () {
         scope.items = ['false'];
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match>{{$select.selected}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="item in items | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match>{{$select.selected}}</uix-select-match> ' +
+            '<uix-select-choices repeat="item in items | filter: $select.search"> ' +
             '<div ng-bind-html="item | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         expect(el.scope().$select.selected).toBeUndefined();
 
@@ -510,13 +510,13 @@ describe('fugu-select tests', function () {
             }
 
             return compileTemplate(
-                '<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-                '<fugu-select-choices repeat="person in people | filter: $select.search"' + attrsDisabled + '> ' +
+                '<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+                '<uix-select-choices repeat="person in people | filter: $select.search"' + attrsDisabled + '> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-                '</fugu-select-choices> ' +
-                '</fugu-select>');
+                '</uix-select-choices> ' +
+                '</uix-select>');
         }
 
         function disablePerson(opts) {
@@ -556,8 +556,8 @@ describe('fugu-select tests', function () {
             });
 
             it('should set a disabled class on the option', function () {
-                var option = $(this.el).find('.fugu-select-choices-row div:contains("Wladimir")');
-                var container = option.closest('.fugu-select-choices-row');
+                var option = $(this.el).find('.uix-select-choices-row div:contains("Wladimir")');
+                var container = option.closest('.uix-select-choices-row');
 
                 expect(container.hasClass('disabled')).toBeFalsy();
             });
@@ -570,28 +570,28 @@ describe('fugu-select tests', function () {
 
     describe('choices group', function () {
         function getGroupLabel(item) {
-            return item.parent('.fugu-select-choices-group').find('.fugu-select-choices-group-label');
+            return item.parent('.uix-select-choices-group').find('.uix-select-choices-group-label');
         }
 
         function createUiSelect() {
             return compileTemplate(
-                '<fugu-select ng-model="selection.selected">' +
-                '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>' +
-                '<fugu-select-choices group-by="\'group\'" repeat="person in people | filter: $select.search">' +
+                '<uix-select ng-model="selection.selected">' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+                '<uix-select-choices group-by="\'group\'" repeat="person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>');
+                '</uix-select-choices>' +
+                '</uix-select>');
         }
 
         it('should create items group', function () {
             var el = createUiSelect();
-            expect(el.find('.fugu-select-choices-group').length).toBe(3);
+            expect(el.find('.uix-select-choices-group').length).toBe(3);
         });
 
         it('should show label before each group', function () {
             var el = createUiSelect();
-            expect(el.find('.fugu-select-choices-group .fugu-select-choices-group-label').map(function () {
+            expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
             }).toArray()).toEqual(['Foo', 'bar', 'Baz']);
         });
@@ -601,7 +601,7 @@ describe('fugu-select tests', function () {
             el.scope().$select.search = 'd';
             scope.$digest();
 
-            expect(el.find('.fugu-select-choices-group .fugu-select-choices-group-label').map(function () {
+            expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
             }).toArray()).toEqual(['Foo']);
         });
@@ -611,7 +611,7 @@ describe('fugu-select tests', function () {
             el.scope().$select.search = 't';
             scope.$digest();
             openDropdown(el);
-            var choices = el.find('.fugu-select-choices-row');
+            var choices = el.find('.uix-select-choices-row');
 
             expect(choices.eq(0)).toHaveClass('active');
             expect(getGroupLabel(choices.eq(0)).text()).toBe('Foo');
@@ -626,18 +626,18 @@ describe('fugu-select tests', function () {
     describe('choices group by function', function () {
         function createUiSelect() {
             return compileTemplate(
-                '<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-                '<fugu-select-choices group-by="getGroupLabel" repeat="person in people | filter: $select.search"> ' +
+                '<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+                '<uix-select-choices group-by="getGroupLabel" repeat="person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
-                '</fugu-select-choices> ' +
-                '</fugu-select>'
+                '</uix-select-choices> ' +
+                '</uix-select>'
             );
         }
 
         it("should extract group value through function", function () {
             var el = createUiSelect();
-            expect(el.find('.fugu-select-choices-group .fugu-select-choices-group-label').map(function () {
+            expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
             }).toArray()).toEqual(['odd', 'even']);
         });
@@ -645,17 +645,17 @@ describe('fugu-select tests', function () {
 
     describe('choices group filter function', function () {
         function createUiSelect() {
-            return compileTemplate('<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-                '<fugu-select-choices group-by="\'group\'" group-filter="filterInvertOrder"  repeat="person in people | filter: $select.search"> ' +
+            return compileTemplate('<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+                '<uix-select-choices group-by="\'group\'" group-filter="filterInvertOrder"  repeat="person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
-                '</fugu-select-choices> ' +
-                '</fugu-select>');
+                '</uix-select-choices> ' +
+                '</uix-select>');
         }
 
         it("should sort groups using filter", function () {
             var el = createUiSelect();
-            expect(el.find('.fugu-select-choices-group .fugu-select-choices-group-label').map(function () {
+            expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
             }).toArray()).toEqual(["Foo", "Baz", "bar"]);
         });
@@ -663,74 +663,74 @@ describe('fugu-select tests', function () {
 
     describe('choices group filter array', function () {
         function createUiSelect() {
-            return compileTemplate('<fugu-select ng-model="selection.selected">' +
-                '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>' +
-                '<fugu-select-choices group-by="\'group\'" group-filter="[\'Foo\']"' +
+            return compileTemplate('<uix-select ng-model="selection.selected">' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+                '<uix-select-choices group-by="\'group\'" group-filter="[\'Foo\']"' +
                 'repeat="person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>');
+                '</uix-select-choices>' +
+                '</uix-select>');
         }
 
         it("should sort groups using filter", function () {
             var el = createUiSelect();
-            expect(el.find('.fugu-select-choices-group .fugu-select-choices-group-label').map(function () {
+            expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
             }).toArray()).toEqual(["Foo"]);
         });
     });
 
 
-    it('should throw when no fugu-select-choices found', function () {
+    it('should throw when no uix-select-choices found', function () {
         expect(function () {
             compileTemplate(
-                '<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-match></fugu-select-match> ' +
-                '</fugu-select>'
+                '<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-match></uix-select-match> ' +
+                '</uix-select>'
             );
-        }).toThrow(new Error('[ui.fugu.select:transcluded]'));
+        }).toThrow(new Error('[ui.xg.select:transcluded]'));
     });
 
-    it('should throw when no repeat attribute is provided to fugu-select-choices', function () {
+    it('should throw when no repeat attribute is provided to uix-select-choices', function () {
         expect(function () {
             compileTemplate(
-                '<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-choices></fugu-select-choices> ' +
-                '</fugu-select>'
+                '<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-choices></uix-select-choices> ' +
+                '</uix-select>'
             );
-        }).toThrow(new Error('[ui.fugu.select:repeat]'));
+        }).toThrow(new Error('[ui.xg.select:repeat]'));
     });
 
     it('should throw when repeat attribute has incorrect format ', function () {
         expect(function () {
             compileTemplate(
-                '<fugu-select ng-model="selection.selected">' +
-                '<fugu-select-match></fugu-select-match>' +
-                '<fugu-select-choices repeat="incorrect format people"></fugu-select-choices>' +
-                '</fugu-select>'
+                '<uix-select ng-model="selection.selected">' +
+                '<uix-select-match></uix-select-match>' +
+                '<uix-select-choices repeat="incorrect format people"></uix-select-choices>' +
+                '</uix-select>'
             );
-        }).toThrow(new Error('[ui.fugu.select:iexp]'));
+        }).toThrow(new Error('[ui.xg.select:iexp]'));
     });
 
-    it('should throw when no fugu-select-match found', function () {
+    it('should throw when no uix-select-match found', function () {
         expect(function () {
             compileTemplate(
-                '<fugu-select ng-model="selection.selected"> ' +
-                '<fugu-select-choices repeat="item in items"></fugu-select-choices> ' +
-                '</fugu-select>'
+                '<uix-select ng-model="selection.selected"> ' +
+                '<uix-select-choices repeat="item in items"></uix-select-choices> ' +
+                '</uix-select>'
             );
-        }).toThrow(new Error('[ui.fugu.select:transcluded]'));
+        }).toThrow(new Error('[ui.xg.select:transcluded]'));
     });
 
     it('should format the model correctly using alias', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person as person in people | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person as person in people | filter: $select.search"> ' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         clickItem(el, 'Samantha');
         expect(scope.selection.selected).toBe(scope.people[5]);
@@ -738,13 +738,13 @@ describe('fugu-select tests', function () {
 
     it('should parse the model correctly using alias', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person as person in people | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person as person in people | filter: $select.search"> ' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         scope.selection.selected = scope.people[5];
         scope.$digest();
@@ -753,13 +753,13 @@ describe('fugu-select tests', function () {
 
     it('should format the model correctly using property of alias', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person.name as person in people | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search"> ' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         clickItem(el, 'Samantha');
         expect(scope.selection.selected).toBe('Samantha');
@@ -767,13 +767,13 @@ describe('fugu-select tests', function () {
 
     it('should parse the model correctly using property of alias', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
         scope.selection.selected = 'Samantha';
         scope.$digest();
@@ -782,13 +782,13 @@ describe('fugu-select tests', function () {
 
     it('should parse the model correctly using property of alias with async choices data', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person.name as person in peopleAsync | filter: $select.search"> ' +
+            '<uix-select ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person.name as person in peopleAsync | filter: $select.search"> ' +
             '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
         $timeout(function () {
             scope.peopleAsync = scope.people;
@@ -806,13 +806,13 @@ describe('fugu-select tests', function () {
     //TODO Is this really something we should expect?
     it('should parse the model correctly using property of alias but passed whole object', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
         scope.selection.selected = scope.people[5];
         scope.$digest();
@@ -834,13 +834,13 @@ describe('fugu-select tests', function () {
 
     it('should display choices correctly with child array', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in someObject.people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person in someObject.people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
         scope.selection.selected = scope.people[5];
         scope.$digest();
@@ -849,13 +849,13 @@ describe('fugu-select tests', function () {
 
     it('should format the model correctly using property of alias and when using child array for choices', function () {
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in someObject.people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in someObject.people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
         clickItem(el, 'Samantha');
         expect(scope.selection.selected).toBe('Samantha');
@@ -868,13 +868,13 @@ describe('fugu-select tests', function () {
             scope.$model = $model;
         };
         var el = compileTemplate(
-            '<fugu-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in people | filter: $select.search">'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         expect(scope.$item).toBeFalsy();
@@ -899,13 +899,13 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices on-highlight="onHighlightFn(person)" repeat="person.name as person in people | filter: $select.search">'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices on-highlight="onHighlightFn(person)" repeat="person.name as person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         expect(highlighted).toBeFalsy();
@@ -914,7 +914,7 @@ describe('fugu-select tests', function () {
             openDropdown(el);
         }
 
-        $(el).find('.fugu-select-choices-row div:contains("Samantha")').trigger('mouseover');
+        $(el).find('.uix-select-choices-row div:contains("Samantha")').trigger('mouseover');
         scope.$digest();
 
         expect(highlighted).toBe(scope.people[5]);
@@ -928,13 +928,13 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         expect(scope.$item).toBeFalsy();
@@ -953,13 +953,13 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in people | filter: $select.search">'+
+            '<uix-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         expect(scope.$item).toBeFalsy();
@@ -967,7 +967,7 @@ describe('fugu-select tests', function () {
 
         clickItem(el, 'Samantha');
         clickItem(el, 'Adrian');
-        el.find('.fugu-select-match-item').first().find('.fugu-select-match-close').click();
+        el.find('.uix-select-match-item').first().find('.uix-select-match-close').click();
         $timeout.flush();
 
         expect(scope.$item).toBe(scope.people[5]);
@@ -983,13 +983,13 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected"> ' +
-            '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match> ' +
-            '<fugu-select-choices repeat="person in people | filter: $select.search"> ' +
+            '<uix-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected"> ' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-choices repeat="person in people | filter: $select.search"> ' +
             '<div ng-bind-html="person.name" | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-            '</fugu-select-choices> ' +
-            '</fugu-select>'
+            '</uix-select-choices> ' +
+            '</uix-select>'
         );
 
         expect(scope.$item).toBeFalsy();
@@ -997,7 +997,7 @@ describe('fugu-select tests', function () {
 
         clickItem(el, 'Samantha');
         clickItem(el, 'Adrian');
-        el.find('.fugu-select-match-item').first().find('.fugu-select-match-close').click();
+        el.find('.uix-select-match-item').first().find('.uix-select-match-close').click();
         $timeout.flush();
 
         expect(scope.$item).toBe(scope.people[5]);
@@ -1011,18 +1011,18 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         clickMatch(el);
 
-        var searchInput = el.find('.fugu-select-search');
+        var searchInput = el.find('.uix-select-search');
 
         setSearchText(el, 'idontexist');
 
@@ -1038,16 +1038,16 @@ describe('fugu-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<fugu-select multiple ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
-              '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+            '<uix-select multiple ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
+              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
-        var searchInput = el.find('.fugu-select-search');
+        var searchInput = el.find('.uix-select-search');
 
         setSearchText(el, 'idontexist');
 
@@ -1059,15 +1059,15 @@ describe('fugu-select tests', function () {
     it('should append/transclude content (with correct scope) that users add at <match> tag', function () {
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match>'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match>'+
                 '<span ng-if="$select.selected.name!==\'Wladimir\'">{{$select.selected.name}}</span>'+
                 '<span ng-if="$select.selected.name===\'Wladimir\'">{{$select.selected.name | uppercase}}</span>'+
-              '</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+              '</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         clickItem(el, 'Samantha');
@@ -1081,16 +1081,16 @@ describe('fugu-select tests', function () {
     it('should append/transclude content (with correct scope) that users add at <choices> tag', function () {
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match>'+
-              '</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match>'+
+              '</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-if="person.name==\'Wladimir\'">'+
                   '<span class="only-once">I should appear only once</span>'+
                 '</div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         openDropdown(el);
@@ -1102,17 +1102,17 @@ describe('fugu-select tests', function () {
     it('should call refresh function when search text changes', function () {
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match>'+
-              '</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search"'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match>'+
+              '</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search"'+
                 'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-if="person.name==\'Wladimir\'">'+
                   '<span class="only-once">I should appear only once</span>'+
                 '</div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         scope.fetchFromServer = function () {
@@ -1131,17 +1131,17 @@ describe('fugu-select tests', function () {
     it('should call refresh function when search text changes', function () {
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match>'+
-              '</fugu-select-match>'+
-              '<fugu-select-choices repeat="person in people | filter: $select.search"'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match>'+
+              '</uix-select-match>'+
+              '<uix-select-choices repeat="person in people | filter: $select.search"'+
                 'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-if="person.name==\'Wladimir\'">'+
                   '<span class="only-once">I should appear only once</span>'+
                 '</div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         scope.fetchFromServer = function () {
@@ -1160,16 +1160,16 @@ describe('fugu-select tests', function () {
     it('should format view value correctly when using single property binding and refresh function', function () {
 
         var el = compileTemplate(
-            '<fugu-select ng-model="selection.selected">'+
-              '<fugu-select-match>{{$select.selected.name}}</fugu-select-match>'+
-              '<fugu-select-choices repeat="person.name as person in people | filter: $select.search"'+
+            '<uix-select ng-model="selection.selected">'+
+              '<uix-select-match>{{$select.selected.name}}</uix-select-match>'+
+              '<uix-select-choices repeat="person.name as person in people | filter: $select.search"'+
                 'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
                 '<div ng-if="person.name==\'Wladimir\'">'+
                   '<span class="only-once">I should appear only once</span>' +
             '</div>'+
-              '</fugu-select-choices>'+
-            '</fugu-select>'
+              '</uix-select-choices>'+
+            '</uix-select>'
         );
 
         scope.fetchFromServer = function (searching) {
@@ -1199,13 +1199,13 @@ describe('fugu-select tests', function () {
 
         function setupSelectComponent(searchEnabled, theme) {
             el = compileTemplate(
-                '<fugu-select ng-model="selection.selected" theme="' + theme + '" search-enabled="' + searchEnabled + '">'+
-          '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>'+
-          '<fugu-select-choices repeat="person in people | filter: $select.search">'+
+                '<uix-select ng-model="selection.selected" theme="' + theme + '" search-enabled="' + searchEnabled + '">'+
+          '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
+          '<uix-select-choices repeat="person in people | filter: $select.search">'+
             '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
             '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-          '</fugu-select-choices>'+
-        '</fugu-select>'
+          '</uix-select-choices>'+
+        '</uix-select>'
             );
         }
 
@@ -1214,13 +1214,13 @@ describe('fugu-select tests', function () {
             it('should show search input when true', function () {
                 setupSelectComponent('true', 'bootstrap');
                 clickMatch(el);
-                expect($(el).find('.fugu-select-search')).not.toHaveClass('ng-hide');
+                expect($(el).find('.uix-select-search')).not.toHaveClass('ng-hide');
             });
 
             it('should hide search input when false', function () {
                 setupSelectComponent('false', 'bootstrap');
                 clickMatch(el);
-                expect($(el).find('.fugu-select-search')).toHaveClass('ng-hide');
+                expect($(el).find('.uix-select-search')).toHaveClass('ng-hide');
             });
 
         });
@@ -1254,21 +1254,21 @@ describe('fugu-select tests', function () {
             }
 
             return compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple"' + attrsHtml + ' theme="bootstrap" style="width: 800px;"> ' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match> ' +
-                '<fugu-select-choices repeat="person in people | filter: $select.search"> ' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"' + attrsHtml + ' theme="bootstrap" style="width: 800px;"> ' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match> ' +
+                '<uix-select-choices repeat="person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-                '</fugu-select-choices> ' +
-                '</fugu-select>'
+                '</uix-select-choices> ' +
+                '</uix-select>'
             );
         }
 
         it('should render initial state', function () {
             var el = createUiSelectMultiple();
-            expect(el).toHaveClass('fugu-select-multiple');
+            expect(el).toHaveClass('uix-select-multiple');
             expect(el.scope().$select.selected.length).toBe(0);
-            expect(el.find('.fugu-select-match-item').length).toBe(0);
+            expect(el.find('.uix-select-match-item').length).toBe(0);
         });
 
         it('should set model as an empty array if ngModel isnt defined after an item is selected', function () {
@@ -1284,21 +1284,21 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5]]; //Wladimir & Samantha
             var el = createUiSelectMultiple();
             expect(el.scope().$select.selected.length).toBe(2);
-            expect(el.find('.fugu-select-match-item').length).toBe(2);
+            expect(el.find('.uix-select-match-item').length).toBe(2);
         });
 
         it('should remove item by pressing X icon', function () {
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5]]; //Wladimir & Samantha
             var el = createUiSelectMultiple();
             expect(el.scope().$select.selected.length).toBe(2);
-            el.find('.fugu-select-match-item').first().find('.fugu-select-match-close').click();
+            el.find('.uix-select-match-item').first().find('.uix-select-match-close').click();
             expect(el.scope().$select.selected.length).toBe(1);
             // $timeout.flush();
         });
 
         it('should pass tabindex to searchInput', function () {
             var el = createUiSelectMultiple({tabindex: 5});
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(searchInput.attr('tabindex')).toEqual('5');
             expect($(el).attr('tabindex')).toBeUndefined();
@@ -1307,15 +1307,15 @@ describe('fugu-select tests', function () {
         it('should pass tabindex to searchInput when tabindex is an expression', function () {
             scope.tabValue = 22;
             var el = createUiSelectMultiple({tabindex: '{{tabValue + 10}}'});
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(searchInput.attr('tabindex')).toEqual('32');
             expect($(el).attr('tabindex')).toBeUndefined();
         });
 
-        it('should not give searchInput a tabindex when fugu-select does not have one', function () {
+        it('should not give searchInput a tabindex when uix-select does not have one', function () {
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(searchInput.attr('tabindex')).toBeUndefined();
             expect($(el).attr('tabindex')).toBeUndefined();
@@ -1328,7 +1328,7 @@ describe('fugu-select tests', function () {
             spyOn(el.scope().$select, 'sizeSearchInput');
 
 
-            el.find('.fugu-select-match-item').first().find('.fugu-select-match-close').click();
+            el.find('.uix-select-match-item').first().find('.uix-select-match-close').click();
             expect(el.scope().$select.sizeSearchInput).toHaveBeenCalled();
 
         });
@@ -1336,7 +1336,7 @@ describe('fugu-select tests', function () {
         it('should move to last match when pressing BACKSPACE key from search', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Backspace);
@@ -1349,7 +1349,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Left);
@@ -1364,7 +1364,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Left);
@@ -1379,7 +1379,7 @@ describe('fugu-select tests', function () {
         it('should move to last match when pressing LEFT key from search', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Left);
@@ -1392,7 +1392,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Left);
@@ -1410,7 +1410,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             el.scope().$selectMultiple.activeMatchIndex = 3;
             triggerKeydown(searchInput, Key.Left);
@@ -1423,7 +1423,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             el.scope().$selectMultiple.activeMatchIndex = 0;
             triggerKeydown(searchInput, Key.Right);
@@ -1436,7 +1436,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5]]; //Wladimir & Samantha
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Down);
@@ -1469,7 +1469,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[5]]; //Samantha
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Down);
@@ -1485,7 +1485,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[5]]; //Samantha
             var el = createUiSelectMultiple({closeOnSelect: false});
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Down);
@@ -1501,7 +1501,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             expect(isDropdownOpened(el)).toEqual(false);
             triggerKeydown(searchInput, Key.Down);
@@ -1515,7 +1515,7 @@ describe('fugu-select tests', function () {
 
             scope.selection.selectedMultiple = [scope.people[5]]; //Samantha
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             triggerKeydown(searchInput, Key.Down);
             triggerKeydown(searchInput, Key.Enter);
@@ -1526,7 +1526,7 @@ describe('fugu-select tests', function () {
         it('should stop the propagation when pressing ENTER key from dropdown', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
             spyOn(jQuery.Event.prototype, 'preventDefault');
             spyOn(jQuery.Event.prototype, 'stopPropagation');
 
@@ -1540,7 +1540,7 @@ describe('fugu-select tests', function () {
         it('should stop the propagation when pressing ESC key from dropdown', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
             spyOn(jQuery.Event.prototype, 'preventDefault');
             spyOn(jQuery.Event.prototype, 'stopPropagation');
 
@@ -1554,7 +1554,7 @@ describe('fugu-select tests', function () {
         it('should increase $select.activeIndex when pressing DOWN key from dropdown', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             triggerKeydown(searchInput, Key.Down); //Open dropdown
 
@@ -1568,7 +1568,7 @@ describe('fugu-select tests', function () {
         it('should decrease $select.activeIndex when pressing UP key from dropdown', function () {
 
             var el = createUiSelectMultiple();
-            var searchInput = el.find('.fugu-select-search');
+            var searchInput = el.find('.uix-select-search');
 
             triggerKeydown(searchInput, Key.Down); //Open dropdown
 
@@ -1583,7 +1583,7 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = [scope.people[4], scope.people[5]]; //Wladimir & Samantha
             var el = createUiSelectMultiple();
             expect(el.scope().$select.selected.length).toBe(2);
-            expect(el.find('.fugu-select-match-item').length).toBe(2);
+            expect(el.find('.uix-select-match-item').length).toBe(2);
         });
 
         it('should parse the items correctly using single property binding', function () {
@@ -1591,13 +1591,13 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search">' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
             expect(el.scope().$select.selected).toEqual([scope.people[4], scope.people[5]]);
@@ -1609,13 +1609,13 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search">' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
 
@@ -1631,14 +1631,14 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search"' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search"' +
                 'refresh="fetchFromServer($select.search)" refresh-delay="0">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
 
@@ -1657,12 +1657,12 @@ describe('fugu-select tests', function () {
             setSearchText(el, 'n');
             clickItem(el, 'Nicole');
 
-            expect(el.find('.fugu-select-match-item [fugu-transclude-append]:not(.ng-hide)').text())
+            expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
                 .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
 
             setSearchText(el, 'o');
 
-            expect(el.find('.fugu-select-match-item [fugu-transclude-append]:not(.ng-hide)').text())
+            expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
                 .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
 
         });
@@ -1672,21 +1672,21 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search">' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
-            expect(el.find('.fugu-select-match-item [fugu-transclude-append]:not(.ng-hide)').text())
+            expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
                 .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>");
 
             clickItem(el, 'Nicole');
 
-            expect(el.find('.fugu-select-match-item [fugu-transclude-append]:not(.ng-hide)').text())
+            expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
                 .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
 
             expect(scope.selection.selectedMultiple.length).toBe(3);
@@ -1699,13 +1699,13 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select ng-change="onlyOnce()" multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search">' +
+                '<uix-select ng-change="onlyOnce()" multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
             scope.counter = 0;
@@ -1725,13 +1725,13 @@ describe('fugu-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<fugu-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;"> ' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match> ' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search"> ' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;"> ' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match> ' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
-                '</fugu-select-choices> ' +
-                '</fugu-select> ');
+                '</uix-select-choices> ' +
+                '</uix-select> ');
 
             // var el2 = compileTemplate('<span class="resultDiv" ng-bind="selection.selectedMultiple"></span>');
 
@@ -1740,7 +1740,7 @@ describe('fugu-select tests', function () {
             scope.$digest();
             scope.$digest(); //2nd $digest needed when using angular 1.3.0-rc.1+, might be related with the fact that the value is an array
 
-            expect(el.find('.fugu-select-match-item [fugu-transclude-append]:not(.ng-hide)').text())
+            expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
                 .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
 
         });
@@ -1748,13 +1748,13 @@ describe('fugu-select tests', function () {
         it('should support multiple="multiple" attribute', function () {
 
             var el = compileTemplate(
-                '<fugu-select multiple="multiple" ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<fugu-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</fugu-select-match>' +
-                '<fugu-select-choices repeat="person.email as person in people | filter: $select.search">' +
+                '<uix-select multiple="multiple" ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                '</fugu-select-choices>' +
-                '</fugu-select>'
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
 
             expect(el.scope().$select.multiple).toBe(true);
@@ -1795,31 +1795,31 @@ describe('fugu-select tests', function () {
         });
     });
 
-    describe('default configuration via fuguSelectConfig', function () {
+    describe('default configuration via uixSelectConfig', function () {
 
         describe('searchEnabled option', function () {
 
             function setupWithoutAttr() {
                 return compileTemplate(
-                    '<fugu-select ng-model="selection.selected">' +
-                    '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>' +
-                    '<fugu-select-choices repeat="person in people | filter: $select.search">' +
+                    '<uix-select ng-model="selection.selected">' +
+                    '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+                    '<uix-select-choices repeat="person in people | filter: $select.search">' +
                     '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                     '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                    '</fugu-select-choices>' +
-                    '</fugu-select>'
+                    '</uix-select-choices>' +
+                    '</uix-select>'
                 );
             }
 
             function setupWithAttr(searchEnabled) {
                 return compileTemplate(
-                    '<fugu-select ng-model="selection.selected" search-enabled="' + searchEnabled + '">' +
-                    '<fugu-select-match placeholder="Pick one...">{{$select.selected.name}}</fugu-select-match>' +
-                    '<fugu-select-choices repeat="person in people | filter: $select.search">' +
+                    '<uix-select ng-model="selection.selected" search-enabled="' + searchEnabled + '">' +
+                    '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+                    '<uix-select-choices repeat="person in people | filter: $select.search">' +
                     '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                     '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
-                    '</fugu-select-choices>' +
-                    '</fugu-select>'
+                    '</uix-select-choices>' +
+                    '</uix-select>'
                 );
             }
 
@@ -1829,24 +1829,24 @@ describe('fugu-select tests', function () {
             });
 
             it('should disable search if default set to false', function () {
-                var fuguSelectConfig = $injector.get('fuguSelectConfig');
-                fuguSelectConfig.searchEnabled = false;
+                var uixSelectConfig = $injector.get('uixSelectConfig');
+                uixSelectConfig.searchEnabled = false;
 
                 var el = setupWithoutAttr();
                 expect(el.scope().$select.searchEnabled).not.toBe(true);
             });
 
             it('should be overridden by inline option search-enabled=true', function () {
-                var fuguSelectConfig = $injector.get('fuguSelectConfig');
-                fuguSelectConfig.searchEnabled = false;
+                var uixSelectConfig = $injector.get('uixSelectConfig');
+                uixSelectConfig.searchEnabled = false;
 
                 var el = setupWithAttr(true);
                 expect(el.scope().$select.searchEnabled).toBe(true);
             });
 
             it('should be overridden by inline option search-enabled=false', function () {
-                var fuguSelectConfig = $injector.get('fuguSelectConfig');
-                fuguSelectConfig.searchEnabled = true;
+                var uixSelectConfig = $injector.get('uixSelectConfig');
+                uixSelectConfig.searchEnabled = true;
 
                 var el = setupWithAttr(false);
                 expect(el.scope().$select.searchEnabled).not.toBe(true);
@@ -1896,8 +1896,8 @@ describe('fugu-select tests', function () {
             expect(el.parent()[0]).not.toBe(body);
         });
 
-        it('should be moved to the body when the appendToBody is true in fuguSelectConfig', inject(function (fuguSelectConfig) {
-            fuguSelectConfig.appendToBody = true;
+        it('should be moved to the body when the appendToBody is true in uixSelectConfig', inject(function (uixSelectConfig) {
+            uixSelectConfig.appendToBody = true;
             var el = createUiSelect();
             openDropdown(el);
             expect(el.parent()[0]).toBe(body);

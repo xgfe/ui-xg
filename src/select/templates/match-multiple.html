@@ -1,15 +1,15 @@
-<span class="fugu-select-match">
+<span class="uix-select-match">
   <span ng-repeat="$item in $select.selected">
     <span
-      class="fugu-select-match-item btn btn-default btn-xs"
+      class="uix-select-match-item btn btn-default btn-xs"
       tabindex="-1"
       type="button"
       ng-disabled="$select.disabled"
       ng-click="$selectMultiple.activeMatchIndex = $index;"
       ng-class="{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}"
-      fugu-select-sort="$select.selected">
-        <span class="close fugu-select-match-close" ng-hide="$select.disabled" ng-click="$selectMultiple.removeChoice($index)">&nbsp;&times;</span>
-        <span fugu-transclude-append></span>
+      uix-select-sort="$select.selected">
+        <span class="close uix-select-match-close" ng-hide="$select.disabled" ng-click="$selectMultiple.removeChoice($index)">&nbsp;&times;</span>
+        <span uix-transclude-append></span>
     </span>
   </span>
 </span>

@@ -1,9 +1,9 @@
-describe("fugu-notify", function() {
+describe("uix-notify", function() {
 
     var $compile,
         $rootScope;
 
-    beforeEach(module('ui.fugu.notify'));
+    beforeEach(module('ui.xg.notify'));
     beforeEach(module('notify/templates/notify.html'));
     beforeEach(inject(function (_$compile_, _$rootScope_) {
         $compile = _$compile_;
@@ -12,10 +12,10 @@ describe("fugu-notify", function() {
 
     it('Replaces the element with the appropriate content', function () {
 
-        var notifyElement = $compile('<div fugu-notify></div>')($rootScope);
+        var notifyElement = $compile('<div uix-notify></div>')($rootScope);
 
         $rootScope.$digest();
 
-        expect(notifyElement.html()).toContain('<div class="fugu-notify-container fugu-notify-fixed top-right"');
+        expect(notifyElement.html()).toContain('<div class="uix-notify-container uix-notify-fixed top-right"');
     });
 });

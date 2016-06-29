@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('pagerDemoCtrl',['$scope','$log', function ($scope,$log) {
+angular.module('uixDemo').controller('pagerDemoCtrl',['$scope','$log', function ($scope,$log) {
     $scope.pages = {
         pageNo:1,
         pageSize:30,

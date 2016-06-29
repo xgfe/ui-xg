@@ -1,4 +1,4 @@
-describe('$fuguPosition service', function () {
+describe('$uixPosition service', function () {
     var TargetElMock = function(width, height) {
         this.width = width;
         this.height = height;
@@ -9,13 +9,13 @@ describe('$fuguPosition service', function () {
     };
 
     var $document;
-    var $fuguPosition;
+    var $uixPosition;
 
-    beforeEach(module('ui.fugu.position'));
+    beforeEach(module('ui.xg.position'));
 
-    beforeEach(inject(function(_$document_, _$fuguPosition_) {
+    beforeEach(inject(function(_$document_, _$uixPosition_) {
         $document = _$document_;
-        $fuguPosition = _$fuguPosition_;
+        $uixPosition = _$uixPosition_;
     }));
 
     beforeEach(function () {
@@ -55,7 +55,7 @@ describe('$fuguPosition service', function () {
             });
             $document.find('body').append(el);
 
-            var offset = $fuguPosition.offset(el);
+            var offset = $uixPosition.offset(el);
 
             expect(offset).toEqual({
                 width: 100,
@@ -81,7 +81,7 @@ describe('$fuguPosition service', function () {
         });
 
         it('measures the offset', function() {
-            var vpOffset = $fuguPosition.viewportOffset(document.getElementById('inner'));
+            var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'));
             expect(vpOffset).toEqual({
                 top: 20,
                 bottom: 30,
@@ -97,7 +97,7 @@ describe('$fuguPosition service', function () {
             outerEl.style.paddingLeft = '0px';
             outerEl.style.paddingRight = '0px';
 
-            var vpOffset = $fuguPosition.viewportOffset(document.getElementById('inner'));
+            var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'));
             expect(vpOffset).toEqual({
                 top: 20,
                 bottom: 80,
@@ -112,7 +112,7 @@ describe('$fuguPosition service', function () {
             outerEl.style.height = '220px';
             outerEl.style.border = '10px solid black';
 
-            var vpOffset = $fuguPosition.viewportOffset(document.getElementById('inner'));
+            var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'));
             expect(vpOffset).toEqual({
                 top: 20,
                 bottom: 30,
@@ -122,7 +122,7 @@ describe('$fuguPosition service', function () {
         });
 
         it('measures the offset excluding padding', function() {
-            var vpOffset = $fuguPosition.viewportOffset(document.getElementById('inner'), false, false);
+            var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'), false, false);
             expect(vpOffset).toEqual({
                 top: 45,
                 bottom: 55,
@@ -139,7 +139,7 @@ describe('$fuguPosition service', function () {
             outerEl.scrollTop = 25;
             outerEl.scrollLeft = 25;
 
-            var vpOffset = $fuguPosition.viewportOffset(document.getElementById('inner'));
+            var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'));
             expect(vpOffset.top).toEqual(-5);
             expect(vpOffset.bottom).toBeGreaterThan(-180);
             expect(vpOffset.left).toEqual(-5);
@@ -175,7 +175,7 @@ describe('$fuguPosition service', function () {
 
             $document.find('body').append(el);
 
-            var position = $fuguPosition.position(el);
+            var position = $uixPosition.position(el);
 
             expect(position).toEqual({
                 width: 100,
@@ -206,7 +206,7 @@ describe('$fuguPosition service', function () {
                 left: 5
             });
 
-            var position = $fuguPosition.position(innerEl);
+            var position = $uixPosition.position(innerEl);
 
             expect(position).toEqual({
                 width: 20,
@@ -232,7 +232,7 @@ describe('$fuguPosition service', function () {
             var outerEl = document.getElementById('outer');
             var innerEl = document.getElementById('inner');
 
-            var scrollParent = $fuguPosition.scrollParent(innerEl);
+            var scrollParent = $uixPosition.scrollParent(innerEl);
             expect(scrollParent).toEqual(outerEl);
         });
 
@@ -244,7 +244,7 @@ describe('$fuguPosition service', function () {
             var outerEl = document.getElementById('outer');
             var innerEl = document.getElementById('inner');
 
-            var scrollParent = $fuguPosition.scrollParent(innerEl);
+            var scrollParent = $uixPosition.scrollParent(innerEl);
             expect(scrollParent).toEqual(outerEl);
         });
 
@@ -256,7 +256,7 @@ describe('$fuguPosition service', function () {
             var outerEl = document.getElementById('outer');
             var innerEl = document.getElementById('inner');
 
-            var scrollParent = $fuguPosition.scrollParent(innerEl, true);
+            var scrollParent = $uixPosition.scrollParent(innerEl, true);
             expect(scrollParent).toEqual(outerEl);
         });
 
@@ -267,7 +267,7 @@ describe('$fuguPosition service', function () {
 
             var innerEl = document.getElementById('inner');
 
-            var scrollParent = $fuguPosition.scrollParent(innerEl);
+            var scrollParent = $uixPosition.scrollParent(innerEl);
             expect(scrollParent).toEqual($document[0].documentElement);
         });
 
@@ -279,7 +279,7 @@ describe('$fuguPosition service', function () {
             var outerEl = document.getElementById('outer');
             var innerEl = document.getElementById('inner');
 
-            var scrollParent = $fuguPosition.scrollParent(innerEl);
+            var scrollParent = $uixPosition.scrollParent(innerEl);
             expect(scrollParent).toEqual(outerEl);
         });
     });
@@ -287,7 +287,7 @@ describe('$fuguPosition service', function () {
     describe('positionElements - append-to-body: false', function() {
         beforeEach(function() {
             //mock position info normally queried from the DOM
-            $fuguPosition.position = function() {
+            $uixPosition.position = function() {
                 return {
                     width: 20,
                     height: 20,
@@ -298,63 +298,63 @@ describe('$fuguPosition service', function () {
         });
 
         it('should position element on top-center by default', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'other')).toBePositionedAt(90, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top')).toBePositionedAt(90, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-center')).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'other')).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top')).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-center')).toBePositionedAt(90, 105);
         });
 
         it('should position on top-left', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-left')).toBePositionedAt(90, 100);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-left')).toBePositionedAt(90, 100);
         });
 
         it('should position on top-right', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-right')).toBePositionedAt(90, 110);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-right')).toBePositionedAt(90, 110);
         });
 
         it('should position elements on bottom-center when "bottom" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom')).toBePositionedAt(120, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center')).toBePositionedAt(120, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom')).toBePositionedAt(120, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center')).toBePositionedAt(120, 105);
         });
 
         it('should position elements on bottom-left', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left')).toBePositionedAt(120, 100);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left')).toBePositionedAt(120, 100);
         });
 
         it('should position elements on bottom-right', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right')).toBePositionedAt(120, 110);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right')).toBePositionedAt(120, 110);
         });
 
         it('should position elements on left-center when "left" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left')).toBePositionedAt(105, 90);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-center')).toBePositionedAt(105, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left')).toBePositionedAt(105, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-center')).toBePositionedAt(105, 90);
         });
 
         it('should position elements on left-top when "left-top" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-top')).toBePositionedAt(100, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-top')).toBePositionedAt(100, 90);
         });
 
         it('should position elements on left-bottom when "left-bottom" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom')).toBePositionedAt(110, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom')).toBePositionedAt(110, 90);
         });
 
         it('should position elements on right-center when "right" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right')).toBePositionedAt(105, 120);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-center')).toBePositionedAt(105, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right')).toBePositionedAt(105, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-center')).toBePositionedAt(105, 120);
         });
 
         it('should position elements on right-top when "right-top" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-top')).toBePositionedAt(100, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-top')).toBePositionedAt(100, 120);
         });
 
         it('should position elements on right-top when "right-top" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom')).toBePositionedAt(110, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom')).toBePositionedAt(110, 120);
         });
     });
 
     describe('positionElements - append-to-body: true', function() {
         beforeEach(function() {
             //mock offset info normally queried from the DOM
-            $fuguPosition.offset = function() {
+            $uixPosition.offset = function() {
                 return {
                     width: 20,
                     height: 20,
@@ -365,56 +365,56 @@ describe('$fuguPosition service', function () {
         });
 
         it('should position element on top-center by default', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'other', true)).toBePositionedAt(90, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top', true)).toBePositionedAt(90, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-center', true)).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'other', true)).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top', true)).toBePositionedAt(90, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-center', true)).toBePositionedAt(90, 105);
         });
 
         it('should position on top-left', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-left', true)).toBePositionedAt(90, 100);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-left', true)).toBePositionedAt(90, 100);
         });
 
         it('should position on top-right', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'top-right', true)).toBePositionedAt(90, 110);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-right', true)).toBePositionedAt(90, 110);
         });
 
         it('should position elements on bottom-center when "bottom" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom', true)).toBePositionedAt(120, 105);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center', true)).toBePositionedAt(120, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom', true)).toBePositionedAt(120, 105);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center', true)).toBePositionedAt(120, 105);
         });
 
         it('should position elements on bottom-left', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left', true)).toBePositionedAt(120, 100);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left', true)).toBePositionedAt(120, 100);
         });
 
         it('should position elements on bottom-right', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right', true)).toBePositionedAt(120, 110);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right', true)).toBePositionedAt(120, 110);
         });
 
         it('should position elements on left-center when "left" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left', true)).toBePositionedAt(105, 90);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-center', true)).toBePositionedAt(105, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left', true)).toBePositionedAt(105, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-center', true)).toBePositionedAt(105, 90);
         });
 
         it('should position elements on left-top when "left-top" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-top', true)).toBePositionedAt(100, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-top', true)).toBePositionedAt(100, 90);
         });
 
         it('should position elements on left-bottom when "left-bottom" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom', true)).toBePositionedAt(110, 90);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom', true)).toBePositionedAt(110, 90);
         });
 
         it('should position elements on right-center when "right" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right', true)).toBePositionedAt(105, 120);
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-center', true)).toBePositionedAt(105, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right', true)).toBePositionedAt(105, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-center', true)).toBePositionedAt(105, 120);
         });
 
         it('should position elements on right-top when "right-top" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-top', true)).toBePositionedAt(100, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-top', true)).toBePositionedAt(100, 120);
         });
 
         it('should position elements on right-bottom when "right-bottom" specified', function() {
-            expect($fuguPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom', true)).toBePositionedAt(110, 120);
+            expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom', true)).toBePositionedAt(110, 120);
         });
     });
 
@@ -426,7 +426,7 @@ describe('$fuguPosition service', function () {
             $document.find('body').append(el);
 
             //mock position info normally queried from the DOM
-            $fuguPosition.position = function() {
+            $uixPosition.position = function() {
                 return {
                     width: 40,
                     height: 40,
@@ -444,7 +444,7 @@ describe('$fuguPosition service', function () {
                 right: 10
             };
 
-            $fuguPosition.viewportOffset = function() {
+            $uixPosition.viewportOffset = function() {
                 return viewportOffset;
             };
         });
@@ -459,7 +459,7 @@ describe('$fuguPosition service', function () {
             viewportOffset.bottom = 20;
             viewportOffset.left = 20;
             el.css({ width: '60px', height: '20px' });
-            expect($fuguPosition.positionElements({}, el, 'auto top-left')).toBePositionedAt(140, 80);
+            expect($uixPosition.positionElements({}, el, 'auto top-left')).toBePositionedAt(140, 80);
         });
 
         // tests primary bottom -> top
@@ -468,7 +468,7 @@ describe('$fuguPosition service', function () {
             viewportOffset.top = 20;
             viewportOffset.right = 20;
             el.css({ width: '60px', height: '20px' });
-            expect($fuguPosition.positionElements({}, el, 'auto bottom-right')).toBePositionedAt(80, 100);
+            expect($uixPosition.positionElements({}, el, 'auto bottom-right')).toBePositionedAt(80, 100);
         });
 
         // tests primary left -> right
@@ -477,7 +477,7 @@ describe('$fuguPosition service', function () {
             viewportOffset.top = 20;
             viewportOffset.right = 20;
             el.css({ width: '20px', height: '60px' });
-            expect($fuguPosition.positionElements({}, el, 'auto left-top')).toBePositionedAt(80, 140);
+            expect($uixPosition.positionElements({}, el, 'auto left-top')).toBePositionedAt(80, 140);
         });
 
         // tests primary right -> left
@@ -486,35 +486,35 @@ describe('$fuguPosition service', function () {
             viewportOffset.bottom = 20;
             viewportOffset.left = 20;
             el.css({ width: '20px', height: '60px' });
-            expect($fuguPosition.positionElements({}, el, 'auto right-bottom')).toBePositionedAt(100, 80);
+            expect($uixPosition.positionElements({}, el, 'auto right-bottom')).toBePositionedAt(100, 80);
         });
 
         // tests vertical center -> top
         it('should position element on left-top when left-center does not fit vetically', function() {
             viewportOffset.bottom = 100;
             el.css({ width: '20px', height: '120px' });
-            expect($fuguPosition.positionElements({}, el, 'auto left')).toBePositionedAt(100, 80);
+            expect($uixPosition.positionElements({}, el, 'auto left')).toBePositionedAt(100, 80);
         });
 
         // tests vertical center -> bottom
         it('should position element on left-bottom when left-center does not fit vertically', function() {
             viewportOffset.top = 100;
             el.css({ width: '20px', height: '120px' });
-            expect($fuguPosition.positionElements({}, el, 'auto left')).toBePositionedAt(20, 80);
+            expect($uixPosition.positionElements({}, el, 'auto left')).toBePositionedAt(20, 80);
         });
 
         // tests horizontal center -> left
         it('should position element on top-left when top-center does not fit horizontally', function() {
             viewportOffset.right = 100;
             el.css({ width: '120px', height: '20px' });
-            expect($fuguPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 100);
+            expect($uixPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 100);
         });
 
         // tests horizontal center -> right
         it('should position element on top-right when top-center does not fit horizontally', function() {
             viewportOffset.left = 100;
             el.css({ width: '120px', height: '20px' });
-            expect($fuguPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 20);
+            expect($uixPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 20);
         });
     });
 });

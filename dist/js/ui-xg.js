@@ -1,18 +1,18 @@
 /*
- * angular-ui-fugu
+ * ui-xg
  * Version: 1.0.0 - 2016-06-29
  * License: MIT
  */
-angular.module("ui.fugu", ["ui.fugu.tpls","ui.fugu.alert","ui.fugu.button","ui.fugu.buttonGroup","ui.fugu.timepanel","ui.fugu.calendar","ui.fugu.position","ui.fugu.datepicker","ui.fugu.dropdown","ui.fugu.stackedMap","ui.fugu.modal","ui.fugu.notify","ui.fugu.pager","ui.fugu.tooltip","ui.fugu.popover","ui.fugu.searchBox","ui.fugu.select","ui.fugu.sortable","ui.fugu.switch","ui.fugu.timepicker"]);
-angular.module("ui.fugu.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/fugu-tooltip-html-popup.html","tooltip/templates/fugu-tooltip-popup.html","tooltip/templates/fugu-tooltip-template-popup.html","popover/templates/fugu-popover-html-popup.html","popover/templates/fugu-popover-popup.html","popover/templates/fugu-popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
+angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
 /**
  * alert
  * 警告提示指令
  * Author:heqingyang@meituan.com
  * Date:2015-01-11
  */
-angular.module('ui.fugu.alert',[])
-.controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
+angular.module('ui.xg.alert',[])
+.controller('uixAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
 
     //指令初始化
     function initConfig(){
@@ -58,7 +58,7 @@ angular.module('ui.fugu.alert',[])
         },parseInt(dismissOnTimeout, 10))
     }
 }])
-.directive('fuguAlert',function () {
+.directive('uixAlert',function () {
     return {
         restrict: 'E',
         templateUrl: function(element, attrs){
@@ -73,7 +73,7 @@ angular.module('ui.fugu.alert',[])
             closeText : '@',
             hasIcon : '@'
         },
-        controller:'fuguAlertCtrl',
+        controller:'uixAlertCtrl',
         controllerAs: 'alert'
     }
 });
@@ -83,11 +83,8 @@ angular.module('ui.fugu.alert',[])
  * Author:penglu02@meituan.com
  * Date:2016-01-12
  */
-angular.module('ui.fugu.button', [])
-    .constant('buttonConfig', {
-
-    })
-    .directive('fuguButton', [function(){
+angular.module('ui.xg.button', [])
+    .directive('uixButton', [function(){
         return {
             restrict: 'AE',
             scope:{
@@ -204,7 +201,7 @@ angular.module('ui.fugu.button', [])
  * Author:penglu02@meituan.com
  * Date:2016-01-23
  */
-angular.module('ui.fugu.buttonGroup', [])
+angular.module('ui.xg.buttonGroup', [])
     .constant('buttonGroupConfig', {
         size : 'default',   // 按钮组大小:x-small,small,default,larger
         type : 'radio',  // 按钮组类型:radio 或者 checkbox类型
@@ -276,7 +273,7 @@ angular.module('ui.fugu.buttonGroup', [])
             return angular.isDefined(val) ? val :  attributeValue ? attributeValue : defaultValue;
         }
     }])
-    .directive('fuguButtonGroup', [function() {
+    .directive('uixButtonGroup', [function() {
         return {
             restrict: 'AE',
             replace: true,
@@ -379,8 +376,8 @@ angular.module('ui.fugu.buttonGroup', [])
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepanel', [])
-    .constant('fuguTimepanelConfig', {
+angular.module('ui.xg.timepanel', [])
+    .constant('uixTimepanelConfig', {
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
@@ -389,7 +386,7 @@ angular.module('ui.fugu.timepanel', [])
         arrowkeys: true,
         readonlyInput: false
     })
-    .controller('fuguTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
+    .controller('uixTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'uixTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
 
         this.init = function (_ngModelCtrl, inputs) {
@@ -677,18 +674,18 @@ angular.module('ui.fugu.timepanel', [])
             return value > 9 ? value : '0' + value;
         }
     }])
-    .directive('fuguTimepanel', function () {
+    .directive('uixTimepanel', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/timepanel.html',
             replace: true,
-            require: ['fuguTimepanel', 'ngModel'],
+            require: ['uixTimepanel', 'ngModel'],
             scope: {
                 onChange: '&',
                 minTime: '=?',
                 maxTime: '=?'
             },
-            controller: 'fuguTimepanelCtrl',
+            controller: 'uixTimepanelCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepanelCtrl.init(ngModelCtrl, el.find('input'));
@@ -701,15 +698,15 @@ angular.module('ui.fugu.timepanel', [])
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-14
  */
-angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
-    .constant('fuguCalendarConfig', {
+angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
+    .constant('uixCalendarConfig', {
         startingDay: 0, // 一周的开始天,0-周日,1-周一,以此类推
         showTime: true, // 是否显示时间选择
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: []  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
     })
-    .provider('fuguCalendar', function () {
+    .provider('uixCalendar', function () {
         var FORMATS = {};
         this.setFormats = function (formats, subFormats) {
             if (subFormats) {
@@ -736,9 +733,9 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             }
         }]
     })
-    .controller('fuguCalendarCtrl', ['$scope', '$attrs', '$log', 'fuguCalendar', 'fuguCalendarConfig',
-        function ($scope, $attrs, $log, fuguCalendarProvider, calendarConfig) {
-            var FORMATS = fuguCalendarProvider.getFormats();
+    .controller('uixCalendarCtrl', ['$scope', '$attrs', '$log', 'uixCalendar', 'uixCalendarConfig',
+        function ($scope, $attrs, $log, uixCalendarProvider, calendarConfig) {
+            var FORMATS = uixCalendarProvider.getFormats();
             var MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //每个月的天数,2月会根据闰年调整
             var ngModelCtrl = {$setViewValue: angular.noop};
 
@@ -1095,18 +1092,18 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
                 }
             }
         }])
-    .directive('fuguCalendar', function () {
+    .directive('uixCalendar', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/calendar.html',
             replace: true,
-            require: ['fuguCalendar', 'ngModel'],
+            require: ['uixCalendar', 'ngModel'],
             scope: {
                 minDate: '=?',
                 maxDate: '=?',
                 onChange: '&?'
             },
-            controller: 'fuguCalendarCtrl',
+            controller: 'uixCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var calendarCtrl = ctrls[0],
                     ngModelCtrl = ctrls[1];
@@ -1120,8 +1117,8 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
  * Author: ui.bootstrap https://github.com/angular-ui/bootstrap
  * Date:2016-05-25
  */
-angular.module('ui.fugu.position', [])
-    .factory('$fuguPosition', ['$document', '$window', function ($document, $window) {
+angular.module('ui.xg.position', [])
+    .factory('$uixPosition', ['$document', '$window', function ($document, $window) {
         /**
          * Used by scrollbarWidth() function to cache scrollbar's width.
          * Do not access this variable directly, use scrollbarWidth() instead.
@@ -1649,8 +1646,8 @@ angular.module('ui.fugu.position', [])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
-    .constant('fuguDatepickerConfig', {
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
+    .constant('uixDatepickerConfig', {
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
@@ -1660,7 +1657,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         showTime: true,
         size: 'md'
     })
-    .service('fuguDatepickerService', ['$document', function ($document) {
+    .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
         this.open = function (datepickerScope) {
             if (!openScope) {
@@ -1687,8 +1684,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             var toggleElement = openScope.getToggleElement();
             if (panelElement && panelElement[0].contains(evt.target) ||
                 toggleElement && toggleElement[0].contains(evt.target) ||
-                angular.element(evt.target).hasClass('fugu-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
-                angular.element(evt.target).hasClass('fugu-cal-day')
+                angular.element(evt.target).hasClass('uix-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
+                angular.element(evt.target).hasClass('uix-cal-day')
             ) {
                 return;
             }
@@ -1697,14 +1694,14 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$fuguPosition', 'fuguDatepickerService', 'fuguDatepickerConfig',
-        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $fuguPosition, fuguDatepickerService, fuguDatepickerConfig) {
+    .controller('uixDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$uixPosition', 'uixDatepickerService', 'uixDatepickerConfig',
+        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $uixPosition, uixDatepickerService, uixDatepickerConfig) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var self = this;
-            var template = '<div class="fugu-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+            var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<fugu-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></fugu-calendar>' +
+                '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></uix-calendar>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -1724,8 +1721,8 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 $scope.showCalendar = show;
             };
             function adjustPosition() {
-                var popoverEle = $element.next('.fugu-datepicker-popover');
-                var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                var popoverEle = $element.next('.uix-datepicker-popover');
+                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
                     popoverEle.addClass('top');
@@ -1742,10 +1739,10 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 return $scope.showCalendar;
             };
             angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
-                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : fuguDatepickerConfig[key];
+                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
             });
 
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : fuguDatepickerConfig.format;
+            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
 
             this.render = function () {
                 var date = ngModelCtrl.$modelValue;
@@ -1768,7 +1765,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
 
             // 获取日历面板和被点击的元素
             $scope.getCanledarElement = function () {
-                return $element.next('.fugu-datepicker-popover');
+                return $element.next('.uix-datepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return angular.element($element[0].querySelector('.input-group'));
@@ -1782,13 +1779,13 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             };
             $scope.$watch('showCalendar', function (showCalendar) {
                 if (showCalendar) {
-                    fuguDatepickerService.open($scope);
+                    uixDatepickerService.open($scope);
                 } else {
-                    fuguDatepickerService.close($scope);
+                    uixDatepickerService.close($scope);
                 }
             });
 
-            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : fuguDatepickerConfig.autoClose;
+            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
             // 选择日期
             $scope.changeDateHandler = function (date) {
                 $scope.inputValue = dateFilter(date, format);
@@ -1809,12 +1806,12 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
             });
 
         }])
-    .directive('fuguDatepicker', function () {
+    .directive('uixDatepicker', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/datepicker.html',
             replace: true,
-            require: ['fuguDatepicker', 'ngModel'],
+            require: ['uixDatepicker', 'ngModel'],
             scope: {
                 minDate: '=?',
                 maxDate: '=?',
@@ -1823,7 +1820,7 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
                 isDisabled: '=?ngDisabled',
                 onChange: '&?'
             },
-            controller: 'fuguDatepickerCtrl',
+            controller: 'uixDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var datepickerCtrl = ctrls[0],
                     ngModelCtrl = ctrls[1];
@@ -1837,14 +1834,14 @@ angular.module('ui.fugu.datepicker', ['ui.fugu.calendar', 'ui.fugu.position'])
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown', [])
+angular.module('ui.xg.dropdown', [])
 
-    .constant('fuguDropdownConfig', {
+    .constant('uixDropdownConfig', {
         openClass: 'open',
         eachItemWidth: 120,
         multiColClass: 'dropdown-multi'
     })
-    .provider('fuguDropdown', function () {
+    .provider('uixDropdown', function () {
         var _colsNum = 3;
         this.setColsNum = function (num) {
             _colsNum = angular.isNumber(num) ? num : 3;
@@ -1857,7 +1854,7 @@ angular.module('ui.fugu.dropdown', [])
             }
         }
     })
-    .service('fuguDropdownService', ['$document', function ($document) {
+    .service('uixDropdownService', ['$document', function ($document) {
         var openScope = null;
 
         this.open = function (dropdownScope) {
@@ -1906,11 +1903,11 @@ angular.module('ui.fugu.dropdown', [])
         }
     }])
 
-    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'fuguDropdown', 'fuguDropdownConfig', 'fuguDropdownService', '$animate',
-        function ($scope, $attrs, $parse, fuguDropdown, fuguDropdownConfig, fuguDropdownService, $animate) {
+    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
+        function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
             var self = this,
                 scope = $scope.$new(), // create a child scope so we are not polluting original one
-                openClass = fuguDropdownConfig.openClass,
+                openClass = uixDropdownConfig.openClass,
                 getIsOpen,
                 setIsOpen = angular.noop,
                 toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
@@ -1918,7 +1915,7 @@ angular.module('ui.fugu.dropdown', [])
             this.init = function (element) {
                 self.$element = element;
                 self.colsNum = angular.isDefined($attrs.colsNum) ?
-                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : fuguDropdown.getColsNum();
+                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
                 if ($attrs.isOpen) {
                     getIsOpen = $parse($attrs.isOpen);
                     setIsOpen = getIsOpen.assign;
@@ -1957,9 +1954,9 @@ angular.module('ui.fugu.dropdown', [])
 
                 if (isOpen) {
                     scope.focusToggleElement();
-                    fuguDropdownService.open(scope);
+                    uixDropdownService.open(scope);
                 } else {
-                    fuguDropdownService.close(scope);
+                    uixDropdownService.close(scope);
                 }
 
                 setIsOpen($scope, isOpen);
@@ -1969,14 +1966,14 @@ angular.module('ui.fugu.dropdown', [])
             });
             // set multi column
             function setMultiCols() {
-                var eachItemWidth = fuguDropdownConfig.eachItemWidth;
+                var eachItemWidth = uixDropdownConfig.eachItemWidth;
                 var colsNum = self.colsNum;
                 var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
                 var dropdownList = angular.element(self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)'));
                 if (dropdownList.length <= colsNum || colsNum === 1) {
                     return;
                 }
-                self.$element.addClass(fuguDropdownConfig.multiColClass);
+                self.$element.addClass(uixDropdownConfig.multiColClass);
                 dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
                 dropdownList.css('width', 100 / colsNum + '%');
             }
@@ -1990,7 +1987,7 @@ angular.module('ui.fugu.dropdown', [])
             });
         }])
 
-    .directive('fuguDropdown', function () {
+    .directive('uixDropdown', function () {
         return {
             controller: 'DropdownController',
             link: function (scope, element, attrs, dropdownCtrl) {
@@ -1999,9 +1996,9 @@ angular.module('ui.fugu.dropdown', [])
         };
     })
 
-    .directive('fuguDropdownToggle', function () {
+    .directive('uixDropdownToggle', function () {
         return {
-            require: '?^fuguDropdown',
+            require: '?^uixDropdown',
             link: function (scope, element, attrs, dropdownCtrl) {
                 if (!dropdownCtrl) {
                     return;
@@ -2040,8 +2037,8 @@ angular.module('ui.fugu.dropdown', [])
  * Author: yjy972080142@gmail.com
  * Date:2016-06-06
  */
-angular.module('ui.fugu.stackedMap', [])
-    .factory('$fuguStackedMap', function () {
+angular.module('ui.xg.stackedMap', [])
+    .factory('$uixStackedMap', function () {
         return {
             createNew: function () {
                 var stack = [];
@@ -2099,7 +2096,7 @@ angular.module('ui.fugu.stackedMap', [])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
+angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
@@ -2134,9 +2131,9 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
     })
 
     /**
-     * A helper directive for the $fgModal service. It creates a backdrop element.
+     * A helper directive for the $uixModal service. It creates a backdrop element.
      */
-    .directive('fuguModalBackdrop', ['$timeout', function ($timeout) {
+    .directive('uixModalBackdrop', ['$timeout', function ($timeout) {
         return {
             restrict: 'EA',
             replace: true,
@@ -2154,7 +2151,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
         };
     }])
 
-    .directive('fuguModalWindow', ['$fgModalStack', '$timeout', function ($fgModalStack, $timeout) {
+    .directive('uixModalWindow', ['$uixModalStack', '$timeout', function ($uixModalStack, $timeout) {
         return {
             restrict: 'EA',
             scope: {
@@ -2186,18 +2183,18 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 });
 
                 scope.close = function (evt) {
-                    var modal = $fgModalStack.getTop();
+                    var modal = $uixModalStack.getTop();
                     if (modal && modal.value.backdrop && modal.value.backdrop != 'static' && (evt.target === evt.currentTarget)) {
                         evt.preventDefault();
                         evt.stopPropagation();
-                        $fgModalStack.dismiss(modal.key, 'backdrop click');
+                        $uixModalStack.dismiss(modal.key, 'backdrop click');
                     }
                 };
             }
         };
     }]) /// TODO 修改变量
 
-    .directive('fuguModalTransclude', function () {
+    .directive('uixModalTransclude', function () {
         return {
             link: function($scope, $element, $attrs, controller, $transclude) {
                 // TODO 这个$transclude是自动注入的吗?
@@ -2209,14 +2206,14 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
         };
     })
 
-    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$fuguStackedMap',
+    .factory('$uixModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$uixStackedMap',
         function ($transition, $timeout, $document, $compile, $rootScope, $$stackedMap) {
 
             var OPENED_MODAL_CLASS = 'modal-open';
 
             var backdropDomEl, backdropScope;
             var openedWindows = $$stackedMap.createNew();
-            var $fgModalStack = {};
+            var $uixModalStack = {};
 
             function backdropIndex() {
                 var topBackdropIndex = -1;
@@ -2303,13 +2300,13 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                     if (modal && modal.value.keyboard) {
                         evt.preventDefault();
                         $rootScope.$apply(function () {
-                            $fgModalStack.dismiss(modal.key, 'escape key press');
+                            $uixModalStack.dismiss(modal.key, 'escape key press');
                         });
                     }
                 }
             });
 
-            $fgModalStack.open = function (modalInstance, modal) {
+            $uixModalStack.open = function (modalInstance, modal) {
 
                 openedWindows.add(modalInstance, {
                     deferred: modal.deferred,
@@ -2325,13 +2322,13 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 if (currBackdropIndex >= 0 && !backdropDomEl) {
                     backdropScope = $rootScope.$new(true);
                     backdropScope.index = currBackdropIndex;
-                    var angularBackgroundDomEl = angular.element('<div fugu-modal-backdrop></div>');
+                    var angularBackgroundDomEl = angular.element('<div uix-modal-backdrop></div>');
                     angularBackgroundDomEl.attr('backdrop-class', modal.backdropClass);
                     backdropDomEl = $compile(angularBackgroundDomEl)(backdropScope);
                     body.append(backdropDomEl);
                 }
 
-                var angularDomEl = angular.element('<div fugu-modal-window></div>');
+                var angularDomEl = angular.element('<div uix-modal-window></div>');
                 angularDomEl.attr({
                     'window-class': modal.windowClass,
                     'size': modal.size,
@@ -2344,7 +2341,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 body.addClass(OPENED_MODAL_CLASS);
             };
 
-            $fgModalStack.close = function (modalInstance, result) {
+            $uixModalStack.close = function (modalInstance, result) {
                 var modalWindow = openedWindows.get(modalInstance);
                 if (modalWindow) {
                     modalWindow.value.deferred.resolve(result);
@@ -2352,7 +2349,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.dismiss = function (modalInstance, reason) {
+            $uixModalStack.dismiss = function (modalInstance, reason) {
                 var modalWindow = openedWindows.get(modalInstance);
                 if (modalWindow) {
                     modalWindow.value.deferred.reject(reason);
@@ -2360,7 +2357,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.dismissAll = function (reason) {
+            $uixModalStack.dismissAll = function (reason) {
                 var topModal = this.getTop();
                 while (topModal) {
                     this.dismiss(topModal.key, reason);
@@ -2368,21 +2365,21 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.getTop = function () {
+            $uixModalStack.getTop = function () {
                 return openedWindows.top();
             };
 
-            return $fgModalStack;
+            return $uixModalStack;
         }])
 
-    .provider('$fgModal', function () {
+    .provider('$uixModal', function () {
         var self = this;
         this.options = {
             backdrop: true, //can be also false or 'static'
             keyboard: true
         };
-        this.$get = ['$injector', '$rootScope', '$q', '$http', '$templateCache', '$controller', '$fgModalStack',
-            function ($injector, $rootScope, $q, $http, $templateCache, $controller, $fgModalStack) {
+        this.$get = ['$injector', '$rootScope', '$q', '$http', '$templateCache', '$controller', '$uixModalStack',
+            function ($injector, $rootScope, $q, $http, $templateCache, $controller, $uixModalStack) {
                 /**
                  * 获取模板
                  * @param options - 配置信息
@@ -2421,10 +2418,10 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                             result: modalResultDeferred.promise,
                             opened: modalOpenedDeferred.promise,
                             close: function (result) {
-                                $fgModalStack.close(modalInstance, result);
+                                $uixModalStack.close(modalInstance, result);
                             },
                             dismiss: function (reason) {
-                                $fgModalStack.dismiss(modalInstance, reason);
+                                $uixModalStack.dismiss(modalInstance, reason);
                             }
                         };
 
@@ -2450,9 +2447,9 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
 
                             //controllers
                             if (modalOptions.controller) {
-                                // 使用$controller创建controller并注入$scope,$fgModalInstance和resolve
+                                // 使用$controller创建controller并注入$scope,$uixModalInstance和resolve
                                 ctrlLocals.$scope = modalScope;
-                                ctrlLocals.$fgModalInstance = modalInstance;
+                                ctrlLocals.$uixModalInstance = modalInstance;
                                 angular.forEach(modalOptions.resolve, function (value, key) {
                                     ctrlLocals[key] = tplAndVars[resolveIter++];
                                 });
@@ -2462,7 +2459,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                                     modalScope[modalOptions.controllerAs] = ctrlInstance;
                                 }
                             }
-                            $fgModalStack.open(modalInstance, {
+                            $uixModalStack.open(modalInstance, {
                                 scope: modalScope,
                                 deferred: modalResultDeferred,
                                 content: tplAndVars[0],
@@ -2496,7 +2493,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
  * Author:penglu02@meituan.com
  * Date:2016-03-22
  */
-angular.module('ui.fugu.notify', [])
+angular.module('ui.xg.notify', [])
     .service('notifyServices', [
         '$sce',
         '$interval',
@@ -2623,13 +2620,13 @@ angular.module('ui.fugu.notify', [])
     .controller('notifyController', [
         '$scope',
         '$interval',
-        'notify',
+        '$uixNotify',
         'notifyServices',
-        function ($scope, $interval, notify, notifyServices) {
+        function ($scope, $interval, $uixNotify, notifyServices) {
             $scope.referenceId = $scope.reference || 0;
             notifyServices.initDirective($scope.referenceId, $scope.limitMessages);
             $scope.notifyServices = notifyServices;
-            $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : notify.inlineMessages();
+            $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : $uixNotify.inlineMessages();
             $scope.$watch('limitMessages', function (limitMessages) {
                 var directive = notifyServices.directives[$scope.referenceId];
                 if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
@@ -2664,8 +2661,8 @@ angular.module('ui.fugu.notify', [])
             };
             $scope.wrapperClasses = function () {
                 var classes = {};
-                classes['fugu-notify-fixed'] = !$scope.inlineMessage;
-                classes[notify.position()] = true;
+                classes['uix-notify-fixed'] = !$scope.inlineMessage;
+                classes[$uixNotify.position()] = true;
                 return classes;
             };
             $scope.computeTitle = function (message) {
@@ -2679,7 +2676,7 @@ angular.module('ui.fugu.notify', [])
             };
         }
     ])
-    .provider('notify', function () {
+    .provider('$uixNotify', function () {
 
         var _ttl = {
                 success: null,
@@ -2760,7 +2757,7 @@ angular.module('ui.fugu.notify', [])
         };
         this.serverMessagesInterceptor = [
             '$q',
-            'notify',
+            '$uixNotify',
             function ($q, notify) {
                 function checkResponse(response) {
                     if (angular.isDefined(response) && response.data && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
@@ -2907,7 +2904,7 @@ angular.module('ui.fugu.notify', [])
             }
         ];
     })
-    .directive('fuguNotify', [function () {
+    .directive('uixNotify', [function () {
         return {
             restrict: 'A',
             templateUrl: 'templates/notify.html',
@@ -2921,8 +2918,8 @@ angular.module('ui.fugu.notify', [])
         };
     }]);
 
-angular.module('ui.fugu.pager',[])
-.constant('fuguPagerConfig', {
+angular.module('ui.xg.pager',[])
+.constant('uixPagerConfig', {
     itemsPerPage: 20, //默认每页数目为20
     maxSize:5, //默认分页最大显示数目为5
     firstText:'首页',
@@ -2930,16 +2927,16 @@ angular.module('ui.fugu.pager',[])
     previousText:'上一页',
     nextText:'下一页'
 })
-.controller('fuguPagerCtrl',['$scope', function ($scope) {
+.controller('uixPagerCtrl',['$scope', function ($scope) {
 
     var pageOffset = 0,
         initialized = false;
 
-    this.init = function (fuguPagerConfig) {
-        $scope.itemsPerPage = $scope.itemsPerPage || fuguPagerConfig.itemsPerPage;
-        $scope.maxSize = $scope.maxSize || fuguPagerConfig.maxSize;
+    this.init = function (uixPagerConfig) {
+        $scope.itemsPerPage = $scope.itemsPerPage || uixPagerConfig.itemsPerPage;
+        $scope.maxSize = $scope.maxSize || uixPagerConfig.maxSize;
         $scope.getText = function (key){
-            return $scope[key + 'Text'] || fuguPagerConfig[key + 'Text'];
+            return $scope[key + 'Text'] || uixPagerConfig[key + 'Text'];
         };
     };
 
@@ -3056,12 +3053,12 @@ angular.module('ui.fugu.pager',[])
         this.selectPage($scope.currentPage + 1);
     };
 }])
-.directive('fuguPager', ['fuguPagerConfig', function (fuguPagerConfig) {
+.directive('uixPager', ['uixPagerConfig', function (uixPagerConfig) {
     return {
         restrict: 'E',
         templateUrl:'templates/pager.html',
         replace:true,
-        require:'fuguPager',
+        require:'uixPager',
         scope:{
             itemsPerPage:'=?',
             totalItems:'=',
@@ -3073,9 +3070,9 @@ angular.module('ui.fugu.pager',[])
             nextText:'@?',
             pageChanged:'&?'
         },
-        controller:'fuguPagerCtrl',
-        link: function (scope,el,attrs,fuguPagerCtrl) {
-            fuguPagerCtrl.init(fuguPagerConfig);
+        controller:'uixPagerCtrl',
+        link: function (scope,el,attrs,uixPagerCtrl) {
+            uixPagerCtrl.init(uixPagerConfig);
         }
     }
 }]);
@@ -3086,13 +3083,13 @@ angular.module('ui.fugu.pager',[])
  * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
+angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
     /**
      * The $tooltip service creates tooltip- and popover-like directives as well as
      * houses global options for them.
      */
-    .provider('$fuguTooltip', function () {
+    .provider('$uixTooltip', function () {
         // The default options tooltip and popover.
         var defaultOptions = {
             placement: 'top',
@@ -3152,7 +3149,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
          * Returns the actual instance of the $tooltip service.
          * TODO support multiple triggers
          */
-        this.$get = ['$window', '$compile', '$timeout', '$document', '$fuguPosition', '$interpolate', '$rootScope', '$parse', '$fuguStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
+        this.$get = ['$window', '$compile', '$timeout', '$document', '$uixPosition', '$interpolate', '$rootScope', '$parse', '$uixStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
             var openedTooltips = $$stackedMap.createNew();
             $document.on('keypress', keypressListener);
 
@@ -3660,7 +3657,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
     })
 
     // This is mostly ngInclude code but with a custom scope
-    .directive('fuguTooltipTemplateTransclude', [
+    .directive('uixTooltipTemplateTransclude', [
         '$animate', '$sce', '$compile', '$templateCache', '$http',
         function ($animate, $sce, $compile, $templateCache, $http) {
             return {
@@ -3712,7 +3709,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                         scope.$emit('$includeContentRequested', src);
                     }
 
-                    scope.$watch($sce.parseAsResourceUrl(attrs.fuguTooltipTemplateTransclude), function (src) {
+                    scope.$watch($sce.parseAsResourceUrl(attrs.uixTooltipTemplateTransclude), function (src) {
                         thisChangeId = ++changeCounter;
                         if (src) {
                             // ng1.2没有templateRequestProvider,用$templateCache+$http代替
@@ -3747,7 +3744,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
      * They must not be animated as they're expected to be present on the tooltip on
      * initialization.
      */
-    .directive('fuguTooltipClasses', ['$fuguPosition', function ($fuguPosition) {
+    .directive('uixTooltipClasses', ['$uixPosition', function ($uixPosition) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -3757,7 +3754,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                 if (scope.placement) {
                     // // There are no top-left etc... classes
                     // // in TWBS, so we need the primary position.
-                    var position = $fuguPosition.parsePlacement(scope.placement);
+                    var position = $uixPosition.parsePlacement(scope.placement);
                     element.addClass(position[0]);
                 } else {
                     element.addClass('top');
@@ -3774,44 +3771,44 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
         };
     }])
 
-    .directive('fuguTooltipPopup', function () {
+    .directive('uixTooltipPopup', function () {
         return {
             replace: true,
             scope: {content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
-            templateUrl: 'templates/fugu-tooltip-popup.html'
+            templateUrl: 'templates/tooltip-popup.html'
         };
     })
 
-    .directive('fuguTooltip', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltip', 'tooltip', 'mouseenter');
+    .directive('uixTooltip', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltip', 'tooltip', 'mouseenter');
     }])
 
-    .directive('fuguTooltipHtmlPopup', function () {
+    .directive('uixTooltipHtmlPopup', function () {
         return {
             replace: true,
             scope: {contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
-            templateUrl: 'templates/fugu-tooltip-html-popup.html'
+            templateUrl: 'templates/tooltip-html-popup.html'
         };
     })
 
-    .directive('fuguTooltipHtml', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltipHtml', 'tooltip', 'mouseenter', {
+    .directive('uixTooltipHtml', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltipHtml', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }])
-    .directive('fuguTooltipTemplatePopup', function () {
+    .directive('uixTooltipTemplatePopup', function () {
         return {
             replace: true,
             scope: {
                 contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
                 originScope: '&'
             },
-            templateUrl: 'templates/fugu-tooltip-template-popup.html'
+            templateUrl: 'templates/tooltip-template-popup.html'
         };
     })
 
-    .directive('fuguTooltipTemplate', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltipTemplate', 'tooltip', 'mouseenter', {
+    .directive('uixTooltipTemplate', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltipTemplate', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }]);
@@ -3822,46 +3819,46 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
  * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.fugu.popover',['ui.fugu.tooltip'])
+angular.module('ui.xg.popover',['ui.xg.tooltip'])
 
-    .directive('fuguPopoverTemplatePopup', function() {
+    .directive('uixPopoverTemplatePopup', function() {
         return {
             replace: true,
             scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
                 originScope: '&' },
-            templateUrl: 'templates/fugu-popover-template-popup.html'
+            templateUrl: 'templates/popover-template-popup.html'
         };
     })
 
-    .directive('fuguPopoverTemplate', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopoverTemplate', 'popover', 'click', {
+    .directive('uixPopoverTemplate', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopoverTemplate', 'popover', 'click', {
             useContentExp: true
         });
     }])
-    .directive('fuguPopoverHtmlPopup', function() {
+    .directive('uixPopoverHtmlPopup', function() {
         return {
             replace: true,
             scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/fugu-popover-html-popup.html'
+            templateUrl: 'templates/popover-html-popup.html'
         };
     })
 
-    .directive('fuguPopoverHtml', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopoverHtml', 'popover', 'click', {
+    .directive('uixPopoverHtml', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopoverHtml', 'popover', 'click', {
             useContentExp: true
         });
     }])
 
-    .directive('fuguPopoverPopup', function() {
+    .directive('uixPopoverPopup', function() {
         return {
             replace: true,
             scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/fugu-popover-popup.html'
+            templateUrl: 'templates/popover-popup.html'
         };
     })
 
-    .directive('fuguPopover', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopover', 'popover', 'click');
+    .directive('uixPopover', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopover', 'popover', 'click');
     }]);
 /**
  * searchBox
@@ -3869,25 +3866,25 @@ angular.module('ui.fugu.popover',['ui.fugu.tooltip'])
  * Author:yangjiyuan@meituan.com
  * Date:2016-1-25
  */
-angular.module('ui.fugu.searchBox',[])
-.constant('fuguSearchBoxConfig', {
+angular.module('ui.xg.searchBox',[])
+.constant('uixSearchBoxConfig', {
     btnText: '搜索', // 默认搜索按钮文本
     showBtn: true   // 默认显示按钮
 })
-.controller('fuguSearchBoxCtrl',['$scope','$attrs','fuguSearchBoxConfig', function ($scope,$attrs,fuguSearchBoxConfig) {
+.controller('uixSearchBoxCtrl',['$scope','$attrs','uixSearchBoxConfig', function ($scope,$attrs,uixSearchBoxConfig) {
     var ngModelCtrl = { $setViewValue: angular.noop };
     $scope.searchBox = {};
     this.init = function (_ngModelCtrl) {
         ngModelCtrl = _ngModelCtrl;
         ngModelCtrl.$render = this.render;
-        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : fuguSearchBoxConfig.showBtn;
+        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : uixSearchBoxConfig.showBtn;
     };
     var btnText;
     $scope.getText = function () {
         if(btnText){
             return btnText;
         }
-        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : fuguSearchBoxConfig.btnText;
+        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : uixSearchBoxConfig.btnText;
         return btnText;
     };
     $scope.$watch('searchBox.query', function (val) {
@@ -3910,19 +3907,19 @@ angular.module('ui.fugu.searchBox',[])
         $scope.searchBox.query = ngModelCtrl.$modelValue;
     };
 }])
-.directive('fuguSearchBox',function () {
+.directive('uixSearchBox',function () {
     return {
         restrict: 'E',
         templateUrl:'templates/searchBox.html',
         replace:true,
-        require:['fuguSearchBox', '?ngModel'],
+        require:['uixSearchBox', '?ngModel'],
         scope:{
             btnText:'@?',
             showBtn:'=?',
             placeholder:'@?',
             search:'&?'
         },
-        controller:'fuguSearchBoxCtrl',
+        controller:'uixSearchBoxCtrl',
         link: function (scope,el,attrs,ctrls) {
             var searchBoxCtrl = ctrls[0], ngModelCtrl = ctrls[1];
             searchBoxCtrl.init(ngModelCtrl);
@@ -3935,8 +3932,8 @@ angular.module('ui.fugu.searchBox',[])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-29
  */
-angular.module('ui.fugu.select', [])
-    .constant('fuguSelectConfig', {
+angular.module('ui.xg.select', [])
+    .constant('uixSelectConfig', {
         KEY: {
             TAB: 9,
             ENTER: 13,
@@ -4090,8 +4087,8 @@ angular.module('ui.fugu.select', [])
         appendToBody: false
     })
     // 当指令传递参数等发生错误时抛出异常
-    .service('fuguSelectMinErr', function () {
-        var minErr = angular.$$minErr('ui.fugu.select');
+    .service('uixSelectMinErr', function () {
+        var minErr = angular.$$minErr('ui.xg.select');
         return function () {
             var error = minErr.apply(this, arguments);
             var str = '\n?http://errors.angularjs.org/.*';
@@ -4100,7 +4097,7 @@ angular.module('ui.fugu.select', [])
         };
     })
     // 添加DOM节点到指定内
-    .directive('fuguTranscludeAppend', function () {
+    .directive('uixTranscludeAppend', function () {
         return {
             link: function (scope, element, attrs, ctrl, transclude) {
                 transclude(scope, function (clone) {
@@ -4116,11 +4113,11 @@ angular.module('ui.fugu.select', [])
         }
 
         return function (matchItem, query) {
-            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="fugu-select-highlight">$&</span>') : matchItem;
+            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="uix-select-highlight">$&</span>') : matchItem;
         };
     })
     // 位置偏移
-    .factory('fuguSelectOffset', ['$document', '$window', function ($document, $window) {
+    .factory('uixSelectOffset', ['$document', '$window', function ($document, $window) {
         return function (element) {
             var elem = element[0] || element;
             var elemBCR = elem.getBoundingClientRect();
@@ -4132,20 +4129,20 @@ angular.module('ui.fugu.select', [])
             };
         };
     }])
-    .controller('fuguSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'fuguSelectRepeatParser', 'fuguSelectMinErr', 'fuguSelectConfig',
-        function ($scope, $element, $timeout, $filter, RepeatParser, fuguSelectMinErr, fuguSelectConfig) {
-            var KEY = fuguSelectConfig.KEY;
+    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser', 'uixSelectMinErr', 'uixSelectConfig',
+        function ($scope, $element, $timeout, $filter, RepeatParser, uixSelectMinErr, uixSelectConfig) {
+            var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
             var EMPTY_SEARCH = '';
 
-            ctrl.placeholder = fuguSelectConfig.placeholder;
-            ctrl.searchEnabled = fuguSelectConfig.searchEnabled;
-            ctrl.sortable = fuguSelectConfig.sortable;
-            ctrl.refreshDelay = fuguSelectConfig.refreshDelay;
+            ctrl.placeholder = uixSelectConfig.placeholder;
+            ctrl.searchEnabled = uixSelectConfig.searchEnabled;
+            ctrl.sortable = uixSelectConfig.sortable;
+            ctrl.refreshDelay = uixSelectConfig.refreshDelay;
 
             ctrl.removeSelected = false; //If selected item(s) should be removed from dropdown list
-            ctrl.closeOnSelect = true; //Initialized inside fuguSelect directive link function
+            ctrl.closeOnSelect = true; //Initialized inside uixSelect directive link function
             ctrl.search = EMPTY_SEARCH;
 
             ctrl.activeIndex = 0; //Dropdown of choices
@@ -4158,17 +4155,17 @@ angular.module('ui.fugu.select', [])
 
             ctrl.focusser = null; //Reference to input element used to handle focus events
             ctrl.resetSearchInput = true;
-            ctrl.multiple = null; // Initialized inside fuguSelect directive link function
-            ctrl.disableChoiceExpression = null; // Initialized inside fuguSelectChoices directive link function
+            ctrl.multiple = null; // Initialized inside uixSelect directive link function
+            ctrl.disableChoiceExpression = null; // Initialized inside uixSelectChoices directive link function
             ctrl.tagging = {isActivated: false, fct: null};
             ctrl.taggingTokens = {isActivated: false, tokens: null};
-            ctrl.lockChoiceExpression = null; // Initialized inside fuguSelectMatch directive link function
+            ctrl.lockChoiceExpression = null; // Initialized inside uixSelectMatch directive link function
             ctrl.clickTriggeredSelect = false;
             ctrl.$filter = $filter;
 
-            ctrl.searchInput = angular.element($element[0].querySelectorAll('input.fugu-select-search'));
+            ctrl.searchInput = angular.element($element[0].querySelectorAll('input.uix-select-search'));
             if (ctrl.searchInput.length !== 1) {
-                throw fuguSelectMinErr('searchInput', "Expected 1 input.fugu-select-search but got '{0}'.", ctrl.searchInput.length);
+                throw uixSelectMinErr('searchInput', "Expected 1 input.uix-select-search but got '{0}'.", ctrl.searchInput.length);
             }
 
             ctrl.isEmpty = function () {
@@ -4177,7 +4174,7 @@ angular.module('ui.fugu.select', [])
 
             // Most of the time the user does not want to empty the search input when in typeahead mode
             function _resetSearchInput() {
-                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && fuguSelectConfig.resetSearchInput)) {
+                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && uixSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
                     //reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
@@ -4198,14 +4195,14 @@ angular.module('ui.fugu.select', [])
                 return result;
             }
 
-            // When the user clicks on fugu-select, displays the dropdown list
+            // When the user clicks on uix-select, displays the dropdown list
             ctrl.activate = function (initSearchValue, avoidReset) {
                 if (!ctrl.disabled && !ctrl.open) {
                     if (!avoidReset) {
                         _resetSearchInput();
                     }
 
-                    $scope.$broadcast('fuguSelect:activate');
+                    $scope.$broadcast('uixSelect:activate');
 
                     ctrl.open = true;
 
@@ -4295,7 +4292,7 @@ angular.module('ui.fugu.select', [])
                         ctrl.items = [];
                     } else {
                         if (!angular.isArray(items)) {
-                            throw fuguSelectMinErr('items', "Expected an array but got '{0}'.", items);
+                            throw uixSelectMinErr('items', "Expected an array but got '{0}'.", items);
                         } else {
                             //Remove already selected items (ex: while searching)
                             //TODO Should add a test
@@ -4312,7 +4309,7 @@ angular.module('ui.fugu.select', [])
             /**
              * Typeahead mode: lets the user refresh the collection using his own function.
              *
-             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/fugu-select/pull/31
+             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/uix-select/pull/31
              */
             ctrl.refresh = function (refreshAttr) {
                 if (angular.isDefined(refreshAttr)) {
@@ -4364,7 +4361,7 @@ angular.module('ui.fugu.select', [])
                 if (itemIndex >= 0 && !angular.isUndefined(ctrl.disableChoiceExpression)) {
                     item = ctrl.items[itemIndex];
                     isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
-                    item._fuguSelectChoiceDisabled = isDisabled; // store this for later reference
+                    item._uixSelectChoiceDisabled = isDisabled; // store this for later reference
                 }
 
                 return isDisabled;
@@ -4373,13 +4370,13 @@ angular.module('ui.fugu.select', [])
 
             // When the user selects an item with ENTER or clicks the dropdown
             ctrl.select = function (item, skipFocusser, $event) {
-                if (angular.isUndefined(item) || !item._fuguSelectChoiceDisabled) {
+                if (angular.isUndefined(item) || !item._uixSelectChoiceDisabled) {
 
                     if (!ctrl.items && !ctrl.search) {
                         return;
                     }
 
-                    if (!item || !item._fuguSelectChoiceDisabled) {
+                    if (!item || !item._uixSelectChoiceDisabled) {
                         if (ctrl.tagging.isActivated) {
                             // if taggingLabel is disabled, we pull from ctrl.search val
                             if (ctrl.taggingLabel === false) {
@@ -4425,7 +4422,7 @@ angular.module('ui.fugu.select', [])
                             }
                         }
 
-                        $scope.$broadcast('fuguSelect:select', item);
+                        $scope.$broadcast('uixSelect:select', item);
 
                         var locals = {};
                         locals[ctrl.parserResult.itemName] = item;
@@ -4458,7 +4455,7 @@ angular.module('ui.fugu.select', [])
                 _resetSearchInput();
                 ctrl.open = false;
 
-                $scope.$broadcast('fuguSelect:close', skipFocusser);
+                $scope.$broadcast('uixSelect:close', skipFocusser);
 
             };
 
@@ -4492,7 +4489,7 @@ angular.module('ui.fugu.select', [])
 
                 if (item && !angular.isUndefined(ctrl.lockChoiceExpression)) {
                     isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression)); // force the boolean value
-                    item._fuguSelectChoiceLocked = isLocked; // store this for later reference
+                    item._uixSelectChoiceLocked = isLocked; // store this for later reference
                 }
 
                 return isLocked;
@@ -4649,10 +4646,10 @@ angular.module('ui.fugu.select', [])
 
             // See https://github.com/ivaynberg/select2/blob/3.4.6/select2.js#L1431
             function _ensureHighlightVisible() {
-                var container = angular.element($element[0].querySelectorAll('.fugu-select-choices-content'));
-                var choices = angular.element(container[0].querySelectorAll('.fugu-select-choices-row'));
+                var container = angular.element($element[0].querySelectorAll('.uix-select-choices-content'));
+                var choices = angular.element(container[0].querySelectorAll('.uix-select-choices-row'));
                 if (choices.length < 1) {
-                    throw fuguSelectMinErr('choices', "Expected multiple .fugu-select-choices-row but got '{0}'.", choices.length);
+                    throw uixSelectMinErr('choices', "Expected multiple .uix-select-choices-row but got '{0}'.", choices.length);
                 }
 
                 if (ctrl.activeIndex < 0) {
@@ -4678,8 +4675,8 @@ angular.module('ui.fugu.select', [])
                 ctrl.searchInput.off('keyup keydown tagged blur paste');
             });
         }])
-    .directive('fuguSelect', ['$document', 'fuguSelectConfig', 'fuguSelectMinErr', 'fuguSelectOffset', '$compile', '$parse', '$timeout',
-        function ($document, fuguSelectConfig, fuguSelectMinErr, fuguSelectOffset, $compile, $parse, $timeout) {
+    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset', '$compile', '$parse', '$timeout',
+        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $compile, $parse, $timeout) {
             return {
                 restrict: 'EA',
                 templateUrl: function (tElement, tAttrs) {
@@ -4687,16 +4684,16 @@ angular.module('ui.fugu.select', [])
                 },
                 replace: true,
                 transclude: true,
-                require: ['fuguSelect', '^ngModel'],
+                require: ['uixSelect', '^ngModel'],
                 scope: true,
-                controller: 'fuguSelectCtrl',
+                controller: 'uixSelectCtrl',
                 controllerAs: '$select',
                 compile: function (tElement, tAttrs) {
                     //Multiple or Single depending if multiple attribute presence
                     if (angular.isDefined(tAttrs.multiple)) {
-                        tElement.append("<fugu-select-multiple/>").removeAttr('multiple');
+                        tElement.append("<uix-select-multiple/>").removeAttr('multiple');
                     } else {
-                        tElement.append("<fugu-select-single/>");
+                        tElement.append("<uix-select-single/>");
                     }
 
                     return function (scope, element, attrs, ctrls, transcludeFn) {
@@ -4711,14 +4708,14 @@ angular.module('ui.fugu.select', [])
                             if (angular.isDefined(attrs.closeOnSelect)) {
                                 return $parse(attrs.closeOnSelect)();
                             } else {
-                                return fuguSelectConfig.closeOnSelect;
+                                return uixSelectConfig.closeOnSelect;
                             }
                         })();
 
                         $select.onSelectCallback = $parse(attrs.onSelect);
                         $select.onRemoveCallback = $parse(attrs.onRemove);
 
-                        //Set reference to ngModel from fuguSelectCtrl
+                        //Set reference to ngModel from uixSelectCtrl
                         $select.ngModel = ngModel;
 
                         $select.choiceGrouped = function (group) {
@@ -4734,12 +4731,12 @@ angular.module('ui.fugu.select', [])
 
                         scope.$watch('searchEnabled', function () {
                             var searchEnabled = scope.$eval(attrs.searchEnabled);
-                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : fuguSelectConfig.searchEnabled;
+                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : uixSelectConfig.searchEnabled;
                         });
 
                         scope.$watch('sortable', function () {
                             var sortable = scope.$eval(attrs.sortable);
-                            $select.sortable = angular.isDefined(sortable) ? sortable : fuguSelectConfig.sortable;
+                            $select.sortable = angular.isDefined(sortable) ? sortable : uixSelectConfig.sortable;
                         });
 
                         attrs.$observe('disabled', function () {
@@ -4820,8 +4817,8 @@ angular.module('ui.fugu.select', [])
                             if (!contains && !$select.clickTriggeredSelect) {
                                 //Will lose focus only with certain targets
                                 var focusableControls = ['input', 'button', 'textarea'];
-                                var targetScope = angular.element(e.target).scope(); //To check if target is other fugu-select
-                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other fugu-select
+                                var targetScope = angular.element(e.target).scope(); //To check if target is other uix-select
+                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other uix-select
                                 if (!skipFocusser) {//Check if target is input, button or textarea
                                     skipFocusser = focusableControls.indexOf(e.target.tagName.toLowerCase()) !== -1;
                                 }
@@ -4846,26 +4843,26 @@ angular.module('ui.fugu.select', [])
                             // var transcludedElement = clone.filter('.my-class')
                             // instead of creating a hackish DOM element:
                             var transcluded = angular.element('<div>').append(clone);
-                            var transcludedMatch = angular.element(transcluded[0].querySelectorAll('.fugu-select-match'));
-                            transcludedMatch.removeAttr('fugu-select-match'); //To avoid loop in case directive as attr
-                            transcludedMatch.removeAttr('data-fugu-select-match'); // Properly handle HTML5 data-attributes
+                            var transcludedMatch = angular.element(transcluded[0].querySelectorAll('.uix-select-match'));
+                            transcludedMatch.removeAttr('uix-select-match'); //To avoid loop in case directive as attr
+                            transcludedMatch.removeAttr('data-uix-select-match'); // Properly handle HTML5 data-attributes
                             if (transcludedMatch.length !== 1) {
-                                throw fuguSelectMinErr('transcluded', "Expected 1 .fugu-select-match but got '{0}'.", transcludedMatch.length);
+                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-match but got '{0}'.", transcludedMatch.length);
                             }
-                            angular.element(element[0].querySelectorAll('.fugu-select-match')).replaceWith(transcludedMatch);
+                            angular.element(element[0].querySelectorAll('.uix-select-match')).replaceWith(transcludedMatch);
 
-                            var transcludedChoices = angular.element(transcluded[0].querySelectorAll('.fugu-select-choices'));
-                            transcludedChoices.removeAttr('fugu-select-choices'); //To avoid loop in case directive as attr
-                            transcludedChoices.removeAttr('data-fugu-select-choices'); // Properly handle HTML5 data-attributes
+                            var transcludedChoices = angular.element(transcluded[0].querySelectorAll('.uix-select-choices'));
+                            transcludedChoices.removeAttr('uix-select-choices'); //To avoid loop in case directive as attr
+                            transcludedChoices.removeAttr('data-uix-select-choices'); // Properly handle HTML5 data-attributes
                             if (transcludedChoices.length !== 1) {
-                                throw fuguSelectMinErr('transcluded', "Expected 1 .fugu-select-choices but got '{0}'.", transcludedChoices.length);
+                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-choices but got '{0}'.", transcludedChoices.length);
                             }
-                            angular.element(element[0].querySelectorAll('.fugu-select-choices')).replaceWith(transcludedChoices);
+                            angular.element(element[0].querySelectorAll('.uix-select-choices')).replaceWith(transcludedChoices);
                         });
 
                         // Support for appending the select field to the body when its open
                         var appendToBody = scope.$eval(attrs.appendToBody);
-                        if (angular.isDefined(appendToBody) ? appendToBody : fuguSelectConfig.appendToBody) {
+                        if (angular.isDefined(appendToBody) ? appendToBody : uixSelectConfig.appendToBody) {
                             scope.$watch('$select.open', function (isOpen) {
                                 if (isOpen) {
                                     positionDropdown();
@@ -4880,16 +4877,16 @@ angular.module('ui.fugu.select', [])
                             });
                         }
 
-                        // Hold on to a reference to the .fugu-select-container element for appendToBody support
+                        // Hold on to a reference to the .uix-select-container element for appendToBody support
                         var placeholder = null,
                             originalWidth = '';
 
                         function positionDropdown() {
                             // Remember the absolute position of the element
-                            var offset = fuguSelectOffset(element);
+                            var offset = uixSelectOffset(element);
 
                             // Clone the element into a placeholder element to take its original place in the DOM
-                            placeholder = angular.element('<div class="fugu-select-placeholder"></div>');
+                            placeholder = angular.element('<div class="uix-select-placeholder"></div>');
                             placeholder[0].style.width = offset.width + 'px';
                             placeholder[0].style.height = offset.height + 'px';
                             element.after(placeholder);
@@ -4923,14 +4920,14 @@ angular.module('ui.fugu.select', [])
                             element[0].style.width = originalWidth;
                         }
 
-                        // Hold on to a reference to the .fugu-select-dropdown element for direction support.
+                        // Hold on to a reference to the .uix-select-dropdown element for direction support.
                         var dropdown = null,
                             directionUpClassName = 'direction-up';
 
                         // Support changing the direction of the dropdown if there isn't enough space to render it.
                         scope.$watch('$select.open', function (isOpen) {
                             if (isOpen) {
-                                dropdown = angular.element(element[0].querySelectorAll('.fugu-select-dropdown'));
+                                dropdown = angular.element(element[0].querySelectorAll('.uix-select-dropdown'));
                                 if (dropdown === null) {
                                     return;
                                 }
@@ -4940,8 +4937,8 @@ angular.module('ui.fugu.select', [])
 
                                 // Delay positioning the dropdown until all choices have been added so its height is correct.
                                 $timeout(function () {
-                                    var offset = fuguSelectOffset(element);
-                                    var offsetDropdown = fuguSelectOffset(dropdown);
+                                    var offset = uixSelectOffset(element);
+                                    var offsetDropdown = uixSelectOffset(dropdown);
 
                                     // Determine if the direction of the dropdown needs to be changed.
                                     if (offset.top + offset.height + offsetDropdown.height > $document[0].documentElement.scrollTop + $document[0].documentElement.clientHeight) {
@@ -4968,19 +4965,19 @@ angular.module('ui.fugu.select', [])
                 }
             };
         }])
-    .directive('fuguSelectChoices', ['fuguSelectConfig', 'fuguSelectRepeatParser', 'fuguSelectMinErr', '$compile',
-        function (fuguSelectConfig, RepeatParser, fuguSelectMinErr, $compile) {
+    .directive('uixSelectChoices', ['uixSelectConfig', 'uixSelectRepeatParser', 'uixSelectMinErr', '$compile',
+        function (uixSelectConfig, RepeatParser, uixSelectMinErr, $compile) {
 
             return {
                 restrict: 'EA',
-                require: '^fuguSelect',
+                require: '^uixSelect',
                 replace: true,
                 transclude: true,
                 templateUrl: 'templates/choices.html',
                 compile: function (tElement, tAttrs) {
 
                     if (!tAttrs.repeat) {
-                        throw fuguSelectMinErr('repeat', "Expected 'repeat' expression.");
+                        throw uixSelectMinErr('repeat', "Expected 'repeat' expression.");
                     }
 
                     return function link(scope, element, attrs, $select, transcludeFn) {
@@ -4995,16 +4992,16 @@ angular.module('ui.fugu.select', [])
                         $select.onHighlightCallback = attrs.onHighlight;
 
                         if (groupByExp) {
-                            var groups = angular.element(element[0].querySelectorAll('.fugu-select-choices-group'));
+                            var groups = angular.element(element[0].querySelectorAll('.uix-select-choices-group'));
                             if (groups.length !== 1) {
-                                throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-group but got '{0}'.", groups.length);
+                                throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-group but got '{0}'.", groups.length);
                             }
                             groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
                         }
 
-                        var choices = angular.element(element[0].querySelectorAll('.fugu-select-choices-row'));
+                        var choices = angular.element(element[0].querySelectorAll('.uix-select-choices-row'));
                         if (choices.length !== 1) {
-                            throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-row but got '{0}'.", choices.length);
+                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row but got '{0}'.", choices.length);
                         }
 
                         choices.attr('ng-repeat', RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items', $select.parserResult.trackByExp, groupByExp))
@@ -5012,12 +5009,12 @@ angular.module('ui.fugu.select', [])
                             .attr('ng-mouseenter', '$select.setActiveItem(' + $select.parserResult.itemName + ')')
                             .attr('ng-click', '$select.select(' + $select.parserResult.itemName + ',false,$event)');
 
-                        var rowsInner = angular.element(element[0].querySelectorAll('.fugu-select-choices-row-inner'));
+                        var rowsInner = angular.element(element[0].querySelectorAll('.uix-select-choices-row-inner'));
                         if (rowsInner.length !== 1) {
-                            throw fuguSelectMinErr('rows', "Expected 1 .fugu-select-choices-row-inner but got '{0}'.", rowsInner.length);
+                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row-inner but got '{0}'.", rowsInner.length);
                         }
-                        rowsInner.attr('fugu-transclude-append', ''); //Adding fuguTranscludeAppend directive to row element after choices element has ngRepeat
-                        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from fuguTranscludeAppend
+                        rowsInner.attr('uix-transclude-append', ''); //Adding uixTranscludeAppend directive to row element after choices element has ngRepeat
+                        $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uixTranscludeAppend
 
                         scope.$watch('$select.search', function (newValue) {
                             if (newValue && !$select.open && $select.multiple) {
@@ -5030,16 +5027,16 @@ angular.module('ui.fugu.select', [])
                         attrs.$observe('refreshDelay', function () {
                             // $eval() is needed otherwise we get a string instead of a number
                             var refreshDelay = scope.$eval(attrs.refreshDelay);
-                            $select.refreshDelay = angular.isDefined(refreshDelay) ? refreshDelay : fuguSelectConfig.refreshDelay;
+                            $select.refreshDelay = angular.isDefined(refreshDelay) ? refreshDelay : uixSelectConfig.refreshDelay;
                         });
                     };
                 }
             };
         }])
-    .directive('fuguSelectMatch', ['fuguSelectConfig', function (fuguSelectConfig) {
+    .directive('uixSelectMatch', ['uixSelectConfig', function (uixSelectConfig) {
         return {
             restrict: 'EA',
-            require: '^fuguSelect',
+            require: '^uixSelect',
             replace: true,
             transclude: true,
             templateUrl: function (tElement) {
@@ -5049,7 +5046,7 @@ angular.module('ui.fugu.select', [])
             link: function (scope, element, attrs, $select) {
                 $select.lockChoiceExpression = attrs.lockChoice;
                 attrs.$observe('placeholder', function (placeholder) {
-                    $select.placeholder = angular.isDefined(placeholder) ? placeholder : fuguSelectConfig.placeholder;
+                    $select.placeholder = angular.isDefined(placeholder) ? placeholder : uixSelectConfig.placeholder;
                 });
 
                 function setAllowClear(allow) {
@@ -5066,11 +5063,11 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .directive('fuguSelectMultiple', ['fuguSelectConfig', 'fuguSelectMinErr', '$timeout',
-        function (fuguSelectConfig, fuguSelectMinErr, $timeout) {
+    .directive('uixSelectMultiple', ['uixSelectConfig', 'uixSelectMinErr', '$timeout',
+        function (uixSelectConfig, uixSelectMinErr, $timeout) {
             return {
                 restrict: 'EA',
-                require: ['^fuguSelect', '^ngModel'],
+                require: ['^uixSelect', '^ngModel'],
 
                 controller: ['$scope', '$timeout', function ($scope, $timeout) {
 
@@ -5104,7 +5101,7 @@ angular.module('ui.fugu.select', [])
                         var removedChoice = $select.selected[index];
 
                         // if the choice is locked, can't remove it
-                        if (removedChoice._fuguSelectChoiceLocked) {
+                        if (removedChoice._uixSelectChoiceLocked) {
                             return;
                         }
 
@@ -5144,7 +5141,7 @@ angular.module('ui.fugu.select', [])
                     var $select = ctrls[0];
                     var ngModel = scope.ngModel = ctrls[1];
                     var $selectMultiple = scope.$selectMultiple;
-                    var KEY = fuguSelectConfig.KEY;
+                    var KEY = uixSelectConfig.KEY;
                     //$select.selected = raw selected objects (ignoring any property binding)
 
                     $select.multiple = true;
@@ -5230,19 +5227,19 @@ angular.module('ui.fugu.select', [])
                             if (angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null) {
                                 $select.selected = [];
                             } else {
-                                throw fuguSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
+                                throw uixSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
                             }
                         }
                         $select.selected = ngModel.$viewValue;
                         scope.$evalAsync(); //To force $digest
                     };
 
-                    scope.$on('fuguSelect:select', function (event, item) {
+                    scope.$on('uixSelect:select', function (event, item) {
                         $select.selected.push(item);
                         $selectMultiple.updateModel();
                     });
 
-                    scope.$on('fuguSelect:activate', function () {
+                    scope.$on('uixSelect:activate', function () {
                         $selectMultiple.activeMatchIndex = -1;
                     });
 
@@ -5502,12 +5499,12 @@ angular.module('ui.fugu.select', [])
                 }
             };
         }])
-    .directive('fuguSelectSingle', ['fuguSelectConfig', '$timeout', '$compile', function (fuguSelectConfig, $timeout, $compile) {
+    .directive('uixSelectSingle', ['uixSelectConfig', '$timeout', '$compile', function (uixSelectConfig, $timeout, $compile) {
         return {
             restrict: 'EA',
-            require: ['^fuguSelect', '^ngModel'],
+            require: ['^uixSelect', '^ngModel'],
             link: function (scope, element, attrs, ctrls) {
-                var KEY = fuguSelectConfig.KEY;
+                var KEY = uixSelectConfig.KEY;
                 var $select = ctrls[0];
                 var ngModel = ctrls[1];
 
@@ -5555,11 +5552,11 @@ angular.module('ui.fugu.select', [])
                     $select.selected = ngModel.$viewValue;
                 };
 
-                scope.$on('fuguSelect:select', function (event, item) {
+                scope.$on('uixSelect:select', function (event, item) {
                     $select.selected = item;
                 });
 
-                scope.$on('fuguSelect:close', function (event, skipFocusser) {
+                scope.$on('uixSelect:close', function (event, skipFocusser) {
                     $timeout(function () {
                         $select.focusser.prop('disabled', false);
                         if (!skipFocusser) {
@@ -5569,9 +5566,9 @@ angular.module('ui.fugu.select', [])
                 });
 
                 //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
-                var focusser = angular.element("<input ng-disabled='$select.disabled' class='fugu-select-focusser fugu-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
+                var focusser = angular.element("<input ng-disabled='$select.disabled' class='uix-select-focusser uix-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
 
-                scope.$on('fuguSelect:activate', function () {
+                scope.$on('uixSelect:activate', function () {
                     focusser.prop('disabled', true); //Will reactivate it on .close()
                 });
 
@@ -5631,17 +5628,17 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .directive('fuguSelectSort', ['$timeout', 'fuguSelectConfig', 'fuguSelectMinErr', function ($timeout, fuguSelectConfig, fuguSelectMinErr) {
+    .directive('uixSelectSort', ['$timeout', 'uixSelectConfig', 'uixSelectMinErr', function ($timeout, uixSelectConfig, uixSelectMinErr) {
         return {
-            require: '^fuguSelect',
+            require: '^uixSelect',
             link: function (scope, element, attrs, $select) {
-                if (scope[attrs.fuguSelectSort] === null) {
-                    throw fuguSelectMinErr('sort', "Expected a list to sort");
+                if (scope[attrs.uixSelectSort] === null) {
+                    throw uixSelectMinErr('sort', "Expected a list to sort");
                 }
 
                 var options = angular.extend({
                     axis: 'horizontal'
-                }, scope.$eval(attrs.fuguSelectSortOptions));
+                }, scope.$eval(attrs.uixSelectSortOptions));
 
                 var axis = options.axis,
                     draggingClassName = 'dragging',
@@ -5704,7 +5701,7 @@ angular.module('ui.fugu.select', [])
                 };
 
                 function _dropHandler(droppedItemIndex) {
-                    var theList = scope.$eval(attrs.fuguSelectSort),
+                    var theList = scope.$eval(attrs.uixSelectSort),
                         itemToMove = theList[droppedItemIndex],
                         newIndex = null;
 
@@ -5723,7 +5720,7 @@ angular.module('ui.fugu.select', [])
                     move.apply(theList, [droppedItemIndex, newIndex]);
 
                     scope.$apply(function () {
-                        scope.$emit('fuguSelectSort:change', {
+                        scope.$emit('uixSelectSort:change', {
                             array: theList,
                             item: itemToMove,
                             from: droppedItemIndex,
@@ -5763,7 +5760,7 @@ angular.module('ui.fugu.select', [])
             }
         };
     }])
-    .service('fuguSelectRepeatParser', ['fuguSelectMinErr', '$parse', function (fuguSelectMinErr, $parse) {
+    .service('uixSelectRepeatParser', ['uixSelectMinErr', '$parse', function (uixSelectMinErr, $parse) {
         var self = this;
 
         /**
@@ -5778,7 +5775,7 @@ angular.module('ui.fugu.select', [])
             var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
             if (!match) {
-                throw fuguSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                throw uixSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
                     expression);
             }
 
@@ -5809,19 +5806,19 @@ angular.module('ui.fugu.select', [])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.fugu.sortable', [])
-    .service('fuguSortableService', function () {return {};})
-    .directive('fuguSortable', ['$parse', '$timeout', 'fuguSortableService',
-        function ($parse, $timeout, fuguSortableService) {
+angular.module('ui.xg.sortable', [])
+    .service('uixSortableService', function () {return {};})
+    .directive('uixSortable', ['$parse', '$timeout', 'uixSortableService',
+        function ($parse, $timeout, uixSortableService) {
         return {
             restrict: 'AE',
             scope: {
-                fuguSortable:'='
+                uixSortable:'='
             },
             link: function (scope, element) {
                 var self = this;
-                if(scope.fuguSortable){
-                    scope.$watch('fuguSortable.length', function() {
+                if(scope.uixSortable){
+                    scope.$watch('uixSortable.length', function() {
                         // Timeout to let ng-repeat modify the DOM
                         $timeout(function() {
                             self.refresh();
@@ -5848,9 +5845,9 @@ angular.module('ui.fugu.sortable', [])
                                     item.style.display = 'none';
                                 }, 0);
 
-                                fuguSortableService.isDragging = true;
-                                fuguSortableService.dragIndex = i;
-                                fuguSortableService.placeholder = getPlaceholder(child);
+                                uixSortableService.isDragging = true;
+                                uixSortableService.dragIndex = i;
+                                uixSortableService.placeholder = getPlaceholder(child);
                                 event.stopPropagation();
                             })
                             .on('dragend', function (event) {
@@ -5860,9 +5857,9 @@ angular.module('ui.fugu.sortable', [])
                                     //child.show();
                                     item.style.display = item.originDisplay;
                                 }, 0);
-                                fuguSortableService.isDragging = false;
-                                fuguSortableService.dragIndex = null;
-                                fuguSortableService.placeholder = null;
+                                uixSortableService.isDragging = false;
+                                uixSortableService.dragIndex = null;
+                                uixSortableService.placeholder = null;
                                 event.stopPropagation();
                                 event.preventDefault();
                             });
@@ -5872,16 +5869,16 @@ angular.module('ui.fugu.sortable', [])
                     var listNode = element[0],placeholder,placeholderNode;
                     element.on('dragenter', function (event) {
                             event = event.originalEvent || event;
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return false;
                             }
-                            placeholder = fuguSortableService.placeholder;
+                            placeholder = uixSortableService.placeholder;
                             placeholderNode = placeholder[0];
                             event.preventDefault();
                         })
                         .on('dragover', function (event) {
                             event = event.originalEvent || event;
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return false;
                             }
                             if (placeholderNode.parentNode != listNode) {
@@ -5914,7 +5911,7 @@ angular.module('ui.fugu.sortable', [])
                                     }
                                 }
                             }
-                            element.addClass("fugu-sortable-dragover");
+                            element.addClass("uix-sortable-dragover");
                             event.preventDefault();
                             event.stopPropagation();
                             return false;
@@ -5922,27 +5919,27 @@ angular.module('ui.fugu.sortable', [])
                         .on('drop', function (event) {
                             event = event.originalEvent || event;
 
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return true;
                             }
-                            var dragIndex = fuguSortableService.dragIndex;
+                            var dragIndex = uixSortableService.dragIndex;
                             var placeholderIndex = getPlaceholderIndex(placeholderNode,listNode,dragIndex);
                             scope.$apply(function() {
                                 // 改变数据,由angular进行DOM修改
-                                var dragObj = scope.fuguSortable[dragIndex];
-                                scope.fuguSortable.splice(dragIndex,1);
-                                scope.fuguSortable.splice(placeholderIndex,0,dragObj)
+                                var dragObj = scope.uixSortable[dragIndex];
+                                scope.uixSortable.splice(dragIndex,1);
+                                scope.uixSortable.splice(placeholderIndex,0,dragObj)
                             });
                             placeholder.remove();
-                            element.removeClass("fugu-sortable-dragover");
+                            element.removeClass("uix-sortable-dragover");
                             event.stopPropagation();
                             return false;
                         })
                         .on('dragleave', function(event) {
                             event = event.originalEvent || event;
-                            element.removeClass("fugu-sortable-dragover");
+                            element.removeClass("uix-sortable-dragover");
                             $timeout(function() {
-                                if(!element.hasClass('fugu-sortable-dragover')){
+                                if(!element.hasClass('uix-sortable-dragover')){
                                     placeholder.remove();
                                 }
                             }, 0);
@@ -5998,23 +5995,23 @@ angular.module('ui.fugu.sortable', [])
  * Author:yangjiyuan@meituan.com
  * Date:2016-1-31
  */
-angular.module('ui.fugu.switch', [])
-    .constant('fuguSwitchConfig', {
+angular.module('ui.xg.switch', [])
+    .constant('uixSwitchConfig', {
         type: 'default',
         size: 'md',
         isDisabled: false,
         trueValue:true,
         falseValue:false
     })
-    .controller('fuguSwitchCtrl', ['$scope', '$attrs','fuguSwitchConfig', function ($scope, $attrs,fuguSwitchConfig) {
+    .controller('uixSwitchCtrl', ['$scope', '$attrs','uixSwitchConfig', function ($scope, $attrs,uixSwitchConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
         $scope.switchObj = {};
         this.init = function (_ngModelCtrl) {
             ngModelCtrl = _ngModelCtrl;
             ngModelCtrl.$render = this.render;
             $scope.switchObj.isDisabled = getAttrValue('ngDisabled','isDisabled');
-            $scope.switchObj.type = $scope.type || fuguSwitchConfig.type;
-            $scope.switchObj.size = $scope.size || fuguSwitchConfig.size;
+            $scope.switchObj.type = $scope.type || uixSwitchConfig.type;
+            $scope.switchObj.size = $scope.size || uixSwitchConfig.size;
             $scope.switchObj.trueValue = getAttrValue('trueValue');
             $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
@@ -6032,21 +6029,21 @@ angular.module('ui.fugu.switch', [])
         };
         function getAttrValue(attributeValue,defaultValue) {
             var val = $scope.$parent.$eval($attrs[attributeValue]);   //变量解析
-            return angular.isDefined(val) ? val : fuguSwitchConfig[defaultValue||attributeValue];
+            return angular.isDefined(val) ? val : uixSwitchConfig[defaultValue||attributeValue];
         }
     }])
-    .directive('fuguSwitch', function () {
+    .directive('uixSwitch', function () {
         return {
             restrict: 'E',
             templateUrl: 'templates/switch.html',
             replace: true,
-            require: ['fuguSwitch', 'ngModel'],
+            require: ['uixSwitch', 'ngModel'],
             scope: {
                 type:'@?',
                 size:'@?',
                 onChange:'&?'
             },
-            controller: 'fuguSwitchCtrl',
+            controller: 'uixSwitchCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var switchCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 switchCtrl.init(ngModelCtrl);
@@ -6059,8 +6056,8 @@ angular.module('ui.fugu.switch', [])
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
-    .constant('fuguTimepickerConfig', {
+angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
+    .constant('uixTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
@@ -6069,7 +6066,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
         size: 'md',
         showSeconds: false
     })
-    .service('fuguTimepickerService', ['$document', function ($document) {
+    .service('uixTimepickerService', ['$document', function ($document) {
         var openScope = null;
         this.open = function (timepickerScope) {
             if (!openScope) {
@@ -6103,13 +6100,13 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
         }
 
     }])
-    .controller('fuguTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'fuguTimepickerService', 'fuguTimepickerConfig', 'dateFilter', '$timeout', '$fuguPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log, fuguTimepickerService, timepickerConfig, dateFilter, $timeout, $fuguPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$timeout', '$uixPosition',
+        function ($scope, $element, $compile, $attrs, $parse, $log, uixTimepickerService, timepickerConfig, dateFilter, $timeout, $uixPosition) {
             var ngModelCtrl = {$setViewValue: angular.noop};
-            var template = '<div class="fugu-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
+            var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<fugu-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="fugu-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></fugu-timepanel>' +
+                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></uix-timepanel>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -6183,16 +6180,16 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 }
             };
             $scope.getTimepanelElement = function () {
-                return $element.next('.fugu-timepicker-popover')[0];
+                return $element.next('.uix-timepicker-popover')[0];
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');
             };
             $scope.$watch('showTimepanel', function (showTimepanel) {
                 if (showTimepanel) {
-                    fuguTimepickerService.open($scope);
+                    uixTimepickerService.open($scope);
                 } else {
-                    fuguTimepickerService.close($scope);
+                    uixTimepickerService.close($scope);
                 }
             });
             $scope.$on('$locationChangeSuccess', function () {
@@ -6200,7 +6197,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
             });
             function adjustPosition() {
                 var popoverEle = $element.next('.popover');
-                var elePosition = $fuguPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
                 popoverEle.removeClass('top bottom');
                 if (elePosition.placement.indexOf('top') !== -1) {
                     popoverEle.addClass('top');
@@ -6213,12 +6210,12 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 });
             }
         }])
-    .directive('fuguTimepicker', function () {
+    .directive('uixTimepicker', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/timepicker.html',
             replace: true,
-            require: ['fuguTimepicker', 'ngModel'],
+            require: ['uixTimepicker', 'ngModel'],
             scope: {
                 isDisabled: '=?ngDisabled',
                 minTime: '=?',
@@ -6227,7 +6224,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
                 placeholder: '@',
                 onChange: '&?'
             },
-            controller: 'fuguTimepickerCtrl',
+            controller: 'uixTimepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepickerCtrl.init(ngModelCtrl);
@@ -6236,7 +6233,7 @@ angular.module('ui.fugu.timepicker', ['ui.fugu.timepanel', 'ui.fugu.position'])
     });
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
-    "<div ng-show=\"!defaultclose\" class=\"alert fugu-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
+    "<div ng-show=\"!defaultclose\" class=\"alert uix-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
     "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
     "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
     "    </div>"+
@@ -6251,118 +6248,120 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
 }]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\"><i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}</button>");
+    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\">"+
+    "    <i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}"+
+    "</button>");
 }]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
     "<div class=\"btn-group\">"+
-    "    <label class=\"btn  btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
+    "    <label class=\"btn btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
     "</div>");
 }]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",
-    "<div class=\"fugu-timepanel\">"+
-    "    <div class=\"fugu-timepanel-col fugu-timepanel-hour\" ng-style=\"panelStyles\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"increase('hour')\">{{largerHour}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
-    "            <span class=\"fugu-timepanel-label\">时</span>"+
+    "<div class=\"uix-timepanel\">"+
+    "    <div class=\"uix-timepanel-col uix-timepanel-hour\" ng-style=\"panelStyles\">"+
+    "        <div class=\"uix-timepanel-top\" ng-click=\"increase('hour')\">{{largerHour}}</div>"+
+    "        <div class=\"uix-timepanel-middle clearfix\">"+
+    "            <input class=\"uix-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('hour',23)\" ng-model=\"hour\" placeholder=\"HH\"/>"+
+    "            <span class=\"uix-timepanel-label\">时</span>"+
     "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"decrease('hour')\">{{smallerHour}}</div>"+
+    "        <div class=\"uix-timepanel-bottom\" ng-click=\"decrease('hour')\">{{smallerHour}}</div>"+
     "    </div>"+
-    "    <div class=\"fugu-timepanel-col fugu-timepanel-minute\" ng-style=\"panelStyles\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"increase('minute')\">{{largerMinute}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
-    "            <span class=\"fugu-timepanel-label\">分</span>"+
+    "    <div class=\"uix-timepanel-col uix-timepanel-minute\" ng-style=\"panelStyles\">"+
+    "        <div class=\"uix-timepanel-top\" ng-click=\"increase('minute')\">{{largerMinute}}</div>"+
+    "        <div class=\"uix-timepanel-middle clearfix\">"+
+    "            <input class=\"uix-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('minute',59)\" ng-model=\"minute\" placeholder=\"MM\"/>"+
+    "            <span class=\"uix-timepanel-label\">分</span>"+
     "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"decrease('minute')\">{{smallerMinute}}</div>"+
+    "        <div class=\"uix-timepanel-bottom\" ng-click=\"decrease('minute')\">{{smallerMinute}}</div>"+
     "    </div>"+
-    "    <div class=\"fugu-timepanel-col fugu-timepanel-seconds\" ng-style=\"panelStyles\" ng-show=\"showSeconds\">"+
-    "        <div class=\"fugu-timepanel-top\" ng-click=\"increase('second')\">{{largerSecond}}</div>"+
-    "        <div class=\"fugu-timepanel-middle clearfix\">"+
-    "            <input class=\"fugu-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
-    "            <span class=\"fugu-timepanel-label\">秒</span>"+
+    "    <div class=\"uix-timepanel-col uix-timepanel-seconds\" ng-style=\"panelStyles\" ng-show=\"showSeconds\">"+
+    "        <div class=\"uix-timepanel-top\" ng-click=\"increase('second')\">{{largerSecond}}</div>"+
+    "        <div class=\"uix-timepanel-middle clearfix\">"+
+    "            <input class=\"uix-timepanel-input\" ng-readonly=\"readonlyInput\" type=\"text\" ng-change=\"changeInputValue('second',59)\" ng-model=\"second\" placeholder=\"SS\"/>"+
+    "            <span class=\"uix-timepanel-label\">秒</span>"+
     "        </div>"+
-    "        <div class=\"fugu-timepanel-bottom\" ng-click=\"decrease('second')\">{{smallerSecond}}</div>"+
+    "        <div class=\"uix-timepanel-bottom\" ng-click=\"decrease('second')\">{{smallerSecond}}</div>"+
     "    </div>"+
     "</div>"+
     "");
 }]);
 angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/calendar.html",
-    "<div class=\"fugu-calendar\">"+
-    "    <div class=\"fugu-cal-panel-day\" ng-show=\"panels.day\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>"+
-    "            <span class=\"fugu-cal-month-name\">"+
+    "<div class=\"uix-calendar\">"+
+    "    <div class=\"uix-cal-panel-day\" ng-show=\"panels.day\">"+
+    "        <div class=\"uix-cal-month\">"+
+    "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>"+
+    "            <span class=\"uix-cal-month-name\">"+
     "                <a href=\"javascript:;\" ng-click=\"selectPanel('month')\">{{FORMATS.SHORTMONTH[currentMonth]}}</a>"+
     "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
     "            </span>"+
-    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>"+
+    "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>"+
     "        </div>"+
-    "        <div class=\"fugu-cal-header clearfix\">"+
+    "        <div class=\"uix-cal-header clearfix\">"+
     "            <div ng-repeat=\"day in dayNames track by $index\">{{day}}</div>"+
     "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <div class=\"fugu-cal-row\" ng-repeat=\"row in allDays\">"+
-    "                <div ng-class=\"{'fugu-cal-select':day.index===currentDay,'fugu-cal-outside':!day.inMonth,'fugu-cal-weekday':day.isWeekend,'fugu-cal-day-today':day.isToday,'fugu-cal-day-disabled':day.isDisabled}\""+
-    "                     class=\"fugu-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">"+
-    "                    <span class=\"fugu-cal-day-inner\">{{day.day}}</span>"+
+    "        <div class=\"uix-cal-body\">"+
+    "            <div class=\"uix-cal-row\" ng-repeat=\"row in allDays\">"+
+    "                <div ng-class=\"{'uix-cal-select':day.index===currentDay,'uix-cal-outside':!day.inMonth,'uix-cal-weekday':day.isWeekend,'uix-cal-day-today':day.isToday,'uix-cal-day-disabled':day.isDisabled}\""+
+    "                     class=\"uix-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">"+
+    "                    <span class=\"uix-cal-day-inner\">{{day.day}}</span>"+
     "                </div>"+
     "            </div>"+
     "        </div>"+
-    "        <div class=\"fugu-cal-footer\">"+
-    "            <div class=\"fugu-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">"+
+    "        <div class=\"uix-cal-footer\">"+
+    "            <div class=\"uix-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">"+
     "                <span class=\"glyphicon glyphicon-time\"></span>"+
     "                {{selectDate | date:'shortTime'}}"+
     "            </div>"+
-    "            <div class=\"fugu-cal-today-btn\" ng-click=\"chooseToday()\">Today</div>"+
+    "            <div class=\"uix-cal-today-btn\" ng-click=\"chooseToday()\">Today</div>"+
     "        </div>"+
     "    </div>"+
-    "    <div class=\"fugu-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+
-    "        <fugu-timepanel ng-model=\"selectDate\"></fugu-timepanel>"+
+    "    <div class=\"uix-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+
+    "        <uix-timepanel ng-model=\"selectDate\"></uix-timepanel>"+
     "        <div class=\"btn-group clearfix\">"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>"+
-    "            <button class=\"btn btn-sm btn-default fugu-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>"+
+    "            <button class=\"btn btn-sm btn-default uix-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>"+
+    "            <button class=\"btn btn-sm btn-default uix-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>"+
+    "            <button class=\"btn btn-sm btn-default uix-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>"+
     "        </div>"+
     "    </div>"+
-    "    <div class=\"fugu-cal-panel-month\" ng-show=\"panels.month\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <span class=\"fugu-cal-month-name\">"+
+    "    <div class=\"uix-cal-panel-month\" ng-show=\"panels.month\">"+
+    "        <div class=\"uix-cal-month\">"+
+    "            <span class=\"uix-cal-month-name\">"+
     "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>"+
     "            </span>"+
     "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <table class=\"fugu-cal-month-table\">"+
+    "        <div class=\"uix-cal-body\">"+
+    "            <table class=\"uix-cal-month-table\">"+
     "                <tr ng-repeat=\"monthRow in allMonths\">"+
-    "                    <td class=\"fugu-cal-month-item\""+
+    "                    <td class=\"uix-cal-month-item\""+
     "                        ng-repeat=\"month in monthRow\""+
     "                        ng-click=\"chooseMonthHandler(month.index)\""+
-    "                        ng-class=\"{'fugu-cal-month-select':month.index === currentMonth}\">"+
-    "                        <span class=\"fugu-cal-month-inner\">{{month.name}}</span>"+
+    "                        ng-class=\"{'uix-cal-month-select':month.index === currentMonth}\">"+
+    "                        <span class=\"uix-cal-month-inner\">{{month.name}}</span>"+
     "                    </td>"+
     "                </tr>"+
     "            </table>"+
     "        </div>"+
     "    </div>"+
-    "    <div class=\"fugu-cal-panel-year\" ng-show=\"panels.year\">"+
-    "        <div class=\"fugu-cal-month\">"+
-    "            <i class=\"fugu-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>"+
-    "            <span class=\"fugu-cal-month-name\">"+
+    "    <div class=\"uix-cal-panel-year\" ng-show=\"panels.year\">"+
+    "        <div class=\"uix-cal-month\">"+
+    "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>"+
+    "            <span class=\"uix-cal-month-name\">"+
     "                <a href=\"javascript:;\">{{allYears[0][0]}}-{{allYears[3][2]}}</a>"+
     "            </span>"+
-    "            <i class=\"fugu-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>"+
+    "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>"+
     "        </div>"+
-    "        <div class=\"fugu-cal-body\">"+
-    "            <table class=\"fugu-cal-month-table\">"+
+    "        <div class=\"uix-cal-body\">"+
+    "            <table class=\"uix-cal-month-table\">"+
     "                <tr ng-repeat=\"yearRow in allYears track by $index\">"+
-    "                    <td class=\"fugu-cal-month-item fugu-cal-year-item\""+
+    "                    <td class=\"uix-cal-month-item uix-cal-year-item\""+
     "                        ng-repeat=\"year in yearRow track by $index\""+
     "                        ng-click=\"chooseYearHandler(year)\""+
-    "                        ng-class=\"{'fugu-cal-month-select':year === currentYear}\">"+
-    "                        <span class=\"fugu-cal-month-inner\">{{year}}</span>"+
+    "                        ng-class=\"{'uix-cal-month-select':year === currentYear}\">"+
+    "                        <span class=\"uix-cal-month-inner\">{{year}}</span>"+
     "                    </td>"+
     "                </tr>"+
     "            </table>"+
@@ -6372,16 +6371,16 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
 }]);
 angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker.html",
-    "<div class=\"fugu-datepicker\">"+
+    "<div class=\"uix-datepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"form-control fugu-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
     "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
-    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default fugu-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
+    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default uix-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
     "                <i class=\"glyphicon glyphicon-remove\"></i>"+
     "            </button>"+
     "        </span>"+
     "        <span class=\"input-group-btn\">"+
-    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default fugu-datepicker-toggle\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
+    "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default uix-datepicker-toggle\" type=\"button\" ng-click=\"toggleCalendarHandler($event)\">"+
     "                <i class=\"glyphicon glyphicon-calendar\"></i>"+
     "            </button>"+
     "        </span>"+
@@ -6401,21 +6400,21 @@ angular.module("modal/templates/window.html",[]).run(["$templateCache",function(
     $templateCache.put("templates/window.html",
     "<div tabindex=\"-1\" role=\"dialog\" class=\"modal fade\" ng-class=\"{in: animate}\" ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\" ng-click=\"close($event)\">"+
     "    <div class=\"modal-dialog\" ng-class=\"{'modal-sm': size == 'sm', 'modal-lg': size == 'lg'}\">"+
-    "        <div class=\"modal-content\" fugu-modal-transclude></div>"+
+    "        <div class=\"modal-content\" uix-modal-transclude></div>"+
     "    </div>"+
     "</div>");
 }]);
 angular.module("notify/templates/notify.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/notify.html",
-    "<div class=\"fugu-notify-container\" ng-class=\"wrapperClasses()\">"+
-    "    <div class=\"fugu-notify-item alert\" ng-repeat=\"message in notifyServices.directives[referenceId].messages\""+
+    "<div class=\"uix-notify-container\" ng-class=\"wrapperClasses()\">"+
+    "    <div class=\"uix-notify-item alert\" ng-repeat=\"message in notifyServices.directives[referenceId].messages\""+
     "         ng-class=\"alertClasses(message)\" ng-click=\"stopTimeoutClose(message)\">"+
     "        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\""+
     "                ng-click=\"notifyServices.deleteMessage(message)\" ng-show=\"!message.disableCloseButton\">&times;</button>"+
     "        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"showCountDown(message)\">{{message.countdown}}"+
     "        </button>"+
-    "        <h4 class=\"fugu-notify-title\" ng-show=\"message.title\" ng-bind=\"message.title\"></h4>"+
-    "        <div class=\"fugu-notify-message\" ng-bind-html=\"message.text\"></div>"+
+    "        <h4 class=\"uix-notify-title\" ng-show=\"message.title\" ng-bind=\"message.title\"></h4>"+
+    "        <div class=\"uix-notify-message\" ng-bind-html=\"message.text\"></div>"+
     "    </div>"+
     "</div>"+
     "");
@@ -6443,46 +6442,46 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "    </li>"+
     "</ul>");
 }]);
-angular.module("tooltip/templates/fugu-tooltip-html-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-tooltip-html-popup.html",
+angular.module("tooltip/templates/tooltip-html-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/tooltip-html-popup.html",
     "<div class=\"tooltip\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"tooltip-arrow\"></div>"+
     "    <div class=\"tooltip-inner\" ng-bind-html=\"contentExp()\"></div>"+
     "</div>"+
     "");
 }]);
-angular.module("tooltip/templates/fugu-tooltip-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-tooltip-popup.html",
+angular.module("tooltip/templates/tooltip-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/tooltip-popup.html",
     "<div class=\"tooltip\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"tooltip-arrow\"></div>"+
     "    <div class=\"tooltip-inner\" ng-bind=\"content\"></div>"+
     "</div>"+
     "");
 }]);
-angular.module("tooltip/templates/fugu-tooltip-template-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-tooltip-template-popup.html",
+angular.module("tooltip/templates/tooltip-template-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/tooltip-template-popup.html",
     "<div class=\"tooltip\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"tooltip-arrow\"></div>"+
     "    <div class=\"tooltip-inner\""+
-    "         fugu-tooltip-template-transclude=\"contentExp()\""+
+    "         uix-tooltip-template-transclude=\"contentExp()\""+
     "         tooltip-template-transclude-scope=\"originScope()\"></div>"+
     "</div>"+
     "");
 }]);
-angular.module("popover/templates/fugu-popover-html-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-popover-html-popup.html",
+angular.module("popover/templates/popover-html-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/popover-html-popup.html",
     "<div class=\"popover\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"arrow\"></div>"+
     ""+
@@ -6493,11 +6492,11 @@ angular.module("popover/templates/fugu-popover-html-popup.html",[]).run(["$templ
     "</div>"+
     "");
 }]);
-angular.module("popover/templates/fugu-popover-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-popover-popup.html",
+angular.module("popover/templates/popover-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/popover-popup.html",
     "<div class=\"popover\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"arrow\"></div>"+
     ""+
@@ -6508,18 +6507,18 @@ angular.module("popover/templates/fugu-popover-popup.html",[]).run(["$templateCa
     "</div>"+
     "");
 }]);
-angular.module("popover/templates/fugu-popover-template-popup.html",[]).run(["$templateCache",function($templateCache){
-    $templateCache.put("templates/fugu-popover-template-popup.html",
+angular.module("popover/templates/popover-template-popup.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/popover-template-popup.html",
     "<div class=\"popover\""+
     "     tooltip-animation-class=\"fade\""+
-    "     fugu-tooltip-classes"+
+    "     uix-tooltip-classes"+
     "     ng-class=\"{ in: isOpen() }\">"+
     "    <div class=\"arrow\"></div>"+
     ""+
     "    <div class=\"popover-inner\">"+
     "        <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>"+
     "        <div class=\"popover-content\""+
-    "             fugu-tooltip-template-transclude=\"contentExp()\""+
+    "             uix-tooltip-template-transclude=\"contentExp()\""+
     "             tooltip-template-transclude-scope=\"originScope()\"></div>"+
     "    </div>"+
     "</div>"+
@@ -6537,15 +6536,15 @@ angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",fu
 }]);
 angular.module("select/templates/choices.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/choices.html",
-    "<ul class=\"fugu-select-choices fugu-select-choices-content fugu-select-dropdown dropdown-menu\""+
+    "<ul class=\"uix-select-choices uix-select-choices-content uix-select-dropdown dropdown-menu\""+
     "    role=\"listbox\""+
     "    ng-show=\"$select.items.length > 0\">"+
-    "  <li class=\"fugu-select-choices-group\">"+
+    "  <li class=\"uix-select-choices-group\">"+
     "    <div class=\"divider\" ng-show=\"$select.isGrouped && $index > 0\"></div>"+
-    "    <div ng-show=\"$select.isGrouped\" class=\"fugu-select-choices-group-label dropdown-header\" ng-bind=\"$group.name\"></div>"+
-    "    <div class=\"fugu-select-choices-row\""+
+    "    <div ng-show=\"$select.isGrouped\" class=\"uix-select-choices-group-label dropdown-header\" ng-bind=\"$group.name\"></div>"+
+    "    <div class=\"uix-select-choices-row\""+
     "    ng-class=\"{active: $select.isActive(this), disabled: $select.isDisabled(this)}\" role=\"option\">"+
-    "      <a href=\"javascript:void(0)\" class=\"fugu-select-choices-row-inner\"></a>"+
+    "      <a href=\"javascript:void(0)\" class=\"uix-select-choices-row-inner\"></a>"+
     "    </div>"+
     "  </li>"+
     "</ul>"+
@@ -6553,18 +6552,18 @@ angular.module("select/templates/choices.html",[]).run(["$templateCache",functio
 }]);
 angular.module("select/templates/match-multiple.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/match-multiple.html",
-    "<span class=\"fugu-select-match\">"+
+    "<span class=\"uix-select-match\">"+
     "  <span ng-repeat=\"$item in $select.selected\">"+
     "    <span"+
-    "      class=\"fugu-select-match-item btn btn-default btn-xs\""+
+    "      class=\"uix-select-match-item btn btn-default btn-xs\""+
     "      tabindex=\"-1\""+
     "      type=\"button\""+
     "      ng-disabled=\"$select.disabled\""+
     "      ng-click=\"$selectMultiple.activeMatchIndex = $index;\""+
     "      ng-class=\"{'btn-primary':$selectMultiple.activeMatchIndex === $index, 'select-locked':$select.isLocked(this, $index)}\""+
-    "      fugu-select-sort=\"$select.selected\">"+
-    "        <span class=\"close fugu-select-match-close\" ng-hide=\"$select.disabled\" ng-click=\"$selectMultiple.removeChoice($index)\">&nbsp;&times;</span>"+
-    "        <span fugu-transclude-append></span>"+
+    "      uix-select-sort=\"$select.selected\">"+
+    "        <span class=\"close uix-select-match-close\" ng-hide=\"$select.disabled\" ng-click=\"$selectMultiple.removeChoice($index)\">&nbsp;&times;</span>"+
+    "        <span uix-transclude-append></span>"+
     "    </span>"+
     "  </span>"+
     "</span>"+
@@ -6572,17 +6571,17 @@ angular.module("select/templates/match-multiple.html",[]).run(["$templateCache",
 }]);
 angular.module("select/templates/match.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/match.html",
-    "<div class=\"fugu-select-match\" ng-hide=\"$select.open\" ng-disabled=\"$select.disabled\" ng-class=\"{'fugu-select-focus':$select.focus}\">"+
+    "<div class=\"uix-select-match\" ng-hide=\"$select.open\" ng-disabled=\"$select.disabled\" ng-class=\"{'uix-select-focus':$select.focus}\">"+
     "  <span tabindex=\"-1\""+
-    "      class=\"btn btn-default form-control fugu-select-toggle\""+
+    "      class=\"btn btn-default form-control uix-select-toggle\""+
     "      aria-label=\"{{ $select.baseTitle }} activate\""+
     "      ng-disabled=\"$select.disabled\""+
     "      ng-click=\"$select.activate()\">"+
-    "    <span ng-show=\"$select.isEmpty()\" class=\"fugu-select-placeholder text-muted\">{{$select.placeholder}}</span>"+
-    "    <span ng-hide=\"$select.isEmpty()\" class=\"fugu-select-match-text pull-left\" ng-class=\"{'fugu-select-allow-clear': $select.allowClear && !$select.isEmpty()}\" ng-transclude=\"\"></span>"+
+    "    <span ng-show=\"$select.isEmpty()\" class=\"uix-select-placeholder text-muted\">{{$select.placeholder}}</span>"+
+    "    <span ng-hide=\"$select.isEmpty()\" class=\"uix-select-match-text pull-left\" ng-class=\"{'uix-select-allow-clear': $select.allowClear && !$select.isEmpty()}\" ng-transclude=\"\"></span>"+
     "    <i class=\"caret pull-right\" ng-click=\"$select.toggle($event)\"></i>"+
     "    <a ng-if=\"$select.allowClear && !$select.isEmpty()\" aria-label=\"{{ $select.baseTitle }} clear\""+
-    "      ng-click=\"$select.clear($event)\" class=\"fugu-select-allowclear btn btn-xs btn-link pull-right\">"+
+    "      ng-click=\"$select.clear($event)\" class=\"uix-select-allowclear btn btn-xs btn-link pull-right\">"+
     "      <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>"+
     "    </a>"+
     "  </span>"+
@@ -6591,15 +6590,15 @@ angular.module("select/templates/match.html",[]).run(["$templateCache",function(
 }]);
 angular.module("select/templates/select-multiple.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/select-multiple.html",
-    "<div class=\"fugu-select-container fugu-select-multiple fugu-select dropdown form-control\" ng-class=\"{open: $select.open}\">"+
+    "<div class=\"uix-select-container uix-select-multiple uix-select dropdown form-control\" ng-class=\"{open: $select.open}\">"+
     "  <div>"+
-    "    <div class=\"fugu-select-match\"></div>"+
+    "    <div class=\"uix-select-match\"></div>"+
     "    <input type=\"text\""+
     "           autocomplete=\"off\""+
     "           autocorrect=\"off\""+
     "           autocapitalize=\"off\""+
     "           spellcheck=\"false\""+
-    "           class=\"fugu-select-search input-xs\""+
+    "           class=\"uix-select-search input-xs\""+
     "           placeholder=\"{{$selectMultiple.getPlaceholder()}}\""+
     "           ng-disabled=\"$select.disabled\""+
     "           ng-hide=\"$select.disabled\""+
@@ -6609,37 +6608,37 @@ angular.module("select/templates/select-multiple.html",[]).run(["$templateCache"
     "           aria-label=\"{{ $select.baseTitle }}\""+
     "           ondrop=\"return false;\">"+
     "  </div>"+
-    "  <div class=\"fugu-select-choices\"></div>"+
+    "  <div class=\"uix-select-choices\"></div>"+
     "</div>"+
     "");
 }]);
 angular.module("select/templates/select.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/select.html",
-    "<div class=\"fugu-select-container fugu-select dropdown\" ng-class=\"{open: $select.open}\">"+
-    "  <div class=\"fugu-select-match\"></div>"+
+    "<div class=\"uix-select-container uix-select dropdown\" ng-class=\"{open: $select.open}\">"+
+    "  <div class=\"uix-select-match\"></div>"+
     "  <input type=\"text\" autocomplete=\"off\" tabindex=\"-1\""+
     "         aria-expanded=\"true\""+
     "         aria-label=\"{{ $select.baseTitle }}\""+
-    "         class=\"form-control fugu-select-search\""+
+    "         class=\"form-control uix-select-search\""+
     "         placeholder=\"{{$select.placeholder}}\""+
     "         ng-model=\"$select.search\""+
     "         ng-show=\"$select.searchEnabled && $select.open\">"+
-    "  <div class=\"fugu-select-choices\"></div>"+
+    "  <div class=\"uix-select-choices\"></div>"+
     "</div>"+
     "");
 }]);
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/switch.html",
-    "<label class=\"fugu-switch\" ng-class=\"['fugu-switch-'+switchObj.type,'fugu-switch-'+switchObj.size]\">"+
+    "<label class=\"uix-switch\" ng-class=\"['uix-switch-'+switchObj.type,'uix-switch-'+switchObj.size]\">"+
     "    <input type=\"checkbox\" ng-change=\"changeSwitchHandler()\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
 }]);
 angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepicker.html",
-    "<div class=\"fugu-timepicker\">"+
+    "<div class=\"uix-timepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" class=\"form-control fugu-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" class=\"form-control uix-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
     "        <span class=\"input-group-btn\">"+
     "            <button ng-disabled=\"isDisabled\" ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" class=\"btn btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
     "                <i class=\"glyphicon glyphicon-time\"></i>"+

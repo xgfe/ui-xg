@@ -1,25 +1,25 @@
-describe('ui.fugu.modal', function () {
+describe('ui.xg.modal', function () {
     var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q,stackedMap;
-    var $fgModal, $fgModalProvider;
+    var $uixModal, $uixModalProvider;
 
     beforeEach(function () {
-        module('ui.fugu.modal');
-        module('ui.fugu.stackedMap');
+        module('ui.xg.modal');
+        module('ui.xg.stackedMap');
         module('modal/templates/backdrop.html');
         module('modal/templates/window.html');
-        module(function(_$controllerProvider_, _$fgModalProvider_){
+        module(function(_$controllerProvider_, _$uixModalProvider_){
             $controllerProvider = _$controllerProvider_;
-            $fgModalProvider = _$fgModalProvider_;
+            $uixModalProvider = _$uixModalProvider_;
         });
-        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_, _$timeout_, _$q_, _$fgModal_,$fuguStackedMap) {
+        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_, _$timeout_, _$q_, _$uixModal_,$uixStackedMap) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;
             $templateCache = _$templateCache_;
             $timeout = _$timeout_;
             $q = _$q_;
-            $fgModal = _$fgModal_;
-            stackedMap = $fuguStackedMap.createNew();
+            $uixModal = _$uixModal_;
+            stackedMap = $uixStackedMap.createNew();
         })
     });
     beforeEach(function () {
@@ -146,7 +146,7 @@ describe('ui.fugu.modal', function () {
         });
     }
     function open(modalOptions) {
-        var modal = $fgModal.open(modalOptions);
+        var modal = $uixModal.open(modalOptions);
         $rootScope.$digest();
         return modal;
     }
@@ -294,7 +294,7 @@ describe('ui.fugu.modal', function () {
 
         it('should allow overriding default options in a provider', function () {
 
-            $fgModalProvider.options.backdrop = false;
+            $uixModalProvider.options.backdrop = false;
             open({template: '<div>Content</div>'});
 
             expect($document).toHaveModalOpenWithContent('Content', 'div');
@@ -303,7 +303,7 @@ describe('ui.fugu.modal', function () {
 
         it('should accept new objects with default options in a provider', function () {
 
-            $fgModalProvider.options = {
+            $uixModalProvider.options = {
                 backdrop: false
             };
             open({template: '<div>Content</div>'});
@@ -352,9 +352,9 @@ describe('ui.fugu.modal', function () {
         describe('controller', function () {
 
             it('should accept controllers and inject modal instances', function () {
-                var TestCtrl = function($scope, $fgModalInstance) {
+                var TestCtrl = function($scope, $uixModalInstance) {
                     $scope.fromCtrl = 'Content from ctrl';
-                    $scope.isModalInstance = angular.isObject($fgModalInstance) && angular.isFunction($fgModalInstance.close);
+                    $scope.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
                 };
 
                 open({template: '<div>{{fromCtrl}} {{isModalInstance}}</div>', controller: TestCtrl});
@@ -362,9 +362,9 @@ describe('ui.fugu.modal', function () {
             });
 
             it('should accept controllerAs alias', function () {
-                $controllerProvider.register('TestCtrl', function($fgModalInstance) {
+                $controllerProvider.register('TestCtrl', function($uixModalInstance) {
                     this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($fgModalInstance) && angular.isFunction($fgModalInstance.close);
+                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
                 });
 
                 open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: 'TestCtrl as test'});
@@ -372,9 +372,9 @@ describe('ui.fugu.modal', function () {
             });
 
             it('should respect the controllerAs property as an alternative for the controller-as syntax', function () {
-                $controllerProvider.register('TestCtrl', function($fgModalInstance) {
+                $controllerProvider.register('TestCtrl', function($uixModalInstance) {
                     this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($fgModalInstance) && angular.isFunction($fgModalInstance.close);
+                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
                 });
 
                 open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: 'TestCtrl', controllerAs: 'test'});
@@ -382,9 +382,9 @@ describe('ui.fugu.modal', function () {
             });
 
             it('should allow defining in-place controller-as controllers', function () {
-                open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: function($fgModalInstance) {
+                open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: function($uixModalInstance) {
                     this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($fgModalInstance) && angular.isFunction($fgModalInstance.close);
+                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
                 }, controllerAs: 'test'});
                 expect($document).toHaveModalOpenWithContent('Content from ctrl true', 'div');
             });
@@ -659,14 +659,14 @@ describe('ui.fugu.modal', function () {
     describe('modal window', function () {
 
         it('should not use transclusion scope for modals content - issue 2110', function () {
-            $compile('<div fugu-modal-window><span ng-init="foo=true"></span></div>')($rootScope);
+            $compile('<div uix-modal-window><span ng-init="foo=true"></span></div>')($rootScope);
             $rootScope.$digest();
 
             expect($rootScope.foo).toBeTruthy();
         });
 
         it('should support custom CSS classes as string', function () {
-            var windowEl = $compile('<div fugu-modal-window window-class="test foo">content</div>')($rootScope);
+            var windowEl = $compile('<div uix-modal-window window-class="test foo">content</div>')($rootScope);
             $rootScope.$digest();
 
             expect(windowEl).toHaveClass('test');

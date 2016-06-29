@@ -1,9 +1,9 @@
-angular.module('fuguDemo').controller('switchDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('switchDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.open = false;
     $scope.checked = true;
     $scope.isDisabled = true;
     $scope.statusChange = function () {
-        console.log('changed');
+        $log.log('changed');
     };
     $scope.status = 'A';
     $scope.A = 'A';
