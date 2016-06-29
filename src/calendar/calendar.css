@@ -1,4 +1,4 @@
-.fugu-calendar {
+.uix-calendar {
   display: inline-block;
   border-radius: 3px;
   color: #666;
@@ -8,7 +8,7 @@
   background-color: #fff;
   white-space: normal;
   -webkit-appearance: none; }
-  .fugu-calendar .fugu-cal-month {
+  .uix-calendar .uix-cal-month {
     line-height: 20px;
     text-align: center;
     font-size: 17px;
@@ -18,11 +18,11 @@
     padding-top: 17px;
     padding-bottom: 5px;
     box-sizing: content-box; }
-  .fugu-calendar .fugu-cal-month-name {
+  .uix-calendar .uix-cal-month-name {
     font-size: 15px;
     font-weight: 400; }
-  .fugu-calendar .fugu-cal-pre-button,
-  .fugu-calendar .fugu-cal-next-button {
+  .uix-calendar .uix-cal-pre-button,
+  .uix-calendar .uix-cal-next-button {
     cursor: pointer;
     position: absolute;
     top: 17px;
@@ -33,16 +33,16 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none; }
-  .fugu-calendar .fugu-cal-pre-button {
+  .uix-calendar .uix-cal-pre-button {
     left: 17px; }
-  .fugu-calendar .fugu-cal-next-button {
+  .uix-calendar .uix-cal-next-button {
     right: 17px; }
-  .fugu-calendar .fugu-cal-header {
+  .uix-calendar .uix-cal-header {
     margin: 0 17px;
     height: auto;
     font-size: 14px;
     line-height: 1; }
-    .fugu-calendar .fugu-cal-header > div {
+    .uix-calendar .uix-cal-header > div {
       width: 32px;
       padding: 1px;
       float: left;
@@ -52,19 +52,19 @@
       border-bottom: #cecece 1px solid;
       margin-bottom: 7px;
       overflow: hidden; }
-  .fugu-calendar .fugu-cal-body {
+  .uix-calendar .uix-cal-body {
     margin: 0 17px; }
-  .fugu-calendar .fugu-cal-row {
+  .uix-calendar .uix-cal-row {
     height: 24px;
     min-width: 231px;
     line-height: 24px;
     clear: both; }
-    .fugu-calendar .fugu-cal-row > div {
+    .uix-calendar .uix-cal-row > div {
       float: left;
       text-align: center;
       height: 100%;
       width: 32px; }
-  .fugu-calendar .fugu-cal-day {
+  .uix-calendar .uix-cal-day {
     margin: 1px 1px 0 0;
     cursor: pointer;
     font-size: 12px;
@@ -73,74 +73,74 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none; }
-  .fugu-calendar .fugu-cal-day-today {
+  .uix-calendar .uix-cal-day-today {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border: 1px solid #3498db;
     border-radius: 6px; }
-  .fugu-calendar .fugu-cal-weekday {
+  .uix-calendar .uix-cal-weekday {
     color: #3498db;
     font-weight: 700; }
-  .fugu-calendar .fugu-cal-day:hover,
-  .fugu-calendar .fugu-cal-select {
+  .uix-calendar .uix-cal-day:hover,
+  .uix-calendar .uix-cal-select {
     border: none;
     color: #fff;
     background: #27ae60;
     border-radius: 6px; }
-  .fugu-calendar .fugu-cal-outside {
+  .uix-calendar .uix-cal-outside {
     font-weight: 400;
     color: #bbb; }
-  .fugu-calendar .fugu-cal-day-disabled {
+  .uix-calendar .uix-cal-day-disabled {
     cursor: not-allowed;
     color: #bbb; }
-    .fugu-calendar .fugu-cal-day-disabled:hover {
+    .uix-calendar .uix-cal-day-disabled:hover {
       border: none;
       color: #bbb;
       background: none; }
-  .fugu-calendar .fugu-cal-footer {
+  .uix-calendar .uix-cal-footer {
     text-align: center;
     font-size: 12px;
     color: #444;
     margin: 4px 17px;
     padding-top: 2px;
     cursor: pointer; }
-  .fugu-calendar .fugu-cal-time {
+  .uix-calendar .uix-cal-time {
     padding: 2px 4px; }
-    .fugu-calendar .fugu-cal-time:hover {
+    .uix-calendar .uix-cal-time:hover {
       text-decoration: underline;
       color: #3498db; }
-  .fugu-calendar .fugu-cal-today-btn {
+  .uix-calendar .uix-cal-today-btn {
     padding: 3px 0;
     font-size: 14px;
     font-weight: 700; }
-    .fugu-calendar .fugu-cal-today-btn:hover {
+    .uix-calendar .uix-cal-today-btn:hover {
       background: #eee;
       border-radius: 5px; }
-  .fugu-calendar .fugu-cal-panel-time {
+  .uix-calendar .uix-cal-panel-time {
     padding: 10px 30px; }
-    .fugu-calendar .fugu-cal-panel-time .btn-group {
+    .uix-calendar .uix-cal-panel-time .btn-group {
       display: block; }
-    .fugu-calendar .fugu-cal-panel-time button {
+    .uix-calendar .uix-cal-panel-time button {
       outline: none;
       width: 33.333%; }
-  .fugu-calendar .fugu-timepanel {
+  .uix-calendar .uix-timepanel {
     border: none; }
-  .fugu-calendar .fugu-cal-month-table {
+  .uix-calendar .uix-cal-month-table {
     margin-bottom: 20px; }
-  .fugu-calendar .fugu-cal-month-item {
+  .uix-calendar .uix-cal-month-item {
     padding: 5px;
     border: 1px solid #ddd;
     margin: 2px;
     text-align: center;
     cursor: pointer;
     min-width: 60px; }
-    .fugu-calendar .fugu-cal-month-item:hover {
+    .uix-calendar .uix-cal-month-item:hover {
       background: #74BCEC; }
-  .fugu-calendar .fugu-cal-year-item {
+  .uix-calendar .uix-cal-year-item {
     padding: 5px 20px; }
-  .fugu-calendar .fugu-cal-month-select {
+  .uix-calendar .uix-cal-month-select {
     background: #3498db;
     color: #fff; }
-    .fugu-calendar .fugu-cal-month-select:hover {
+    .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }

@@ -1,7 +1,5 @@
 <div ng-controller="pagerDemoCtrl">
-    <fugu-pager page-no="pages.pageNo" items-per-page="pages.pageSize" next-text="Next" total-items="pages.totalCount"></fugu-pager>
-    <br/>
-    <fugu-pager page-no="pages.pageNo" total-items="pages.totalCount" first-text="First" last-text="Last" page-changed="changePage"></fugu-pager>
+    <uix-pager page-no="pages.pageNo" total-items="pages.totalCount" first-text="First" last-text="Last" page-changed="changePage"></uix-pager>
     <br/>
     <pre>currentPageNo is : {{pages.pageNo}}</pre>
 </div>

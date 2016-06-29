@@ -5,44 +5,44 @@
  * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.fugu.popover',['ui.fugu.tooltip'])
+angular.module('ui.xg.popover',['ui.xg.tooltip'])
 
-    .directive('fuguPopoverTemplatePopup', function() {
+    .directive('uixPopoverTemplatePopup', function() {
         return {
             replace: true,
             scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
                 originScope: '&' },
-            templateUrl: 'templates/fugu-popover-template-popup.html'
+            templateUrl: 'templates/popover-template-popup.html'
         };
     })
 
-    .directive('fuguPopoverTemplate', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopoverTemplate', 'popover', 'click', {
+    .directive('uixPopoverTemplate', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopoverTemplate', 'popover', 'click', {
             useContentExp: true
         });
     }])
-    .directive('fuguPopoverHtmlPopup', function() {
+    .directive('uixPopoverHtmlPopup', function() {
         return {
             replace: true,
             scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/fugu-popover-html-popup.html'
+            templateUrl: 'templates/popover-html-popup.html'
         };
     })
 
-    .directive('fuguPopoverHtml', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopoverHtml', 'popover', 'click', {
+    .directive('uixPopoverHtml', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopoverHtml', 'popover', 'click', {
             useContentExp: true
         });
     }])
 
-    .directive('fuguPopoverPopup', function() {
+    .directive('uixPopoverPopup', function() {
         return {
             replace: true,
             scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
-            templateUrl: 'templates/fugu-popover-popup.html'
+            templateUrl: 'templates/popover-popup.html'
         };
     })
 
-    .directive('fuguPopover', ['$fuguTooltip', function($fuguTooltip) {
-        return $fuguTooltip('fuguPopover', 'popover', 'click');
+    .directive('uixPopover', ['$uixTooltip', function($uixTooltip) {
+        return $uixTooltip('uixPopover', 'popover', 'click');
     }]);

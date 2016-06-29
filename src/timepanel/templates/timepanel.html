@@ -1,26 +1,26 @@
-<div class="fugu-timepanel">
-    <div class="fugu-timepanel-col fugu-timepanel-hour" ng-style="panelStyles">
-        <div class="fugu-timepanel-top" ng-click="increase('hour')">{{largerHour}}</div>
-        <div class="fugu-timepanel-middle clearfix">
-            <input class="fugu-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('hour',23)" ng-model="hour" placeholder="HH"/>
-            <span class="fugu-timepanel-label">时</span>
+<div class="uix-timepanel">
+    <div class="uix-timepanel-col uix-timepanel-hour" ng-style="panelStyles">
+        <div class="uix-timepanel-top" ng-click="increase('hour')">{{largerHour}}</div>
+        <div class="uix-timepanel-middle clearfix">
+            <input class="uix-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('hour',23)" ng-model="hour" placeholder="HH"/>
+            <span class="uix-timepanel-label">时</span>
         </div>
-        <div class="fugu-timepanel-bottom" ng-click="decrease('hour')">{{smallerHour}}</div>
+        <div class="uix-timepanel-bottom" ng-click="decrease('hour')">{{smallerHour}}</div>
     </div>
-    <div class="fugu-timepanel-col fugu-timepanel-minute" ng-style="panelStyles">
-        <div class="fugu-timepanel-top" ng-click="increase('minute')">{{largerMinute}}</div>
-        <div class="fugu-timepanel-middle clearfix">
-            <input class="fugu-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('minute',59)" ng-model="minute" placeholder="MM"/>
-            <span class="fugu-timepanel-label">分</span>
+    <div class="uix-timepanel-col uix-timepanel-minute" ng-style="panelStyles">
+        <div class="uix-timepanel-top" ng-click="increase('minute')">{{largerMinute}}</div>
+        <div class="uix-timepanel-middle clearfix">
+            <input class="uix-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('minute',59)" ng-model="minute" placeholder="MM"/>
+            <span class="uix-timepanel-label">分</span>
         </div>
-        <div class="fugu-timepanel-bottom" ng-click="decrease('minute')">{{smallerMinute}}</div>
+        <div class="uix-timepanel-bottom" ng-click="decrease('minute')">{{smallerMinute}}</div>
     </div>
-    <div class="fugu-timepanel-col fugu-timepanel-seconds" ng-style="panelStyles" ng-show="showSeconds">
-        <div class="fugu-timepanel-top" ng-click="increase('second')">{{largerSecond}}</div>
-        <div class="fugu-timepanel-middle clearfix">
-            <input class="fugu-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('second',59)" ng-model="second" placeholder="SS"/>
-            <span class="fugu-timepanel-label">秒</span>
+    <div class="uix-timepanel-col uix-timepanel-seconds" ng-style="panelStyles" ng-show="showSeconds">
+        <div class="uix-timepanel-top" ng-click="increase('second')">{{largerSecond}}</div>
+        <div class="uix-timepanel-middle clearfix">
+            <input class="uix-timepanel-input" ng-readonly="readonlyInput" type="text" ng-change="changeInputValue('second',59)" ng-model="second" placeholder="SS"/>
+            <span class="uix-timepanel-label">秒</span>
         </div>
-        <div class="fugu-timepanel-bottom" ng-click="decrease('second')">{{smallerSecond}}</div>
+        <div class="uix-timepanel-bottom" ng-click="decrease('second')">{{smallerSecond}}</div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('timepickerDemoCtrl', ['$scope', '$log', function ($scope, $log) {
+angular.module('uixDemo').controller('timepickerDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.time = new Date();
     $scope.time2 = new Date();
     $scope.isDisabled = true;

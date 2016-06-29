@@ -1,4 +1,4 @@
-.fugu-switch {
+.uix-switch {
   cursor: pointer;
   position: relative;
   display: inline-block;
@@ -7,17 +7,17 @@
   border-radius: 1000px;
   background-color: #777;
   margin: 0; }
-  .fugu-switch input {
+  .uix-switch input {
     position: absolute;
     opacity: 0;
     filter: alpha(opacity=0); }
-  .fugu-switch input:checked + i:before {
+  .uix-switch input:checked + i:before {
     top: 50%;
     bottom: 50%;
     left: 50%;
     right: 5px;
     border-width: 0; }
-  .fugu-switch i:before {
+  .uix-switch i:before {
     content: "";
     position: absolute;
     background-color: #fff;
@@ -30,9 +30,9 @@
     -webkit-transition: all 0.2s;
     -moz-transition: all 0.2s;
     transition: all 0.2s; }
-  .fugu-switch input:checked + i:after {
+  .uix-switch input:checked + i:after {
     margin-left: 16px; }
-  .fugu-switch i:after {
+  .uix-switch i:after {
     content: "";
     position: absolute;
     background-color: #fff;
@@ -47,41 +47,41 @@
     -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25); }
 
-.fugu-switch-default {
+.uix-switch-default {
   background-color: #777; }
 
-.fugu-switch-primary {
+.uix-switch-primary {
   background-color: #428bca; }
 
-.fugu-switch-success {
+.uix-switch-success {
   background-color: #5cb85c; }
 
-.fugu-switch-info {
+.uix-switch-info {
   background-color: #5bc0de; }
 
-.fugu-switch-error {
+.uix-switch-error {
   background-color: #d9534f; }
 
-.fugu-switch-sm {
+.uix-switch-sm {
   width: 35px;
   height: 20px; }
-  .fugu-switch-sm input:checked + i:after {
+  .uix-switch-sm input:checked + i:after {
     margin-left: 16px; }
-  .fugu-switch-sm i:after {
+  .uix-switch-sm i:after {
     width: 18px; }
 
-.fugu-switch-md {
+.uix-switch-md {
   width: 40px;
   height: 25px; }
-  .fugu-switch-md input:checked + i:after {
+  .uix-switch-md input:checked + i:after {
     margin-left: 16px; }
-  .fugu-switch-md i:after {
+  .uix-switch-md i:after {
     width: 23px; }
 
-.fugu-switch-lg {
+.uix-switch-lg {
   width: 50px;
   height: 30px; }
-  .fugu-switch-lg input:checked + i:after {
+  .uix-switch-lg input:checked + i:after {
     margin-left: 21px; }
-  .fugu-switch-lg i:after {
+  .uix-switch-lg i:after {
     width: 28px; }

@@ -1,7 +1,7 @@
-# angular-ui-fugu - AngularJS directives 
+# ui-xg - AngularJS directives
 
-[![Build Status](https://travis-ci.org/xgfe/angular-ui-fugu.svg?branch=master)](https://travis-ci.org/xgfe/angular-ui-fugu)
-[![codecov](https://codecov.io/gh/xgfe/angular-ui-fugu/branch/master/graph/badge.svg)](https://codecov.io/gh/xgfe/angular-ui-fugu)
+[![Build Status](https://travis-ci.org/xgfe/ui-xg.svg?branch=master)](https://travis-ci.org/xgfe/ui-xg)
+[![codecov](https://codecov.io/gh/xgfe/ui-xg/branch/master/graph/badge.svg)](https://codecov.io/gh/xgfe/ui-xg)
 
 ## 依赖说明
 本组件的开发主要依赖于以下几个库:
@@ -26,26 +26,26 @@ gulp -m directive1,directive2,directive3
 - 使用npm安装:
 
 	```
-	npm install angular-ui-fugu
+	npm install ui-xg
 	```
 
 ## 使用
 - 文件引入
 	- angular.min.js
 	- bootstrap.css
-	- ui.fugu.min.css
-	- ui.fugu.min.js
+	- ui.xg.min.css
+	- ui.xg.min.js
 
-	**angular和bootstrap文件的引入要在fugu文件引入之前**
+	**angular和bootstrap文件的引入要在xg文件引入之前**
 - 具体使用
 
 ```
 /**
  * js文件
  */
-angular.module('myApp',['ui.fugu']);  // 组件依赖注入
+angular.module('myApp',['ui.xg']);  // 组件依赖注入
 // 以alert使用为例
-angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
+angular.module('xgDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
     $scope.alerts = [
         { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
         { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
@@ -62,7 +62,7 @@ angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scop
  * html文件
  */
  <div ng-controller="alertDemoCtrl">
-    <fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
+    <uix-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</uix-alert>
 </div>
 
 ```

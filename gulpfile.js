@@ -1,4 +1,4 @@
-var gulp = require('gulp'),
+    var gulp = require('gulp'),
     _ = require('./misc/tasks/util'),
     html2js = require('gulp-angular-html2js'),
     eslint = require('gulp-eslint'),
@@ -19,12 +19,12 @@ var config = {
     modules: [],
     srcModules:[],
     tplModules:[],
-    moduleName:'ui.fugu',
+    moduleName:'ui.xg',
     pkg: require('./package.json'),
     src :'src',
     dist: 'dist',
-    filename: 'ui-fugu',
-    repo:'https://github.com/xgfe/angular-ui-fugu.git',
+    filename: 'ui-xg',
+    repo:'https://github.com/xgfe/ui-xg.git',
     branch:'gh-pages'
 };
 config.getBanner = function(){
@@ -380,16 +380,11 @@ function createPartial(module,docPath){
     data.css = css_code || '';
     var result = template(data);
     if(html){
-        code += '<hr><h2>Example</h2><div>'+result+'</div>';
-    }
-    if(css){
+        code += '<hr><h2>Example</h2>';
         code += '<style>'+css+'</style>';
-    }
-    if(html){
         code += '<div class="example">'+html+'</div>';
-    }
-    if(js){
         code += '<script>'+js+'</script>';
+        code += '<div>'+result+'</div>';
     }
     _.writeFile(docPath+'partials/api/'+module.name+'.html',code);
 }

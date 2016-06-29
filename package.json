@@ -1,11 +1,11 @@
 {
-  "name": "angular-ui-fugu",
-  "version": "1.0.0",
-  "description": "UI Fugu",
-  "main": "dist/js/ui-fugu.js",
+  "name": "ui-xg",
+  "version": "1.1.0",
+  "description": "UI directives based on angular and bootstrap",
+  "main": "dist/js/ui-xg.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xgfe/angular-ui-fugu.git"
+    "url": "https://github.com/xgfe/ui-xg.git"
   },
   "scripts": {
     "test": "gulp test",

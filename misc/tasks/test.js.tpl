@@ -1,9 +1,9 @@
-describe('ui.fugu.<%module%>', function () {
+describe('ui.xg.<%module%>', function () {
     var compile,
         scope;
 
     beforeEach(function () {
-        module('ui.fugu.<%module%>');
+        module('ui.xg.<%module%>');
         module('<%module%>/templates/<%module%>.html');
         inject(function( $compile, $rootScope) {
             compile = $compile;

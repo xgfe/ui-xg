@@ -1,9 +1,9 @@
-describe('fugu-alert', function () {
+describe('uix-alert', function () {
 
     //var compile, scope,rootScope, document, dropdownConfig, element;
     var element, scope, $compile, $templateCache, $timeout;
 
-    beforeEach(module('ui.fugu.alert'));
+    beforeEach(module('ui.xg.alert'));
     beforeEach(module('alert/templates/alert.html'));
 
     beforeEach(inject(function($rootScope, _$compile_, _$templateCache_, _$timeout_) {
@@ -14,9 +14,9 @@ describe('fugu-alert', function () {
 
         element = angular.element(
             '<div>' +
-            '<fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}"' +
+            '<uix-alert ng-repeat="alert in alerts" type="{{alert.type}}"' +
             'close="true" close-func="removeAlert($index)" has-icon="true">{{alert.msg}}' +
-            '</fugu-alert>' +
+            '</uix-alert>' +
             '</div>');
 
         scope.alerts = [
@@ -47,10 +47,10 @@ describe('fugu-alert', function () {
     it('should expose the controller to the view', function() {
         $templateCache.put('templates/alert.html', '<div>{{alert.text}}</div>');
 
-        element = $compile('<fugu-alert></fugu-alert>')(scope);
+        element = $compile('<uix-alert></uix-alert>')(scope);
         scope.$digest();
 
-        var ctrl = element.controller('fugu-alert');
+        var ctrl = element.controller('uix-alert');
         expect(ctrl).toBeDefined();
 
         ctrl.text = 'foo';
@@ -62,7 +62,7 @@ describe('fugu-alert', function () {
     it('should support custom templates', function() {
         $templateCache.put('foo/bar.html', '<div>baz</div>');
 
-        element = $compile('<fugu-alert template-url="foo/bar.html"></fugu-alert>')(scope);
+        element = $compile('<uix-alert template-url="foo/bar.html"></uix-alert>')(scope);
         scope.$digest();
 
         expect(element.html()).toBe('baz');
@@ -121,14 +121,14 @@ describe('fugu-alert', function () {
     });
 
     it('should not show close button and have the dismissible class if no close callback specified', function() {
-        element = $compile('<fugu-alert>No close</fugu-alert>')(scope);
+        element = $compile('<uix-alert>No close</uix-alert>')(scope);
         scope.$digest();
         expect(findCloseButton(0)).toBeHidden();
         expect(element).not.toHaveClass('alert-dismissible');
     });
 
     it('should be possible to add additional classes for alert', function() {
-        var element = $compile('<fugu-alert class="alert-block" type="info">Default alert!</fugu-alert>')(scope);
+        var element = $compile('<uix-alert class="alert-block" type="info">Default alert!</uix-alert>')(scope);
         scope.$digest();
         expect(element).toHaveClass('alert-block');
         expect(element).toHaveClass('alert-info');
@@ -136,7 +136,7 @@ describe('fugu-alert', function () {
 
     it('should close automatically if dismiss-on-timeout is defined on the element', function() {
         scope.removeAlert = jasmine.createSpy();
-        $compile('<fugu-alert close="true" close-func="removeAlert()" dismiss-on-timeout="500">Default alert!</fugu-alert>')(scope);
+        $compile('<uix-alert close="true" close-func="removeAlert()" dismiss-on-timeout="500">Default alert!</uix-alert>')(scope);
         scope.$digest();
 
         $timeout.flush();
@@ -146,7 +146,7 @@ describe('fugu-alert', function () {
     it('should not close immediately with a dynamic dismiss-on-timeout', function() {
         scope.removeAlert = jasmine.createSpy();
         scope.dismissTime = 500;
-        $compile('<fugu-alert close="true" close-func="removeAlert()" dismiss-on-timeout="{{dismissTime}}">Default alert!</fugu-alert>')(scope);
+        $compile('<uix-alert close="true" close-func="removeAlert()" dismiss-on-timeout="{{dismissTime}}">Default alert!</uix-alert>')(scope);
         scope.$digest();
 
         $timeout.flush(100);
@@ -157,7 +157,7 @@ describe('fugu-alert', function () {
     });
 
     it('should have a default close function', function() {
-        element = $compile('<fugu-alert close="true">Default alert!</fugu-alert>')(scope);
+        element = $compile('<uix-alert close="true">Default alert!</uix-alert>')(scope);
         scope.$digest();
 
         expect(findCloseButton(0).css('display')).not.toBe('none');
@@ -167,7 +167,7 @@ describe('fugu-alert', function () {
     });
 
     it('should have close tips replace for icon', function() {
-        element = $compile('<fugu-alert close="true" close-text="点击关闭">Default alert!</fugu-alert>')(scope);
+        element = $compile('<uix-alert close="true" close-text="点击关闭">Default alert!</uix-alert>')(scope);
         scope.$digest();
 
         var spanElement = element.find('.close').find('span');
@@ -189,7 +189,7 @@ describe('fugu-alert', function () {
     });
 
     it('should support no icon', function() {
-        element = $compile('<fugu-alert close="true" has-icon="false">Default alert!</fugu-alert>')(scope);
+        element = $compile('<uix-alert close="true" has-icon="false">Default alert!</uix-alert>')(scope);
         scope.$digest();
 
         var iconElement = element.find('.alert-icon');

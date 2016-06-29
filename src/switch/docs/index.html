@@ -1,22 +1,22 @@
 <div ng-controller="switchDemoCtrl">
     <p>Normal</p>
-    <fugu-switch ng-model="checked"></fugu-switch>
+    <uix-switch ng-model="checked"></uix-switch>
     <input type="checkbox" ng-model="checked"/>checked:{{checked}}
     <p>Disabled</p>
-    <fugu-switch ng-model="open" ng-disabled="isDisabled"></fugu-switch>
+    <uix-switch ng-model="open" ng-disabled="isDisabled"></uix-switch>
     <p>Size</p>
-    <fugu-switch ng-model="checked" size="sm"></fugu-switch>
-    <fugu-switch ng-model="checked" type="success"></fugu-switch>
-    <fugu-switch ng-model="checked" size="lg"></fugu-switch>
+    <uix-switch ng-model="checked" size="sm"></uix-switch>
+    <uix-switch ng-model="checked" type="success"></uix-switch>
+    <uix-switch ng-model="checked" size="lg"></uix-switch>
     <p>Type</p>
-    <fugu-switch ng-model="open"></fugu-switch>
-    <fugu-switch ng-model="open" type="primary"></fugu-switch>
-    <fugu-switch ng-model="open" type="success"></fugu-switch>
-    <fugu-switch ng-model="open" type="error"></fugu-switch>
-    <fugu-switch ng-model="open" type="info"></fugu-switch>
+    <uix-switch ng-model="open"></uix-switch>
+    <uix-switch ng-model="open" type="primary"></uix-switch>
+    <uix-switch ng-model="open" type="success"></uix-switch>
+    <uix-switch ng-model="open" type="error"></uix-switch>
+    <uix-switch ng-model="open" type="info"></uix-switch>
     <p>Changed</p>
-    <fugu-switch ng-model="open" on-change="statusChange()" type="success"></fugu-switch>
+    <uix-switch ng-model="open" on-change="statusChange()" type="success"></uix-switch>
     <p>trueValue and falseValue</p>
-    <fugu-switch ng-model="status" type="success" true-value="A" false-value="B"></fugu-switch>
+    <uix-switch ng-model="status" type="success" true-value="A" false-value="B"></uix-switch>
     <pre>status:{{status}}</pre>
 </div>

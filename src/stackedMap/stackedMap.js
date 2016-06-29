@@ -4,8 +4,8 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-06-06
  */
-angular.module('ui.fugu.stackedMap', [])
-    .factory('$fuguStackedMap', function () {
+angular.module('ui.xg.stackedMap', [])
+    .factory('$uixStackedMap', function () {
         return {
             createNew: function () {
                 var stack = [];

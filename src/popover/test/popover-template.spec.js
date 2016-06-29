@@ -8,13 +8,13 @@ describe('popover template', function() {
 
     // load the popover code
     beforeEach(function () {
-        module('ui.fugu.popover');
-        module('ui.fugu.tooltip');
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('popover/templates/fugu-popover-popup.html');
-        module('popover/templates/fugu-popover-html-popup.html');
-        module('popover/templates/fugu-popover-template-popup.html');
+        module('ui.xg.popover');
+        module('ui.xg.tooltip');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('popover/templates/popover-popup.html');
+        module('popover/templates/popover-html-popup.html');
+        module('popover/templates/popover-template-popup.html');
     });
 
     beforeEach(inject(function($templateCache) {
@@ -24,7 +24,7 @@ describe('popover template', function() {
     beforeEach(inject(function($rootScope, $compile, _$document_) {
         $document = _$document_;
         elmBody = angular.element(
-            '<div><span fugu-popover-template="templateUrl">Selector Text</span></div>'
+            '<div><span uix-popover-template="templateUrl">Selector Text</span></div>'
         );
 
         scope = $rootScope;
@@ -94,7 +94,7 @@ describe('popover template', function() {
         describe('placement', function() {
             it('can specify an alternative, valid placement', inject(function($compile) {
                 elmBody = angular.element(
-                    '<div><span fugu-popover-template="templateUrl" popover-placement="left">Trigger</span></div>'
+                    '<div><span uix-popover-template="templateUrl" popover-placement="left">Trigger</span></div>'
                 );
                 $compile(elmBody)(scope);
                 scope.$digest();
@@ -116,7 +116,7 @@ describe('popover template', function() {
         describe('class', function() {
             it('can specify a custom class', inject(function($compile) {
                 elmBody = angular.element(
-                    '<div><span fugu-popover-template="templateUrl" popover-class="custom">Trigger</span></div>'
+                    '<div><span uix-popover-template="templateUrl" popover-class="custom">Trigger</span></div>'
                 );
                 $compile(elmBody)(scope);
                 scope.$digest();

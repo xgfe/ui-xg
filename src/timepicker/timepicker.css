@@ -1,10 +1,10 @@
-.fugu-timepicker {
+.uix-timepicker {
   position: relative;
   display: inline-block; }
-  .fugu-timepicker button {
+  .uix-timepicker button {
     outline: none; }
 
-.fugu-timepicker-popover.in {
+.uix-timepicker-popover.in {
   display: block; }
-  .fugu-timepicker-popover.in .fugu-timepanel {
+  .uix-timepicker-popover.in .uix-timepanel {
     border: 0; }

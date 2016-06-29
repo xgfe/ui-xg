@@ -1,4 +1,4 @@
-describe('ui.fugu.calendar', function () {
+describe('ui.xg.calendar', function () {
     var compile,
         scope,
         element,
@@ -7,16 +7,16 @@ describe('ui.fugu.calendar', function () {
         $locale;
 
     beforeEach(function () {
-        module('ui.fugu.timepanel');
-        module('ui.fugu.calendar',['fuguCalendarProvider',function (fuguCalendarProvider) {
-            calendarProvider = fuguCalendarProvider;
+        module('ui.xg.timepanel');
+        module('ui.xg.calendar',['uixCalendarProvider',function (uixCalendarProvider) {
+            calendarProvider = uixCalendarProvider;
         }]);
         module('calendar/templates/calendar.html');
         module('timepanel/templates/timepanel.html');
-        inject(function( $compile, $rootScope,fuguCalendarConfig,_$locale_) {
+        inject(function( $compile, $rootScope,uixCalendarConfig,_$locale_) {
             compile = $compile;
             scope = $rootScope.$new();
-            calendarConfig = fuguCalendarConfig;
+            calendarConfig = uixCalendarConfig;
             $locale = _$locale_
         });
     });
@@ -26,7 +26,7 @@ describe('ui.fugu.calendar', function () {
 
     function createCalendar(el) {
         if(!el){
-            el = '<fugu-calendar ng-model="time"></fugu-calendar>';
+            el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate();
         }
         element = compile(el)(scope);
@@ -82,7 +82,7 @@ describe('ui.fugu.calendar', function () {
     // 获取星期名称
     function getShortDay(){
         var res = [];
-        var days = element.find('.fugu-cal-panel-day .fugu-cal-header').children();
+        var days = element.find('.uix-cal-panel-day .uix-cal-header').children();
         days.each(function () {
            res.push($(this).text().trim());
         });
@@ -91,7 +91,7 @@ describe('ui.fugu.calendar', function () {
     // 获取当月所有可选的天数
     function getAllDays(){
         var res = [];
-        element.find('.fugu-cal-panel-day .fugu-cal-day:not(.fugu-cal-outside)').each(function () {
+        element.find('.uix-cal-panel-day .uix-cal-day:not(.uix-cal-outside)').each(function () {
             res.push($(this).text().trim());
         });
         return res;
@@ -110,11 +110,11 @@ describe('ui.fugu.calendar', function () {
         return dt;
     }
     function getDay(day,outside){
-        var selector = '.fugu-cal-panel-day .fugu-cal-day';
+        var selector = '.uix-cal-panel-day .uix-cal-day';
         if(outside){
-            selector += '.fugu-cal-outside';
+            selector += '.uix-cal-outside';
         }else{
-            selector += ':not(.fugu-cal-outside)';
+            selector += ':not(.uix-cal-outside)';
         }
         selector += ':contains("'+day+'")';
         return element.find(selector);
@@ -129,29 +129,29 @@ describe('ui.fugu.calendar', function () {
     }
     // 获取月的显示文本
     function getMonthText(){
-        return element.find('.fugu-cal-panel-day .fugu-cal-month-name > a').eq(0).text();
+        return element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(0).text();
     }
     function getYearText(){
-        return element.find('.fugu-cal-panel-day .fugu-cal-month-name > a').eq(1).text();
+        return element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(1).text();
     }
     // 选择上一个月
     function clickPrevMonth(){
-        element.find('.fugu-cal-panel-day .fugu-cal-pre-button').click();
+        element.find('.uix-cal-panel-day .uix-cal-pre-button').click();
         scope.$digest();
     }
     function clickNextMonth(){
-        element.find('.fugu-cal-panel-day .fugu-cal-next-button').click();
+        element.find('.uix-cal-panel-day .uix-cal-next-button').click();
         scope.$digest();
     }
     // day panel to month panel
     function day2month(){
-        var monthPanelButton = element.find('.fugu-cal-panel-day .fugu-cal-month-name > a').eq(0);
+        var monthPanelButton = element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(0);
         monthPanelButton.click();
         scope.$digest();
     }
     // day panel to year panel
     function day2year(){
-        var yearPanelButton = element.find('.fugu-cal-panel-day .fugu-cal-month-name > a').eq(1);
+        var yearPanelButton = element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(1);
         yearPanelButton.click();
         scope.$digest();
     }
@@ -162,7 +162,7 @@ describe('ui.fugu.calendar', function () {
         });
         it('should show day panel', function () {
             createCalendar();
-            var panel = element.find('.fugu-cal-panel-day');
+            var panel = element.find('.uix-cal-panel-day');
             expect(panel).not.toBeHidden();
         });
     });
@@ -184,14 +184,14 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             var day = scope.time.getDate();
             var selectDay = getDay(day);
-            expect(selectDay).toHaveClass('fugu-cal-select');
+            expect(selectDay).toHaveClass('uix-cal-select');
         });
         it('should have class in today', function () {
             var today = new Date();
-            var el = '<fugu-calendar ng-model="time"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = today;
             createCalendar(el);
-            expect(getDay(today.getDate())).toHaveClass('fugu-cal-day-today');
+            expect(getDay(today.getDate())).toHaveClass('uix-cal-day-today');
         });
         it('should be correct for all days in month', function () {
             createCalendar();
@@ -204,14 +204,14 @@ describe('ui.fugu.calendar', function () {
             var day = scope.time;
             var weekday = getAllWeekdays(day.getFullYear(),day.getMonth());
             var divs = [];
-            element.find('.fugu-cal-panel-day .fugu-cal-weekday:not(.fugu-cal-outside)').each(function () {
+            element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
                 divs.push(parseInt($(this).text().trim(),10));
             });
             expect(weekday).toEqual(divs);
         });
         it('should have today button on buttom', function () {
             createCalendar();
-            var button = element.find('.fugu-cal-today-btn').eq(0);
+            var button = element.find('.uix-cal-today-btn').eq(0);
             expect(button).toBeDefined();
             expect(button.text().trim()).toBe('Today');
         });
@@ -219,8 +219,8 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             selectDay(10);
             expect(scope.time.getDate()).toBe(10);
-            expect(getDay(15)).not.toHaveClass('fugu-cal-select');
-            expect(getDay(10)).toHaveClass('fugu-cal-select');
+            expect(getDay(15)).not.toHaveClass('uix-cal-select');
+            expect(getDay(10)).toHaveClass('uix-cal-select');
         });
         it('should change day panel when select a outside day', function () {
             createCalendar();
@@ -239,7 +239,7 @@ describe('ui.fugu.calendar', function () {
             expect(getMonthText()).toBe(newMonth);
         });
         it('should select prev month and across a year', function () {
-            var el = '<fugu-calendar ng-model="time"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
                 month:0
             });
@@ -255,7 +255,7 @@ describe('ui.fugu.calendar', function () {
             expect(month).toBe($locale.DATETIME_FORMATS.SHORTMONTH[scope.time.getMonth() - 1]);
         });
         it('select prev month and cross prev year', function () {
-            var el = '<fugu-calendar ng-model="time"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
                 month:0
             });
@@ -273,7 +273,7 @@ describe('ui.fugu.calendar', function () {
             expect(month).toBe($locale.DATETIME_FORMATS.SHORTMONTH[scope.time.getMonth() + 1]);
         });
         it('select next month and cross next year', function () {
-            var el = '<fugu-calendar ng-model="time"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
                 month:11
             });
@@ -289,28 +289,28 @@ describe('ui.fugu.calendar', function () {
     describe('calendar time panel', function () {
         var timePanel;
         function clickToTimePanel(){
-            var timeButton = element.find('.fugu-cal-panel-day .fugu-cal-time');
+            var timeButton = element.find('.uix-cal-panel-day .uix-cal-time');
             timeButton.click();
             scope.$digest();
-            timePanel = element.find('.fugu-cal-panel-time');
+            timePanel = element.find('.uix-cal-panel-time');
         }
         function clickBackBtn(){
-            var backButton = timePanel.find('.fugu-cal-time-cancal');
+            var backButton = timePanel.find('.uix-cal-time-cancal');
             backButton.click();
             scope.$digest();
         }
         function clickOkBtn(){
-            var okButton = timePanel.find('.fugu-cal-time-ok');
+            var okButton = timePanel.find('.uix-cal-time-ok');
             okButton.click();
             scope.$digest();
         }
         function clickNowBtn(){
-            var nowButton = timePanel.find('.fugu-cal-time-now');
+            var nowButton = timePanel.find('.uix-cal-time-now');
             nowButton.click();
             scope.$digest();
         }
         function changeTime(opt){
-            var inputs = timePanel.find('.fugu-timepanel-input');
+            var inputs = timePanel.find('.uix-timepanel-input');
             if(angular.isDefined(opt.hour)){
                 inputs.eq(0).val(opt.hour);
                 inputs.eq(0).change();
@@ -327,13 +327,13 @@ describe('ui.fugu.calendar', function () {
         it('day panel to time panel', function () {
             createCalendar();
             clickToTimePanel();
-            expect(element.find('.fugu-cal-panel-day')).toBeHidden();
-            expect(element.find('.fugu-cal-panel-time')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-day')).toBeHidden();
+            expect(element.find('.uix-cal-panel-time')).not.toBeHidden();
         });
         it('show have correct DOM', function () {
             createCalendar();
             clickToTimePanel();
-            var timepanel = timePanel.find('.fugu-timepanel');
+            var timepanel = timePanel.find('.uix-timepanel');
             expect(timepanel.length).toBe(1);
             expect(timepanel).not.toBeHidden();
             var buttons = timePanel.find('.btn-group > button');
@@ -343,7 +343,7 @@ describe('ui.fugu.calendar', function () {
         it('should show correct time value', function () {
             createCalendar();
             clickToTimePanel();
-            var inputs = timePanel.find('.fugu-timepanel-input');
+            var inputs = timePanel.find('.uix-timepanel-input');
             expect(inputs.eq(0).val()).toBe(''+scope.time.getHours());
             expect(inputs.eq(1).val()).toBe(''+scope.time.getMinutes());
             expect(inputs.eq(2).val()).toBe(''+scope.time.getSeconds());
@@ -351,13 +351,13 @@ describe('ui.fugu.calendar', function () {
         it('should return day panel when click back button', function () {
             createCalendar();
             clickToTimePanel();
-            var timepanel = element.find('.fugu-cal-panel-time');
-            var daypanel = element.find('.fugu-cal-panel-day');
+            var timepanel = element.find('.uix-cal-panel-time');
+            var daypanel = element.find('.uix-cal-panel-day');
             expect(timepanel).not.toBeHidden();
             expect(daypanel).toBeHidden();
             clickBackBtn();
-            timepanel = element.find('.fugu-cal-panel-time');
-            daypanel = element.find('.fugu-cal-panel-day');
+            timepanel = element.find('.uix-cal-panel-time');
+            daypanel = element.find('.uix-cal-panel-day');
             expect(timepanel).toBeHidden();
             expect(daypanel).not.toBeHidden();
         });
@@ -373,7 +373,7 @@ describe('ui.fugu.calendar', function () {
             clickBackBtn();
             expect(scope.time).toEqual(cache);
             clickToTimePanel();
-            var inputs = timePanel.find('.fugu-timepanel-input');
+            var inputs = timePanel.find('.uix-timepanel-input');
             expect(inputs.eq(0).val()).toBe(''+cache.getHours());
             expect(inputs.eq(1).val()).toBe(''+cache.getMinutes());
             expect(inputs.eq(2).val()).toBe(''+cache.getSeconds());
@@ -387,7 +387,7 @@ describe('ui.fugu.calendar', function () {
             // 对比点击之后输入框显示的时间和dt能差多少
             // 相差不大于1秒,也就应该能大概知道时间到底变没变,当然,这个方法还是存在误差的
             var dt = new Date();
-            var inputs = timePanel.find('.fugu-timepanel-input');
+            var inputs = timePanel.find('.uix-timepanel-input');
             var hour = inputs.eq(0).val();
             var minute = inputs.eq(1).val();
             var second = inputs.eq(2).val();
@@ -411,7 +411,7 @@ describe('ui.fugu.calendar', function () {
             expect(scope.time.getMinutes()).toBe(12);
             expect(scope.time.getSeconds()).toBe(45);
             clickToTimePanel();
-            var inputs = timePanel.find('.fugu-timepanel-input');
+            var inputs = timePanel.find('.uix-timepanel-input');
             expect(inputs.eq(0).val()).toBe('16');
             expect(inputs.eq(1).val()).toBe('12');
             expect(inputs.eq(2).val()).toBe('45');
@@ -422,19 +422,19 @@ describe('ui.fugu.calendar', function () {
         it('day panel to month panel', function () {
             createCalendar();
             day2month();
-            expect(element.find('.fugu-cal-panel-day')).toBeHidden();
-            expect(element.find('.fugu-cal-panel-month')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-day')).toBeHidden();
+            expect(element.find('.uix-cal-panel-month')).not.toBeHidden();
         });
         it('should show current year in header', function () {
             createCalendar();
             day2month();
-            var year = element.find('.fugu-cal-panel-month .fugu-cal-month-name > a').text().trim();
+            var year = element.find('.uix-cal-panel-month .uix-cal-month-name > a').text().trim();
             expect(year).toBe(''+scope.time.getFullYear());
         });
         it('should have a table to show all month', function () {
             createCalendar();
             day2month();
-            var table = element.find('.fugu-cal-panel-month .fugu-cal-month-table');
+            var table = element.find('.uix-cal-panel-month .uix-cal-month-table');
             expect(table).not.toBeHidden();
             expect(table.length).toBe(1);
             expect(table.find('tr').length).toBe(4);
@@ -443,7 +443,7 @@ describe('ui.fugu.calendar', function () {
         it('should have a select class on current month', function () {
             createCalendar();
             day2month();
-            var selectMonth = element.find('.fugu-cal-panel-month .fugu-cal-month-select').text().trim();
+            var selectMonth = element.find('.uix-cal-panel-month .uix-cal-month-select').text().trim();
             var currentMonth = scope.time.getMonth();
             expect(selectMonth).toBe($locale.DATETIME_FORMATS.MONTH[currentMonth]);
         });
@@ -451,21 +451,21 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             day2month();
             var selectMonth = 5; // 选择六月
-            element.find('.fugu-cal-panel-month .fugu-cal-month-item').eq(selectMonth).click();
+            element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
-            expect(element.find('.fugu-cal-panel-day')).not.toBeHidden();
-            expect(element.find('.fugu-cal-panel-month')).toBeHidden();
+            expect(element.find('.uix-cal-panel-day')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-month')).toBeHidden();
         });
         it('should show June when click June', function () {
             createCalendar();
             day2month();
             var selectMonth = 5; // 选择六月
-            element.find('.fugu-cal-panel-month .fugu-cal-month-item').eq(selectMonth).click();
+            element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
             expect(getMonthText()).toBe($locale.DATETIME_FORMATS.SHORTMONTH[selectMonth]);
             var weekday = getAllWeekdays(getYearText(),selectMonth);
             var divs = [];
-            element.find('.fugu-cal-panel-day .fugu-cal-weekday:not(.fugu-cal-outside)').each(function () {
+            element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
                 divs.push(parseInt($(this).text().trim(),10));
             });
             expect(weekday).toEqual(divs);
@@ -475,36 +475,36 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             day2month();
             var selectMonth = 6; // 选择July
-            element.find('.fugu-cal-panel-month .fugu-cal-month-item').eq(selectMonth).click();
+            element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
             day2month();
-            var selectMonthName = element.find('.fugu-cal-panel-month .fugu-cal-month-select').text().trim();
+            var selectMonthName = element.find('.uix-cal-panel-month .uix-cal-month-select').text().trim();
             expect(selectMonthName).toBe($locale.DATETIME_FORMATS.MONTH[selectMonth]);
         });
     });
     // 年选择面板
     describe('calendar year panel', function () {
         function getYearRange(){
-            return element.find('.fugu-cal-panel-year .fugu-cal-month-name > a').text();
+            return element.find('.uix-cal-panel-year .uix-cal-month-name > a').text();
         }
         function clickYear(year){
-            element.find('.fugu-cal-panel-year .fugu-cal-month-item:contains("'+year+'")').click();
+            element.find('.uix-cal-panel-year .uix-cal-month-item:contains("'+year+'")').click();
             scope.$digest();
         }
         it('day panel to year panel', function () {
             createCalendar();
             day2year();
-            expect(element.find('.fugu-cal-panel-day')).toBeHidden();
-            expect(element.find('.fugu-cal-panel-year')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-day')).toBeHidden();
+            expect(element.find('.uix-cal-panel-year')).not.toBeHidden();
         });
         it('month panel to year panel', function () {
             createCalendar();
             day2month();
-            var yearPanelButton = element.find('.fugu-cal-panel-month .fugu-cal-month-name > a').eq(0);
+            var yearPanelButton = element.find('.uix-cal-panel-month .uix-cal-month-name > a').eq(0);
             yearPanelButton.click();
             scope.$digest();
-            expect(element.find('.fugu-cal-panel-month')).toBeHidden();
-            expect(element.find('.fugu-cal-panel-year')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-month')).toBeHidden();
+            expect(element.find('.uix-cal-panel-year')).not.toBeHidden();
         });
         it('should show correct header text', function () {
             createCalendar();
@@ -516,15 +516,15 @@ describe('ui.fugu.calendar', function () {
         it('should have two arrows', function () {
             createCalendar();
             day2year();
-            var prevBtn = element.find('.fugu-cal-pre-button');
-            var nextBtn = element.find('.fugu-cal-next-button');
+            var prevBtn = element.find('.uix-cal-pre-button');
+            var nextBtn = element.find('.uix-cal-next-button');
             expect(prevBtn).not.toBeHidden();
             expect(nextBtn).not.toBeHidden();
         });
         it('should have a table to show 12 years', function () {
             createCalendar();
             day2year();
-            var table = element.find('.fugu-cal-panel-year .fugu-cal-month-table');
+            var table = element.find('.uix-cal-panel-year .uix-cal-month-table');
             expect(table).not.toBeHidden();
             expect(table.length).toBe(1);
             expect(table.find('tr').length).toBe(4);
@@ -533,7 +533,7 @@ describe('ui.fugu.calendar', function () {
         it('should have a select class on current year', function () {
             createCalendar();
             day2year();
-            var selectYear = element.find('.fugu-cal-panel-year .fugu-cal-month-select').text().trim();
+            var selectYear = element.find('.uix-cal-panel-year .uix-cal-month-select').text().trim();
             var currentYear = scope.time.getFullYear();
             expect(selectYear).toBe(''+currentYear);
         });
@@ -541,14 +541,14 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             day2year();
             clickYear(2017);
-            expect(element.find('.fugu-cal-panel-year')).toBeHidden();
-            expect(element.find('.fugu-cal-panel-month')).not.toBeHidden();
+            expect(element.find('.uix-cal-panel-year')).toBeHidden();
+            expect(element.find('.uix-cal-panel-month')).not.toBeHidden();
         });
         it('should show the select year when click a year', function () {
             createCalendar();
             day2year();
             clickYear(2017);
-            var year = element.find('.fugu-cal-panel-month .fugu-cal-month-name > a');
+            var year = element.find('.uix-cal-panel-month .uix-cal-month-name > a');
             expect(year).not.toBeHidden();
             expect(year.text().trim()).toBe('2017');
         });
@@ -556,12 +556,12 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             day2year();
             clickYear(2017);
-            var year = element.find('.fugu-cal-panel-month .fugu-cal-month-name > a');
+            var year = element.find('.uix-cal-panel-month .uix-cal-month-name > a');
             year.click();
             scope.$digest();
             var range = '2013-2024';
             expect(getYearRange()).toBe(range);
-            var selectYear = element.find('.fugu-cal-panel-year .fugu-cal-month-select').text().trim();
+            var selectYear = element.find('.uix-cal-panel-year .uix-cal-month-select').text().trim();
             expect(selectYear).toBe('2017');
         });
         it('should show a month when click a year and a month', function () {
@@ -569,11 +569,11 @@ describe('ui.fugu.calendar', function () {
             day2year();
             clickYear(2017);
             var selectMonth = 5; // 选择2017年6月
-            element.find('.fugu-cal-panel-month .fugu-cal-month-item').eq(selectMonth).click();
+            element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
             var weekday = getAllWeekdays(2017,selectMonth);
             var divs = [];
-            element.find('.fugu-cal-panel-day .fugu-cal-weekday:not(.fugu-cal-outside)').each(function () {
+            element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
                 divs.push(parseInt($(this).text().trim(),10));
             });
             expect(weekday).toEqual(divs);
@@ -581,26 +581,26 @@ describe('ui.fugu.calendar', function () {
         it('should show prev range', function () {
             createCalendar();
             day2year();
-            var prevBtn = element.find('.fugu-cal-pre-button');
+            var prevBtn = element.find('.uix-cal-pre-button');
             prevBtn.click();
             scope.$digest();
             var year = scope.time.getFullYear();
             var range = (year - 16) + '-' + (year - 5);
             expect(getYearRange()).toBe(range);
-            var tds = element.find('.fugu-cal-panel-year .fugu-cal-month-item');
+            var tds = element.find('.uix-cal-panel-year .uix-cal-month-item');
             expect(tds.eq(0).text().trim()).toBe(String(year - 16));
             expect(tds.eq(11).text().trim()).toBe(String(year - 5));
         });
         it('should show next range', function () {
             createCalendar();
             day2year();
-            var nextBtn = element.find('.fugu-cal-next-button');
+            var nextBtn = element.find('.uix-cal-next-button');
             nextBtn.click();
             scope.$digest();
             var year = scope.time.getFullYear();
             var range = (year + 8) + '-' + (year + 19);
             expect(getYearRange()).toBe(range);
-            var tds = element.find('.fugu-cal-panel-year .fugu-cal-month-item');
+            var tds = element.find('.uix-cal-panel-year .uix-cal-month-item');
             expect(tds.eq(0).text().trim()).toBe(String(year + 8));
             expect(tds.eq(11).text().trim()).toBe(String(year + 19));
         });
@@ -609,16 +609,16 @@ describe('ui.fugu.calendar', function () {
     describe('show time attribute', function () {
         it('should have time by default', function () {
             createCalendar();
-            var button = element.find('.fugu-cal-panel-day .fugu-cal-time');
+            var button = element.find('.uix-cal-panel-day .uix-cal-time');
             expect(button.length).toBe(1);
             expect(button.text().trim()).toBe('12:30 PM');
         });
         it('should have not show time when set showTime to be false', function () {
-            var el = '<fugu-calendar ng-model="time" show-time="showTime"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" show-time="showTime"></uix-calendar>';
             scope.time = getDate();
             scope.showTime = false;
             createCalendar(el);
-            var button = element.find('.fugu-cal-panel-day .fugu-cal-time');
+            var button = element.find('.uix-cal-panel-day .uix-cal-time');
             expect(button.length).toBe(0);
         });
     });
@@ -630,7 +630,7 @@ describe('ui.fugu.calendar', function () {
             expect(days[0]).toBe($locale.DATETIME_FORMATS.SHORTDAY[calendarConfig.startingDay]);
         });
         it('should start with monday when set starting day to be 1', function () {
-            var el = '<fugu-calendar ng-model="time" starting-day="startingDay"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" starting-day="startingDay"></uix-calendar>';
             scope.startingDay = 1;
             scope.time = getDate();
             createCalendar(el);
@@ -638,7 +638,7 @@ describe('ui.fugu.calendar', function () {
             expect(days[0]).toBe($locale.DATETIME_FORMATS.SHORTDAY[scope.startingDay]);
         });
         it('should start with sunday when set starting day to be larger than 6', function () {
-            var el = '<fugu-calendar ng-model="time" starting-day="startingDay"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" starting-day="startingDay"></uix-calendar>';
             scope.startingDay = 10;
             scope.time = getDate();
             createCalendar(el);
@@ -646,7 +646,7 @@ describe('ui.fugu.calendar', function () {
             expect(days[0]).toBe($locale.DATETIME_FORMATS.SHORTDAY[0]);
         });
         it('should start with sunday when set starting day to be smaller than 0', function () {
-            var el = '<fugu-calendar ng-model="time" starting-day="startingDay"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" starting-day="startingDay"></uix-calendar>';
             scope.startingDay = -2;
             scope.time = getDate();
             createCalendar(el);
@@ -655,7 +655,7 @@ describe('ui.fugu.calendar', function () {
         });
     });
     // provider
-    describe('fugu calendar provider', function () {
+    describe('uixCalendar provider', function () {
         it('should set SHORTDAY', function () {
             var SHORTDAY = ['日','一','二','三','四','五','六'];
             calendarProvider.setFormats('SHORTDAY',SHORTDAY);
@@ -676,7 +676,7 @@ describe('ui.fugu.calendar', function () {
             createCalendar();
             day2month();
             var months = [];
-            element.find('.fugu-cal-panel-month .fugu-cal-month-item').each(function () {
+            element.find('.uix-cal-panel-month .uix-cal-month-item').each(function () {
                 months.push($(this).text().trim());
             });
             expect(months).toEqual(MONTH);
@@ -685,27 +685,27 @@ describe('ui.fugu.calendar', function () {
     // minDate 属性
     describe('min date attribute', function () {
         it('should be disabled when a day is earlier than minDate', function () {
-            var el = '<fugu-calendar ng-model="time" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:8 // 8 is the min date
             });
             scope.time = getDate();
             createCalendar(el);
-            expect(getDay(7)).toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(8)).not.toHaveClass('fugu-cal-day-disabled');
+            expect(getDay(7)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(8)).not.toHaveClass('uix-cal-day-disabled');
         });
         it('should be disabled in earlier month', function () {
-            var el = '<fugu-calendar ng-model="time" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:8 // 8 is the min date
             });
             scope.time = getDate();
             createCalendar(el);
             clickPrevMonth();
-            expect(element.find('.fugu-cal-panel-day .fugu-cal-day')).toHaveClass('fugu-cal-day-disabled');
+            expect(element.find('.uix-cal-panel-day .uix-cal-day')).toHaveClass('uix-cal-day-disabled');
         });
         it('should not select a day is earlier than minDate', function () {
-            var el = '<fugu-calendar ng-model="time" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:8 // 8 is the min date
             });
@@ -716,7 +716,7 @@ describe('ui.fugu.calendar', function () {
             expect(scope.time).toEqual(cache);
         });
         it('should not select a day is earlier than minDate and in prev month', function () {
-            var el = '<fugu-calendar ng-model="time" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:8 // 8 is the min date
             });
@@ -730,27 +730,27 @@ describe('ui.fugu.calendar', function () {
     // maxDate 属性
     describe('max date attribute', function () {
         it('should be disabled when a day is later than maxDate', function () {
-            var el = '<fugu-calendar ng-model="time" max-date="maxDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
                 day:25 // 25 is the max date
             });
             scope.time = getDate();
             createCalendar(el);
-            expect(getDay(28)).toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(25)).not.toHaveClass('fugu-cal-day-disabled');
+            expect(getDay(28)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(25)).not.toHaveClass('uix-cal-day-disabled');
         });
         it('should be disabled in later month', function () {
-            var el = '<fugu-calendar ng-model="time" max-date="maxDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
                 day:25 // 25 is the max date
             });
             scope.time = getDate();
             createCalendar(el);
             clickNextMonth();
-            expect(element.find('.fugu-cal-panel-day .fugu-cal-day')).toHaveClass('fugu-cal-day-disabled');
+            expect(element.find('.uix-cal-panel-day .uix-cal-day')).toHaveClass('uix-cal-day-disabled');
         });
         it('should not select a day is later than maxDate', function () {
-            var el = '<fugu-calendar ng-model="time" max-date="maxDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
                 day:25 // 25 is the max date
             });
@@ -761,7 +761,7 @@ describe('ui.fugu.calendar', function () {
             expect(scope.time).toEqual(cache);
         });
         it('should not select a day is later than maxDate and in next month', function () {
-            var el = '<fugu-calendar ng-model="time" max-date="maxDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
                 day:25 // 25 is the max date
             });
@@ -775,7 +775,7 @@ describe('ui.fugu.calendar', function () {
     // exception 属性
     describe('exceptions attribute', function () {
         it('should not be disabled when the day is exception even set minDate', function () {
-            var el = '<fugu-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:8
             });
@@ -784,13 +784,13 @@ describe('ui.fugu.calendar', function () {
                 day:5
             });
             createCalendar(el);
-            expect(getDay(7)).toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(5)).not.toHaveClass('fugu-cal-day-disabled');
+            expect(getDay(7)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(5)).not.toHaveClass('uix-cal-day-disabled');
             selectDay(5);
             expect(scope.time.getDate()).toBe(5);
         });
         it('should not be disabled when the day is exception even set maxDate', function () {
-            var el = '<fugu-calendar ng-model="time" exceptions="exceptions" max-date="maxDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" exceptions="exceptions" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
                 day:25
             });
@@ -799,13 +799,13 @@ describe('ui.fugu.calendar', function () {
                 day:27
             });
             createCalendar(el);
-            expect(getDay(26)).toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(27)).not.toHaveClass('fugu-cal-day-disabled');
+            expect(getDay(26)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(27)).not.toHaveClass('uix-cal-day-disabled');
             selectDay(27);
             expect(scope.time.getDate()).toBe(27);
         });
         it('should not be disabled when the exception is array', function () {
-            var el = '<fugu-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></fugu-calendar>';
+            var el = '<uix-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
                 day:10
             });
@@ -816,9 +816,9 @@ describe('ui.fugu.calendar', function () {
                 day:3
             })];
             createCalendar(el);
-            expect(getDay(7)).toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(3)).not.toHaveClass('fugu-cal-day-disabled');
-            expect(getDay(8)).not.toHaveClass('fugu-cal-day-disabled');
+            expect(getDay(7)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(3)).not.toHaveClass('uix-cal-day-disabled');
+            expect(getDay(8)).not.toHaveClass('uix-cal-day-disabled');
             selectDay(3);
             expect(scope.time.getDate()).toBe(3);
             selectDay(8);

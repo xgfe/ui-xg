@@ -4,7 +4,7 @@
  * Author:penglu02@meituan.com
  * Date:2016-01-23
  */
-angular.module('ui.fugu.buttonGroup', [])
+angular.module('ui.xg.buttonGroup', [])
     .constant('buttonGroupConfig', {
         size : 'default',   // 按钮组大小:x-small,small,default,larger
         type : 'radio',  // 按钮组类型:radio 或者 checkbox类型
@@ -76,7 +76,7 @@ angular.module('ui.fugu.buttonGroup', [])
             return angular.isDefined(val) ? val :  attributeValue ? attributeValue : defaultValue;
         }
     }])
-    .directive('fuguButtonGroup', [function() {
+    .directive('uixButtonGroup', [function() {
         return {
             restrict: 'AE',
             replace: true,

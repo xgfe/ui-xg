@@ -1,13 +1,13 @@
 /**
- * fuguButton指令测试文件
+ * uixButton指令测试文件
  * Author: penglu02@meituan.com
  * Date: 2016-01-12
  */
-describe('fugu-button', function( ){
+describe('uix-button', function( ){
     var compile, scope;
 
     // 加载模块
-    beforeEach(module('ui.fugu.button'));
+    beforeEach(module('ui.xg.button'));
     beforeEach(module('button/templates/button.html'));
 
     beforeEach(inject(function($compile, $rootScope) {
@@ -28,7 +28,7 @@ describe('fugu-button', function( ){
             disabled = disabled ? ' disabled=' + disabled : '';
             loading = loading ? ' loading=' + loading : '';
             type = type ? ' type=' + type : '';
-            var ele = compile(angular.element('<fugu-button '+ btnClass + size + block + active + disabled + loading +  type + '></fugu-button>'))(scope);
+            var ele = compile(angular.element('<uix-button '+ btnClass + size + block + active + disabled + loading +  type + '></uix-button>'))(scope);
             scope.$apply();
             return ele;
         }
@@ -75,7 +75,7 @@ describe('fugu-button', function( ){
         });
 
         it('Should show icon before button text  if passed icon=plus', function(){
-            var element = compile('<fugu-button icon="plus"></fugu-button>')(scope),
+            var element = compile('<uix-button icon="plus"></uix-button>')(scope),
                 btnEle = null,
                 iEle = null;
             scope.$apply();
@@ -86,7 +86,7 @@ describe('fugu-button', function( ){
         });
 
         it('should observe the disabled attribute', function () {
-            var element = compile('<fugu-button disabled="disabled"></fugu-button>')(scope);
+            var element = compile('<uix-button disabled="disabled"></uix-button>')(scope);
             scope.$apply();
             expect(angular.element(element.children()[0])).not.toHaveAttr('disabled', 'disabled');
             scope.$apply('disabled = true');
@@ -96,7 +96,7 @@ describe('fugu-button', function( ){
         });
 
         it('should observe the loading attribute', function () {
-            var element = compile('<fugu-button loading="loading"></fugu-button>')(scope),
+            var element = compile('<uix-button loading="loading"></uix-button>')(scope),
                 spanEle = null;
             scope.$apply();
             spanEle = element.children().children('span.glyphicon-refresh-animate')[0];
@@ -113,7 +113,7 @@ describe('fugu-button', function( ){
         });
 
         it('should call clickFn when set click=clickFn() && execute click event', function () {
-            var element = compile('<fugu-button click="clickFn()" disabled="disabled"></fugu-button>')(scope);
+            var element = compile('<uix-button click="clickFn()" disabled="disabled"></uix-button>')(scope);
             scope.clickFn = clickFn;
             scope.disabled = false;
             scope.$apply();

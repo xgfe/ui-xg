@@ -4,19 +4,19 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.fugu.sortable', [])
-    .service('fuguSortableService', function () {return {};})
-    .directive('fuguSortable', ['$parse', '$timeout', 'fuguSortableService',
-        function ($parse, $timeout, fuguSortableService) {
+angular.module('ui.xg.sortable', [])
+    .service('uixSortableService', function () {return {};})
+    .directive('uixSortable', ['$parse', '$timeout', 'uixSortableService',
+        function ($parse, $timeout, uixSortableService) {
         return {
             restrict: 'AE',
             scope: {
-                fuguSortable:'='
+                uixSortable:'='
             },
             link: function (scope, element) {
                 var self = this;
-                if(scope.fuguSortable){
-                    scope.$watch('fuguSortable.length', function() {
+                if(scope.uixSortable){
+                    scope.$watch('uixSortable.length', function() {
                         // Timeout to let ng-repeat modify the DOM
                         $timeout(function() {
                             self.refresh();
@@ -43,9 +43,9 @@ angular.module('ui.fugu.sortable', [])
                                     item.style.display = 'none';
                                 }, 0);
 
-                                fuguSortableService.isDragging = true;
-                                fuguSortableService.dragIndex = i;
-                                fuguSortableService.placeholder = getPlaceholder(child);
+                                uixSortableService.isDragging = true;
+                                uixSortableService.dragIndex = i;
+                                uixSortableService.placeholder = getPlaceholder(child);
                                 event.stopPropagation();
                             })
                             .on('dragend', function (event) {
@@ -55,9 +55,9 @@ angular.module('ui.fugu.sortable', [])
                                     //child.show();
                                     item.style.display = item.originDisplay;
                                 }, 0);
-                                fuguSortableService.isDragging = false;
-                                fuguSortableService.dragIndex = null;
-                                fuguSortableService.placeholder = null;
+                                uixSortableService.isDragging = false;
+                                uixSortableService.dragIndex = null;
+                                uixSortableService.placeholder = null;
                                 event.stopPropagation();
                                 event.preventDefault();
                             });
@@ -67,16 +67,16 @@ angular.module('ui.fugu.sortable', [])
                     var listNode = element[0],placeholder,placeholderNode;
                     element.on('dragenter', function (event) {
                             event = event.originalEvent || event;
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return false;
                             }
-                            placeholder = fuguSortableService.placeholder;
+                            placeholder = uixSortableService.placeholder;
                             placeholderNode = placeholder[0];
                             event.preventDefault();
                         })
                         .on('dragover', function (event) {
                             event = event.originalEvent || event;
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return false;
                             }
                             if (placeholderNode.parentNode != listNode) {
@@ -109,7 +109,7 @@ angular.module('ui.fugu.sortable', [])
                                     }
                                 }
                             }
-                            element.addClass("fugu-sortable-dragover");
+                            element.addClass("uix-sortable-dragover");
                             event.preventDefault();
                             event.stopPropagation();
                             return false;
@@ -117,27 +117,27 @@ angular.module('ui.fugu.sortable', [])
                         .on('drop', function (event) {
                             event = event.originalEvent || event;
 
-                            if (!fuguSortableService.isDragging) {
+                            if (!uixSortableService.isDragging) {
                                 return true;
                             }
-                            var dragIndex = fuguSortableService.dragIndex;
+                            var dragIndex = uixSortableService.dragIndex;
                             var placeholderIndex = getPlaceholderIndex(placeholderNode,listNode,dragIndex);
                             scope.$apply(function() {
                                 // 改变数据,由angular进行DOM修改
-                                var dragObj = scope.fuguSortable[dragIndex];
-                                scope.fuguSortable.splice(dragIndex,1);
-                                scope.fuguSortable.splice(placeholderIndex,0,dragObj)
+                                var dragObj = scope.uixSortable[dragIndex];
+                                scope.uixSortable.splice(dragIndex,1);
+                                scope.uixSortable.splice(placeholderIndex,0,dragObj)
                             });
                             placeholder.remove();
-                            element.removeClass("fugu-sortable-dragover");
+                            element.removeClass("uix-sortable-dragover");
                             event.stopPropagation();
                             return false;
                         })
                         .on('dragleave', function(event) {
                             event = event.originalEvent || event;
-                            element.removeClass("fugu-sortable-dragover");
+                            element.removeClass("uix-sortable-dragover");
                             $timeout(function() {
-                                if(!element.hasClass('fugu-sortable-dragover')){
+                                if(!element.hasClass('uix-sortable-dragover')){
                                     placeholder.remove();
                                 }
                             }, 0);

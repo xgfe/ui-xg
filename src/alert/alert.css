@@ -1,11 +1,11 @@
-.fugu-alert {
+.uix-alert {
   word-wrap: break-word; }
-  .fugu-alert .alert-icon {
+  .uix-alert .alert-icon {
     float: left; }
-  .fugu-alert .alert-icon-span {
+  .uix-alert .alert-icon-span {
     position: relative;
     top: 2px; }
-  .fugu-alert .cancel-text {
+  .uix-alert .cancel-text {
     font-size: 20px; }
-  .fugu-alert .show-icon {
+  .uix-alert .show-icon {
     padding-left: 20px; }

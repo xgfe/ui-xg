@@ -1,7 +1,7 @@
 describe('dropdownToggle', function() {
     var $compile, $rootScope, $document, element;
 
-    beforeEach(module('ui.fugu.dropdown'));
+    beforeEach(module('ui.xg.dropdown'));
 
     beforeEach(inject(function(_$compile_, _$rootScope_, _$document_) {
         $compile = _$compile_;
@@ -11,7 +11,7 @@ describe('dropdownToggle', function() {
 
     var clickDropdownToggle = function(elm) {
         elm = elm || element;
-        elm.find('a[fugu-dropdown-toggle]').click();
+        elm.find('a[uix-dropdown-toggle]').click();
     };
 
     var triggerKeyDown = function (element, keyCode) {
@@ -26,7 +26,7 @@ describe('dropdownToggle', function() {
 
     describe('basic', function() {
         function dropdown() {
-            return $compile('<li fugu-dropdown><a href fugu-dropdown-toggle></a><ul><li><a href>Hello</a></li></ul></li>')($rootScope);
+            return $compile('<li uix-dropdown><a href uix-dropdown-toggle></a><ul><li><a href>Hello</a></li></ul></li>')($rootScope);
         }
 
         beforeEach(function() {
@@ -99,20 +99,20 @@ describe('dropdownToggle', function() {
         });
 
         it('should not toggle if the element has `disabled` class', function() {
-            var elm = $compile('<li fugu-dropdown><a class="disabled" fugu-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            var elm = $compile('<li uix-dropdown><a class="disabled" uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
             clickDropdownToggle( elm );
             expect(elm.hasClass('open')).toBe(false);
         });
 
         it('should not toggle if the element is disabled', function() {
-            var elm = $compile('<li fugu-dropdown><button disabled="disabled" fugu-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($rootScope);
+            var elm = $compile('<li uix-dropdown><button disabled="disabled" uix-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($rootScope);
             elm.find('button').click();
             expect(elm.hasClass('open')).toBe(false);
         });
 
         it('should not toggle if the element has `ng-disabled` as true', function() {
             $rootScope.isdisabled = true;
-            var elm = $compile('<li fugu-dropdown><div ng-disabled="isdisabled" fugu-dropdown-toggle></div><ul><li>Hello</li></ul></li>')($rootScope);
+            var elm = $compile('<li uix-dropdown><div ng-disabled="isdisabled" uix-dropdown-toggle></div><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
             elm.find('div').click();
             expect(elm.hasClass('open')).toBe(false);
@@ -125,7 +125,7 @@ describe('dropdownToggle', function() {
 
         it('should unbind events on scope destroy', function() {
             var $scope = $rootScope.$new();
-            var elm = $compile('<li fugu-dropdown><button ng-disabled="isdisabled" fugu-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($scope);
+            var elm = $compile('<li uix-dropdown><button ng-disabled="isdisabled" uix-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($scope);
             $scope.$digest();
 
             var buttonEl = elm.find('button');
@@ -177,7 +177,7 @@ describe('dropdownToggle', function() {
                 $rootScope.$apply();
             });
 
-            return $compile('<li fugu-dropdown><a href fugu-dropdown-toggle></a>' +
+            return $compile('<li uix-dropdown><a href uix-dropdown-toggle></a>' +
                 '<ul><li><a href="#something">Hello</a></li></ul></li>')($rootScope);
         }
 
@@ -198,7 +198,7 @@ describe('dropdownToggle', function() {
     describe('without trigger', function() {
         beforeEach(function() {
             $rootScope.isopen = true;
-            element = $compile('<li fugu-dropdown is-open="isopen"><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown is-open="isopen"><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
@@ -216,7 +216,7 @@ describe('dropdownToggle', function() {
     describe('`is-open`', function() {
         beforeEach(function() {
             $rootScope.isopen = true;
-            element = $compile('<li fugu-dropdown is-open="isopen"><a href fugu-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown is-open="isopen"><a href uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
@@ -252,7 +252,7 @@ describe('dropdownToggle', function() {
         beforeEach(function() {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
             $rootScope.isopen = false;
-            element = $compile('<li fugu-dropdown on-toggle="toggleHandler(open)"  is-open="isopen"><a fugu-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)"  is-open="isopen"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
@@ -274,7 +274,7 @@ describe('dropdownToggle', function() {
         beforeEach(function() {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
             $rootScope.isopen = true;
-            element = $compile('<li fugu-dropdown on-toggle="toggleHandler(open)" is-open="isopen"><a fugu-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)" is-open="isopen"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
@@ -296,7 +296,7 @@ describe('dropdownToggle', function() {
     describe('`on-toggle` without is-open', function() {
         beforeEach(function() {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
-            element = $compile('<li fugu-dropdown on-toggle="toggleHandler(open)"><a fugu-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 

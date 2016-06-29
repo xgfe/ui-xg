@@ -4,15 +4,15 @@
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-14
  */
-angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
-    .constant('fuguCalendarConfig', {
+angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
+    .constant('uixCalendarConfig', {
         startingDay: 0, // 一周的开始天,0-周日,1-周一,以此类推
         showTime: true, // 是否显示时间选择
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: []  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
     })
-    .provider('fuguCalendar', function () {
+    .provider('uixCalendar', function () {
         var FORMATS = {};
         this.setFormats = function (formats, subFormats) {
             if (subFormats) {
@@ -39,9 +39,9 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
             }
         }]
     })
-    .controller('fuguCalendarCtrl', ['$scope', '$attrs', '$log', 'fuguCalendar', 'fuguCalendarConfig',
-        function ($scope, $attrs, $log, fuguCalendarProvider, calendarConfig) {
-            var FORMATS = fuguCalendarProvider.getFormats();
+    .controller('uixCalendarCtrl', ['$scope', '$attrs', '$log', 'uixCalendar', 'uixCalendarConfig',
+        function ($scope, $attrs, $log, uixCalendarProvider, calendarConfig) {
+            var FORMATS = uixCalendarProvider.getFormats();
             var MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //每个月的天数,2月会根据闰年调整
             var ngModelCtrl = {$setViewValue: angular.noop};
 
@@ -398,18 +398,18 @@ angular.module('ui.fugu.calendar', ['ui.fugu.timepanel'])
                 }
             }
         }])
-    .directive('fuguCalendar', function () {
+    .directive('uixCalendar', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/calendar.html',
             replace: true,
-            require: ['fuguCalendar', 'ngModel'],
+            require: ['uixCalendar', 'ngModel'],
             scope: {
                 minDate: '=?',
                 maxDate: '=?',
                 onChange: '&?'
             },
-            controller: 'fuguCalendarCtrl',
+            controller: 'uixCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var calendarCtrl = ctrls[0],
                     ngModelCtrl = ctrls[1];

@@ -2,87 +2,87 @@
     <ol class="buttonGroup">
         <li>
             <p>只置ng-model(必需)不设置其他任何参数:纯展示</p>
-            <fugu-button-group ng-model="viewModel">
+            <uix-button-group ng-model="viewModel">
                 <button>按钮1</button>
                 <button>按钮2</button>
                 <button>按钮3</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <p>设置ng-model(必需),默认类型(radio),则每个子元素&lt;button&gt;必须设置btn-radio属性</p>
             <span>ng-model:{{radioModel}}</span>
-            <fugu-button-group ng-model="radioModel">
+            <uix-button-group ng-model="radioModel">
                 <button>男</button>
                 <button btn-radio="'woman'">女</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <p>设置ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key</p>
             <span>ng-model:{{checkModel}}</span>
-            <fugu-button-group ng-model="checkModel" type="type">
+            <uix-button-group ng-model="checkModel" type="type">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <div>设置ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>size设置为larger|default|small|x-small</p></div>
-            <fugu-button-group ng-model="checkModel" type="type" size="sizeArr[3]">
+            <uix-button-group ng-model="checkModel" type="type" size="sizeArr[3]">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="type">
+            </uix-button-group>
+            <uix-button-group ng-model="checkModel" type="type">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="sizeArr[1]">
+            </uix-button-group>
+            <uix-button-group ng-model="checkModel" type="checkbox" size="sizeArr[1]">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="checkbox" size="sizeArr[0]">
+            </uix-button-group>
+            <uix-button-group ng-model="checkModel" type="checkbox" size="sizeArr[0]">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>show-class设置为danger | warning | default | success | info ｜ primary</p></div>
-            <fugu-button-group ng-repeat="showClass in showClassArr" ng-model="checkModel" type="type" show-class="showClass">
+            <uix-button-group ng-repeat="showClass in showClassArr" ng-model="checkModel" type="type" show-class="showClass">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>disabled设置为true | false,默认为false</p></div>
-            <fugu-button-group ng-model="checkModel" type="type" disabled="disabled">
+            <uix-button-group ng-model="checkModel" type="type" disabled="disabled">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
-            <fugu-button-group ng-model="checkModel" type="type">
+            </uix-button-group>
+            <uix-button-group ng-model="checkModel" type="type">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
         <li>
             <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>checkboxTrue和checkboxFalse设置选中(不选)状态对应ng-model的值。默认为true｜false</p></div>
             <span>原始值ng-model对应值:{{checkModel}}</span>
-            <fugu-button-group ng-model="checkModel" type="type">
+            <uix-button-group ng-model="checkModel" type="type">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
             <span>设置checkboxTrue和checkboxFalse后ng-model对应值:{{checkModelVal}}</span>
-            <fugu-button-group ng-model="checkModelVal" type="type" checkbox-true="'1'" checkbox-false="'0'">
+            <uix-button-group ng-model="checkModelVal" type="type" checkbox-true="'1'" checkbox-false="'0'">
                 <button btn-checkbox="checkModelArr[0]">音乐</button>
                 <button btn-checkbox="checkModelArr[1]">跑步</button>
                 <button btn-checkbox="checkModelArr[2]">足球</button>
-            </fugu-button-group>
+            </uix-button-group>
         </li>
     </ol>
 </div>

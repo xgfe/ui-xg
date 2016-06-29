@@ -5,7 +5,7 @@
 ## Usage
 
 ``` javascript
-<fugu-alert text="string"
+<uix-alert text="string"
     [ close="boolean" ]
     [ close-func="string" ]
     [ close-text="string" ]
@@ -13,7 +13,7 @@
     [ dismiss-on-timeout="number" ]
     [ template-url="string" ]
     [ type="string" ]>
-</fugu-button>
+</uix-button>
 ```
 ## Restrict
 - 'E'

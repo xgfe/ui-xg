@@ -1,4 +1,4 @@
-describe('ui.fugu.timepicker', function () {
+describe('ui.xg.timepicker', function () {
     var compile,
         scope,
         date,
@@ -6,15 +6,15 @@ describe('ui.fugu.timepicker', function () {
         element;    //指令DOM结点;
 
     beforeEach(function () {
-        module('ui.fugu.position');
-        module('ui.fugu.timepanel');
+        module('ui.xg.position');
+        module('ui.xg.timepanel');
         module('timepanel/templates/timepanel.html');
-        module('ui.fugu.timepicker');
+        module('ui.xg.timepicker');
         module('timepicker/templates/timepicker.html');
-        inject(function( $compile, $rootScope,fuguTimepickerConfig,dateFilter) {
+        inject(function( $compile, $rootScope,uixTimepickerConfig,dateFilter) {
             compile = $compile;
             scope = $rootScope.$new();
-            timepickerConfig = fuguTimepickerConfig;
+            timepickerConfig = uixTimepickerConfig;
             date = dateFilter;
         });
     });
@@ -34,10 +34,10 @@ describe('ui.fugu.timepicker', function () {
         return dt;
     }
     function getInputVal(){
-        return element.find('.fugu-timepicker-input').val();
+        return element.find('.uix-timepicker-input').val();
     }
     function clickInput(){
-        element.find('.fugu-timepicker-input').click();
+        element.find('.uix-timepicker-input').click();
         scope.$digest();
     }
     function clickButton(){
@@ -45,16 +45,16 @@ describe('ui.fugu.timepicker', function () {
         scope.$digest();
     }
     function getTimepanel(){
-        return element.next('.fugu-timepicker-popover');
+        return element.next('.uix-timepicker-popover');
     }
     function increaseHour() {
-        var el = getTimepanel().find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-top');
+        var el = getTimepanel().find('.uix-timepanel-col').eq(0).find('.uix-timepanel-top');
         el.click();
         scope.$digest();
     }
 
     function decreaseHour() {
-        var el = getTimepanel().find('.fugu-timepanel-col').eq(0).find('.fugu-timepanel-bottom');
+        var el = getTimepanel().find('.uix-timepanel-col').eq(0).find('.uix-timepanel-bottom');
         el.click();
         scope.$digest();
     }
@@ -77,17 +77,17 @@ describe('ui.fugu.timepicker', function () {
     }
 
     it('should show format time',function(){
-        var el = '<fugu-timepicker ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         var dt = getDate();
         scope.time = dt;
         createTimepicker(el);
-        expect(element).toHaveClass('fugu-timepicker');
+        expect(element).toHaveClass('uix-timepicker');
         var val = getInputVal();
         expect(val).toEqual(date(dt,timepickerConfig.format));
     });
 
     it('should toggle timepanel when click input and button', function () {
-        var el = '<fugu-timepicker ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         scope.time = getDate();
         createTimepicker(el);
         expect(getTimepanel()).not.toHaveClass('in');
@@ -98,7 +98,7 @@ describe('ui.fugu.timepicker', function () {
     });
 
     it('ngModel should be two-way data binding', function () {
-        var el = '<fugu-timepicker ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         var dt = getDate();
         scope.time = dt;
         createTimepicker(el);
@@ -108,7 +108,7 @@ describe('ui.fugu.timepicker', function () {
     });
 
     it('should be work when set *Step attr', function () {
-        var el = '<fugu-timepicker hour-step="hourStep" ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker hour-step="hourStep" ng-model="time"></uix-timepicker>';
         var dt = getDate();
         var hour = dt.getHours();
         scope.time = dt;
@@ -126,16 +126,16 @@ describe('ui.fugu.timepicker', function () {
     });
 
     it('has placeholder', function () {
-        var el = '<fugu-timepicker placeholder="{{placeholder}}" ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker placeholder="{{placeholder}}" ng-model="time"></uix-timepicker>';
         scope.time = getDate();
         scope.placeholder = 'I am placeholder';
         createTimepicker(el);
-        var input = element.find('.fugu-timepicker-input');
+        var input = element.find('.uix-timepicker-input');
         expect(input.attr('placeholder')).toEqual(scope.placeholder);
     });
 
     it('show diff format time', function () {
-        var el = '<fugu-timepicker format="format" ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker format="format" ng-model="time"></uix-timepicker>';
         var dt = getDate();
         scope.time = dt;
         scope.format = 'HH-mm-ss';
@@ -144,7 +144,7 @@ describe('ui.fugu.timepicker', function () {
         expect(val).toEqual(date(dt,scope.format));
     });
     it('disable input and button when ngDisabled set to be false', function () {
-        var el = '<fugu-timepicker ng-disabled="isDisabled" ng-model="time"></fugu-timepicker>';
+        var el = '<uix-timepicker ng-disabled="isDisabled" ng-model="time"></uix-timepicker>';
         scope.time = getDate();
         scope.isDisabled = true;
         createTimepicker(el);

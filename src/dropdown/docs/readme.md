@@ -5,8 +5,8 @@
 ## Usage
 
 ```
-<div class="btn-group" fugu-dropdown is-open="status.isopen">
-    <button type="button" fugu-dropdown-toggle ng-disabled="disabled">
+<div class="btn-group" uix-dropdown is-open="status.isopen">
+    <button type="button" uix-dropdown-toggle ng-disabled="disabled">
         Button dropdown
     </button>
     <ul class="dropdown-menu" role="menu">
@@ -19,7 +19,7 @@
 - 'AE'
 
 ## Provider
-- fuguDropdownProvider：全局配置dropdown相关的设置
+- uixDropdownProvider：全局配置dropdown相关的设置
 - methods
     - `setColsNum(num)`：设置多列数目
 

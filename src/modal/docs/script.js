@@ -1,9 +1,9 @@
-angular.module('fuguDemo').controller('modalDemoCtrl',['$scope','$log','$fgModal', function ($scope,$log,$fgModal) {
+angular.module('uixDemo').controller('modalDemoCtrl',['$scope','$log','$uixModal', function ($scope,$log,$uixModal) {
     $scope.items = ['item1', 'item2', 'item3'];
 
     $scope.open = function (size) {
 
-        var modalInstance = $fgModal.open({
+        var modalInstance = $uixModal.open({
             templateUrl: 'modalContent.html',
             controller: 'modalInstanceCtrl',
             size: size,
@@ -25,7 +25,7 @@ angular.module('fuguDemo').controller('modalDemoCtrl',['$scope','$log','$fgModal
         });
     };
 }]);
-angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalInstance','items','$fgModal',function ($scope, $fgModalInstance, items,$fgModal) {
+angular.module('uixDemo').controller('modalInstanceCtrl', ['$scope','$uixModalInstance','items','$uixModal',function ($scope, $uixModalInstance, items,$uixModal) {
 
     $scope.items = angular.copy(items.items);
     $scope.selected = {
@@ -33,7 +33,7 @@ angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalIn
     };
 
     $scope.openAnother = function () {
-        $fgModal.open({
+        $uixModal.open({
             templateUrl: 'anotherModal.html',
             size: 'sm',
             controller: ['$scope',function ($scope) {
@@ -46,13 +46,13 @@ angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalIn
     };
 
     $scope.ok = function () {
-        $fgModalInstance.close({
+        $uixModalInstance.close({
             items:$scope.items,
             selected:$scope.selected.item
         });
     };
 
     $scope.cancel = function () {
-        $fgModalInstance.dismiss('cancel');
+        $uixModalInstance.dismiss('cancel');
     };
 }]);

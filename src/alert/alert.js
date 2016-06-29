@@ -4,8 +4,8 @@
  * Author:heqingyang@meituan.com
  * Date:2015-01-11
  */
-angular.module('ui.fugu.alert',[])
-.controller('fuguAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
+angular.module('ui.xg.alert',[])
+.controller('uixAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
 
     //指令初始化
     function initConfig(){
@@ -51,7 +51,7 @@ angular.module('ui.fugu.alert',[])
         },parseInt(dismissOnTimeout, 10))
     }
 }])
-.directive('fuguAlert',function () {
+.directive('uixAlert',function () {
     return {
         restrict: 'E',
         templateUrl: function(element, attrs){
@@ -66,7 +66,7 @@ angular.module('ui.fugu.alert',[])
             closeText : '@',
             hasIcon : '@'
         },
-        controller:'fuguAlertCtrl',
+        controller:'uixAlertCtrl',
         controllerAs: 'alert'
     }
 });

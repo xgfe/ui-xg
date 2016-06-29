@@ -1,9 +1,9 @@
 describe('stacked map', function() {
     var stackedMap;
 
-    beforeEach(module('ui.fugu.stackedMap'));
-    beforeEach(inject(function ($fuguStackedMap) {
-        stackedMap = $fuguStackedMap.createNew();
+    beforeEach(module('ui.xg.stackedMap'));
+    beforeEach(inject(function ($uixStackedMap) {
+        stackedMap = $uixStackedMap.createNew();
     }));
 
     it('should add and remove objects by key', function() {

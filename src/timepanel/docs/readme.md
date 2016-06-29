@@ -6,7 +6,7 @@
 ## Usage
 
 ``` html
-<fugu-timepanel ng-model="time"
+<uix-timepanel ng-model="time"
     [ hour-step="number" ]
     [ minute-step="number" ]
     [ second-step="number" ]
@@ -17,7 +17,7 @@
     [ min-time="date" ]
     [ max-time="date" ]
     [ on-change="function" ]>
-</fugu-timepanel>
+</uix-timepanel>
 ```
 ## Restrict
 - 'AE'

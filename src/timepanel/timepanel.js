@@ -4,8 +4,8 @@
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.fugu.timepanel', [])
-    .constant('fuguTimepanelConfig', {
+angular.module('ui.xg.timepanel', [])
+    .constant('uixTimepanelConfig', {
         hourStep: 1,
         minuteStep: 1,
         secondStep: 1,
@@ -14,7 +14,7 @@ angular.module('ui.fugu.timepanel', [])
         arrowkeys: true,
         readonlyInput: false
     })
-    .controller('fuguTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'fuguTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
+    .controller('uixTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'uixTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
 
         this.init = function (_ngModelCtrl, inputs) {
@@ -302,18 +302,18 @@ angular.module('ui.fugu.timepanel', [])
             return value > 9 ? value : '0' + value;
         }
     }])
-    .directive('fuguTimepanel', function () {
+    .directive('uixTimepanel', function () {
         return {
             restrict: 'AE',
             templateUrl: 'templates/timepanel.html',
             replace: true,
-            require: ['fuguTimepanel', 'ngModel'],
+            require: ['uixTimepanel', 'ngModel'],
             scope: {
                 onChange: '&',
                 minTime: '=?',
                 maxTime: '=?'
             },
-            controller: 'fuguTimepanelCtrl',
+            controller: 'uixTimepanelCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepanelCtrl.init(ngModelCtrl, el.find('input'));

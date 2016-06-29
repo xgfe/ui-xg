@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('buttonDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('buttonDemoCtrl',['$scope', function ($scope) {
     $scope.text = '设置text';
     $scope.typeArr = ['button', 'reset', 'submit'];
     $scope.btnClass = 'primary';

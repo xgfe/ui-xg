@@ -1,8 +1,8 @@
 {
-  "name": "angular-ui-fugu",
-  "version":"1.0.0",
+  "name": "ui-xg",
+  "version":"1.1.0",
   "description": "UI directives based on angular and bootstrap",
-  "main": "dist/js/ui-fugu.js",
+  "main": "dist/js/ui-xg.js",
   "authors": [
     "xgfe"
   ],
@@ -10,11 +10,10 @@
   "keywords": [
     "UI",
     "angular",
-    "angular",
     "directives",
     "bootstrap"
   ],
-  "homepage": "https://github.com/xgfe/angular-ui-fugu",
+  "homepage": "https://github.com/xgfe/ui-xg",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -7,7 +7,7 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
+angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
@@ -42,9 +42,9 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
     })
 
     /**
-     * A helper directive for the $fgModal service. It creates a backdrop element.
+     * A helper directive for the $uixModal service. It creates a backdrop element.
      */
-    .directive('fuguModalBackdrop', ['$timeout', function ($timeout) {
+    .directive('uixModalBackdrop', ['$timeout', function ($timeout) {
         return {
             restrict: 'EA',
             replace: true,
@@ -62,7 +62,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
         };
     }])
 
-    .directive('fuguModalWindow', ['$fgModalStack', '$timeout', function ($fgModalStack, $timeout) {
+    .directive('uixModalWindow', ['$uixModalStack', '$timeout', function ($uixModalStack, $timeout) {
         return {
             restrict: 'EA',
             scope: {
@@ -94,18 +94,18 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 });
 
                 scope.close = function (evt) {
-                    var modal = $fgModalStack.getTop();
+                    var modal = $uixModalStack.getTop();
                     if (modal && modal.value.backdrop && modal.value.backdrop != 'static' && (evt.target === evt.currentTarget)) {
                         evt.preventDefault();
                         evt.stopPropagation();
-                        $fgModalStack.dismiss(modal.key, 'backdrop click');
+                        $uixModalStack.dismiss(modal.key, 'backdrop click');
                     }
                 };
             }
         };
     }]) /// TODO 修改变量
 
-    .directive('fuguModalTransclude', function () {
+    .directive('uixModalTransclude', function () {
         return {
             link: function($scope, $element, $attrs, controller, $transclude) {
                 // TODO 这个$transclude是自动注入的吗?
@@ -117,14 +117,14 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
         };
     })
 
-    .factory('$fgModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$fuguStackedMap',
+    .factory('$uixModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$uixStackedMap',
         function ($transition, $timeout, $document, $compile, $rootScope, $$stackedMap) {
 
             var OPENED_MODAL_CLASS = 'modal-open';
 
             var backdropDomEl, backdropScope;
             var openedWindows = $$stackedMap.createNew();
-            var $fgModalStack = {};
+            var $uixModalStack = {};
 
             function backdropIndex() {
                 var topBackdropIndex = -1;
@@ -211,13 +211,13 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                     if (modal && modal.value.keyboard) {
                         evt.preventDefault();
                         $rootScope.$apply(function () {
-                            $fgModalStack.dismiss(modal.key, 'escape key press');
+                            $uixModalStack.dismiss(modal.key, 'escape key press');
                         });
                     }
                 }
             });
 
-            $fgModalStack.open = function (modalInstance, modal) {
+            $uixModalStack.open = function (modalInstance, modal) {
 
                 openedWindows.add(modalInstance, {
                     deferred: modal.deferred,
@@ -233,13 +233,13 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 if (currBackdropIndex >= 0 && !backdropDomEl) {
                     backdropScope = $rootScope.$new(true);
                     backdropScope.index = currBackdropIndex;
-                    var angularBackgroundDomEl = angular.element('<div fugu-modal-backdrop></div>');
+                    var angularBackgroundDomEl = angular.element('<div uix-modal-backdrop></div>');
                     angularBackgroundDomEl.attr('backdrop-class', modal.backdropClass);
                     backdropDomEl = $compile(angularBackgroundDomEl)(backdropScope);
                     body.append(backdropDomEl);
                 }
 
-                var angularDomEl = angular.element('<div fugu-modal-window></div>');
+                var angularDomEl = angular.element('<div uix-modal-window></div>');
                 angularDomEl.attr({
                     'window-class': modal.windowClass,
                     'size': modal.size,
@@ -252,7 +252,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 body.addClass(OPENED_MODAL_CLASS);
             };
 
-            $fgModalStack.close = function (modalInstance, result) {
+            $uixModalStack.close = function (modalInstance, result) {
                 var modalWindow = openedWindows.get(modalInstance);
                 if (modalWindow) {
                     modalWindow.value.deferred.resolve(result);
@@ -260,7 +260,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.dismiss = function (modalInstance, reason) {
+            $uixModalStack.dismiss = function (modalInstance, reason) {
                 var modalWindow = openedWindows.get(modalInstance);
                 if (modalWindow) {
                     modalWindow.value.deferred.reject(reason);
@@ -268,7 +268,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.dismissAll = function (reason) {
+            $uixModalStack.dismissAll = function (reason) {
                 var topModal = this.getTop();
                 while (topModal) {
                     this.dismiss(topModal.key, reason);
@@ -276,21 +276,21 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                 }
             };
 
-            $fgModalStack.getTop = function () {
+            $uixModalStack.getTop = function () {
                 return openedWindows.top();
             };
 
-            return $fgModalStack;
+            return $uixModalStack;
         }])
 
-    .provider('$fgModal', function () {
+    .provider('$uixModal', function () {
         var self = this;
         this.options = {
             backdrop: true, //can be also false or 'static'
             keyboard: true
         };
-        this.$get = ['$injector', '$rootScope', '$q', '$http', '$templateCache', '$controller', '$fgModalStack',
-            function ($injector, $rootScope, $q, $http, $templateCache, $controller, $fgModalStack) {
+        this.$get = ['$injector', '$rootScope', '$q', '$http', '$templateCache', '$controller', '$uixModalStack',
+            function ($injector, $rootScope, $q, $http, $templateCache, $controller, $uixModalStack) {
                 /**
                  * 获取模板
                  * @param options - 配置信息
@@ -329,10 +329,10 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                             result: modalResultDeferred.promise,
                             opened: modalOpenedDeferred.promise,
                             close: function (result) {
-                                $fgModalStack.close(modalInstance, result);
+                                $uixModalStack.close(modalInstance, result);
                             },
                             dismiss: function (reason) {
-                                $fgModalStack.dismiss(modalInstance, reason);
+                                $uixModalStack.dismiss(modalInstance, reason);
                             }
                         };
 
@@ -358,9 +358,9 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
 
                             //controllers
                             if (modalOptions.controller) {
-                                // 使用$controller创建controller并注入$scope,$fgModalInstance和resolve
+                                // 使用$controller创建controller并注入$scope,$uixModalInstance和resolve
                                 ctrlLocals.$scope = modalScope;
-                                ctrlLocals.$fgModalInstance = modalInstance;
+                                ctrlLocals.$uixModalInstance = modalInstance;
                                 angular.forEach(modalOptions.resolve, function (value, key) {
                                     ctrlLocals[key] = tplAndVars[resolveIter++];
                                 });
@@ -370,7 +370,7 @@ angular.module('ui.fugu.modal', ['ui.fugu.stackedMap'])
                                     modalScope[modalOptions.controllerAs] = ctrlInstance;
                                 }
                             }
-                            $fgModalStack.open(modalInstance, {
+                            $uixModalStack.open(modalInstance, {
                                 scope: modalScope,
                                 deferred: modalResultDeferred,
                                 content: tplAndVars[0],

@@ -4,25 +4,25 @@
  * Author:yangjiyuan@meituan.com
  * Date:2016-1-25
  */
-angular.module('ui.fugu.searchBox',[])
-.constant('fuguSearchBoxConfig', {
+angular.module('ui.xg.searchBox',[])
+.constant('uixSearchBoxConfig', {
     btnText: '搜索', // 默认搜索按钮文本
     showBtn: true   // 默认显示按钮
 })
-.controller('fuguSearchBoxCtrl',['$scope','$attrs','fuguSearchBoxConfig', function ($scope,$attrs,fuguSearchBoxConfig) {
+.controller('uixSearchBoxCtrl',['$scope','$attrs','uixSearchBoxConfig', function ($scope,$attrs,uixSearchBoxConfig) {
     var ngModelCtrl = { $setViewValue: angular.noop };
     $scope.searchBox = {};
     this.init = function (_ngModelCtrl) {
         ngModelCtrl = _ngModelCtrl;
         ngModelCtrl.$render = this.render;
-        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : fuguSearchBoxConfig.showBtn;
+        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : uixSearchBoxConfig.showBtn;
     };
     var btnText;
     $scope.getText = function () {
         if(btnText){
             return btnText;
         }
-        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : fuguSearchBoxConfig.btnText;
+        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : uixSearchBoxConfig.btnText;
         return btnText;
     };
     $scope.$watch('searchBox.query', function (val) {
@@ -45,19 +45,19 @@ angular.module('ui.fugu.searchBox',[])
         $scope.searchBox.query = ngModelCtrl.$modelValue;
     };
 }])
-.directive('fuguSearchBox',function () {
+.directive('uixSearchBox',function () {
     return {
         restrict: 'E',
         templateUrl:'templates/searchBox.html',
         replace:true,
-        require:['fuguSearchBox', '?ngModel'],
+        require:['uixSearchBox', '?ngModel'],
         scope:{
             btnText:'@?',
             showBtn:'=?',
             placeholder:'@?',
             search:'&?'
         },
-        controller:'fuguSearchBoxCtrl',
+        controller:'uixSearchBoxCtrl',
         link: function (scope,el,attrs,ctrls) {
             var searchBoxCtrl = ctrls[0], ngModelCtrl = ctrls[1];
             searchBoxCtrl.init(ngModelCtrl);

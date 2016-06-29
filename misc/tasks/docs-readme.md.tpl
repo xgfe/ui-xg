@@ -6,8 +6,8 @@
 ## Usage
 
 ``` html
-<fugu-<%dashModule%>>
-</fugu-<%dashModule%>>
+<uix-<%dashModule%>>
+</uix-<%dashModule%>>
 ```
 ## Restrict
 - 'E'

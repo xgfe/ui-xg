@@ -4,14 +4,14 @@
  * Author:yangjiyuan@meituan.com
  * Date:2015-12-28
  */
-angular.module('ui.fugu.dropdown', [])
+angular.module('ui.xg.dropdown', [])
 
-    .constant('fuguDropdownConfig', {
+    .constant('uixDropdownConfig', {
         openClass: 'open',
         eachItemWidth: 120,
         multiColClass: 'dropdown-multi'
     })
-    .provider('fuguDropdown', function () {
+    .provider('uixDropdown', function () {
         var _colsNum = 3;
         this.setColsNum = function (num) {
             _colsNum = angular.isNumber(num) ? num : 3;
@@ -24,7 +24,7 @@ angular.module('ui.fugu.dropdown', [])
             }
         }
     })
-    .service('fuguDropdownService', ['$document', function ($document) {
+    .service('uixDropdownService', ['$document', function ($document) {
         var openScope = null;
 
         this.open = function (dropdownScope) {
@@ -73,11 +73,11 @@ angular.module('ui.fugu.dropdown', [])
         }
     }])
 
-    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'fuguDropdown', 'fuguDropdownConfig', 'fuguDropdownService', '$animate',
-        function ($scope, $attrs, $parse, fuguDropdown, fuguDropdownConfig, fuguDropdownService, $animate) {
+    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
+        function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
             var self = this,
                 scope = $scope.$new(), // create a child scope so we are not polluting original one
-                openClass = fuguDropdownConfig.openClass,
+                openClass = uixDropdownConfig.openClass,
                 getIsOpen,
                 setIsOpen = angular.noop,
                 toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
@@ -85,7 +85,7 @@ angular.module('ui.fugu.dropdown', [])
             this.init = function (element) {
                 self.$element = element;
                 self.colsNum = angular.isDefined($attrs.colsNum) ?
-                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : fuguDropdown.getColsNum();
+                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
                 if ($attrs.isOpen) {
                     getIsOpen = $parse($attrs.isOpen);
                     setIsOpen = getIsOpen.assign;
@@ -124,9 +124,9 @@ angular.module('ui.fugu.dropdown', [])
 
                 if (isOpen) {
                     scope.focusToggleElement();
-                    fuguDropdownService.open(scope);
+                    uixDropdownService.open(scope);
                 } else {
-                    fuguDropdownService.close(scope);
+                    uixDropdownService.close(scope);
                 }
 
                 setIsOpen($scope, isOpen);
@@ -136,14 +136,14 @@ angular.module('ui.fugu.dropdown', [])
             });
             // set multi column
             function setMultiCols() {
-                var eachItemWidth = fuguDropdownConfig.eachItemWidth;
+                var eachItemWidth = uixDropdownConfig.eachItemWidth;
                 var colsNum = self.colsNum;
                 var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
                 var dropdownList = angular.element(self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)'));
                 if (dropdownList.length <= colsNum || colsNum === 1) {
                     return;
                 }
-                self.$element.addClass(fuguDropdownConfig.multiColClass);
+                self.$element.addClass(uixDropdownConfig.multiColClass);
                 dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
                 dropdownList.css('width', 100 / colsNum + '%');
             }
@@ -157,7 +157,7 @@ angular.module('ui.fugu.dropdown', [])
             });
         }])
 
-    .directive('fuguDropdown', function () {
+    .directive('uixDropdown', function () {
         return {
             controller: 'DropdownController',
             link: function (scope, element, attrs, dropdownCtrl) {
@@ -166,9 +166,9 @@ angular.module('ui.fugu.dropdown', [])
         };
     })
 
-    .directive('fuguDropdownToggle', function () {
+    .directive('uixDropdownToggle', function () {
         return {
-            require: '?^fuguDropdown',
+            require: '?^uixDropdown',
             link: function (scope, element, attrs, dropdownCtrl) {
                 if (!dropdownCtrl) {
                     return;

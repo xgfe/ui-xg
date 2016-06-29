@@ -1,5 +1,5 @@
-$fugu-switch-width:40px;
-$fugu-switch-height:25px;
+$uix-switch-width:40px;
+$uix-switch-height:25px;
 //type colors
 $type-map: (default: #777,
         primary: #428bca,
@@ -8,7 +8,7 @@ $type-map: (default: #777,
         error:#d9534f);
 // size
 $size-map: (sm, 35px,20px),
-        (md, $fugu-switch-width,$fugu-switch-height),
+        (md, $uix-switch-width,$uix-switch-height),
         (lg, 50px, 30px);
 
 @mixin autoprefixer($property,$value){
@@ -16,12 +16,12 @@ $size-map: (sm, 35px,20px),
     -moz-#{$property}: $value;
     #{$property}: $value;
 }
-.fugu-switch{
+.uix-switch{
     cursor: pointer;
     position: relative;
     display: inline-block;
-    width: $fugu-switch-width;
-    height: $fugu-switch-height;
+    width: $uix-switch-width;
+    height: $uix-switch-height;
     border-radius: 1000px;
     background-color: #777;
     margin: 0;
@@ -50,13 +50,13 @@ $size-map: (sm, 35px,20px),
         @include autoprefixer(transition,all 0.2s);
     }
     & input:checked + i:after {
-        margin-left: $fugu-switch-width - $fugu-switch-height + 1;
+        margin-left: $uix-switch-width - $uix-switch-height + 1;
     }
     & i:after {
         content: "";
         position: absolute;
         background-color: #fff;
-        width: $fugu-switch-height - 2;
+        width: $uix-switch-height - 2;
         top: 1px;
         bottom: 1px;
         border-radius: 50%;
@@ -65,12 +65,12 @@ $size-map: (sm, 35px,20px),
     }
 }
 @each $type, $color in $type-map {
-    .fugu-switch-#{$type}{
+    .uix-switch-#{$type}{
         background-color: $color;
     }
 }
 @each $size, $width, $height in $size-map {
-    .fugu-switch-#{$size}{
+    .uix-switch-#{$size}{
         width: $width;
         height: $height;
         & input:checked + i:after {

@@ -2,12 +2,12 @@ describe("notifyProvider Spec", function() {
     var notifyProvider,
         notifyServices;
 
-    beforeEach(module('ui.fugu.notify'));
+    beforeEach(module('ui.xg.notify'));
     beforeEach(module('notify/templates/notify.html'));
 
     describe('Default Configuration', function() {
 
-        beforeEach(inject(['notify', function (np) {
+        beforeEach(inject(['$uixNotify', function (np) {
             notifyProvider = np;
         }]));
 
@@ -71,19 +71,19 @@ describe("notifyProvider Spec", function() {
     describe('Provider Configuration', function() {
 
         beforeEach(function(){
-            module(function(notifyProvider){
-                notifyProvider.onlyUniqueMessages(false);
-                notifyProvider.globalPosition('bottom-center');
-                notifyProvider.globalReversedOrder(true);
-                notifyProvider.globalInlineMessages(true);
-                notifyProvider.globalTimeToLive(5000);
-                notifyProvider.globalDisableCloseButton(true);
-                notifyProvider.globalDisableIcons(true);
-                notifyProvider.globalDisableCountDown(true);
+            module(function($uixNotifyProvider){
+                $uixNotifyProvider.onlyUniqueMessages(false);
+                $uixNotifyProvider.globalPosition('bottom-center');
+                $uixNotifyProvider.globalReversedOrder(true);
+                $uixNotifyProvider.globalInlineMessages(true);
+                $uixNotifyProvider.globalTimeToLive(5000);
+                $uixNotifyProvider.globalDisableCloseButton(true);
+                $uixNotifyProvider.globalDisableIcons(true);
+                $uixNotifyProvider.globalDisableCountDown(true);
             })
         });
 
-        beforeEach(inject(['notify', function (np) {
+        beforeEach(inject(['$uixNotify', function (np) {
             notifyProvider = np;
         }]));
 
@@ -123,7 +123,7 @@ describe("notifyProvider Spec", function() {
 
     describe('Services', function() {
 
-        beforeEach(inject(['notify', 'notifyServices', function (nf, ns) {
+        beforeEach(inject(['$uixNotify', 'notifyServices', function (nf, ns) {
             notifyProvider = nf;
             notifyServices = ns;
         }]));

@@ -8,18 +8,18 @@ describe('popover', function() {
 
     // load the popover code
     beforeEach(function () {
-        module('ui.fugu.popover');
-        module('ui.fugu.tooltip');
-        module('ui.fugu.position');
-        module('ui.fugu.stackedMap');
-        module('popover/templates/fugu-popover-popup.html');
-        module('popover/templates/fugu-popover-html-popup.html');
+        module('ui.xg.popover');
+        module('ui.xg.tooltip');
+        module('ui.xg.position');
+        module('ui.xg.stackedMap');
+        module('popover/templates/popover-popup.html');
+        module('popover/templates/popover-html-popup.html');
     });
 
     beforeEach(inject(function($rootScope, $compile, $sce, _$document_) {
         $document = _$document_;
         elmBody = angular.element(
-            '<div><span fugu-popover-html="template">Selector Text</span></div>'
+            '<div><span uix-popover-html="template">Selector Text</span></div>'
         );
 
         scope = $rootScope;
@@ -110,7 +110,7 @@ describe('popover', function() {
         };
 
         elmBody = angular.element(
-            '<div><input fugu-popover-html="template" ng-click="click()" popover-trigger="mouseenter"/></div>'
+            '<div><input uix-popover-html="template" ng-click="click()" popover-trigger="mouseenter"/></div>'
         );
         $compile(elmBody)(scope);
         scope.$digest();
@@ -137,7 +137,7 @@ describe('popover', function() {
 
     it('should popup without animate class when animation disabled', inject(function($compile) {
         elmBody = angular.element(
-            '<div><span fugu-popover-html="template" popover-animation="false">Selector Text</span></div>'
+            '<div><span uix-popover-html="template" popover-animation="false">Selector Text</span></div>'
         );
 
         $compile(elmBody)(scope);
@@ -156,7 +156,7 @@ describe('popover', function() {
         describe('placement', function() {
             it('can specify an alternative, valid placement', inject(function($compile) {
                 elmBody = angular.element(
-                    '<div><span fugu-popover-html="template" popover-placement="left">Trigger here</span></div>'
+                    '<div><span uix-popover-html="template" popover-placement="left">Trigger here</span></div>'
                 );
                 $compile(elmBody)(scope);
                 scope.$digest();
@@ -178,7 +178,7 @@ describe('popover', function() {
         describe('class', function() {
             it('can specify a custom class', inject(function($compile) {
                 elmBody = angular.element(
-                    '<div><span fugu-popover-html="template" popover-class="custom">Trigger here</span></div>'
+                    '<div><span uix-popover-html="template" popover-class="custom">Trigger here</span></div>'
                 );
                 $compile(elmBody)(scope);
                 scope.$digest();

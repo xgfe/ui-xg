@@ -1,15 +1,15 @@
 # position
 ## Description
-`$fuguPosition`是一个用于对DOM元素进行绝对定位的service，在<a ui-sref="app.api.tooltip" href="../../tooltip/docs/readme.md">`tooltip`</a>、<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">`popover`</a>、<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">`timepicker`</a>和<a ui-sref="app.api.datepicker" href="../../datepicker/docs/readme.md">`datepicker`</a>中均有使用。代码使用的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)的。
+`$uixPosition`是一个用于对DOM元素进行绝对定位的service，在<a ui-sref="app.api.tooltip" href="../../tooltip/docs/readme.md">`tooltip`</a>、<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">`popover`</a>、<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">`timepicker`</a>和<a ui-sref="app.api.datepicker" href="../../datepicker/docs/readme.md">`datepicker`</a>中均有使用。代码使用的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)的。
 
 ## Usage
 
 ```
 // 模块进行依赖
-angular.module('yourModule',['ui.fugu.position']);
+angular.module('yourModule',['ui.xg.position']);
 
 // 注入
-.controller('yourController',['$fuguPosition',function($fuguPosition){
+.controller('yourController',['$uixPosition',function($uixPosition){
 	...
 }])
 ```

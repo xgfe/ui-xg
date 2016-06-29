@@ -5,13 +5,13 @@
  * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
+angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
     /**
      * The $tooltip service creates tooltip- and popover-like directives as well as
      * houses global options for them.
      */
-    .provider('$fuguTooltip', function () {
+    .provider('$uixTooltip', function () {
         // The default options tooltip and popover.
         var defaultOptions = {
             placement: 'top',
@@ -71,7 +71,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
          * Returns the actual instance of the $tooltip service.
          * TODO support multiple triggers
          */
-        this.$get = ['$window', '$compile', '$timeout', '$document', '$fuguPosition', '$interpolate', '$rootScope', '$parse', '$fuguStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
+        this.$get = ['$window', '$compile', '$timeout', '$document', '$uixPosition', '$interpolate', '$rootScope', '$parse', '$uixStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
             var openedTooltips = $$stackedMap.createNew();
             $document.on('keypress', keypressListener);
 
@@ -579,7 +579,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
     })
 
     // This is mostly ngInclude code but with a custom scope
-    .directive('fuguTooltipTemplateTransclude', [
+    .directive('uixTooltipTemplateTransclude', [
         '$animate', '$sce', '$compile', '$templateCache', '$http',
         function ($animate, $sce, $compile, $templateCache, $http) {
             return {
@@ -631,7 +631,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                         scope.$emit('$includeContentRequested', src);
                     }
 
-                    scope.$watch($sce.parseAsResourceUrl(attrs.fuguTooltipTemplateTransclude), function (src) {
+                    scope.$watch($sce.parseAsResourceUrl(attrs.uixTooltipTemplateTransclude), function (src) {
                         thisChangeId = ++changeCounter;
                         if (src) {
                             // ng1.2没有templateRequestProvider,用$templateCache+$http代替
@@ -666,7 +666,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
      * They must not be animated as they're expected to be present on the tooltip on
      * initialization.
      */
-    .directive('fuguTooltipClasses', ['$fuguPosition', function ($fuguPosition) {
+    .directive('uixTooltipClasses', ['$uixPosition', function ($uixPosition) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -676,7 +676,7 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
                 if (scope.placement) {
                     // // There are no top-left etc... classes
                     // // in TWBS, so we need the primary position.
-                    var position = $fuguPosition.parsePlacement(scope.placement);
+                    var position = $uixPosition.parsePlacement(scope.placement);
                     element.addClass(position[0]);
                 } else {
                     element.addClass('top');
@@ -693,44 +693,44 @@ angular.module('ui.fugu.tooltip', ['ui.fugu.position', 'ui.fugu.stackedMap'])
         };
     }])
 
-    .directive('fuguTooltipPopup', function () {
+    .directive('uixTooltipPopup', function () {
         return {
             replace: true,
             scope: {content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
-            templateUrl: 'templates/fugu-tooltip-popup.html'
+            templateUrl: 'templates/tooltip-popup.html'
         };
     })
 
-    .directive('fuguTooltip', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltip', 'tooltip', 'mouseenter');
+    .directive('uixTooltip', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltip', 'tooltip', 'mouseenter');
     }])
 
-    .directive('fuguTooltipHtmlPopup', function () {
+    .directive('uixTooltipHtmlPopup', function () {
         return {
             replace: true,
             scope: {contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
-            templateUrl: 'templates/fugu-tooltip-html-popup.html'
+            templateUrl: 'templates/tooltip-html-popup.html'
         };
     })
 
-    .directive('fuguTooltipHtml', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltipHtml', 'tooltip', 'mouseenter', {
+    .directive('uixTooltipHtml', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltipHtml', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }])
-    .directive('fuguTooltipTemplatePopup', function () {
+    .directive('uixTooltipTemplatePopup', function () {
         return {
             replace: true,
             scope: {
                 contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
                 originScope: '&'
             },
-            templateUrl: 'templates/fugu-tooltip-template-popup.html'
+            templateUrl: 'templates/tooltip-template-popup.html'
         };
     })
 
-    .directive('fuguTooltipTemplate', ['$fuguTooltip', function ($fuguTooltip) {
-        return $fuguTooltip('fuguTooltipTemplate', 'tooltip', 'mouseenter', {
+    .directive('uixTooltipTemplate', ['$uixTooltip', function ($uixTooltip) {
+        return $uixTooltip('uixTooltipTemplate', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }]);

@@ -1,14 +1,14 @@
-describe('fugu-pager', function () {
+describe('uix-pager', function () {
 
     var compile, scope, pagerConfig, element;
 
-    beforeEach(module('ui.fugu.pager'));
+    beforeEach(module('ui.xg.pager'));
     beforeEach(module('pager/templates/pager.html'));
 
-    beforeEach(inject(function( $compile,$rootScope, fuguPagerConfig) {
+    beforeEach(inject(function( $compile,$rootScope, uixPagerConfig) {
         compile = $compile;
         scope = $rootScope.$new();
-        pagerConfig = fuguPagerConfig;
+        pagerConfig = uixPagerConfig;
     }));
     afterEach(function() {
         element.remove();
@@ -32,7 +32,7 @@ describe('fugu-pager', function () {
         scope.$digest();
     }
     function createPager(){
-        var el = "<fugu-pager total-items='total' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -61,7 +61,7 @@ describe('fugu-pager', function () {
 
     it('disables the "next" and "last" link if current page is num-pages', function() {
         scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
-        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -74,7 +74,7 @@ describe('fugu-pager', function () {
 
     it('changes currentPage if the "previous" link is clicked', function() {
         scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
-        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -104,7 +104,7 @@ describe('fugu-pager', function () {
     });
     it('should not changes currentPage when is last page if the "last" or "next" link is clicked', function() {
         scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
-        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 3;
         element = compile(el)(scope);
@@ -116,7 +116,7 @@ describe('fugu-pager', function () {
     });
     it('should not changes currentPage when is first page if the "first" or "prev" link is clicked', function() {
         scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
-        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -129,7 +129,7 @@ describe('fugu-pager', function () {
 
     it('executes the `page-changed` expression when an element is clicked', function() {
         scope.selectPageHandler = jasmine.createSpy('selectPageHandler');
-        var el = "<fugu-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-changed='selectPageHandler' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -147,7 +147,7 @@ describe('fugu-pager', function () {
     });
 
     it('does not changes the number of pages when `items-pre-page` changes', function() {
-        var el = "<fugu-pager items-per-page='perPage' total-items='total' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager items-per-page='perPage' total-items='total' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         scope.perPage = 30;
@@ -160,7 +160,7 @@ describe('fugu-pager', function () {
     });
 
     it('should change "page-no" in scope when "page-no" attr has changed', function() {
-        var el = "<fugu-pager total-items='total' page-no='pageNo'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-no='pageNo'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         element = compile(el)(scope);
@@ -173,7 +173,7 @@ describe('fugu-pager', function () {
 
 
     it('use custom text on button', function() {
-        var el = "<fugu-pager total-items='total' page-no='pageNo' first-text='{{firstText}}' last-text='Last' previous-text='Previous' next-text='Next'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-no='pageNo' first-text='{{firstText}}' last-text='Last' previous-text='Previous' next-text='Next'></uix-pager>";
         scope.total = 50;
         scope.pageNo = 1;
         scope.firstText = 'First';
@@ -186,7 +186,7 @@ describe('fugu-pager', function () {
     });
 
     it('set maxSize', function() {
-        var el = "<fugu-pager total-items='total' page-no='pageNo' max-size='listSize'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-no='pageNo' max-size='listSize'></uix-pager>";
         scope.total = 150;
         scope.pageNo = 1;
         scope.listSize = 4;
@@ -195,7 +195,7 @@ describe('fugu-pager', function () {
         expect(getPaginationBarSize()).toBe(9);
     });
     it('should keep current page in the middle of the visible ones.', function() {
-        var el = "<fugu-pager total-items='total' page-no='pageNo' max-size='listSize'></fugu-pager>";
+        var el = "<uix-pager total-items='total' page-no='pageNo' max-size='listSize'></uix-pager>";
         scope.total = 90;
         scope.pageNo = 1;
         scope.listSize = 3;

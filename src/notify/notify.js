@@ -4,7 +4,7 @@
  * Author:penglu02@meituan.com
  * Date:2016-03-22
  */
-angular.module('ui.fugu.notify', [])
+angular.module('ui.xg.notify', [])
     .service('notifyServices', [
         '$sce',
         '$interval',
@@ -131,13 +131,13 @@ angular.module('ui.fugu.notify', [])
     .controller('notifyController', [
         '$scope',
         '$interval',
-        'notify',
+        '$uixNotify',
         'notifyServices',
-        function ($scope, $interval, notify, notifyServices) {
+        function ($scope, $interval, $uixNotify, notifyServices) {
             $scope.referenceId = $scope.reference || 0;
             notifyServices.initDirective($scope.referenceId, $scope.limitMessages);
             $scope.notifyServices = notifyServices;
-            $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : notify.inlineMessages();
+            $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : $uixNotify.inlineMessages();
             $scope.$watch('limitMessages', function (limitMessages) {
                 var directive = notifyServices.directives[$scope.referenceId];
                 if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
@@ -172,8 +172,8 @@ angular.module('ui.fugu.notify', [])
             };
             $scope.wrapperClasses = function () {
                 var classes = {};
-                classes['fugu-notify-fixed'] = !$scope.inlineMessage;
-                classes[notify.position()] = true;
+                classes['uix-notify-fixed'] = !$scope.inlineMessage;
+                classes[$uixNotify.position()] = true;
                 return classes;
             };
             $scope.computeTitle = function (message) {
@@ -187,7 +187,7 @@ angular.module('ui.fugu.notify', [])
             };
         }
     ])
-    .provider('notify', function () {
+    .provider('$uixNotify', function () {
 
         var _ttl = {
                 success: null,
@@ -268,7 +268,7 @@ angular.module('ui.fugu.notify', [])
         };
         this.serverMessagesInterceptor = [
             '$q',
-            'notify',
+            '$uixNotify',
             function ($q, notify) {
                 function checkResponse(response) {
                     if (angular.isDefined(response) && response.data && response.data[_messagesKey] && response.data[_messagesKey].length > 0) {
@@ -415,7 +415,7 @@ angular.module('ui.fugu.notify', [])
             }
         ];
     })
-    .directive('fuguNotify', [function () {
+    .directive('uixNotify', [function () {
         return {
             restrict: 'A',
             templateUrl: 'templates/notify.html',

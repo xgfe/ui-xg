@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('buttonGroupDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('buttonGroupDemoCtrl',['$scope', function ($scope) {
     $scope.radioModel = 'man';
     $scope.checkModel = {
         'music' : true,

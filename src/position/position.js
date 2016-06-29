@@ -4,8 +4,8 @@
  * Author: ui.bootstrap https://github.com/angular-ui/bootstrap
  * Date:2016-05-25
  */
-angular.module('ui.fugu.position', [])
-    .factory('$fuguPosition', ['$document', '$window', function ($document, $window) {
+angular.module('ui.xg.position', [])
+    .factory('$uixPosition', ['$document', '$window', function ($document, $window) {
         /**
          * Used by scrollbarWidth() function to cache scrollbar's width.
          * Do not access this variable directly, use scrollbarWidth() instead.

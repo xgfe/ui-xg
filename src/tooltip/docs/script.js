@@ -1,4 +1,4 @@
-angular.module('fuguDemo').controller('tooltipDemoCtrl',['$scope', '$sce', function ($scope, $sce) {
+angular.module('uixDemo').controller('tooltipDemoCtrl',['$scope', '$sce', function ($scope, $sce) {
     $scope.dynamicTooltip = 'Hello, World!';
     $scope.dynamicTooltipText = '动态的tooltip';
     $scope.delayTime = 1000;

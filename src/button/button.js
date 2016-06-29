@@ -4,11 +4,8 @@
  * Author:penglu02@meituan.com
  * Date:2016-01-12
  */
-angular.module('ui.fugu.button', [])
-    .constant('buttonConfig', {
-
-    })
-    .directive('fuguButton', [function(){
+angular.module('ui.xg.button', [])
+    .directive('uixButton', [function(){
         return {
             restrict: 'AE',
             scope:{

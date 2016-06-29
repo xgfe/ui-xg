@@ -4,20 +4,20 @@
             设置为小尺寸:
         </div>
         <div class="col-md-4">
-            <fugu-datepicker clear-btn="true" max-date="maxDate" ng-model="date"
-                             size="{{'sm'}}" format="'yyyy-MM-dd'"></fugu-datepicker>
+            <uix-datepicker clear-btn="true" max-date="maxDate" ng-model="date"
+                             size="{{'sm'}}" format="'yyyy-MM-dd'"></uix-datepicker>
         </div>
         <div class="col-md-2">
             不提供时间选择:
         </div>
         <div class="col-md-4">
-            <fugu-datepicker ng-model="date" show-time="false" format="'yyyy-MM-dd'"></fugu-datepicker>
+            <uix-datepicker ng-model="date" show-time="false" format="'yyyy-MM-dd'"></uix-datepicker>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <fugu-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
-                             placeholder="选择日期" on-change="onChange()" format="'yyyy-MM-dd hh:mm:ss a'" min-date="minDate" exceptions="exceptions"></fugu-datepicker>
+            <uix-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
+                             placeholder="选择日期" on-change="onChange()" format="'yyyy-MM-dd hh:mm:ss a'" min-date="minDate" exceptions="exceptions"></uix-datepicker>
         </div>
         <div class="col-md-4">
             <pre>{{date | date:'yyyy:MM:dd hh:mm:ss a'}}</pre>
