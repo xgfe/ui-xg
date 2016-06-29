@@ -1,5 +1,5 @@
 <h1>Alert</h1><h2>Description</h2><p>提示组件,可展示不同样式的提示信息。</p>
-<h2>Usage</h2><pre><code class="lang-javascript">&lt;fugu-alert <span class="hljs-keyword">text</span>=<span class="hljs-string">"string"</span>
+<h2>Usage</h2><pre><code class="lang-javascript">&lt;uix-alert <span class="hljs-keyword">text</span>=<span class="hljs-string">"string"</span>
     [ <span class="hljs-built_in">close</span>=<span class="hljs-string">"boolean"</span> ]
     [ <span class="hljs-built_in">close</span>-func=<span class="hljs-string">"string"</span> ]
     [ <span class="hljs-built_in">close</span>-<span class="hljs-keyword">text</span>=<span class="hljs-string">"string"</span> ]
@@ -7,10 +7,40 @@
     [ dismiss-<span class="hljs-keyword">on</span>-timeout=<span class="hljs-string">"number"</span> ]
     [ template-url=<span class="hljs-string">"string"</span> ]
     [ type=<span class="hljs-string">"string"</span> ]&gt;
-&lt;/fugu-button&gt;
+&lt;/uix-button&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;E&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>close(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>指定提示是否可关闭,默认显示<code>false</code>。</td></tr><tr><td>closeFunc(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>指定提示关闭的回调函数,取父作用域上的函数,默认为自带回调函数。</td></tr><tr><td>closeText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>设置关闭按钮的替代文案,不适用则不显示文案。</td></tr><tr><td>hasIcon(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置是否使用图标。</td></tr><tr><td>dismissOnTimeout(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>null</code></td><td>设置提示自动关闭的时间，单位是毫秒。要使用这个属性必须<code>close</code>这个属性存在。</td></tr><tr><td>templateUrl(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>指定提示使用自定义模板的路径。默认不适用自定义模板。</td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>warning</code></td><td>设置提示的类别，有<code>danger</code>、<code>success</code>、<code>warning</code>和<code>info</code>四种可选，默认为<code>warning</code>。</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>close(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>指定提示是否可关闭,默认显示<code>false</code>。</td></tr><tr><td>closeFunc(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>指定提示关闭的回调函数,取父作用域上的函数,默认为自带回调函数。</td></tr><tr><td>closeText(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>设置关闭按钮的替代文案,不适用则不显示文案。</td></tr><tr><td>hasIcon(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置是否使用图标。</td></tr><tr><td>dismissOnTimeout(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>null</code></td><td>设置提示自动关闭的时间，单位是毫秒。要使用这个属性必须<code>close</code>这个属性存在。</td></tr><tr><td>templateUrl(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>指定提示使用自定义模板的路径。默认不适用自定义模板。</td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>warning</code></td><td>设置提示的类别，有<code>danger</code>、<code>success</code>、<code>warning</code>和<code>info</code>四种可选，默认为<code>warning</code>。</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="alertDemoCtrl">
+    <uix-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</uix-alert>
+    <uix-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</uix-alert>
+    <uix-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</uix-alert>
+    <uix-alert type="warning" close="true" close-text="点击关闭" has-icon="{{true}}">替换关闭按钮文案</uix-alert>
+    <uix-alert type="warning" close="false">取消图标</uix-alert>
+    <uix-alert type="warning" close="{{boolean}}">布尔取值为{{boolean}}</uix-alert>
+    <uix-alert template-url="alert.html">A happy alert!</uix-alert>
+
+    <button ng-click="addAlert()">点击添加</button>
+    <script type="text/ng-template" id="alert.html">
+        <div class="alert" style="background-color:#fa39c3;color:white" role="alert">
+            <div ng-transclude></div>
+        </div>
+    </script>
+</div></div><script>angular.module('uixDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
+    $scope.isIcon = false;
+    $scope.boolean = true;
+    $scope.alerts = [
+        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+        { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
+        { type: 'warning', msg: 'FBI Warning! Manong would ignore anything about warning.' },
+        { type: 'info', msg: 'I know that you wouldn\'t see this line.' }
+    ];
+    $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+    };
+    $scope.addAlert = function(){
+        $scope.alerts.push({msg:"this is a new alert."});
+    }
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -23,13 +53,13 @@
     
     <div class="tab-pane active" id="index_html">
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"alertDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"alert in alerts"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>alert.type&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-func</span>=<span class="hljs-string">"closeAlert($index)"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>alert.msg&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">dismiss-on-timeout</span>=<span class="hljs-string">"3000"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span>3s定时关闭<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-text</span>=<span class="hljs-string">"点击关闭"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span>替换关闭按钮文案<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-text</span>=<span class="hljs-string">"点击关闭"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>true&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>替换关闭按钮文案<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"false"</span>&gt;</span>取消图标<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>boolean&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>布尔取值为</span><span class="hljs-template-variable"><span>&#123;&#123;</span>boolean&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-alert</span> <span class="hljs-attr">template-url</span>=<span class="hljs-string">"alert.html"</span>&gt;</span>A happy alert!<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"alert in alerts"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>alert.type&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-func</span>=<span class="hljs-string">"closeAlert($index)"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>alert.msg&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">dismiss-on-timeout</span>=<span class="hljs-string">"3000"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span>3s定时关闭<span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-text</span>=<span class="hljs-string">"点击关闭"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"true"</span>&gt;</span>替换关闭按钮文案<span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">close-text</span>=<span class="hljs-string">"点击关闭"</span> <span class="hljs-attr">has-icon</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>true&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>替换关闭按钮文案<span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"false"</span>&gt;</span>取消图标<span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"warning"</span> <span class="hljs-attr">close</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>boolean&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>布尔取值为</span><span class="hljs-template-variable"><span>&#123;&#123;</span>boolean&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-alert</span> <span class="hljs-attr">template-url</span>=<span class="hljs-string">"alert.html"</span>&gt;</span>A happy alert!<span class="hljs-tag">&lt;/<span class="hljs-name">uix-alert</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"addAlert()"</span>&gt;</span>点击添加<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/ng-template"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"alert.html"</span>&gt;</span><span class="handlebars"><span class="xml">
@@ -42,7 +72,7 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'alertDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'alertDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.isIcon = <span class="hljs-keyword">false</span>;
     $scope.boolean = <span class="hljs-keyword">true</span>;
     $scope.alerts = [
@@ -75,34 +105,4 @@
             $('#'+id).addClass('active');
         });
     });
-</script></div><div class="example"><div ng-controller="alertDemoCtrl">
-    <fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
-    <fugu-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</fugu-alert>
-    <fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</fugu-alert>
-    <fugu-alert type="warning" close="true" close-text="点击关闭" has-icon="{{true}}">替换关闭按钮文案</fugu-alert>
-    <fugu-alert type="warning" close="false">取消图标</fugu-alert>
-    <fugu-alert type="warning" close="{{boolean}}">布尔取值为{{boolean}}</fugu-alert>
-    <fugu-alert template-url="alert.html">A happy alert!</fugu-alert>
-
-    <button ng-click="addAlert()">点击添加</button>
-    <script type="text/ng-template" id="alert.html">
-        <div class="alert" style="background-color:#fa39c3;color:white" role="alert">
-            <div ng-transclude></div>
-        </div>
-    </script>
-</div></div><script>angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
-    $scope.isIcon = false;
-    $scope.boolean = true;
-    $scope.alerts = [
-        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-        { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
-        { type: 'warning', msg: 'FBI Warning! Manong would ignore anything about warning.' },
-        { type: 'info', msg: 'I know that you wouldn\'t see this line.' }
-    ];
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
-    $scope.addAlert = function(){
-        $scope.alerts.push({msg:"this is a new alert."});
-    }
-}]);</script>
+</script></div>

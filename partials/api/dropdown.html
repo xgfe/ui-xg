@@ -1,16 +1,97 @@
 <h1>dropdown</h1><h2>Description</h2><p>下拉菜单组件，支持多列。可以通过Provider设置多列数目，当列表项的数目大于多列数目时以多列显示</p>
-<h2>Usage</h2><pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown</span>
-    [ <span class="hljs-attr">is-open</span>=<span class="hljs-string">"boolean"</span> ]
-    [ <span class="hljs-attr">cols-num</span>=<span class="hljs-string">"number"</span> ]&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">fugu-dropdown-toggle</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn"</span>&gt;</span>Text<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-    ...
-<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown</span>&gt;</span></span>
-</code></pre><h2>Restrict</h2><ul><li>&#39;E&#39;</li>
-</ul><h2>Provider</h2><ul><li>fuguDropdownProvider：全局配置dropdown相关的设置</li>
+<h2>Usage</h2><pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn-group"</span> <span class="hljs-attr">uix-dropdown</span> <span class="hljs-attr">is-open</span>=<span class="hljs-string">"status.isopen"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">uix-dropdown-toggle</span> <span class="hljs-attr">ng-disabled</span>=<span class="hljs-string">"disabled"</span>&gt;</span>
+        Button dropdown
+    <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-menu"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Something else here<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Separated link<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre><h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Provider</h2><ul><li>uixDropdownProvider：全局配置dropdown相关的设置</li>
 <li>methods<ul><li><code>setColsNum(num)</code>：设置多列数目</li>
 </ul></li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>isOpen</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>是否开启列表</td></tr><tr><td>colsNum</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>3</code></td><td>设置列数,属性的配置会覆盖全局provider的配置,全局的配置会覆盖默认的配置</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>isOpen</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>是否开启列表</td></tr><tr><td>colsNum</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>3</code></td><td>设置列数,属性的配置会覆盖全局provider的配置,全局的配置会覆盖默认的配置</td></tr><tr><td>onToggle</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>打开关闭的时候的回调函数,含有一个布尔值的参数,表示是否是打开的状态</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="dropdownDemoCtrl">
+    <!-- Simple dropdown -->
+    <span class="dropdown" uix-dropdown on-toggle="toggled(open)">
+      <a href class="dropdown-toggle" uix-dropdown-toggle>
+          Click me for a dropdown, yo!
+      </a>
+      <ul class="dropdown-menu">
+          <li ng-repeat="choice in items">
+              <a href>{{choice}}</a>
+          </li>
+      </ul>
+    </span>
+    <!-- Single button -->
+    <div class="btn-group" uix-dropdown is-open="status.isopen">
+        <button type="button" class="btn btn-primary dropdown-toggle" uix-dropdown-toggle ng-disabled="disabled">
+            Button dropdown <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <!-- multi cols button -->
+    <div class="btn-group" uix-dropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle" uix-dropdown-toggle>
+            Multi cols dropdown <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <!-- Split button -->
+    <div class="btn-group" uix-dropdown>
+        <button type="button" class="btn btn-danger">Action</button>
+        <button type="button" class="btn btn-danger dropdown-toggle" uix-dropdown-toggle>
+            <span class="caret"></span>
+            <span class="sr-only">Split button!</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <hr />
+    <p>
+        <button type="button" class="btn btn-default btn-sm" ng-click="toggleDropdown($event)">Toggle button dropdown</button>
+        <button type="button" class="btn btn-warning btn-sm" ng-click="disabled = !disabled">Enable/Disable</button>
+    </p>
+</div></div><script>angular.module('uixDemo').config(['uixDropdownProvider', function (uixDropdownProvider) {
+    uixDropdownProvider.setColsNum(3);
+}]);
+angular.module('uixDemo').controller('dropdownDemoCtrl', ['$scope', '$log', function ($scope, $log) {
+    $scope.items = [
+        'The first choice!',
+        'And another choice for you.',
+        'but wait! A third!'
+    ];
+
+    $scope.status = {
+        isopen: false
+    };
+
+    $scope.toggled = function (open) {
+        $log.log('Dropdown is now: ', open);
+    };
+
+    $scope.toggleDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.isopen = !$scope.status.isopen;
+    };
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -23,51 +104,89 @@
     
     <div class="tab-pane active" id="index_html">
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"dropdownDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown</span> <span class="hljs-attr">cols-num</span>=<span class="hljs-string">"1"</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">fugu-dropdown-toggle</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-lg btn-primary"</span>&gt;</span>
-            </span><span class="hljs-template-variable"><span>&#123;&#123;</span>currentUser.name&#125;&#125;</span><span class="xml">&amp;nbsp;<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- Simple dropdown --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown"</span> <span class="hljs-attr">uix-dropdown</span> <span class="hljs-attr">on-toggle</span>=<span class="hljs-string">"toggled(open)"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-toggle"</span> <span class="hljs-attr">uix-dropdown-toggle</span>&gt;</span>
+          Click me for a dropdown, yo!
+      <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-menu"</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"choice in items"</span>&gt;</span>
+              <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>choice&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+          <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- Single button --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn-group"</span> <span class="hljs-attr">uix-dropdown</span> <span class="hljs-attr">is-open</span>=<span class="hljs-string">"status.isopen"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-primary dropdown-toggle"</span> <span class="hljs-attr">uix-dropdown-toggle</span> <span class="hljs-attr">ng-disabled</span>=<span class="hljs-string">"disabled"</span>&gt;</span>
+            Button dropdown <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in list"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.name&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"selectItem(item)"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.name&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown</span> <span class="hljs-attr">is-open</span>=<span class="hljs-string">"status.isOpen"</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">fugu-dropdown-toggle</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-disabled</span>=<span class="hljs-string">"status.isDisabled"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-sm btn-primary"</span>&gt;</span>
-            </span><span class="hljs-template-variable"><span>&#123;&#123;</span>currentUser.name&#125;&#125;</span><span class="xml">&amp;nbsp;<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-menu"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Something else here<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"divider"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Separated link<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- multi cols button --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn-group"</span> <span class="hljs-attr">uix-dropdown</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-primary dropdown-toggle"</span> <span class="hljs-attr">uix-dropdown-toggle</span>&gt;</span>
+            Multi cols dropdown <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"第一个"</span>&gt;</span>第一个<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"第二项"</span>&gt;</span>第二项<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"第三项"</span>&gt;</span>第三项<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"第四项"</span>&gt;</span>第四项<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-dropdown-choices</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"第五项"</span>&gt;</span>第五项<span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown-choices</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">fugu-dropdown</span>&gt;</span>
-    isOpen:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>status.isOpen&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"status.isOpen"</span>/&gt;</span>
-    isDisabled:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>status.isDisabled&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"status.isDisabled"</span>/&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"doClick($event)"</span>&gt;</span>点击<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-menu"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Action<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Another action<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Something else here<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"divider"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Separated link<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- Split button --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn-group"</span> <span class="hljs-attr">uix-dropdown</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-danger"</span>&gt;</span>Action<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-danger dropdown-toggle"</span> <span class="hljs-attr">uix-dropdown-toggle</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"caret"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"sr-only"</span>&gt;</span>Split button!<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"dropdown-menu"</span> <span class="hljs-attr">role</span>=<span class="hljs-string">"menu"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Action<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Another action<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Something else here<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"divider"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#"</span>&gt;</span>Separated link<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default btn-sm"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"toggleDropdown($event)"</span>&gt;</span>Toggle button dropdown<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-warning btn-sm"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"disabled = !disabled"</span>&gt;</span>Enable/Disable<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'fuguDropdownProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(fuguDropdownProvider)</span> </span>{
-    fuguDropdownProvider.setColsNum(<span class="hljs-number">3</span>);
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).config([<span class="hljs-string">'uixDropdownProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(uixDropdownProvider)</span> </span>{
+    uixDropdownProvider.setColsNum(<span class="hljs-number">3</span>);
 }]);
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
-    $scope.<span class="hljs-keyword">list</span> = [
-        {id:<span class="hljs-number">1</span>,name:<span class="hljs-string">'Jerry'</span>},
-        {id:<span class="hljs-number">2</span>,name:<span class="hljs-string">'Test'</span>},
-        {id:<span class="hljs-number">3</span>,name:<span class="hljs-string">'multidropdownmultidropdown'</span>},
-        {id:<span class="hljs-number">4</span>,name:<span class="hljs-string">'meituan'</span>}];
+angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
+    $scope.items = [
+        <span class="hljs-string">'The first choice!'</span>,
+        <span class="hljs-string">'And another choice for you.'</span>,
+        <span class="hljs-string">'but wait! A third!'</span>
+    ];
+
     $scope.status = {
-        isOpen:<span class="hljs-keyword">true</span>,
-        isDisabled:<span class="hljs-keyword">true</span>
+        isopen: <span class="hljs-keyword">false</span>
     };
-    $scope.doClick = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(evt)</span> </span>{
-        evt.stopPropagation();
-        $scope.status.isOpen = !$scope.status.isOpen
+
+    $scope.toggled = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(open)</span> </span>{
+        $log.log(<span class="hljs-string">'Dropdown is now: '</span>, open);
     };
-    $scope.currentUser = {id:<span class="hljs-number">1</span>,name:<span class="hljs-string">'Jerry'</span>};
-    $scope.selectItem = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(item)</span> </span>{
-        $scope.currentUser = item;
-    }
+
+    $scope.toggleDropdown = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($event)</span> </span>{
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.isopen = !$scope.status.isopen;
+    };
 }]);</code></pre>
     </div>
     
@@ -86,45 +205,4 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
             $('#'+id).addClass('active');
         });
     });
-</script></div><div class="example"><div ng-controller="dropdownDemoCtrl">
-    <fugu-dropdown cols-num="1">
-        <button fugu-dropdown-toggle type="button" class="btn btn-lg btn-primary">
-            {{currentUser.name}}&nbsp;<span class="caret"></span>
-        </button>
-        <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
-    </fugu-dropdown>
-    <fugu-dropdown is-open="status.isOpen">
-        <button fugu-dropdown-toggle type="button" ng-disabled="status.isDisabled" class="btn btn-sm btn-primary">
-            {{currentUser.name}}&nbsp;<span class="caret"></span>
-        </button>
-        <fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第三项">第三项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第四项">第四项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第五项">第五项</fugu-dropdown-choices>
-    </fugu-dropdown>
-    isOpen:{{status.isOpen}}<input type="checkbox" ng-model="status.isOpen"/>
-    isDisabled:{{status.isDisabled}}<input type="checkbox" ng-model="status.isDisabled"/>
-    <button type="button" class="btn btn-default" ng-click="doClick($event)">点击</button>
-</div></div><script>angular.module('fuguDemo').config(['fuguDropdownProvider', function (fuguDropdownProvider) {
-    fuguDropdownProvider.setColsNum(3);
-}]);
-angular.module('fuguDemo').controller('dropdownDemoCtrl',['$scope', function ($scope) {
-    $scope.list = [
-        {id:1,name:'Jerry'},
-        {id:2,name:'Test'},
-        {id:3,name:'multidropdownmultidropdown'},
-        {id:4,name:'meituan'}];
-    $scope.status = {
-        isOpen:true,
-        isDisabled:true
-    };
-    $scope.doClick = function (evt) {
-        evt.stopPropagation();
-        $scope.status.isOpen = !$scope.status.isOpen
-    };
-    $scope.currentUser = {id:1,name:'Jerry'};
-    $scope.selectItem = function (item) {
-        $scope.currentUser = item;
-    }
-}]);</script>
+</script></div>

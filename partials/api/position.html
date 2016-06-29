@@ -1,9 +1,9 @@
-<h1>position</h1><h2>Description</h2><p><code>$fuguPosition</code>是一个用于对DOM元素进行绝对定位的service，在<a ui-sref="app.api.tooltip" href="../../tooltip/docs/readme.md"><code>tooltip</code></a>、<a ui-sref="app.api.popover" href="../../popover/docs/readme.md"><code>popover</code></a>、<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md"><code>timepicker</code></a>和<a ui-sref="app.api.datepicker" href="../../datepicker/docs/readme.md"><code>datepicker</code></a>中均有使用。代码使用的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的。</p>
+<h1>position</h1><h2>Description</h2><p><code>$uixPosition</code>是一个用于对DOM元素进行绝对定位的service，在<a ui-sref="app.api.tooltip" href="../../tooltip/docs/readme.md"><code>tooltip</code></a>、<a ui-sref="app.api.popover" href="../../popover/docs/readme.md"><code>popover</code></a>、<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md"><code>timepicker</code></a>和<a ui-sref="app.api.datepicker" href="../../datepicker/docs/readme.md"><code>datepicker</code></a>中均有使用。代码使用的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的。</p>
 <h2>Usage</h2><pre><code><span class="hljs-comment">// 模块进行依赖</span>
-angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string">'yourModule'</span>,[<span class="hljs-string">'ui.fugu.position'</span>]);
+angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string">'yourModule'</span>,[<span class="hljs-string">'ui.xg.position'</span>]);
 
 <span class="hljs-comment">// 注入</span>
-<span class="hljs-selector-class">.controller</span>(<span class="hljs-string">'yourController'</span>,[<span class="hljs-string">'$fuguPosition'</span>,function($fuguPosition){
+<span class="hljs-selector-class">.controller</span>(<span class="hljs-string">'yourController'</span>,[<span class="hljs-string">'$uixPosition'</span>,function($uixPosition){
     ...
 }])
 </code></pre><h2>Methods</h2><h3>getRawNode(element)</h3><p>把一个jQuery/jqLite对象转化为原生的DOM元素。</p>
@@ -30,7 +30,77 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
 </ul><p>定位字符串包括<code>&quot;auto&quot;</code>的话需要使用空格分开各个定位，如<code>&quot;auto top-left&quot;</code>，如果主定位和第二定位不是<code>&quot;top&quot;</code>,<code>&quot;left&quot;</code>,<code>&quot;right&quot;</code>中的任何一个，<code>&quot;top&quot;</code>会作为主要定位，<code>&quot;center&quot;</code>会作为第二定位。如果传递了<code>&quot;auto&quot;</code>，函数返回值的第三个值会是<code>true</code>。</p>
 <h3>positionElements(hostElement,targetElement,placement,appendToBody)</h3><p>获取把一个元素定位到另一个元素特定位置中的坐标。</p>
 <h3>positionArrow(element,placement)</h3><p>使用<code>placement</code>选项对<code>tooltip</code>和<code>popover</code>中的“箭头”进行定位，可选择<code>&quot;top&quot;</code>、<code>&quot;left&quot;</code>、<code>&quot;bottom&quot;</code>和<code>&quot;right&quot;</code>.</p>
-<hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+<hr><h2>Example</h2><style>#posdemoparent {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+#posdemodiv {
+    width: 100px;
+    height: 100px;
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+}</style><div class="example"><div ng-controller="dropdownDemoCtrl">
+    <h4>$uixPosition service</h4>
+    <div id="posdemoparent" ng-style="{'overflow': (parentScrollable && 'scroll'), 'position': (parentRelative && 'relative')}">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="parentScrollable"> Parent scrollable
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="parentRelative"> Parent relative
+            </label>
+        </div>
+        <button id="posdemobtn" class="btn btn-default" ng-click="getValues()">Get values</button>
+
+        <div id="posdemodiv">
+            Demo element
+        </div>
+    </div>
+    <br />
+    offsetParent: {{elemVals.offsetParent}}
+    <br />
+    scrollParent: {{elemVals.scrollParent}}
+    <br />
+    scrollbarWidth: {{scrollbarWidth}}
+    <br />
+    position: {{elemVals.position}}
+    <br />
+    offset: {{elemVals.offset}}
+    <br />
+    viewportOffset: {{elemVals.viewportOffset}}
+    <br />
+    positionElements: {{elemVals.positionElements}}
+</div></div><script>angular.module('uixDemo').controller('dropdownDemoCtrl',['$scope','$window','$uixPosition', function ($scope,$window,$uixPosition) {
+    $scope.elemVals = {};
+    $scope.parentScrollable = true;
+    $scope.parentRelative = true;
+
+    $scope.getValues = function() {
+        var divEl = $window.document.querySelector('#posdemodiv');
+        var btnEl = $window.document.querySelector('#posdemobtn');
+
+        var offsetParent = $uixPosition.offsetParent(divEl);
+        $scope.elemVals.offsetParent = 'type: ' + offsetParent.tagName + ', id: ' + offsetParent.id;
+
+        var scrollParent = $uixPosition.scrollParent(divEl);
+        $scope.elemVals.scrollParent = 'type: ' + scrollParent.tagName + ', id: ' + scrollParent.id;
+
+        $scope.scrollbarWidth = $uixPosition.scrollbarWidth();
+
+        $scope.elemVals.position = $uixPosition.position(divEl);
+
+        $scope.elemVals.offset = $uixPosition.offset(divEl);
+
+        $scope.elemVals.viewportOffset = $uixPosition.viewportOffset(divEl);
+
+        $scope.elemVals.positionElements = $uixPosition.positionElements(btnEl, divEl, 'auto bottom-left');
+    };
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -45,7 +115,7 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
     
     <div class="tab-pane active" id="index_html">
 <pre><code>&lt;div ng-controller=<span class="hljs-string">"dropdownDemoCtrl"</span>&gt;
-    &lt;h4&gt;$fuguPosition service&lt;<span class="hljs-regexp">/h4&gt;
+    &lt;h4&gt;$uixPosition service&lt;<span class="hljs-regexp">/h4&gt;
     &lt;div id="posdemoparent" ng-style="{'overflow': (parentScrollable &amp;&amp; 'scroll'), 'position': (parentRelative &amp;&amp; 'relative')}"&gt;
         &lt;div class="checkbox"&gt;
             &lt;label&gt;
@@ -82,7 +152,7 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$window'</span>,<span class="hljs-string">'$fuguPosition'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$window,$fuguPosition)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$window'</span>,<span class="hljs-string">'$uixPosition'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$window,$uixPosition)</span> </span>{
     $scope.elemVals = {};
     $scope.parentScrollable = <span class="hljs-keyword">true</span>;
     $scope.parentRelative = <span class="hljs-keyword">true</span>;
@@ -91,21 +161,21 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
         <span class="hljs-keyword">var</span> divEl = $window.document.querySelector(<span class="hljs-string">'#posdemodiv'</span>);
         <span class="hljs-keyword">var</span> btnEl = $window.document.querySelector(<span class="hljs-string">'#posdemobtn'</span>);
 
-        <span class="hljs-keyword">var</span> offsetParent = $fuguPosition.offsetParent(divEl);
+        <span class="hljs-keyword">var</span> offsetParent = $uixPosition.offsetParent(divEl);
         $scope.elemVals.offsetParent = <span class="hljs-string">'type: '</span> + offsetParent.tagName + <span class="hljs-string">', id: '</span> + offsetParent.id;
 
-        <span class="hljs-keyword">var</span> scrollParent = $fuguPosition.scrollParent(divEl);
+        <span class="hljs-keyword">var</span> scrollParent = $uixPosition.scrollParent(divEl);
         $scope.elemVals.scrollParent = <span class="hljs-string">'type: '</span> + scrollParent.tagName + <span class="hljs-string">', id: '</span> + scrollParent.id;
 
-        $scope.scrollbarWidth = $fuguPosition.scrollbarWidth();
+        $scope.scrollbarWidth = $uixPosition.scrollbarWidth();
 
-        $scope.elemVals.position = $fuguPosition.position(divEl);
+        $scope.elemVals.position = $uixPosition.position(divEl);
 
-        $scope.elemVals.offset = $fuguPosition.offset(divEl);
+        $scope.elemVals.offset = $uixPosition.offset(divEl);
 
-        $scope.elemVals.viewportOffset = $fuguPosition.viewportOffset(divEl);
+        $scope.elemVals.viewportOffset = $uixPosition.viewportOffset(divEl);
 
-        $scope.elemVals.positionElements = $fuguPosition.positionElements(btnEl, divEl, <span class="hljs-string">'auto bottom-left'</span>);
+        $scope.elemVals.positionElements = $uixPosition.positionElements(btnEl, divEl, <span class="hljs-string">'auto bottom-left'</span>);
     };
 }]);</code></pre>
     </div>
@@ -141,74 +211,4 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
             $('#'+id).addClass('active');
         });
     });
-</script></div><style>#posdemoparent {
-    border: 1px solid #ccc;
-    padding: 15px;
-}
-
-#posdemodiv {
-    width: 100px;
-    height: 100px;
-    margin: 15px 0;
-    padding: 10px;
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-}</style><div class="example"><div ng-controller="dropdownDemoCtrl">
-    <h4>$fuguPosition service</h4>
-    <div id="posdemoparent" ng-style="{'overflow': (parentScrollable && 'scroll'), 'position': (parentRelative && 'relative')}">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="parentScrollable"> Parent scrollable
-            </label>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="parentRelative"> Parent relative
-            </label>
-        </div>
-        <button id="posdemobtn" class="btn btn-default" ng-click="getValues()">Get values</button>
-
-        <div id="posdemodiv">
-            Demo element
-        </div>
-    </div>
-    <br />
-    offsetParent: {{elemVals.offsetParent}}
-    <br />
-    scrollParent: {{elemVals.scrollParent}}
-    <br />
-    scrollbarWidth: {{scrollbarWidth}}
-    <br />
-    position: {{elemVals.position}}
-    <br />
-    offset: {{elemVals.offset}}
-    <br />
-    viewportOffset: {{elemVals.viewportOffset}}
-    <br />
-    positionElements: {{elemVals.positionElements}}
-</div></div><script>angular.module('fuguDemo').controller('dropdownDemoCtrl',['$scope','$window','$fuguPosition', function ($scope,$window,$fuguPosition) {
-    $scope.elemVals = {};
-    $scope.parentScrollable = true;
-    $scope.parentRelative = true;
-
-    $scope.getValues = function() {
-        var divEl = $window.document.querySelector('#posdemodiv');
-        var btnEl = $window.document.querySelector('#posdemobtn');
-
-        var offsetParent = $fuguPosition.offsetParent(divEl);
-        $scope.elemVals.offsetParent = 'type: ' + offsetParent.tagName + ', id: ' + offsetParent.id;
-
-        var scrollParent = $fuguPosition.scrollParent(divEl);
-        $scope.elemVals.scrollParent = 'type: ' + scrollParent.tagName + ', id: ' + scrollParent.id;
-
-        $scope.scrollbarWidth = $fuguPosition.scrollbarWidth();
-
-        $scope.elemVals.position = $fuguPosition.position(divEl);
-
-        $scope.elemVals.offset = $fuguPosition.offset(divEl);
-
-        $scope.elemVals.viewportOffset = $fuguPosition.viewportOffset(divEl);
-
-        $scope.elemVals.positionElements = $fuguPosition.positionElements(btnEl, divEl, 'auto bottom-left');
-    };
-}]);</script>
+</script></div>

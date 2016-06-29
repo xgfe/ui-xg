@@ -1,5 +1,5 @@
 <h1>notify</h1><h2>Description</h2><p> 消息通知组件.全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示、是否允许提示html信息、是否显示关闭按钮、提示信息是否在一行显示、是否显示动画效果等. </p>
-<h2>Usage</h2><pre><code>&lt;<span class="hljs-keyword">div</span> fugu-notify
+<h2>Usage</h2><pre><code>&lt;<span class="hljs-keyword">div</span> uix-notify
     [ <span class="hljs-keyword">reference</span>=<span class="hljs-string">"number"</span> ]
     [ inline=<span class="hljs-string">"boolean"</span> ]
     [ limitMessages=<span class="hljs-string">"boolean"</span> ]
@@ -8,7 +8,7 @@
 <li>inline: 指定插入指令所添加的提示信息是否在一行显示.</li>
 <li>limitMessages: 指定一个指令可以显示多少条提示信息,默认不限制.</li>
 </ul><h2>Restrict</h2><ul><li>&#39;A&#39;</li>
-</ul><h2>Provider</h2><ul><li>notifyProvider: 全局配置notify相关的设置.</li>
+</ul><h2>Provider</h2><ul><li>$uixNotifyProvider: 全局配置notify相关的设置.</li>
 <li>methods<ul><li><code>globalTimeToLive(number|object)</code>: 设置通知显示时间,默认为-1表示一直显示.number表示设置显示时间(毫秒),则所有类型统一设置;object格式为<code>{error:number,info:number,warning:number,success:number}</code>,也可以只设置某几个属性.</li>
 <li><code>globalDisableCloseButton(boolean)</code>: 设置是否不显示关闭图标按钮,默认为false表示显示.</li>
 <li><code>globalDisableIcons(boolean)</code>: 设置是否不显示提示图标,默认为false表示显示.</li>
@@ -18,7 +18,7 @@
 <li><code>globalPosition</code>: 设置提示信息显示位置,取值有:<code>top-right|bottom-right|middle-right|top-left|bottom-left|middle-left|top-center|bottom-center|middle-center</code>默认为<code>top-right</code>表示显示在右上角.</li>
 <li><code>onlyUniqueMessages</code>: 设置提示信息是否不能重复显示,默认为true表示不重复.</li>
 </ul></li>
-</ul><h2>notify</h2><ul><li>inject: controller中注入</li>
+</ul><h2>$uixNotify</h2><ul><li>inject: controller中注入</li>
 <li><p>methods</p>
 <ul><li><code>warning(text, config)</code>: 显示警告通知,text为提示内容,config为当前显示通知配置项.</li>
 <li><code>error(text, config)</code>: 显示错误通知,text为提示内容,config为当前显示通知配置项.</li>
@@ -37,7 +37,73 @@
 <li><code>disableCountDown</code>: 设置是否不显示关闭倒计时图标提示,类型为boolean.</li>
 <li><code>referenceId</code>: 设置提示信息属于哪个插入指令,默认值都0.</li>
 </ul></li>
-</ul><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="notifyDemoCtrl">
+    <div uix-notify></div>
+    <div uix-notify reference="{{reference}}" inline="inline" limit-messages="limitMessages"></div>
+    <button type="button" class="btn btn-info" ng-click="addNotify('info')">Info</button>
+    <button type="button" class="btn btn-success" ng-click="addNotify('success')">Success</button>
+    <button type="button" class="btn btn-default" ng-click="addNotify()">All</button>
+    <button type="button" class="btn btn-danger" ng-click="notifyMethod()">notifyMethod</button>
+</div></div><script>angular.module('uixDemo').config(['$uixNotifyProvider', function ($uixNotifyProvider) {
+    $uixNotifyProvider.globalTimeToLive({'info': 5000, 'success': -1}); //设置info5秒后关闭,success则一直显示
+    $uixNotifyProvider.globalDisableCloseButton(true); //统一设置不显示关闭标签
+    $uixNotifyProvider.globalDisableIcons(true); //统一设置不显示提示图标标签
+    $uixNotifyProvider.globalReversedOrder(true); //统一设置消息翻转插入
+    $uixNotifyProvider.globalDisableCountDown(true); //统一设置不现实倒计时按钮
+    $uixNotifyProvider.globalInlineMessages(true); //统一设置整行显示
+    $uixNotifyProvider.globalPosition('bottom-center'); //统一设置位置在下面的中间
+    $uixNotifyProvider.onlyUniqueMessages(false); //统一设置通知可重复显示
+}]);
+
+angular.module('uixDemo').controller('notifyDemoCtrl', ['$scope', '$uixNotify', function ($scope, $uixNotify) {
+    $scope.reference = 1;  // 指定notify的referenceId
+    $scope.inline = true;  // 指定notify中消息整行显示
+    $scope.limitMessages = 2;   // 指定notify指令可显示多少条提示信息
+
+    $scope.notifies = [
+        {title: 'This is success info', type: 'info'},
+        {title: 'This is success error', type: 'error'},
+        {title: 'This is success success', type: 'success'},
+        {title: 'This is success warning', type: 'warning'}
+    ];
+    $scope.addNotify = function (type) {
+        var i;
+        var config = {};
+        switch (type) {
+            case 'info':
+                config.referenceId = 0;
+                for (i = 0; i < 5; i++) {
+                    $uixNotify.info('info － referenceId=0;inline=false;limit-Messages不设置');
+                }
+                break;
+            case 'success':
+                config.referenceId = 1;
+                for (i = 0; i < 5; i++) {
+                    $uixNotify.success('success - referenceId=3;inline=true;limit-Messages=2' + i, config);
+                }
+                break;
+            default :
+                $scope.notifies.forEach(function (val) {
+                    config = angular.copy(val);
+                    delete config.title;
+                    delete config.type;
+                    $uixNotify.general(val.title, config, val.type);
+                });
+                break;
+        }
+    };
+
+    $scope.notifyMethod = function () {
+        var config = {};
+        config.disableIcons = true;
+        config.disableCloseButton = true;
+        config.position = 'top-center';
+        config.disableCountDown = true;
+        config.referenceId = 0;
+        config.ttl = 5000;
+        $uixNotify.error('error - 不显示icon,不显示关闭按钮,位置在顶部中间,不显示倒计时图标,5秒后关闭', config);
+    }
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -50,8 +116,8 @@
     
     <div class="tab-pane active" id="index_html">
 <pre><code>&lt;div ng-controller=<span class="hljs-string">"notifyDemoCtrl"</span>&gt;
-    &lt;div fugu-notify&gt;&lt;/div&gt;
-    &lt;div fugu-notify reference=<span class="hljs-string">"<span>&#123;&#123;</span>reference&#125;&#125;"</span> inline=<span class="hljs-string">"inline"</span> limit-messages=<span class="hljs-string">"limitMessages"</span>&gt;&lt;/div&gt;
+    &lt;div uix-notify&gt;&lt;/div&gt;
+    &lt;div uix-notify reference=<span class="hljs-string">"<span>&#123;&#123;</span>reference&#125;&#125;"</span> inline=<span class="hljs-string">"inline"</span> limit-messages=<span class="hljs-string">"limitMessages"</span>&gt;&lt;/div&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-info"</span> ng-click=<span class="hljs-string">"addNotify('info')"</span>&gt;<span class="hljs-type">Info</span>&lt;/button&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-success"</span> ng-click=<span class="hljs-string">"addNotify('success')"</span>&gt;<span class="hljs-type">Success</span>&lt;/button&gt;
     &lt;button <span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"button"</span> <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"btn btn-default"</span> ng-click=<span class="hljs-string">"addNotify()"</span>&gt;<span class="hljs-type">All</span>&lt;/button&gt;
@@ -61,18 +127,18 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).config([<span class="hljs-string">'notifyProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(notifyProvider)</span> </span>{
-    notifyProvider.globalTimeToLive({<span class="hljs-string">'info'</span>: <span class="hljs-number">5000</span>, <span class="hljs-string">'success'</span>: <span class="hljs-number">-1</span>}); <span class="hljs-comment">//设置info5秒后关闭,success则一直显示</span>
-    notifyProvider.globalDisableCloseButton(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不显示关闭标签</span>
-    notifyProvider.globalDisableIcons(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不显示提示图标标签</span>
-    notifyProvider.globalReversedOrder(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置消息翻转插入</span>
-    notifyProvider.globalDisableCountDown(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不现实倒计时按钮</span>
-    notifyProvider.globalInlineMessages(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置整行显示</span>
-    notifyProvider.globalPosition(<span class="hljs-string">'bottom-center'</span>); <span class="hljs-comment">//统一设置位置在下面的中间</span>
-    notifyProvider.onlyUniqueMessages(<span class="hljs-keyword">false</span>); <span class="hljs-comment">//统一设置通知可重复显示</span>
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).config([<span class="hljs-string">'$uixNotifyProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($uixNotifyProvider)</span> </span>{
+    $uixNotifyProvider.globalTimeToLive({<span class="hljs-string">'info'</span>: <span class="hljs-number">5000</span>, <span class="hljs-string">'success'</span>: <span class="hljs-number">-1</span>}); <span class="hljs-comment">//设置info5秒后关闭,success则一直显示</span>
+    $uixNotifyProvider.globalDisableCloseButton(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不显示关闭标签</span>
+    $uixNotifyProvider.globalDisableIcons(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不显示提示图标标签</span>
+    $uixNotifyProvider.globalReversedOrder(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置消息翻转插入</span>
+    $uixNotifyProvider.globalDisableCountDown(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置不现实倒计时按钮</span>
+    $uixNotifyProvider.globalInlineMessages(<span class="hljs-keyword">true</span>); <span class="hljs-comment">//统一设置整行显示</span>
+    $uixNotifyProvider.globalPosition(<span class="hljs-string">'bottom-center'</span>); <span class="hljs-comment">//统一设置位置在下面的中间</span>
+    $uixNotifyProvider.onlyUniqueMessages(<span class="hljs-keyword">false</span>); <span class="hljs-comment">//统一设置通知可重复显示</span>
 }]);
 
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'notifyDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'notify'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, notify)</span> </span>{
+angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'notifyDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$uixNotify'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $uixNotify)</span> </span>{
     $scope.reference = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 指定notify的referenceId</span>
     $scope.inline = <span class="hljs-keyword">true</span>;  <span class="hljs-comment">// 指定notify中消息整行显示</span>
     $scope.limitMessages = <span class="hljs-number">2</span>;   <span class="hljs-comment">// 指定notify指令可显示多少条提示信息</span>
@@ -90,13 +156,13 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
             <span class="hljs-keyword">case</span> <span class="hljs-string">'info'</span>:
                 config.referenceId = <span class="hljs-number">0</span>;
                 <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
-                    notify.info(<span class="hljs-string">'info － referenceId=0;inline=false;limit-Messages不设置'</span>);
+                    $uixNotify.info(<span class="hljs-string">'info － referenceId=0;inline=false;limit-Messages不设置'</span>);
                 }
                 <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">case</span> <span class="hljs-string">'success'</span>:
                 config.referenceId = <span class="hljs-number">1</span>;
                 <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
-                    notify.success(<span class="hljs-string">'success - referenceId=3;inline=true;limit-Messages=2'</span> + i, config);
+                    $uixNotify.success(<span class="hljs-string">'success - referenceId=3;inline=true;limit-Messages=2'</span> + i, config);
                 }
                 <span class="hljs-keyword">break</span>;
             <span class="hljs-keyword">default</span> :
@@ -104,7 +170,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
                     config = angular.copy(val);
                     delete config.title;
                     delete config.type;
-                    notify.general(val.title, config, val.type);
+                    $uixNotify.general(val.title, config, val.type);
                 });
                 <span class="hljs-keyword">break</span>;
         }
@@ -118,7 +184,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
         config.disableCountDown = <span class="hljs-keyword">true</span>;
         config.referenceId = <span class="hljs-number">0</span>;
         config.ttl = <span class="hljs-number">5000</span>;
-        notify.error(<span class="hljs-string">'error - 不显示icon,不显示关闭按钮,位置在顶部中间,不显示倒计时图标,5秒后关闭'</span>, config);
+        $uixNotify.error(<span class="hljs-string">'error - 不显示icon,不显示关闭按钮,位置在顶部中间,不显示倒计时图标,5秒后关闭'</span>, config);
     }
 }]);</code></pre>
     </div>
@@ -138,70 +204,4 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
             $('#'+id).addClass('active');
         });
     });
-</script></div><div class="example"><div ng-controller="notifyDemoCtrl">
-    <div fugu-notify></div>
-    <div fugu-notify reference="{{reference}}" inline="inline" limit-messages="limitMessages"></div>
-    <button type="button" class="btn btn-info" ng-click="addNotify('info')">Info</button>
-    <button type="button" class="btn btn-success" ng-click="addNotify('success')">Success</button>
-    <button type="button" class="btn btn-default" ng-click="addNotify()">All</button>
-    <button type="button" class="btn btn-danger" ng-click="notifyMethod()">notifyMethod</button>
-</div></div><script>angular.module('fuguDemo').config(['notifyProvider', function (notifyProvider) {
-    notifyProvider.globalTimeToLive({'info': 5000, 'success': -1}); //设置info5秒后关闭,success则一直显示
-    notifyProvider.globalDisableCloseButton(true); //统一设置不显示关闭标签
-    notifyProvider.globalDisableIcons(true); //统一设置不显示提示图标标签
-    notifyProvider.globalReversedOrder(true); //统一设置消息翻转插入
-    notifyProvider.globalDisableCountDown(true); //统一设置不现实倒计时按钮
-    notifyProvider.globalInlineMessages(true); //统一设置整行显示
-    notifyProvider.globalPosition('bottom-center'); //统一设置位置在下面的中间
-    notifyProvider.onlyUniqueMessages(false); //统一设置通知可重复显示
-}]);
-
-angular.module('fuguDemo').controller('notifyDemoCtrl', ['$scope', 'notify', function ($scope, notify) {
-    $scope.reference = 1;  // 指定notify的referenceId
-    $scope.inline = true;  // 指定notify中消息整行显示
-    $scope.limitMessages = 2;   // 指定notify指令可显示多少条提示信息
-
-    $scope.notifies = [
-        {title: 'This is success info', type: 'info'},
-        {title: 'This is success error', type: 'error'},
-        {title: 'This is success success', type: 'success'},
-        {title: 'This is success warning', type: 'warning'}
-    ];
-    $scope.addNotify = function (type) {
-        var i;
-        var config = {};
-        switch (type) {
-            case 'info':
-                config.referenceId = 0;
-                for (i = 0; i < 5; i++) {
-                    notify.info('info － referenceId=0;inline=false;limit-Messages不设置');
-                }
-                break;
-            case 'success':
-                config.referenceId = 1;
-                for (i = 0; i < 5; i++) {
-                    notify.success('success - referenceId=3;inline=true;limit-Messages=2' + i, config);
-                }
-                break;
-            default :
-                $scope.notifies.forEach(function (val) {
-                    config = angular.copy(val);
-                    delete config.title;
-                    delete config.type;
-                    notify.general(val.title, config, val.type);
-                });
-                break;
-        }
-    };
-
-    $scope.notifyMethod = function () {
-        var config = {};
-        config.disableIcons = true;
-        config.disableCloseButton = true;
-        config.position = 'top-center';
-        config.disableCountDown = true;
-        config.referenceId = 0;
-        config.ttl = 5000;
-        notify.error('error - 不显示icon,不显示关闭按钮,位置在顶部中间,不显示倒计时图标,5秒后关闭', config);
-    }
-}]);</script>
+</script></div>

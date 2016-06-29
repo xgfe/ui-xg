@@ -1,10 +1,10 @@
-<h1>modal</h1><h2>Description</h2><p>modal组件,用于快捷地创建一个modal,没有实际的dom指令,通过调用$fgModal这个service来创建.<br>本组件参考的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的<a href="https://github.com/angular-ui/bootstrap/tree/0.12.1">v0.12.1</a>中<a href="https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js">modal</a>组件</p>
-<h2>Usage</h2><p>$fgModal是一个快速创建modal的service,$fgModal只有一个方法-open(options),用于创建一个动态的modal,下面是options可以配置的属性</p>
+<h1>modal</h1><h2>Description</h2><p>modal组件,用于快捷地创建一个modal,没有实际的dom指令,通过调用$uixModal这个service来创建.<br>本组件参考的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的<a href="https://github.com/angular-ui/bootstrap/tree/0.12.1">v0.12.1</a>中<a href="https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js">modal</a>组件</p>
+<h2>Usage</h2><p>$uixModal是一个快速创建modal的service,$uixModal只有一个方法-open(options),用于创建一个动态的modal,下面是options可以配置的属性</p>
 <ul><li><code>templateUrl</code>:modal内容的模板路径</li>
 <li><code>template</code>:modal内容模板</li>
 <li><code>size</code>:modal的大小,默认中等,其他和选值为<code>&quot;sm&quot;</code>,<code>&quot;lg&quot;</code></li>
 <li><code>scope</code>:一个作用域对象,会依据这个作用域创建一个新的应用于modal的作用域,默认是<code>$rootScope</code></li>
-<li><code>controller</code>:modal实例的controller,可以注入<code>$scope</code>,<code>$fgModalInstance</code>等依赖</li>
+<li><code>controller</code>:modal实例的controller,可以注入<code>$scope</code>,<code>$uixModalInstance</code>等依赖</li>
 <li><code>controllerAs</code>:一个可供选择的controller</li>
 <li><code>resolve</code>:可以被转化并且注入到controller中的本地对象</li>
 <li><code>backdrop</code>:是否显示蒙版,默认为<code>true</code>,可以设置为<code>false</code>或<code>static</code>,设置为<code>static</code>的话,点击modal窗口之外的区域不会关闭modal</li>
@@ -19,10 +19,105 @@
 </ul><p>在modal的controller中注入的<code>$scope</code>会有两个特殊的方法:</p>
 <ul><li><code>$close(result)</code>:同上述<code>close(result)</code>方法</li>
 <li><code>$dismiss(result)</code>:同上述<code>dismiss(result)</code>方法</li>
-</ul><p>注入的<code>$fgModalInstance</code>对象含有的方法和调用open方法之后返回的实例一样  </p>
+</ul><p>注入的<code>$uixModalInstance</code>对象含有的方法和调用open方法之后返回的实例一样  </p>
 <p>上述这些方法可以很方便得按照需要关闭modal并根据不同情况执行后续操作</p>
-<p>还有其他可用的service，比如<code>$fgModalStack</code>，用于关闭窗口，可以调用其<code>dismissAll(result)</code>方法关闭所有窗口</p>
-<hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+<p>还有其他可用的service，比如<code>$uixModalStack</code>，用于关闭窗口，可以调用其<code>dismissAll(result)</code>方法关闭所有窗口</p>
+<hr><h2>Example</h2><style>.bg-primary{
+    background-color: #7266ba;
+    color: #f4f3f9;
+}
+.m-b-md{
+    margin-bottom: 10px;
+}</style><div class="example"><div ng-controller="modalDemoCtrl">
+    <button class="btn btn-default" ng-click="open()">Open me!</button>
+    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
+    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+    <pre>{{items | json}}</pre>
+    <script type="text/ng-template" id="modalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+            <button type="button" ng-click="openAnother()" class="btn btn-primary btn-sm">Open another</button>
+        </div>
+        <div class="modal-body">
+            <ul class="list-group" uix-sortable="items">
+                <li class="list-group-item m-b-md" ng-repeat="item in items track by $index"
+                    ng-click="selected.item = item">
+                    <span ng-show="selected.item === item" class="badge bg-primary">&nbsp;</span>
+                    {{ item }}
+                </li>
+            </ul>
+            Selected: <b>{{ selected.item }}</b>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="anotherModal.html">
+        <div class="modal-body">{{modalBodyText}}</div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+        </div>
+    </script>
+</div></div><script>angular.module('uixDemo').controller('modalDemoCtrl',['$scope','$log','$uixModal', function ($scope,$log,$uixModal) {
+    $scope.items = ['item1', 'item2', 'item3'];
+
+    $scope.open = function (size) {
+
+        var modalInstance = $uixModal.open({
+            templateUrl: 'modalContent.html',
+            controller: 'modalInstanceCtrl',
+            size: size,
+            resolve: {
+                items: function () {
+                    return {
+                        items:$scope.items,
+                        selected:$scope.selected
+                    };
+                }
+            }
+        });
+
+        modalInstance.result.then(function (result) {
+            $scope.items = result.items;
+            $scope.selected = result.selected;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+}]);
+angular.module('uixDemo').controller('modalInstanceCtrl', ['$scope','$uixModalInstance','items','$uixModal',function ($scope, $uixModalInstance, items,$uixModal) {
+
+    $scope.items = angular.copy(items.items);
+    $scope.selected = {
+        item: items.selected
+    };
+
+    $scope.openAnother = function () {
+        $uixModal.open({
+            templateUrl: 'anotherModal.html',
+            size: 'sm',
+            controller: ['$scope',function ($scope) {
+                $scope.modalBodyText = "Hello!'I'm a another modal";
+                $scope.ok = function () {
+                    $scope.$close('close modal by $scope');
+                };
+            }]
+        });
+    };
+
+    $scope.ok = function () {
+        $uixModalInstance.close({
+            items:$scope.items,
+            selected:$scope.selected.item
+        });
+    };
+
+    $scope.cancel = function () {
+        $uixModalInstance.dismiss('cancel');
+    };
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -48,7 +143,7 @@
             <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"openAnother()"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-primary btn-sm"</span>&gt;</span>Open another<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"modal-body"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group"</span> <span class="hljs-attr">fugu-sortable</span>=<span class="hljs-string">"items"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group"</span> <span class="hljs-attr">uix-sortable</span>=<span class="hljs-string">"items"</span>&gt;</span>
                 <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group-item m-b-md"</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in items track by $index"</span>
                     <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"selected.item = item"</span>&gt;</span>
                     <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">ng-show</span>=<span class="hljs-string">"selected.item === item"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"badge bg-primary"</span>&gt;</span>&amp;nbsp;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
@@ -73,12 +168,12 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>,<span class="hljs-string">'$fgModal'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$log,$fgModal)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'modalDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>,<span class="hljs-string">'$uixModal'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$log,$uixModal)</span> </span>{
     $scope.items = [<span class="hljs-string">'item1'</span>, <span class="hljs-string">'item2'</span>, <span class="hljs-string">'item3'</span>];
 
     $scope.open = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(size)</span> </span>{
 
-        <span class="hljs-keyword">var</span> modalInstance = $fgModal.open({
+        <span class="hljs-keyword">var</span> modalInstance = $uixModal.open({
             templateUrl: <span class="hljs-string">'modalContent.html'</span>,
             controller: <span class="hljs-string">'modalInstanceCtrl'</span>,
             size: size,
@@ -100,7 +195,7 @@
         });
     };
 }]);
-angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'modalInstanceCtrl'</span>, [<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$fgModalInstance'</span>,<span class="hljs-string">'items'</span>,<span class="hljs-string">'$fgModal'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $fgModalInstance, items,$fgModal)</span> </span>{
+angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'modalInstanceCtrl'</span>, [<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$uixModalInstance'</span>,<span class="hljs-string">'items'</span>,<span class="hljs-string">'$uixModal'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $uixModalInstance, items,$uixModal)</span> </span>{
 
     $scope.items = angular.copy(items.items);
     $scope.selected = {
@@ -108,7 +203,7 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
     };
 
     $scope.openAnother = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        $fgModal.open({
+        $uixModal.open({
             templateUrl: <span class="hljs-string">'anotherModal.html'</span>,
             size: <span class="hljs-string">'sm'</span>,
             controller: [<span class="hljs-string">'$scope'</span>,<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
@@ -121,14 +216,14 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
     };
 
     $scope.ok = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        $fgModalInstance.close({
+        $uixModalInstance.close({
             items:$scope.items,
             selected:$scope.selected.item
         });
     };
 
     $scope.cancel = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        $fgModalInstance.dismiss(<span class="hljs-string">'cancel'</span>);
+        $uixModalInstance.dismiss(<span class="hljs-string">'cancel'</span>);
     };
 }]);</code></pre>
     </div>
@@ -158,99 +253,4 @@ angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span cla
             $('#'+id).addClass('active');
         });
     });
-</script></div><style>.bg-primary{
-    background-color: #7266ba;
-    color: #f4f3f9;
-}
-.m-b-md{
-    margin-bottom: 10px;
-}</style><div class="example"><div ng-controller="modalDemoCtrl">
-    <button class="btn btn-default" ng-click="open()">Open me!</button>
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-    <pre>{{items | json}}</pre>
-    <script type="text/ng-template" id="modalContent.html">
-        <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
-            <button type="button" ng-click="openAnother()" class="btn btn-primary btn-sm">Open another</button>
-        </div>
-        <div class="modal-body">
-            <ul class="list-group" fugu-sortable="items">
-                <li class="list-group-item m-b-md" ng-repeat="item in items track by $index"
-                    ng-click="selected.item = item">
-                    <span ng-show="selected.item === item" class="badge bg-primary">&nbsp;</span>
-                    {{ item }}
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
-    <script type="text/ng-template" id="anotherModal.html">
-        <div class="modal-body">{{modalBodyText}}</div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">确定</button>
-        </div>
-    </script>
-</div></div><script>angular.module('fuguDemo').controller('modalDemoCtrl',['$scope','$log','$fgModal', function ($scope,$log,$fgModal) {
-    $scope.items = ['item1', 'item2', 'item3'];
-
-    $scope.open = function (size) {
-
-        var modalInstance = $fgModal.open({
-            templateUrl: 'modalContent.html',
-            controller: 'modalInstanceCtrl',
-            size: size,
-            resolve: {
-                items: function () {
-                    return {
-                        items:$scope.items,
-                        selected:$scope.selected
-                    };
-                }
-            }
-        });
-
-        modalInstance.result.then(function (result) {
-            $scope.items = result.items;
-            $scope.selected = result.selected;
-        }, function () {
-            $log.info('Modal dismissed at: ' + new Date());
-        });
-    };
-}]);
-angular.module('fuguDemo').controller('modalInstanceCtrl', ['$scope','$fgModalInstance','items','$fgModal',function ($scope, $fgModalInstance, items,$fgModal) {
-
-    $scope.items = angular.copy(items.items);
-    $scope.selected = {
-        item: items.selected
-    };
-
-    $scope.openAnother = function () {
-        $fgModal.open({
-            templateUrl: 'anotherModal.html',
-            size: 'sm',
-            controller: ['$scope',function ($scope) {
-                $scope.modalBodyText = "Hello!'I'm a another modal";
-                $scope.ok = function () {
-                    $scope.$close('close modal by $scope');
-                };
-            }]
-        });
-    };
-
-    $scope.ok = function () {
-        $fgModalInstance.close({
-            items:$scope.items,
-            selected:$scope.selected.item
-        });
-    };
-
-    $scope.cancel = function () {
-        $fgModalInstance.dismiss('cancel');
-    };
-}]);</script>
+</script></div>

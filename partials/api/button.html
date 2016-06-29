@@ -1,5 +1,5 @@
 <h1>button</h1><h2>Description</h2><p>按钮组件,可以展示不同样式和功能作用的按钮。</p>
-<h2>Usage</h2><pre><code class="lang-javascript">&lt;fugu-button text=<span class="hljs-string">"string"</span>
+<h2>Usage</h2><pre><code class="lang-javascript">&lt;uix-button text=<span class="hljs-string">"string"</span>
     [ type=<span class="hljs-string">"string"</span> ]
     [ btnClass=<span class="hljs-string">"string"</span> ]
     [ size=<span class="hljs-string">"string"</span> ]
@@ -9,10 +9,74 @@
     [ icon=<span class="hljs-string">"boolean"</span> ]
     [ active=<span class="hljs-string">"boolean"</span> ]
     [ click=<span class="hljs-string">"function"</span> ] &gt;
-&lt;/fugu-button&gt;
+&lt;/uix-button&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>text(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>button</code></td><td>指定按钮显示文本,默认显示<code>button</code></td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>button</code></td><td>指定按钮样式,可取值<code>button</code>、<code>reset</code>、<code>submit</code>,默认为<code>button</code></td></tr><tr><td>btnClass(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮样式,可取值<code>danger</code>、<code>warning</code>、<code>default</code>、<code>success</code>、<code>info</code>、<code>primary</code>,默认显示<code>default</code></td></tr><tr><td>size(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮大小,可取值<code>x-small</code>、<code>small</code>、<code>default</code>、<code>large</code>,默认<code>default</code></td></tr><tr><td>block(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否全部填充父元素,默认为否</td></tr><tr><td>loading(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置是否显示按钮加载效果,默认不显示</td></tr><tr><td>disabled(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否不可用,默认可用</td></tr><tr><td>icon(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>设置按钮图标(参考bootstrap),默认不显示</td></tr><tr><td>active(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否为激活(选中)状态,默认为非激活状态</td></tr><tr><td>click(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>点击按钮时触发的事件</td></tr></table><hr><h2>Example</h2><div><ul class="nav nav-tabs" id="codeTabs">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>text(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>button</code></td><td>指定按钮显示文本,默认显示<code>button</code></td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>button</code></td><td>指定按钮样式,可取值<code>button</code>、<code>reset</code>、<code>submit</code>,默认为<code>button</code></td></tr><tr><td>btnClass(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮样式,可取值<code>danger</code>、<code>warning</code>、<code>default</code>、<code>success</code>、<code>info</code>、<code>primary</code>,默认显示<code>default</code></td></tr><tr><td>size(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮大小,可取值<code>x-small</code>、<code>small</code>、<code>default</code>、<code>large</code>,默认<code>default</code></td></tr><tr><td>block(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否全部填充父元素,默认为否</td></tr><tr><td>loading(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置是否显示按钮加载效果,默认不显示</td></tr><tr><td>disabled(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否不可用,默认可用</td></tr><tr><td>icon(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>设置按钮图标(参考bootstrap),默认不显示</td></tr><tr><td>active(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮是否为激活(选中)状态,默认为非激活状态</td></tr><tr><td>click(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>点击按钮时触发的事件</td></tr></table><hr><h2>Example</h2><style>.buttonDemo p{
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.74);
+}</style><div class="example"><div ng-controller="buttonDemoCtrl" class="buttonDemo">
+    <p>不设置任何参数</p>
+    <uix-button></uix-button>
+    <p>text设置按钮显示文本,默认为Button</p>
+    <uix-button text="text"></uix-button>
+    <p>type设置按钮类型:button(按钮)、submit(提交)、reset(重置)。区别:form 表单中,submit会自动提交;reset重置表单内容.默认为button</p>
+    <form ng-submit="submitFn();">
+        <input ng-model="formContent">:{{clickText}}
+        <uix-button ng-repeat="type in typeArr" type="type" text="type"></uix-button>
+    </form>
+    <p>btnClass设置按钮样式:danger | warning | default | success | info ｜ primary | link,默认为default</p>
+    <uix-button ng-repeat="c in classArr" text="c" btnClass="c"></uix-button>
+    <p>size设置按钮大小:x-small | small | default | large,默认为default</p>
+    <uix-button ng-repeat="s in sizeArr" text="s" btnClass="s"></uix-button>
+    <uix-button btnClass="'success'" text="'传递字串设置size'" size="'x-small'"></uix-button>
+    <p>block设置按钮是否全部平铺父元素:true|false,默认为false</p>
+    <uix-button block="block" text="'block'"></uix-button>
+    <p>active设置按钮是否选中状态:true|false,默认为false</p>
+    <uix-button active="activeTrue" text="'active'"></uix-button>
+    <uix-button active="activeFalse" text="'noActive'"></uix-button>
+    <p>disabled设置按钮是否不可用:true|false,默认为false</p>
+    <uix-button disabled="disabledTrue" text="'disabled'"></uix-button>
+    <uix-button disabled="disabledFalse" text="'noDisabled'"></uix-button>
+    <p>loading设置按钮显示加载效果:true|false,默认为false，设置为加载状态，则默认不可用</p>
+    <uix-button loading="loadingTrue" text="'loading'"></uix-button>
+    <uix-button loading="loadingFalse" text="'noLoading'"></uix-button>
+    <p>click事件</p>
+    <uix-button text="'click事件'" click="clickFn()"></uix-button>
+    <uix-button loading="loading" text="'被控制loading效果'"></uix-button>
+    <p>icon设置按钮图标，默认无</p>
+    <uix-button icon="icon" text="'add'" size="'x-small'"></uix-button>
+</div></div><script>angular.module('uixDemo').controller('buttonDemoCtrl',['$scope', function ($scope) {
+    $scope.text = '设置text';
+    $scope.typeArr = ['button', 'reset', 'submit'];
+    $scope.btnClass = 'primary';
+    $scope.formContent = '表单内容';
+    $scope.submit = "Submit";
+    $scope.reset = "Reset";
+    $scope.block = true;
+    $scope.clickText = "";
+
+    $scope.activeTrue = true;
+    $scope.activeFalse = false;
+
+    $scope.disabledTrue = true;
+    $scope.disabledFalse = false;
+
+    $scope.loadingTrue = true;
+    $scope.loadingFalse = false;
+
+    $scope.icon = 'plus';
+
+    $scope.loading = false;
+    $scope.clickFn = function(){
+        $scope.loading = !$scope.loading;
+    };
+    $scope.submitFn = function(){
+        $scope.clickText = 'submit function';
+    };
+    $scope.classArr = ['danger', 'warning' , 'default' , 'success' , 'info' , 'primary', 'link'];
+    $scope.sizeArr = ['x-small', 'small' , 'large'];
+}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -28,41 +92,41 @@
     <div class="tab-pane active" id="index_html">
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"buttonDemoCtrl"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"buttonDemo"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>不设置任何参数<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>text设置按钮显示文本,默认为Button<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"text"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"text"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>type设置按钮类型:button(按钮)、submit(提交)、reset(重置)。区别:form 表单中,submit会自动提交;reset重置表单内容.默认为button<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">ng-submit</span>=<span class="hljs-string">"submitFn();"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"formContent"</span>&gt;</span>:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>clickText&#125;&#125;</span><span class="xml">
-        <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"type in typeArr"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"type"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"type in typeArr"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"type"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>btnClass设置按钮样式:danger | warning | default | success | info ｜ primary | link,默认为default<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"c in classArr"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"c"</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"c"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"c in classArr"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"c"</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"c"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>size设置按钮大小:x-small | small | default | large,默认为default<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"s in sizeArr"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"s"</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"s"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"'success'"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'传递字串设置size'"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"'x-small'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"s in sizeArr"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"s"</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"s"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">btnClass</span>=<span class="hljs-string">"'success'"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'传递字串设置size'"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"'x-small'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>block设置按钮是否全部平铺父元素:true|false,默认为false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">block</span>=<span class="hljs-string">"block"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'block'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">block</span>=<span class="hljs-string">"block"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'block'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>active设置按钮是否选中状态:true|false,默认为false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">active</span>=<span class="hljs-string">"activeTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'active'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">active</span>=<span class="hljs-string">"activeFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noActive'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">active</span>=<span class="hljs-string">"activeTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'active'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">active</span>=<span class="hljs-string">"activeFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noActive'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>disabled设置按钮是否不可用:true|false,默认为false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"disabledTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'disabled'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"disabledFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noDisabled'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"disabledTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'disabled'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"disabledFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noDisabled'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>loading设置按钮显示加载效果:true|false,默认为false，设置为加载状态，则默认不可用<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loadingTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'loading'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loadingFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noLoading'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loadingTrue"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'loading'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loadingFalse"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'noLoading'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>click事件<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'click事件'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"clickFn()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loading"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'被控制loading效果'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'click事件'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"clickFn()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">loading</span>=<span class="hljs-string">"loading"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'被控制loading效果'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>icon设置按钮图标，默认无<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">fugu-button</span> <span class="hljs-attr">icon</span>=<span class="hljs-string">"icon"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'add'"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"'x-small'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">fugu-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">icon</span>=<span class="hljs-string">"icon"</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'add'"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"'x-small'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'fuguDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.text = <span class="hljs-string">'设置text'</span>;
     $scope.typeArr = [<span class="hljs-string">'button'</span>, <span class="hljs-string">'reset'</span>, <span class="hljs-string">'submit'</span>];
     $scope.btnClass = <span class="hljs-string">'primary'</span>;
@@ -117,68 +181,4 @@
             $('#'+id).addClass('active');
         });
     });
-</script></div><style>.buttonDemo p{
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.74);
-}</style><div class="example"><div ng-controller="buttonDemoCtrl" class="buttonDemo">
-    <p>不设置任何参数</p>
-    <fugu-button></fugu-button>
-    <p>text设置按钮显示文本,默认为Button</p>
-    <fugu-button text="text"></fugu-button>
-    <p>type设置按钮类型:button(按钮)、submit(提交)、reset(重置)。区别:form 表单中,submit会自动提交;reset重置表单内容.默认为button</p>
-    <form ng-submit="submitFn();">
-        <input ng-model="formContent">:{{clickText}}
-        <fugu-button ng-repeat="type in typeArr" type="type" text="type"></fugu-button>
-    </form>
-    <p>btnClass设置按钮样式:danger | warning | default | success | info ｜ primary | link,默认为default</p>
-    <fugu-button ng-repeat="c in classArr" text="c" btnClass="c"></fugu-button>
-    <p>size设置按钮大小:x-small | small | default | large,默认为default</p>
-    <fugu-button ng-repeat="s in sizeArr" text="s" btnClass="s"></fugu-button>
-    <fugu-button btnClass="'success'" text="'传递字串设置size'" size="'x-small'"></fugu-button>
-    <p>block设置按钮是否全部平铺父元素:true|false,默认为false</p>
-    <fugu-button block="block" text="'block'"></fugu-button>
-    <p>active设置按钮是否选中状态:true|false,默认为false</p>
-    <fugu-button active="activeTrue" text="'active'"></fugu-button>
-    <fugu-button active="activeFalse" text="'noActive'"></fugu-button>
-    <p>disabled设置按钮是否不可用:true|false,默认为false</p>
-    <fugu-button disabled="disabledTrue" text="'disabled'"></fugu-button>
-    <fugu-button disabled="disabledFalse" text="'noDisabled'"></fugu-button>
-    <p>loading设置按钮显示加载效果:true|false,默认为false，设置为加载状态，则默认不可用</p>
-    <fugu-button loading="loadingTrue" text="'loading'"></fugu-button>
-    <fugu-button loading="loadingFalse" text="'noLoading'"></fugu-button>
-    <p>click事件</p>
-    <fugu-button text="'click事件'" click="clickFn()"></fugu-button>
-    <fugu-button loading="loading" text="'被控制loading效果'"></fugu-button>
-    <p>icon设置按钮图标，默认无</p>
-    <fugu-button icon="icon" text="'add'" size="'x-small'"></fugu-button>
-</div></div><script>angular.module('fuguDemo').controller('buttonDemoCtrl',['$scope', function ($scope) {
-    $scope.text = '设置text';
-    $scope.typeArr = ['button', 'reset', 'submit'];
-    $scope.btnClass = 'primary';
-    $scope.formContent = '表单内容';
-    $scope.submit = "Submit";
-    $scope.reset = "Reset";
-    $scope.block = true;
-    $scope.clickText = "";
-
-    $scope.activeTrue = true;
-    $scope.activeFalse = false;
-
-    $scope.disabledTrue = true;
-    $scope.disabledFalse = false;
-
-    $scope.loadingTrue = true;
-    $scope.loadingFalse = false;
-
-    $scope.icon = 'plus';
-
-    $scope.loading = false;
-    $scope.clickFn = function(){
-        $scope.loading = !$scope.loading;
-    };
-    $scope.submitFn = function(){
-        $scope.clickText = 'submit function';
-    };
-    $scope.classArr = ['danger', 'warning' , 'default' , 'success' , 'info' , 'primary', 'link'];
-    $scope.sizeArr = ['x-small', 'small' , 'large'];
-}]);</script>
+</script></div>
