@@ -1,21 +1,57 @@
 <div ng-controller="dropdownDemoCtrl">
-    <fugu-dropdown cols-num="1">
-        <button fugu-dropdown-toggle type="button" class="btn btn-lg btn-primary">
-            {{currentUser.name}}&nbsp;<span class="caret"></span>
+    <!-- Simple dropdown -->
+    <span class="dropdown" fugu-dropdown on-toggle="toggled(open)">
+      <a href class="dropdown-toggle" fugu-dropdown-toggle>
+          Click me for a dropdown, yo!
+      </a>
+      <ul class="dropdown-menu">
+          <li ng-repeat="choice in items">
+              <a href>{{choice}}</a>
+          </li>
+      </ul>
+    </span>
+    <!-- Single button -->
+    <div class="btn-group" fugu-dropdown is-open="status.isopen">
+        <button type="button" class="btn btn-primary dropdown-toggle" fugu-dropdown-toggle ng-disabled="disabled">
+            Button dropdown <span class="caret"></span>
         </button>
-        <fugu-dropdown-choices ng-repeat="item in list" title="{{item.name}}" ng-click="selectItem(item)">{{item.name}}</fugu-dropdown-choices>
-    </fugu-dropdown>
-    <fugu-dropdown is-open="status.isOpen">
-        <button fugu-dropdown-toggle type="button" ng-disabled="status.isDisabled" class="btn btn-sm btn-primary">
-            {{currentUser.name}}&nbsp;<span class="caret"></span>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <!-- multi cols button -->
+    <div class="btn-group" fugu-dropdown>
+        <button type="button" class="btn btn-primary dropdown-toggle" fugu-dropdown-toggle>
+            Multi cols dropdown <span class="caret"></span>
         </button>
-        <fugu-dropdown-choices title="第一个">第一个</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第二项">第二项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第三项">第三项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第四项">第四项</fugu-dropdown-choices>
-        <fugu-dropdown-choices title="第五项">第五项</fugu-dropdown-choices>
-    </fugu-dropdown>
-    isOpen:{{status.isOpen}}<input type="checkbox" ng-model="status.isOpen"/>
-    isDisabled:{{status.isDisabled}}<input type="checkbox" ng-model="status.isDisabled"/>
-    <button type="button" class="btn btn-default" ng-click="doClick($event)">点击</button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <!-- Split button -->
+    <div class="btn-group" fugu-dropdown>
+        <button type="button" class="btn btn-danger">Action</button>
+        <button type="button" class="btn btn-danger dropdown-toggle" fugu-dropdown-toggle>
+            <span class="caret"></span>
+            <span class="sr-only">Split button!</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>
+    <hr />
+    <p>
+        <button type="button" class="btn btn-default btn-sm" ng-click="toggleDropdown($event)">Toggle button dropdown</button>
+        <button type="button" class="btn btn-warning btn-sm" ng-click="disabled = !disabled">Enable/Disable</button>
+    </p>
 </div>

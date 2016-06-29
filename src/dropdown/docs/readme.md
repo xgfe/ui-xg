@@ -5,16 +5,18 @@
 ## Usage
 
 ```
-<fugu-dropdown
-    [ is-open="boolean" ]
-    [ cols-num="number" ]>
-        <button fugu-dropdown-toggle type="button" class="btn">Text</button>
-        <fugu-dropdown-choices>{{string}}</fugu-dropdown-choices>
-    ...
-</fugu-dropdown>
+<div class="btn-group" fugu-dropdown is-open="status.isopen">
+    <button type="button" fugu-dropdown-toggle ng-disabled="disabled">
+        Button dropdown
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Something else here</a></li>
+        <li><a href="#">Separated link</a></li>
+    </ul>
+</div>
 ```
 ## Restrict
-- 'E'
+- 'AE'
 
 ## Provider
 - fuguDropdownProvider：全局配置dropdown相关的设置
@@ -29,3 +31,5 @@
 - colsNum:设置列数,属性的配置会覆盖全局provider的配置,全局的配置会覆盖默认的配置
     - type:`number`
     - default:`3`
+- onToggle:打开关闭的时候的回调函数,含有一个布尔值的参数,表示是否是打开的状态
+    - type:`function`
