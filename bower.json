@@ -20,7 +20,9 @@
     "bower_components",
     "lib",
     "test",
-    "tests"
+    "tests",
+    "src",
+    "misc"
   ],
   "dependencies": {
     "angular": ">=1.2.20 <1.4.0",
