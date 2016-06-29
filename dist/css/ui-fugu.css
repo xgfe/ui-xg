@@ -1,3 +1,4 @@
+
 .fugu-alert {
   word-wrap: break-word; }
   .fugu-alert .alert-icon {
@@ -9,7 +10,6 @@
     font-size: 20px; }
   .fugu-alert .show-icon {
     padding-left: 20px; }
-
 
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
@@ -88,6 +88,20 @@
 .btn-addon.btn-xs i.pull-right {
   margin-right: -6px;
   margin-left: 6px; }
+
+.fugu-datepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-datepicker button:focus {
+    outline: 0; }
+  .fugu-datepicker .fugu-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
+.fugu-datepicker ~ .fugu-datepicker-popover.in {
+  display: block; }
+  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
+    border: 0; }
 
 .fugu-calendar {
   display: inline-block;
@@ -235,52 +249,6 @@
     color: #fff; }
     .fugu-calendar .fugu-cal-month-select:hover {
       background: #3498db; }
-
-.fugu-datepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-datepicker button:focus {
-    outline: 0; }
-  .fugu-datepicker .fugu-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.fugu-datepicker ~ .fugu-datepicker-popover.in {
-  display: block; }
-  .fugu-datepicker ~ .fugu-datepicker-popover.in .fugu-calendar {
-    border: 0; }
-
-.fugu-dropdown {
-  position: relative;
-  display: inline-block; }
-  .fugu-dropdown button:focus,
-  .fugu-dropdown button:active {
-    outline: none; }
-  .fugu-dropdown > .fugu-dropdown-menu > li {
-    border-right: 1px solid #eaeff0;
-    padding-right: 10px;
-    padding-left: 10px;
-    max-width: 160px; }
-  .fugu-dropdown > .fugu-dropdown-menu > li > a {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    padding: 3px 0; }
-    .fugu-dropdown > .fugu-dropdown-menu > li > a:hover {
-      background: #ddd; }
-
-.fugu-dropdown-multi .fugu-dropdown-menu > li {
-  float: left; }
-
-.fugu-dropdown.open .fugu-dropdown-menu {
-  display: block; }
-
-@media screen and (max-width: 767px) {
-  .fugu-dropdown-multi > .fugu-dropdown-menu {
-    width: 250px !important; }
-    .fugu-dropdown-multi > .fugu-dropdown-menu li {
-      width: 50% !important; }
-  .fugu-dropdown.open {
-    width: 100%; } }
 
 /*
  *  fugu-notify-container styles
@@ -530,6 +498,31 @@ body > .fugu-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
+.dropdown-multi > .dropdown-menu > li {
+  float: left; }
+
+.dropdown-multi > .dropdown-menu > li:not(.divider) {
+  border-right: 1px solid #eaeff0;
+  padding-right: 10px;
+  padding-left: 10px;
+  max-width: 160px; }
+
+.dropdown-multi > .dropdown-menu > li > a {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 0; }
+
+.dropdown.open .dropdown-menu {
+  display: block; }
+
+@media screen and (max-width: 767px) {
+  .dropdown-multi > .dropdown-menu {
+    width: 250px !important; }
+    .dropdown-multi > .dropdown-menu li:not(.divider) {
+      width: 50% !important; }
+  .dropdown.open {
+    width: 100%; } }
+
 .fugu-switch {
   cursor: pointer;
   position: relative;
@@ -618,17 +611,6 @@ body > .fugu-select.open {
   .fugu-switch-lg i:after {
     width: 28px; }
 
-.fugu-timepicker {
-  position: relative;
-  display: inline-block; }
-  .fugu-timepicker button {
-    outline: none; }
-
-.fugu-timepicker-popover.in {
-  display: block; }
-  .fugu-timepicker-popover.in .fugu-timepanel {
-    border: 0; }
-
 .fugu-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -678,3 +660,14 @@ body > .fugu-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.fugu-timepicker {
+  position: relative;
+  display: inline-block; }
+  .fugu-timepicker button {
+    outline: none; }
+
+.fugu-timepicker-popover.in {
+  display: block; }
+  .fugu-timepicker-popover.in .fugu-timepanel {
+    border: 0; }

@@ -1,22 +1,24 @@
 angular.module('fuguDemo').config(['fuguDropdownProvider', function (fuguDropdownProvider) {
     fuguDropdownProvider.setColsNum(3);
 }]);
-angular.module('fuguDemo').controller('dropdownDemoCtrl',['$scope', function ($scope) {
-    $scope.list = [
-        {id:1,name:'Jerry'},
-        {id:2,name:'Test'},
-        {id:3,name:'multidropdownmultidropdown'},
-        {id:4,name:'meituan'}];
+angular.module('fuguDemo').controller('dropdownDemoCtrl', ['$scope', '$log', function ($scope, $log) {
+    $scope.items = [
+        'The first choice!',
+        'And another choice for you.',
+        'but wait! A third!'
+    ];
+
     $scope.status = {
-        isOpen:true,
-        isDisabled:true
+        isopen: false
     };
-    $scope.doClick = function (evt) {
-        evt.stopPropagation();
-        $scope.status.isOpen = !$scope.status.isOpen
+
+    $scope.toggled = function (open) {
+        $log.log('Dropdown is now: ', open);
     };
-    $scope.currentUser = {id:1,name:'Jerry'};
-    $scope.selectItem = function (item) {
-        $scope.currentUser = item;
-    }
+
+    $scope.toggleDropdown = function ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.status.isopen = !$scope.status.isopen;
+    };
 }]);

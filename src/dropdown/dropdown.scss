@@ -1,42 +1,33 @@
-.fugu-dropdown{
-    position: relative;
-    display: inline-block;
-    button:focus,
-    button:active{
-        outline: none;
+.dropdown-multi{
+    & > .dropdown-menu > li{
+        float: left;
     }
-    & > .fugu-dropdown-menu > li{
+    & > .dropdown-menu > li:not(.divider){
         border-right: 1px solid #eaeff0;
         padding-right: 10px;
         padding-left: 10px;
         max-width: 160px;
     }
-    & > .fugu-dropdown-menu > li > a{
+    & > .dropdown-menu > li > a{
         overflow-x: hidden;
         text-overflow: ellipsis;
         padding: 3px 0;
-        &:hover{
-            background: #ddd;
-        }
     }
 }
-.fugu-dropdown-multi .fugu-dropdown-menu > li{
-    float: left;
-}
-.fugu-dropdown.open .fugu-dropdown-menu{
+.dropdown.open .dropdown-menu{
     display: block;
 }
 //简单兼容移动端样式
 @media screen and (max-width: 767px) {
-    .fugu-dropdown-multi{
-        & > .fugu-dropdown-menu{
+    .dropdown-multi{
+        & > .dropdown-menu{
             width: 250px !important;
-            li{
+            li:not(.divider){
                 width: 50% !important;
             }
         }
     }
-    .fugu-dropdown.open{
+    .dropdown.open{
         width: 100%;
     }
 }
