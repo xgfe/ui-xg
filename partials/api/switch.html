@@ -29,12 +29,12 @@
     <p>trueValue and falseValue</p>
     <uix-switch ng-model="status" type="success" true-value="A" false-value="B"></uix-switch>
     <pre>status:{{status}}</pre>
-</div></div><script>angular.module('uixDemo').controller('switchDemoCtrl',['$scope', function ($scope) {
+</div></div><script>angular.module('uixDemo').controller('switchDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.open = false;
     $scope.checked = true;
     $scope.isDisabled = true;
     $scope.statusChange = function () {
-        console.log('changed');
+        $log.log('changed');
     };
     $scope.status = 'A';
     $scope.A = 'A';
@@ -77,12 +77,12 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'switchDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'switchDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
     $scope.open = <span class="hljs-keyword">false</span>;
     $scope.checked = <span class="hljs-keyword">true</span>;
     $scope.isDisabled = <span class="hljs-keyword">true</span>;
     $scope.statusChange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        console.log(<span class="hljs-string">'changed'</span>);
+        $log.log(<span class="hljs-string">'changed'</span>);
     };
     $scope.status = <span class="hljs-string">'A'</span>;
     $scope.A = <span class="hljs-string">'A'</span>;

@@ -1,4 +1,5 @@
-<h1>modal</h1><h2>Description</h2><p>modal组件,用于快捷地创建一个modal,没有实际的dom指令,通过调用$uixModal这个service来创建.<br>本组件参考的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的<a href="https://github.com/angular-ui/bootstrap/tree/0.12.1">v0.12.1</a>中<a href="https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js">modal</a>组件</p>
+<h1>modal</h1><h2>Description</h2><p>modal组件,用于快捷地创建一个modal,没有实际的dom指令,通过调用$uixModal这个service来创建.
+本组件参考的是<a href="https://github.com/angular-ui/bootstrap">ui-bootstrap</a>的<a href="https://github.com/angular-ui/bootstrap/tree/0.12.1">v0.12.1</a>中<a href="https://github.com/angular-ui/bootstrap/blob/0.12.1/src/modal/modal.js">modal</a>组件</p>
 <h2>Usage</h2><p>$uixModal是一个快速创建modal的service,$uixModal只有一个方法-open(options),用于创建一个动态的modal,下面是options可以配置的属性</p>
 <ul><li><code>templateUrl</code>:modal内容的模板路径</li>
 <li><code>template</code>:modal内容模板</li>
@@ -19,7 +20,7 @@
 </ul><p>在modal的controller中注入的<code>$scope</code>会有两个特殊的方法:</p>
 <ul><li><code>$close(result)</code>:同上述<code>close(result)</code>方法</li>
 <li><code>$dismiss(result)</code>:同上述<code>dismiss(result)</code>方法</li>
-</ul><p>注入的<code>$uixModalInstance</code>对象含有的方法和调用open方法之后返回的实例一样  </p>
+</ul><p>注入的<code>$uixModalInstance</code>对象含有的方法和调用open方法之后返回的实例一样</p>
 <p>上述这些方法可以很方便得按照需要关闭modal并根据不同情况执行后续操作</p>
 <p>还有其他可用的service，比如<code>$uixModalStack</code>，用于关闭窗口，可以调用其<code>dismissAll(result)</code>方法关闭所有窗口</p>
 <hr><h2>Example</h2><style>.bg-primary{

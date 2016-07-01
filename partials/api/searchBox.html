@@ -15,7 +15,7 @@
     <pre>Query:{{query}}</pre>
     <button class="btn btn-default" type="button" ng-click="toggleButton()">toggleButton</button>
     <button class="btn btn-primary" type="button" ng-click="query = ''">Clear</button>
-</div></div><script>angular.module('uixDemo').controller('searchBoxDemoCtrl',['$scope', function ($scope) {
+</div></div><script>angular.module('uixDemo').controller('searchBoxDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.showButton = false;
     $scope.text = 'search';
     $scope.query = 'text';
@@ -23,7 +23,7 @@
         $scope.showButton = !$scope.showButton;
     };
     $scope.doSearch = function () {
-        alert('searching: '+$scope.query);
+        $log.log('searching: ' + $scope.query);
     }
 }]);</script><div><ul class="nav nav-tabs" id="codeTabs">
     
@@ -50,7 +50,7 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'searchBoxDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'searchBoxDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
     $scope.showButton = <span class="hljs-keyword">false</span>;
     $scope.text = <span class="hljs-string">'search'</span>;
     $scope.query = <span class="hljs-string">'text'</span>;
@@ -58,7 +58,7 @@
         $scope.showButton = !$scope.showButton;
     };
     $scope.doSearch = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
-        alert(<span class="hljs-string">'searching: '</span>+$scope.query);
+        $log.log(<span class="hljs-string">'searching: '</span> + $scope.query);
     }
 }]);</code></pre>
     </div>
