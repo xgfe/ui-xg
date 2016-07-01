@@ -13,17 +13,17 @@ angular.module('ui.xg.sortable', [])
             scope: {
                 uixSortable:'='
             },
-            link: function (scope, element) {
+            link: function (scope, ele) {
                 var self = this;
                 if(scope.uixSortable){
                     scope.$watch('uixSortable.length', function() {
                         // Timeout to let ng-repeat modify the DOM
                         $timeout(function() {
-                            self.refresh();
+                            self.refresh(ele);
                         }, 0, false);
                     });
                 }
-                self.refresh = function () {
+                self.refresh = function (element) {
                     var children = element.children();
                     children.off('dragstart dragend');
                     element.off('dragenter dragover drop dragleave');
@@ -168,18 +168,18 @@ angular.module('ui.xg.sortable', [])
 
                 /**
                  * 获取placeholder元素
-                 * @param ele
+                 * @param el
                  * @returns {*}
                  */
-                function getPlaceholder(ele){
-                    var placeholder = ele.clone();
+                function getPlaceholder(el){
+                    var placeholder = el.clone();
                     placeholder.html('');
                     placeholder.css({
                         listStyle: 'none',
                         border: '1px dashed #CCC',
                         minHeight:'10px',
-                        height:ele[0].offsetHeight+'px',
-                        width:ele[0].offsetWidth+'px',
+                        height:el[0].offsetHeight+'px',
+                        width:el[0].offsetWidth+'px',
                         background:'transparent'
                     });
                     return placeholder;
