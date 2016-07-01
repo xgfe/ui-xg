@@ -88,20 +88,6 @@
   margin-right: -6px;
   margin-left: 6px; }
 
-.uix-datepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.uix-datepicker ~ .uix-datepicker-popover.in {
-  display: block; }
-  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
-    border: 0; }
-
 .uix-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -248,6 +234,20 @@
     color: #fff; }
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
+
+.uix-datepicker {
+  position: relative;
+  display: inline-block; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
+.uix-datepicker ~ .uix-datepicker-popover.in {
+  display: block; }
+  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
+    border: 0; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
