@@ -5815,7 +5815,8 @@ angular.module('ui.xg.sortable', [])
             return {
                 restrict: 'AE',
                 scope: {
-                    uixSortable: '='
+                    uixSortable: '=',
+                    onChange:'&'
                 },
                 link: function ($scope, ele) {
                     var self = this;
@@ -5941,7 +5942,10 @@ angular.module('ui.xg.sortable', [])
                                     // 改变数据,由angular进行DOM修改
                                     var dragObj = scope.uixSortable[dragIndex];
                                     scope.uixSortable.splice(dragIndex, 1);
-                                    scope.uixSortable.splice(placeholderIndex, 0, dragObj)
+                                    scope.uixSortable.splice(placeholderIndex, 0, dragObj);
+                                    if(scope.onChange && angular.isFunction(scope.onChange)){
+                                        scope.onChange();
+                                    }
                                 });
                                 placeholder.remove();
                                 element.removeClass("uix-sortable-dragover");
