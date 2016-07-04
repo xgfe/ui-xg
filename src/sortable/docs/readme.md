@@ -6,7 +6,8 @@
 ## Usage
 
 ``` html
-<ul uix-sortable="array">
+<ul uix-sortable="array"
+    [ on-change="function()" ]>
     <li ng-repeat="item in array track by $index">your html code here</li>
 </ul>
 ```
@@ -24,3 +25,5 @@
 
 - uixSortable:需要被排序的数组,建议和repeat的数组保持一致
     - type:`array`
+- onChange:排序之后的回调函数
+    - type:`function`

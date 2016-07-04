@@ -1,7 +1,7 @@
 <div ng-controller="sortableDemoCtrl">
     <div class="row">
         <div class="col-md-5">
-            <ul class="list-group" uix-sortable="mockList">
+            <ul class="list-group" uix-sortable="mockList" on-change="sorted()">
                 <li class="list-group-item m-b-md"
                     ng-repeat="item in mockList track by $index"
                     ng-class="{'bg-primary':item.id===1,'item-large':item.id===2}">
