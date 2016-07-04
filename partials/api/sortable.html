@@ -33,24 +33,44 @@
             <pre>{{mockList | json}}</pre>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group" uix-sortable="mockList2">
+                <li class="list-group-item m-b-md"
+                    ng-repeat="item in mockList2 track by $index"
+                    ng-class="{'bg-primary':item.id===1,'item-large':item.id===2}">
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-5">
+            <pre>{{mockList2 | json}}</pre>
+        </div>
+    </div>
 </div></div><script>angular.module('uixDemo').controller('sortableDemoCtrl',['$scope', function ($scope) {
     $scope.mockList = [{
-        name:'List Item -- 1',
-        id:1
+        name:'List Item1 -- 1',
+        id:11
     },{
-        name:'List Item -- 2',
-        id:2
+        name:'List Item1 -- 2',
+        id:12
     },{
-        name:'List Item -- 3',
-        id:3
+        name:'List Item1 -- 3',
+        id:13
     },{
-        name:'List Item -- 4',
-        id:4
+        name:'List Item1 -- 4',
+        id:14
+    }];
+    $scope.mockList2 = [{
+        name:'List Item2 -- 1',
+        id:21
+    },{
+        name:'List Item2 -- 2',
+        id:22
     }];
     $scope.addItem = function () {
         $scope.mockList.push({
-            name:'List Item -- '+($scope.mockList.length+1),
+            name:'new Item -- '+($scope.mockList.length+1),
             id:$scope.mockList.length+1
         });
     }
@@ -86,7 +106,20 @@
             <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable">{{mockList | json}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-5"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group"</span> <span class="hljs-attr">uix-sortable</span>=<span class="hljs-string">"mockList2"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-group-item m-b-md"</span>
+                    <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in mockList2 track by $index"</span>
+                    <span class="hljs-attr">ng-class</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{'bg-primary':item.id===1,'item-large':item.id===2}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.name}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-5"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span></span><span class="hljs-template-variable">{{mockList2 | json}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
@@ -94,21 +127,28 @@
     <div class="tab-pane " id="script_js">
 <pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'sortableDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">$scope</span>) </span>{
     $scope.mockList = [{
-        <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item -- 1'</span>,
-        <span class="hljs-attribute">id:</span><span class="hljs-string">1
+        <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item1 -- 1'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">11
     },{
-        name</span>:<span class="hljs-string">'List Item -- 2'</span>,
-        <span class="hljs-attribute">id:</span><span class="hljs-string">2
+        name</span>:<span class="hljs-string">'List Item1 -- 2'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">12
     },{
-        name</span>:<span class="hljs-string">'List Item -- 3'</span>,
-        <span class="hljs-attribute">id:</span><span class="hljs-string">3
+        name</span>:<span class="hljs-string">'List Item1 -- 3'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">13
     },{
-        name</span>:<span class="hljs-string">'List Item -- 4'</span>,
-        <span class="hljs-attribute">id:</span><span class="hljs-string">4
+        name</span>:<span class="hljs-string">'List Item1 -- 4'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">14
+    }];
+    $scope.mockList2</span> = [{
+        <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item2 -- 1'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">21
+    },{
+        name</span>:<span class="hljs-string">'List Item2 -- 2'</span>,
+        <span class="hljs-attribute">id:</span><span class="hljs-string">22
     }];
     $scope.addItem</span> = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
         $scope.mockList.push({
-            <span class="hljs-attribute">name</span>:<span class="hljs-string">'List Item -- '</span>+($scope.mockList.length+<span class="hljs-number">1</span>),
+            <span class="hljs-attribute">name</span>:<span class="hljs-string">'new Item -- '</span>+($scope.mockList.length+<span class="hljs-number">1</span>),
             <span class="hljs-attribute">id:</span><span class="hljs-string">$scope.mockList.length</span>+<span class="hljs-number">1</span>
         });
     }
