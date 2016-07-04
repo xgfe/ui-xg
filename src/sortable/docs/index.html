@@ -16,5 +16,18 @@
             <pre>{{mockList | json}}</pre>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-md-5">
+            <ul class="list-group" uix-sortable="mockList2">
+                <li class="list-group-item m-b-md"
+                    ng-repeat="item in mockList2 track by $index"
+                    ng-class="{'bg-primary':item.id===1,'item-large':item.id===2}">
+                    <span>{{item.name}}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-5">
+            <pre>{{mockList2 | json}}</pre>
+        </div>
+    </div>
 </div>
