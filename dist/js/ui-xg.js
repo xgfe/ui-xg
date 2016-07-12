@@ -3476,6 +3476,9 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
                                     // First things first: we don't show it anymore.
                                     ttScope.$evalAsync(function () {
+                                        if (!ttScope) {
+                                            return;
+                                        }
                                         ttScope.isOpen = false;
                                         assignIsOpen(false);
                                         // And now we remove it from the DOM. However, if we have animation, we

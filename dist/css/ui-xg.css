@@ -88,6 +88,20 @@
   margin-right: -6px;
   margin-left: 6px; }
 
+.uix-datepicker {
+  position: relative;
+  display: inline-block; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+
+.uix-datepicker ~ .uix-datepicker-popover.in {
+  display: block; }
+  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
+    border: 0; }
+
 .uix-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -234,20 +248,6 @@
     color: #fff; }
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
-
-.uix-datepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.uix-datepicker ~ .uix-datepicker-popover.in {
-  display: block; }
-  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
-    border: 0; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
@@ -610,6 +610,17 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
+.uix-timepicker {
+  position: relative;
+  display: inline-block; }
+  .uix-timepicker button {
+    outline: none; }
+
+.uix-timepicker-popover.in {
+  display: block; }
+  .uix-timepicker-popover.in .uix-timepanel {
+    border: 0; }
+
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -659,14 +670,3 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
-
-.uix-timepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-timepicker button {
-    outline: none; }
-
-.uix-timepicker-popover.in {
-  display: block; }
-  .uix-timepicker-popover.in .uix-timepanel {
-    border: 0; }
