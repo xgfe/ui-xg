@@ -1,5 +1,19 @@
 <div ng-controller="pagerDemoCtrl">
-    <uix-pager page-no="pages.pageNo" total-items="pages.totalCount" first-text="First" last-text="Last" page-changed="changePage"></uix-pager>
-    <br/>
-    <pre>currentPageNo is : {{pages.pageNo}}</pre>
+    <h4>default</h4>
+    <uix-pager total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></uix-pager>
+    <h4>text</h4>
+    <uix-pager total-items="totalItems" ng-model="currentPage" class="pagination-sm"
+               previous-text="Previous" next-text="Next" first-text="First" last-text="Last"></uix-pager>
+    <h4>directionLinks and boundaryLinks</h4>
+    <uix-pager direction-links="false" total-items="totalItems" ng-model="currentPage"></uix-pager>
+    <uix-pager boundary-links="false" total-items="totalItems" ng-model="currentPage"></uix-pager>
+    <pre>The selected page no: {{currentPage}}</pre>
+    <button class="btn btn-info" ng-click="setPage(3)">Set current page to: 3</button>
+    <hr>
+    <h4>Limit the maximum visible buttons</h4>
+    <uix-pager total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm"></uix-pager>
+    <uix-pager total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" rotate="false"></uix-pager>
+    <hr>
+    <h4>do not show total info</h4>
+    <uix-pager total-items="totalItems" ng-model="bigCurrentPage" show-total="false"></uix-pager>
 </div>
