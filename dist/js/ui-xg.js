@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-07-04
+ * Version: 1.1.0 - 2016-07-12
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
@@ -2918,164 +2918,195 @@ angular.module('ui.xg.notify', [])
         };
     }]);
 
-angular.module('ui.xg.pager',[])
-.constant('uixPagerConfig', {
-    itemsPerPage: 20, //默认每页数目为20
-    maxSize:5, //默认分页最大显示数目为5
-    firstText:'首页',
-    lastText:'尾页',
-    previousText:'上一页',
-    nextText:'下一页'
-})
-.controller('uixPagerCtrl',['$scope', function ($scope) {
+angular.module('ui.xg.pager', [])
+    .constant('uixPagerConfig', {
+        itemsPerPage: 20,
+        maxSize: 5,
+        showTotal: true,
+        boundaryLinks: true,
+        directionLinks: true,
+        firstText: '首页',
+        previousText: '上一页',
+        nextText: '下一页',
+        lastText: '尾页',
+        rotate: true
+    })
+    .controller('uixPagerCtrl', ['$scope', '$attrs', '$parse', function ($scope, $attrs, $parse) {
+        var self = this,
+            ngModelCtrl = {$setViewValue: angular.noop}; // nullModelCtrl
 
-    var pageOffset = 0,
-        initialized = false;
+        this.init = function (ngModelCtrl_, config) {
+            ngModelCtrl = ngModelCtrl_;
+            this.config = config;
 
-    this.init = function (uixPagerConfig) {
-        $scope.itemsPerPage = $scope.itemsPerPage || uixPagerConfig.itemsPerPage;
-        $scope.maxSize = $scope.maxSize || uixPagerConfig.maxSize;
-        $scope.getText = function (key){
-            return $scope[key + 'Text'] || uixPagerConfig[key + 'Text'];
+            ngModelCtrl.$render = function () {
+                self.render();
+            };
+
+            if ($attrs.itemsPerPage) {
+                $scope.$parent.$watch($parse($attrs.itemsPerPage), function (value) {
+                    self.itemsPerPage = parseInt(value, 10);
+                    $scope.totalPages = self.calculateTotalPages();
+                });
+            } else {
+                this.itemsPerPage = config.itemsPerPage;
+            }
+
+            // show total or not
+            if ($attrs.showTotal) {
+                $scope.$parent.$watch($parse($attrs.showTotal), function (value) {
+                    $scope.showTotal = !!value;
+                });
+            } else {
+                $scope.showTotal = config.showTotal;
+            }
         };
-    };
 
-    $scope.pages = [];
-    $scope.currentPage = 0;
-    $scope.totalPages = 1;
+        this.calculateTotalPages = function () {
+            var totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil($scope.totalItems / this.itemsPerPage);
+            return Math.max(totalPages || 0, 1);
+        };
 
-    $scope.$watch('pageNo', function (val) {
-        $scope.currentPage = val - 1;
-    });
-    $scope.$watch("totalItems", function (val) {
-        if($scope.currentPage === -1){
-            return;
-        }
-        $scope.totalPages = Math.ceil(val / $scope.itemsPerPage);
-        if ($scope.totalPages <= 0 || isNaN($scope.totalPages)) {
-            $scope.totalPages = 1;
-        }
-        if (initialized) {
-            if (pageOffset > $scope.totalPages) {
-                pageOffset = 0;
-                if ($scope.currentPage < pageOffset
-                    || $scope.currentPage >= pageOffset + $scope.pages.length) {
-                    $scope.currentPage = 0;
+        this.render = function () {
+            $scope.page = parseInt(ngModelCtrl.$viewValue, 10) || 1;
+        };
+
+        $scope.selectPage = function (page) {
+            if ($scope.page !== page && page > 0 && page <= $scope.totalPages) {
+                $scope.$emit('uixPager:pageChanged', page);
+                ngModelCtrl.$setViewValue(page);
+                ngModelCtrl.$render();
+            }
+        };
+
+        $scope.getText = function (key) {
+            return $scope[key + 'Text'] || self.config[key + 'Text'];
+        };
+        $scope.isFirst = function () {
+            return $scope.page === 1;
+        };
+        $scope.isLast = function () {
+            return $scope.page === $scope.totalPages;
+        };
+
+        $scope.$watch('totalItems', function () {
+            $scope.totalPages = self.calculateTotalPages();
+        });
+
+        $scope.$watch('totalPages', function (value) {
+            if ($scope.page > value) {
+                $scope.selectPage(value);
+            } else {
+                ngModelCtrl.$render();
+            }
+        });
+    }])
+    .directive('uixPager', ['$parse', 'uixPagerConfig', function ($parse, uixPagerConfig) {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/pager.html',
+            replace: true,
+            require: ['uixPager', '?ngModel'],
+            scope: {
+                pageNo: '=',
+                totalItems: '=',
+                firstText: '@',
+                previousText: '@',
+                nextText: '@',
+                lastText: '@'
+            },
+            controller: 'uixPagerCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+                if (!ngModelCtrl) {
+                    return; // do nothing if no ng-model
                 }
+
+                // Setup configuration parameters
+                var maxSize = angular.isDefined(attrs.maxSize) ? scope.$parent.$eval(attrs.maxSize) : uixPagerConfig.maxSize,
+                    rotate = angular.isDefined(attrs.rotate) ? scope.$parent.$eval(attrs.rotate) : uixPagerConfig.rotate;
+                scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : uixPagerConfig.boundaryLinks;
+                scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : uixPagerConfig.directionLinks;
+
+                paginationCtrl.init(ngModelCtrl, uixPagerConfig);
+
+                if (attrs.maxSize) {
+                    scope.$parent.$watch($parse(attrs.maxSize), function (value) {
+                        maxSize = parseInt(value, 10);
+                        paginationCtrl.render();
+                    });
+                }
+
+                // Create page object used in template
+                function makePage(number, text, isActive) {
+                    return {
+                        number: number,
+                        text: text,
+                        active: isActive
+                    };
+                }
+
+                function getPages(currentPage, totalPages) {
+                    var pages = [];
+
+                    // Default page limits
+                    var startPage = 1, endPage = totalPages;
+                    var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
+
+                    // recompute if maxSize
+                    if (isMaxSized) {
+                        if (rotate) {
+                            // Current page is displayed in the middle of the visible ones
+                            startPage = Math.max(currentPage - Math.floor(maxSize / 2), 1);
+                            endPage = startPage + maxSize - 1;
+
+                            // Adjust if limit is exceeded
+                            if (endPage > totalPages) {
+                                endPage = totalPages;
+                                startPage = endPage - maxSize + 1;
+                            }
+                        } else {
+                            // Visible pages are paginated with maxSize
+                            startPage = ((Math.ceil(currentPage / maxSize) - 1) * maxSize) + 1;
+
+                            // Adjust last page if limit is exceeded
+                            endPage = Math.min(startPage + maxSize - 1, totalPages);
+                        }
+                    }
+
+                    // Add page number links
+                    for (var number = startPage; number <= endPage; number++) {
+                        var page = makePage(number, number, number === currentPage);
+                        pages.push(page);
+                    }
+
+                    // Add links to move between page sets
+                    if (isMaxSized && !rotate) {
+                        if (startPage > 1) {
+                            var previousPageSet = makePage(startPage - 1, '...', false);
+                            pages.unshift(previousPageSet);
+                        }
+
+                        if (endPage < totalPages) {
+                            var nextPageSet = makePage(endPage + 1, '...', false);
+                            pages.push(nextPageSet);
+                        }
+                    }
+
+                    return pages;
+                }
+
+                var originalRender = paginationCtrl.render;
+                paginationCtrl.render = function () {
+                    originalRender();
+                    if (scope.page > 0 && scope.page <= scope.totalPages) {
+                        scope.pages = getPages(scope.page, scope.totalPages);
+                    }
+                };
             }
         }
-        resetPageList();
-        initialized = true;
-        if ($scope.pages[$scope.currentPage - pageOffset]) {
-            $scope.pages[$scope.currentPage - pageOffset].active = true;
-        }
-        $scope.selectPage($scope.currentPage);
-    });
-
-    function getOffset(page) {
-        var offset = Math.min(page - Math.floor($scope.maxSize / 2), $scope.totalPages - $scope.maxSize);
-        if (offset < 0 || isNaN(offset)) {
-            offset = 0;
-        }
-        return offset;
-    }
-
-    function resetPageList() {
-        $scope.pages = [];
-        var last = Math.min(pageOffset + $scope.maxSize, $scope.totalPages),i;
-        for (i = pageOffset; i < last; i++) {
-            $scope.pages.push({
-                text: i,
-                pageIndex: i,
-                active: false
-            });
-        }
-    }
-
-    $scope.isFirst = function () {
-        return $scope.currentPage <= 0;
-    };
-
-    $scope.isLast = function () {
-        return $scope.currentPage >= $scope.totalPages - 1;
-    };
-
-    $scope.selectPage = function (value) {
-        if (value >= $scope.totalPages || value < 0) {
-            return;
-        }
-        if ($scope.pages[$scope.currentPage - pageOffset]) {
-            $scope.pages[$scope.currentPage - pageOffset].active = false;
-        }
-        var offset = getOffset(value),oldPage = $scope.currentPage;
-        if (offset != pageOffset) {
-            pageOffset = offset;
-            resetPageList();
-        }
-        $scope.currentPage = value;
-        $scope.pageNo = value+1;
-        $scope.pages[$scope.currentPage - pageOffset].active = true;
-        $scope.$emit("pager:pageIndexChanged", $scope.pages[$scope.currentPage - pageOffset]);
-        var fn;
-        if(angular.isDefined($scope.pageChanged) && oldPage !== $scope.currentPage){
-            fn = $scope.pageChanged();
-            if(fn && typeof fn === 'function'){
-                fn($scope.currentPage+1);
-            }
-        }
-    };
-
-    $scope.first = function () {
-        if ($scope.isFirst()) {
-            return;
-        }
-        this.selectPage(0);
-    };
-
-    $scope.last = function () {
-        if ($scope.isLast()) {
-            return;
-        }
-        this.selectPage($scope.totalPages - 1);
-    };
-
-    $scope.previous = function () {
-        if ($scope.isFirst()) {
-            return;
-        }
-        this.selectPage($scope.currentPage - 1);
-    };
-
-    $scope.next = function () {
-        if ($scope.isLast()) {
-            return;
-        }
-        this.selectPage($scope.currentPage + 1);
-    };
-}])
-.directive('uixPager', ['uixPagerConfig', function (uixPagerConfig) {
-    return {
-        restrict: 'E',
-        templateUrl:'templates/pager.html',
-        replace:true,
-        require:'uixPager',
-        scope:{
-            itemsPerPage:'=?',
-            totalItems:'=',
-            pageNo:'=',
-            maxSize:'=?',
-            firstText:'@?',
-            lastText:'@?',
-            previousText:'@?',
-            nextText:'@?',
-            pageChanged:'&?'
-        },
-        controller:'uixPagerCtrl',
-        link: function (scope,el,attrs,uixPagerCtrl) {
-            uixPagerCtrl.init(uixPagerConfig);
-        }
-    }
-}]);
+    }]);
 /**
  * tooltip
  * 提示指令
@@ -6438,24 +6469,24 @@ angular.module("notify/templates/notify.html",[]).run(["$templateCache",function
 }]);
 angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/pager.html",
-    "<ul class=\"pagination pagination-sm m-t-none m-b-none\">"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"first()\">{{getText('first')}}</a>"+
+    "<ul class=\"pagination\">"+
+    "    <li ng-if=\"boundaryLinks\" ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:;\" ng-click=\"selectPage(1)\">{{getText('first')}}</a>"+
     "    </li>"+
-    "    <li ng-class=\"{disabled: isFirst()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"previous()\">{{getText('previous')}}</a>"+
+    "    <li ng-if=\"directionLinks\" ng-class=\"{disabled: isFirst()}\">"+
+    "        <a href=\"javascript:;\" ng-click=\"selectPage(page - 1)\">{{getText('previous')}}</a>"+
     "    </li>"+
     "    <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"selectPage(page.pageIndex)\">{{page.pageIndex + 1}}</a>"+
+    "        <a href=\"javascript:;\" ng-click=\"selectPage(page.number)\">{{page.text}}</a>"+
     "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"next()\">{{getText('next')}}</a>"+
+    "    <li ng-if=\"directionLinks\" ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:;\" ng-click=\"selectPage(page + 1)\">{{getText('next')}}</a>"+
     "    </li>"+
-    "    <li ng-class=\"{disabled: isLast()}\">"+
-    "        <a href=\"javascript:void(0)\" ng-click=\"last()\">{{getText('last')}}</a>"+
+    "    <li ng-if=\"boundaryLinks\" ng-class=\"{disabled: isLast()}\">"+
+    "        <a href=\"javascript:;\" ng-click=\"selectPage(totalPages)\">{{getText('last')}}</a>"+
     "    </li>"+
-    "    <li class=\"disabled\">"+
-    "        <a href=\"javascript:void(0)\">共{{totalPages}}页 / {{totalItems}}条</a>"+
+    "    <li ng-if=\"showTotal\" class=\"disabled\">"+
+    "        <a href=\"javascript:;\">共{{totalPages}}页/{{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
 }]);

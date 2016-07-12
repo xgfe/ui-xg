@@ -6,14 +6,16 @@
 
 ```
 <uix-pager total-items="number"
-    page-no="number"
-    [items-per-page="number"]
-    [max-size="number"]
-    [first-text="{{string}}"]
-    [last-text="{{string}}"]
-    [previous-text="{{string}}"]
-    [next-text="{{string}}"]
-    [page-changed="function"]>
+    ng-model="number"
+    [ items-per-page="number" ]
+    [ max-size="number" ]
+    [ first-text="{{string}}" ]
+    [ last-text="{{string}}" ]
+    [ previous-text="{{string}}" ]
+    [ next-text="{{string}}" ]
+    [ boundary-links="boolean" ]
+    [ direction-links="boolean" ]
+    [ show-total="boolean" ]>
     </uix-pager>
 ```
 ## Restrict
@@ -23,7 +25,7 @@
 
 - totalItems:条目总数
     - type:`number`
-- pageNo:当前页码
+- ngModel:当前页码,可以用`ng-change`监控变化
     - type:`number`
 - itemsPerPage(optional):每一页的数量
     - type:`number`
@@ -43,5 +45,12 @@
 - nextText(optional):下一页按钮文本
     - type:`string`
     - default:`"下一页"`
-- pageChanged(optional):切换页码的时候触发的函数
-    - type:`function`
+- boundaryLinks(optional):是否显示边界的按钮,默认是"首页"和"尾页"按钮
+    - type:`boolean`
+    - default:`true`
+- directionLinks(optional):是否显示方向的按钮,默认是"上一页"和"下一页"按钮
+    - type:`boolean`
+    - default:`true`
+- showTotal(optional):是否显示条目和页码总数
+    - type:`boolean`
+    - default:`true`
