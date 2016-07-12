@@ -104,7 +104,7 @@ angular.module('ui.xg.notify', [])
                 } else {
                     messages.push(message);
                 }
-                if (typeof message.onopen === 'function') {
+                if (angular.isFunction(message.onopen)) {
                     message.onopen();
                 }
                 if (message.ttl && message.ttl !== -1) {
@@ -122,7 +122,7 @@ angular.module('ui.xg.notify', [])
                     messages[index].close = true;
                     messages.splice(index, 1);
                 }
-                if (typeof message.onclose === 'function') {
+                if (angular.isFunction(message.onclose)) {
                     message.onclose();
                 }
             };
@@ -140,7 +140,7 @@ angular.module('ui.xg.notify', [])
             $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : $uixNotify.inlineMessages();
             $scope.$watch('limitMessages', function (limitMessages) {
                 var directive = notifyServices.directives[$scope.referenceId];
-                if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
+                if (angular.isDefined(limitMessages) && angular.isDefined(directive)) {
                     directive.limitMessages = limitMessages;
                 }
             });
@@ -199,7 +199,7 @@ angular.module('ui.xg.notify', [])
             _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false,
             _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
         this.globalTimeToLive = function (ttl) {
-            if (typeof ttl === 'object') {
+            if (angular.isObject(ttl)) {
                 for (var k in ttl) {
                     if (ttl.hasOwnProperty(k)) {
                         _ttl[k] = ttl[k];
@@ -301,7 +301,7 @@ angular.module('ui.xg.notify', [])
                 notifyServices.reverseOrder = _reverseOrder;
                 try {
                     translate = $filter('translate');
-                } catch (e) {
+                } catch (error) {
                     translate = null;
                 }
                 function broadcastMessage(message) {
@@ -327,7 +327,7 @@ angular.module('ui.xg.notify', [])
                         severity: severity,
                         ttl: _config.ttl || _ttl[severity],
                         variables: _config.variables || {},
-                        disableCloseButton:  angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
+                        disableCloseButton: angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
                         disableIcons: angular.isUndefined(_config.disableIcons) ? _disableIcons : _config.disableIcons,
                         disableCountDown: angular.isUndefined(_config.disableCountDown) ? _disableCountDown : _config.disableCountDown,
                         position: _config.position || _position,

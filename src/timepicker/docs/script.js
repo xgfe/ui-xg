@@ -11,5 +11,5 @@ angular.module('uixDemo').controller('timepickerDemoCtrl', ['$scope', '$log', fu
     $scope.maxTime = max;
     $scope.onChange = function () {
         $log.log('time changed:' + $scope.time);
-    }
+    };
 }]);

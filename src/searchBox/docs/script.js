@@ -7,5 +7,5 @@ angular.module('uixDemo').controller('searchBoxDemoCtrl', ['$scope', '$log', fun
     };
     $scope.doSearch = function () {
         $log.log('searching: ' + $scope.query);
-    }
+    };
 }]);

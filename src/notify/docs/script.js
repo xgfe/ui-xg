@@ -56,5 +56,5 @@ angular.module('uixDemo').controller('notifyDemoCtrl', ['$scope', '$uixNotify', 
         config.referenceId = 0;
         config.ttl = 5000;
         $uixNotify.error('error - 不显示icon,不显示关闭按钮,位置在顶部中间,不显示倒计时图标,5秒后关闭', config);
-    }
+    };
 }]);

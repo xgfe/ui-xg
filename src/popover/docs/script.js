@@ -1,4 +1,4 @@
-angular.module('uixDemo').controller('popoverDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('popoverDemoCtrl', ['$scope', function ($scope) {
     $scope.dynamicPopover = {
         content: 'Hello, World!',
         title: 'Title'

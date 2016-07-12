@@ -27,5 +27,5 @@ angular.module('uixDemo').controller('sortableDemoCtrl', ['$scope', '$log', func
             name: 'new Item -- ' + ($scope.mockList.length + 1),
             id: $scope.mockList.length + 1
         });
-    }
+    };
 }]);

@@ -26,110 +26,110 @@ angular.module('ui.xg.select', [])
             DELETE: 46,
             COMMAND: 91,
             MAP: {
-                91: "COMMAND",
-                8: "BACKSPACE",
-                9: "TAB",
-                13: "ENTER",
-                16: "SHIFT",
-                17: "CTRL",
-                18: "ALT",
-                19: "PAUSEBREAK",
-                20: "CAPSLOCK",
-                27: "ESC",
-                32: "SPACE",
-                33: "PAGE_UP",
-                34: "PAGE_DOWN",
-                35: "END",
-                36: "HOME",
-                37: "LEFT",
-                38: "UP",
-                39: "RIGHT",
-                40: "DOWN",
-                43: "+",
-                44: "PRINTSCREEN",
-                45: "INSERT",
-                46: "DELETE",
-                48: "0",
-                49: "1",
-                50: "2",
-                51: "3",
-                52: "4",
-                53: "5",
-                54: "6",
-                55: "7",
-                56: "8",
-                57: "9",
-                59: ";",
-                61: "=",
-                65: "A",
-                66: "B",
-                67: "C",
-                68: "D",
-                69: "E",
-                70: "F",
-                71: "G",
-                72: "H",
-                73: "I",
-                74: "J",
-                75: "K",
-                76: "L",
-                77: "M",
-                78: "N",
-                79: "O",
-                80: "P",
-                81: "Q",
-                82: "R",
-                83: "S",
-                84: "T",
-                85: "U",
-                86: "V",
-                87: "W",
-                88: "X",
-                89: "Y",
-                90: "Z",
-                96: "0",
-                97: "1",
-                98: "2",
-                99: "3",
-                100: "4",
-                101: "5",
-                102: "6",
-                103: "7",
-                104: "8",
-                105: "9",
-                106: "*",
-                107: "+",
-                109: "-",
-                110: ".",
-                111: "/",
-                112: "F1",
-                113: "F2",
-                114: "F3",
-                115: "F4",
-                116: "F5",
-                117: "F6",
-                118: "F7",
-                119: "F8",
-                120: "F9",
-                121: "F10",
-                122: "F11",
-                123: "F12",
-                144: "NUMLOCK",
-                145: "SCROLLLOCK",
-                186: ";",
-                187: "=",
-                188: ",",
-                189: "-",
-                190: ".",
-                191: "/",
-                192: "`",
-                219: "[",
-                220: "\\",
-                221: "]",
-                222: "'"
+                91: 'COMMAND',
+                8: 'BACKSPACE',
+                9: 'TAB',
+                13: 'ENTER',
+                16: 'SHIFT',
+                17: 'CTRL',
+                18: 'ALT',
+                19: 'PAUSEBREAK',
+                20: 'CAPSLOCK',
+                27: 'ESC',
+                32: 'SPACE',
+                33: 'PAGE_UP',
+                34: 'PAGE_DOWN',
+                35: 'END',
+                36: 'HOME',
+                37: 'LEFT',
+                38: 'UP',
+                39: 'RIGHT',
+                40: 'DOWN',
+                43: '+',
+                44: 'PRINTSCREEN',
+                45: 'INSERT',
+                46: 'DELETE',
+                48: '0',
+                49: '1',
+                50: '2',
+                51: '3',
+                52: '4',
+                53: '5',
+                54: '6',
+                55: '7',
+                56: '8',
+                57: '9',
+                59: ';',
+                61: '=',
+                65: 'A',
+                66: 'B',
+                67: 'C',
+                68: 'D',
+                69: 'E',
+                70: 'F',
+                71: 'G',
+                72: 'H',
+                73: 'I',
+                74: 'J',
+                75: 'K',
+                76: 'L',
+                77: 'M',
+                78: 'N',
+                79: 'O',
+                80: 'P',
+                81: 'Q',
+                82: 'R',
+                83: 'S',
+                84: 'T',
+                85: 'U',
+                86: 'V',
+                87: 'W',
+                88: 'X',
+                89: 'Y',
+                90: 'Z',
+                96: '0',
+                97: '1',
+                98: '2',
+                99: '3',
+                100: '4',
+                101: '5',
+                102: '6',
+                103: '7',
+                104: '8',
+                105: '9',
+                106: '*',
+                107: '+',
+                109: '-',
+                110: '.',
+                111: '/',
+                112: 'F1',
+                113: 'F2',
+                114: 'F3',
+                115: 'F4',
+                116: 'F5',
+                117: 'F6',
+                118: 'F7',
+                119: 'F8',
+                120: 'F9',
+                121: 'F10',
+                122: 'F11',
+                123: 'F12',
+                144: 'NUMLOCK',
+                145: 'SCROLLLOCK',
+                186: ';',
+                187: '=',
+                188: ',',
+                189: '-',
+                190: '.',
+                191: '/',
+                192: '`',
+                219: '[',
+                220: '\\',
+                221: ']',
+                222: '\''
             },
-            isControl: function (e) {
-                var k = e.which;
+            isControl: function (evt) {
+                var k = evt.which;
                 switch (k) {
                     case this.COMMAND:
                     case this.SHIFT:
@@ -138,7 +138,7 @@ angular.module('ui.xg.select', [])
                         return true;
                 }
 
-                return e.metaKey;
+                return evt.metaKey;
             },
             isFunctionKey: function (k) {
                 k = k.which ? k.which : k;
@@ -185,7 +185,10 @@ angular.module('ui.xg.select', [])
         }
 
         return function (matchItem, query) {
-            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="uix-select-highlight">$&</span>') : matchItem;
+            return query && matchItem
+                ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'),
+                '<span class="uix-select-highlight">$&</span>')
+                : matchItem;
         };
     })
     // 位置偏移
@@ -201,8 +204,10 @@ angular.module('ui.xg.select', [])
             };
         };
     }])
-    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser', 'uixSelectMinErr', 'uixSelectConfig',
-        function ($scope, $element, $timeout, $filter, RepeatParser, uixSelectMinErr, uixSelectConfig) {
+    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser',
+        'uixSelectMinErr', 'uixSelectConfig',
+        function ($scope, $element, $timeout, $filter, RepeatParser,
+                  uixSelectMinErr, uixSelectConfig) {
             var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
@@ -237,7 +242,8 @@ angular.module('ui.xg.select', [])
 
             ctrl.searchInput = angular.element($element[0].querySelectorAll('input.uix-select-search'));
             if (ctrl.searchInput.length !== 1) {
-                throw uixSelectMinErr('searchInput', "Expected 1 input.uix-select-search but got '{0}'.", ctrl.searchInput.length);
+                throw uixSelectMinErr('searchInput', 'Expected 1 input.uix-select-search but got \'{0}\'.',
+                    ctrl.searchInput.length);
             }
 
             ctrl.isEmpty = function () {
@@ -246,7 +252,8 @@ angular.module('ui.xg.select', [])
 
             // Most of the time the user does not want to empty the search input when in typeahead mode
             function _resetSearchInput() {
-                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && uixSelectConfig.resetSearchInput)) {
+                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) &&
+                    uixSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
                     //reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
@@ -296,8 +303,8 @@ angular.module('ui.xg.select', [])
 
             ctrl.findGroupByName = function (name) {
                 return ctrl.groups && ctrl.groups.filter(function (group) {
-                        return group.name === name;
-                    })[0];
+                    return group.name === name;
+                })[0];
             };
 
             ctrl.parseRepeatAttr = function (repeatAttr, groupByExp, groupFilterExp) {
@@ -359,17 +366,18 @@ angular.module('ui.xg.select', [])
                 $scope.$watchCollection(ctrl.parserResult.source, function (items) {
                     if (angular.isUndefined(items) || items === null) {
                         // If the user specifies undefined or null => reset the collection
-                        // Special case: items can be undefined if the user did not initialized the collection on the scope
+                        // Special case: items can be undefined if the user did not initialized
                         // i.e $scope.addresses = [] is missing
                         ctrl.items = [];
                     } else {
                         if (!angular.isArray(items)) {
-                            throw uixSelectMinErr('items', "Expected an array but got '{0}'.", items);
+                            throw uixSelectMinErr('items', 'Expected an array but got \'{0}\'.', items);
                         } else {
                             //Remove already selected items (ex: while searching)
                             //TODO Should add a test
                             ctrl.refreshItems(items);
-                            ctrl.ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
+                            //Force scope model value and ngModel value to be out of sync to re-run formatters
+                            ctrl.ngModel.$modelValue = null;
                         }
                     }
                 });
@@ -381,14 +389,16 @@ angular.module('ui.xg.select', [])
             /**
              * Typeahead mode: lets the user refresh the collection using his own function.
              *
-             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/uix-select/pull/31
+             * See Expose $select.search for external / remote filtering
+             * https://github.com/angular-ui/ui-select/pull/31
              */
             ctrl.refresh = function (refreshAttr) {
                 if (angular.isDefined(refreshAttr)) {
 
                     // Debounce
                     // See https://github.com/angular-ui/bootstrap/blob/0.10.0/src/typeahead/typeahead.js#L155
-                    // FYI AngularStrap typeahead does not have debouncing: https://github.com/mgcrea/angular-strap/blob/v2.0.0-rc.4/src/typeahead/typeahead.js#L177
+                    // FYI AngularStrap typeahead does not have debouncing:
+                    // https://github.com/mgcrea/angular-strap/blob/v2.0.0-rc.4/src/typeahead/typeahead.js#L177
                     if (_refreshDelayPromise) {
                         $timeout.cancel(_refreshDelayPromise);
                     }
@@ -409,11 +419,12 @@ angular.module('ui.xg.select', [])
                 var itemIndex = ctrl.items.indexOf(itemScope[ctrl.itemProperty]);
                 var isActive = itemIndex === ctrl.activeIndex;
 
-                if (!isActive || ( itemIndex < 0 && ctrl.taggingLabel !== false ) || ( itemIndex < 0 && ctrl.taggingLabel === false)) {
+                if (!isActive || (itemIndex < 0 && ctrl.taggingLabel !== false) ||
+                    (itemIndex < 0 && ctrl.taggingLabel === false)) {
                     return false;
                 }
 
-                if (isActive && !angular.isUndefined(ctrl.onHighlightCallback)) {
+                if (isActive && angular.isDefined(ctrl.onHighlightCallback)) {
                     itemScope.$eval(ctrl.onHighlightCallback);
                 }
 
@@ -430,7 +441,7 @@ angular.module('ui.xg.select', [])
                 var isDisabled = false;
                 var item;
 
-                if (itemIndex >= 0 && !angular.isUndefined(ctrl.disableChoiceExpression)) {
+                if (itemIndex >= 0 && angular.isDefined(ctrl.disableChoiceExpression)) {
                     item = ctrl.items[itemIndex];
                     isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
                     item._uixSelectChoiceDisabled = isDisabled; // store this for later reference
@@ -473,24 +484,29 @@ angular.module('ui.xg.select', [])
 
                                     // create new item on the fly if we don't already have one;
                                     // use tagging function if we have one
-                                    if (angular.isDefined(ctrl.tagging.fct) && ctrl.tagging.fct !== null && typeof item === 'string') {
+                                    if (angular.isDefined(ctrl.tagging.fct) &&
+                                        ctrl.tagging.fct !== null &&
+                                        angular.isString(item)) {
                                         item = ctrl.tagging.fct(ctrl.search);
                                         if (!item) {
                                             return;
                                         }
                                         // if item type is 'string', apply the tagging label
-                                    } else if (typeof item === 'string') {
+                                    } else if (angular.isString(item)) {
                                         // trim the trailing space
                                         item = item.replace(ctrl.taggingLabel, '').trim();
                                     }
                                 }
                             }
                             // search ctrl.selected for dupes potentially caused by tagging and return early if found
-                            if (ctrl.selected && angular.isArray(ctrl.selected) && ctrl.selected.filter(function (selection) {
+                            if (ctrl.selected && angular.isArray(ctrl.selected)) {
+                                var len = ctrl.selected.filter(function (selection) {
                                     return angular.equals(selection, item);
-                                }).length > 0) {
-                                ctrl.close(skipFocusser);
-                                return;
+                                }).length;
+                                if(len > 0) {
+                                    ctrl.close(skipFocusser);
+                                    return;
+                                }
                             }
                         }
 
@@ -546,11 +562,11 @@ angular.module('ui.xg.select', [])
             };
 
             // Toggle dropdown
-            ctrl.toggle = function (e) {
+            ctrl.toggle = function (evt) {
                 if (ctrl.open) {
                     ctrl.close();
-                    e.preventDefault();
-                    e.stopPropagation();
+                    evt.preventDefault();
+                    evt.stopPropagation();
                 } else {
                     ctrl.activate();
                 }
@@ -559,7 +575,7 @@ angular.module('ui.xg.select', [])
             ctrl.isLocked = function (itemScope, itemIndex) {
                 var isLocked, item = ctrl.selected[itemIndex];
 
-                if (item && !angular.isUndefined(ctrl.lockChoiceExpression)) {
+                if (item && angular.isDefined(ctrl.lockChoiceExpression)) {
                     isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression)); // force the boolean value
                     item._uixSelectChoiceLocked = isLocked; // store this for later reference
                 }
@@ -614,7 +630,10 @@ angular.module('ui.xg.select', [])
                     case KEY.UP:
                         if (!ctrl.open && ctrl.multiple) {
                             ctrl.activate(false, true);//In case its the search input in 'multiple' mode
-                        } else if (ctrl.activeIndex > 0 || (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)) {
+                        } else if (
+                            ctrl.activeIndex > 0 ||
+                            (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)
+                        ) {
                             ctrl.activeIndex--;
                         }
                         break;
@@ -625,7 +644,8 @@ angular.module('ui.xg.select', [])
                         break;
                     case KEY.ENTER:
                         if (ctrl.open && (ctrl.tagging.isActivated || ctrl.activeIndex >= 0)) {
-                            ctrl.select(ctrl.items[ctrl.activeIndex]); // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
+                            // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
+                            ctrl.select(ctrl.items[ctrl.activeIndex]);
                         } else {
                             ctrl.activate(false, true); //In case its the search input in 'multiple' mode
                         }
@@ -640,9 +660,9 @@ angular.module('ui.xg.select', [])
             }
 
             // Bind to keyboard shortcuts
-            ctrl.searchInput.on('keydown', function (e) {
+            ctrl.searchInput.on('keydown', function (evt) {
 
-                var key = e.which;
+                var key = evt.which;
 
                 // if(~[KEY.ESC,KEY.TAB].indexOf(key)){
                 //   //TODO: SEGURO?
@@ -657,7 +677,7 @@ angular.module('ui.xg.select', [])
                         _handleDropDownSelection(key);
                         if (ctrl.taggingTokens.isActivated) {
                             for (var i = 0; i < ctrl.taggingTokens.tokens.length; i++) {
-                                if (ctrl.taggingTokens.tokens[i] === KEY.MAP[e.keyCode]) {
+                                if (ctrl.taggingTokens.tokens[i] === KEY.MAP[evt.keyCode]) {
                                     // make sure there is a new value to push via tagging
                                     if (ctrl.search.length > 0) {
                                         tagged = true;
@@ -667,7 +687,7 @@ angular.module('ui.xg.select', [])
                             if (tagged) {
                                 $timeout(function () {
                                     ctrl.searchInput.triggerHandler('tagged');
-                                    var newItem = ctrl.search.replace(KEY.MAP[e.keyCode], '').trim();
+                                    var newItem = ctrl.search.replace(KEY.MAP[evt.keyCode], '').trim();
                                     if (ctrl.tagging.fct) {
                                         newItem = ctrl.tagging.fct(newItem);
                                     }
@@ -686,15 +706,15 @@ angular.module('ui.xg.select', [])
                 }
 
                 if (key === KEY.ENTER || key === KEY.ESC) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    evt.preventDefault();
+                    evt.stopPropagation();
                 }
 
             });
 
             // If tagging try to split by tokens and add items
-            ctrl.searchInput.on('paste', function (e) {
-                var data = e.originalEvent.clipboardData.getData('text/plain');
+            ctrl.searchInput.on('paste', function (evt) {
+                var data = evt.originalEvent.clipboardData.getData('text/plain');
                 if (data && data.length > 0 && ctrl.taggingTokens.isActivated && ctrl.tagging.fct) {
                     var items = data.split(ctrl.taggingTokens.tokens[0]); // split by first token only
                     if (items && items.length > 0) {
@@ -704,8 +724,8 @@ angular.module('ui.xg.select', [])
                                 ctrl.select(newItem, true);
                             }
                         });
-                        e.preventDefault();
-                        e.stopPropagation();
+                        evt.preventDefault();
+                        evt.stopPropagation();
                     }
                 }
             });
@@ -721,7 +741,8 @@ angular.module('ui.xg.select', [])
                 var container = angular.element($element[0].querySelectorAll('.uix-select-choices-content'));
                 var choices = angular.element(container[0].querySelectorAll('.uix-select-choices-row'));
                 if (choices.length < 1) {
-                    throw uixSelectMinErr('choices', "Expected multiple .uix-select-choices-row but got '{0}'.", choices.length);
+                    throw uixSelectMinErr('choices', 'Expected multiple .uix-select-choices-row but got \'{0}\'.',
+                        choices.length);
                 }
 
                 if (ctrl.activeIndex < 0) {
@@ -747,12 +768,14 @@ angular.module('ui.xg.select', [])
                 ctrl.searchInput.off('keyup keydown tagged blur paste');
             });
         }])
-    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset', '$compile', '$parse', '$timeout',
-        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $compile, $parse, $timeout) {
+    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset',
+        '$parse', '$timeout',
+        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $parse, $timeout) {
             return {
                 restrict: 'EA',
                 templateUrl: function (tElement, tAttrs) {
-                    return angular.isDefined(tAttrs.multiple) ? 'templates/select-multiple.html' : 'templates/select.html';
+                    return angular.isDefined(tAttrs.multiple)
+                        ? 'templates/select-multiple.html' : 'templates/select.html';
                 },
                 replace: true,
                 transclude: true,
@@ -763,9 +786,9 @@ angular.module('ui.xg.select', [])
                 compile: function (tElement, tAttrs) {
                     //Multiple or Single depending if multiple attribute presence
                     if (angular.isDefined(tAttrs.multiple)) {
-                        tElement.append("<uix-select-multiple/>").removeAttr('multiple');
+                        tElement.append('<uix-select-multiple/>').removeAttr('multiple');
                     } else {
-                        tElement.append("<uix-select-single/>");
+                        tElement.append('<uix-select-single/>');
                     }
 
                     return function (scope, element, attrs, ctrls, transcludeFn) {
@@ -796,14 +819,15 @@ angular.module('ui.xg.select', [])
 
                         if (attrs.tabindex) {
                             attrs.$observe('tabindex', function (value) {
-                                $select.focusInput.attr("tabindex", value);
-                                element.removeAttr("tabindex");
+                                $select.focusInput.attr('tabindex', value);
+                                element.removeAttr('tabindex');
                             });
                         }
 
                         scope.$watch('searchEnabled', function () {
                             var searchEnabled = scope.$eval(attrs.searchEnabled);
-                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : uixSelectConfig.searchEnabled;
+                            $select.searchEnabled = angular.isDefined(searchEnabled)
+                                ? searchEnabled : uixSelectConfig.searchEnabled;
                         });
 
                         scope.$watch('sortable', function () {
@@ -813,7 +837,8 @@ angular.module('ui.xg.select', [])
 
                         attrs.$observe('disabled', function () {
                             // No need to use $eval() (thanks to ng-disabled) since we already get a boolean instead of a string
-                            $select.disabled = angular.isDefined(attrs.disabled) ? attrs.disabled : false;
+                            $select.disabled = angular.isDefined(attrs.disabled)
+                                ? attrs.disabled : false;
                         });
 
                         attrs.$observe('resetSearchInput', function () {
@@ -843,14 +868,16 @@ angular.module('ui.xg.select', [])
                                     $select.taggingLabel = false;
                                 }
                                 else {
-                                    $select.taggingLabel = angular.isDefined(attrs.taggingLabel) ? attrs.taggingLabel : '(new)';
+                                    $select.taggingLabel = angular.isDefined(attrs.taggingLabel)
+                                        ? attrs.taggingLabel : '(new)';
                                 }
                             }
                         });
 
                         attrs.$observe('taggingTokens', function () {
                             if (angular.isDefined(attrs.tagging)) {
-                                var tokens = angular.isDefined(attrs.taggingTokens) ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
+                                var tokens = angular.isDefined(attrs.taggingTokens)
+                                    ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
                                 $select.taggingTokens = {isActivated: true, tokens: tokens};
                             }
                         });
@@ -871,28 +898,31 @@ angular.module('ui.xg.select', [])
                             });
                         }
 
-                        function onDocumentClick(e) {
+                        function onDocumentClick(evt) {
                             if (!$select.open) {
                                 return;//Skip it if dropdown is close
                             }
 
                             var contains = false;
 
-                            if (window.jQuery) {
+                            if (angular.element.contains) {
                                 // Firefox 3.6 does not support element.contains()
                                 // See Node.contains https://developer.mozilla.org/en-US/docs/Web/API/Node.contains
-                                contains = window.jQuery.contains(element[0], e.target);
+                                contains = angular.element.contains(element[0], evt.target);
                             } else {
-                                contains = element[0].contains(e.target);
+                                contains = element[0].contains(evt.target);
                             }
 
                             if (!contains && !$select.clickTriggeredSelect) {
                                 //Will lose focus only with certain targets
                                 var focusableControls = ['input', 'button', 'textarea'];
-                                var targetScope = angular.element(e.target).scope(); //To check if target is other uix-select
-                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other uix-select
+                                //To check if target is other uix-select
+                                var targetScope = angular.element(evt.target).scope();
+                                //To check if target is other uix-select
+                                var skipFocusser = targetScope && targetScope.$select &&
+                                    targetScope.$select !== $select;
                                 if (!skipFocusser) {//Check if target is input, button or textarea
-                                    skipFocusser = focusableControls.indexOf(e.target.tagName.toLowerCase()) !== -1;
+                                    skipFocusser = focusableControls.indexOf(evt.target.tagName.toLowerCase()) !== -1;
                                 }
                                 $select.close(skipFocusser);
                                 scope.$digest();
@@ -909,7 +939,6 @@ angular.module('ui.xg.select', [])
 
                         // Move transcluded elements to their correct position in main template
                         transcludeFn(scope, function (clone) {
-                            // See Transclude in AngularJS http://blog.omkarpatil.com/2012/11/transclude-in-angularjs.html
 
                             // One day jqLite will be replaced by jQuery and we will be able to write:
                             // var transcludedElement = clone.filter('.my-class')
@@ -919,7 +948,7 @@ angular.module('ui.xg.select', [])
                             transcludedMatch.removeAttr('uix-select-match'); //To avoid loop in case directive as attr
                             transcludedMatch.removeAttr('data-uix-select-match'); // Properly handle HTML5 data-attributes
                             if (transcludedMatch.length !== 1) {
-                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-match but got '{0}'.", transcludedMatch.length);
+                                throw uixSelectMinErr('transcluded', 'Expected 1 .uix-select-match but got \'{0}\'.', transcludedMatch.length);
                             }
                             angular.element(element[0].querySelectorAll('.uix-select-match')).replaceWith(transcludedMatch);
 
@@ -927,7 +956,7 @@ angular.module('ui.xg.select', [])
                             transcludedChoices.removeAttr('uix-select-choices'); //To avoid loop in case directive as attr
                             transcludedChoices.removeAttr('data-uix-select-choices'); // Properly handle HTML5 data-attributes
                             if (transcludedChoices.length !== 1) {
-                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-choices but got '{0}'.", transcludedChoices.length);
+                                throw uixSelectMinErr('transcluded', 'Expected 1 .uix-select-choices but got \'{0}\'.', transcludedChoices.length);
                             }
                             angular.element(element[0].querySelectorAll('.uix-select-choices')).replaceWith(transcludedChoices);
                         });
@@ -1049,7 +1078,7 @@ angular.module('ui.xg.select', [])
                 compile: function (tElement, tAttrs) {
 
                     if (!tAttrs.repeat) {
-                        throw uixSelectMinErr('repeat', "Expected 'repeat' expression.");
+                        throw uixSelectMinErr('repeat', 'Expected \'repeat\' expression.');
                     }
 
                     return function link(scope, element, attrs, $select, transcludeFn) {
@@ -1066,14 +1095,14 @@ angular.module('ui.xg.select', [])
                         if (groupByExp) {
                             var groups = angular.element(element[0].querySelectorAll('.uix-select-choices-group'));
                             if (groups.length !== 1) {
-                                throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-group but got '{0}'.", groups.length);
+                                throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-group but got \'{0}\'.', groups.length);
                             }
                             groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
                         }
 
                         var choices = angular.element(element[0].querySelectorAll('.uix-select-choices-row'));
                         if (choices.length !== 1) {
-                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row but got '{0}'.", choices.length);
+                            throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-row but got \'{0}\'.', choices.length);
                         }
 
                         choices.attr('ng-repeat', RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items', $select.parserResult.trackByExp, groupByExp))
@@ -1083,7 +1112,7 @@ angular.module('ui.xg.select', [])
 
                         var rowsInner = angular.element(element[0].querySelectorAll('.uix-select-choices-row-inner'));
                         if (rowsInner.length !== 1) {
-                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row-inner but got '{0}'.", rowsInner.length);
+                            throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-row-inner but got \'{0}\'.', rowsInner.length);
                         }
                         rowsInner.attr('uix-transclude-append', ''); //Adding uixTranscludeAppend directive to row element after choices element has ngRepeat
                         $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uixTranscludeAppend
@@ -1245,27 +1274,29 @@ angular.module('ui.xg.select', [])
                             return inputValue;
                         }
                         var resultMultiple = [];
-                        var checkFnMultiple = function (list, value) {
+
+                        function checkFnMultiple(list, value) {
                             if (!list || !list.length) {
                                 return;
                             }
-                            for (var p = list.length - 1; p >= 0; p--) {
-                                locals[$select.parserResult.itemName] = list[p];
+                            for (var index = list.length - 1; index >= 0; index--) {
+                                locals[$select.parserResult.itemName] = list[index];
                                 result = $select.parserResult.modelMapper(scope, locals);
                                 if ($select.parserResult.trackByExp) {
                                     var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
-                                    if (matches.length > 0 && result[matches[1]] == value[matches[1]]) {
-                                        resultMultiple.unshift(list[p]);
+                                    if (matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                        resultMultiple.unshift(list[index]);
                                         return true;
                                     }
                                 }
                                 if (angular.equals(result, value)) {
-                                    resultMultiple.unshift(list[p]);
+                                    resultMultiple.unshift(list[index]);
                                     return true;
                                 }
                             }
                             return false;
-                        };
+                        }
+
                         if (!inputValue) {
                             return resultMultiple;//If ngModel was undefined
                         }
@@ -1286,7 +1317,7 @@ angular.module('ui.xg.select', [])
                     scope.$watchCollection(function () {
                         return ngModel.$modelValue;
                     }, function (newValue, oldValue) {
-                        if (oldValue != newValue) {
+                        if (oldValue !== newValue) {
                             ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
                             $selectMultiple.refreshComponent();
                         }
@@ -1299,7 +1330,7 @@ angular.module('ui.xg.select', [])
                             if (angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null) {
                                 $select.selected = [];
                             } else {
-                                throw uixSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
+                                throw uixSelectMinErr('multiarr', 'Expected model value to be array but got \'{0}\'', ngModel.$viewValue);
                             }
                         }
                         $select.selected = ngModel.$viewValue;
@@ -1322,19 +1353,19 @@ angular.module('ui.xg.select', [])
                         }
                     });
 
-                    $select.searchInput.on('keydown', function (e) {
-                        var key = e.which;
+                    $select.searchInput.on('keydown', function (evt) {
+                        var key = evt.which;
                         scope.$apply(function () {
                             var processed = false;
                             // var tagged = false; //Checkme
                             if (KEY.isHorizontalMovement(key)) {
                                 processed = _handleMatchSelection(key);
                             }
-                            if (processed && key != KEY.TAB) {
+                            if (processed && key !== KEY.TAB) {
                                 //TODO Check si el tab selecciona aun correctamente
                                 //Crear test
-                                e.preventDefault();
-                                e.stopPropagation();
+                                evt.preventDefault();
+                                evt.stopPropagation();
                             }
                         });
                     });
@@ -1360,7 +1391,7 @@ angular.module('ui.xg.select', [])
                             prev = $selectMultiple.activeMatchIndex - 1,
                             newIndex = curr;
 
-                        if (caretPosition > 0 || ($select.search.length && key == KEY.RIGHT)) {
+                        if (caretPosition > 0 || ($select.search.length && key === KEY.RIGHT)) {
                             return false;
                         }
 
@@ -1400,7 +1431,7 @@ angular.module('ui.xg.select', [])
                                     if ($selectMultiple.activeMatchIndex !== -1) {
                                         $selectMultiple.removeChoice($selectMultiple.activeMatchIndex);
                                         res = curr;
-                                    }else{
+                                    } else {
                                         res = false;
                                     }
                             }
@@ -1418,9 +1449,9 @@ angular.module('ui.xg.select', [])
                         return true;
                     }
 
-                    $select.searchInput.on('keyup', function (e) {
+                    $select.searchInput.on('keyup', function (evt) {
 
-                        if (!KEY.isVerticalMovement(e.which)) {
+                        if (!KEY.isVerticalMovement(evt.which)) {
                             scope.$evalAsync(function () {
                                 $select.activeIndex = $select.taggingLabel === false ? -1 : 0;
                             });
@@ -1429,7 +1460,7 @@ angular.module('ui.xg.select', [])
                         if ($select.tagging.isActivated && $select.search.length > 0) {
 
                             // return early with these keys
-                            if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC || KEY.isVerticalMovement(e.which)) {
+                            if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC || KEY.isVerticalMovement(evt.which)) {
                                 return;
                             }
                             // always reset the activeIndex to the first item when tagging
@@ -1463,9 +1494,10 @@ angular.module('ui.xg.select', [])
                                 newItem = $select.tagging.fct($select.search);
                                 newItem.isTag = true;
                                 // verify the the tag doesn't match the value of an existing item
-                                if (stashArr.filter(function (origItem) {
-                                        return angular.equals(origItem, $select.tagging.fct($select.search));
-                                    }).length > 0) {
+                                var len = stashArr.filter(function (origItem) {
+                                    return angular.equals(origItem, $select.tagging.fct($select.search));
+                                }).length;
+                                if (len > 0) {
                                     return;
                                 }
                                 newItem.isTag = true;
@@ -1533,11 +1565,11 @@ angular.module('ui.xg.select', [])
                             return false;
                         }
                         return arr.filter(function (origItem) {
-                                if (angular.isUndefined($select.search.toUpperCase()) || angular.isUndefined(origItem)) {
-                                    return false;
-                                }
-                                return origItem.toUpperCase() === $select.search.toUpperCase();
-                            }).length > 0;
+                            if (angular.isUndefined($select.search.toUpperCase()) || angular.isUndefined(origItem)) {
+                                return false;
+                            }
+                            return origItem.toUpperCase() === $select.search.toUpperCase();
+                        }).length > 0;
                     }
 
                     function _findApproxDupe(haystack, needle) {
@@ -1637,8 +1669,11 @@ angular.module('ui.xg.select', [])
                     }, 0, false);
                 });
 
-                //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
-                var focusser = angular.element("<input ng-disabled='$select.disabled' class='uix-select-focusser uix-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
+                var focusser = angular.element(
+                    '<input ng-disabled=\'$select.disabled\' class=\'uix-select-focusser uix-select-offscreen\' ' +
+                    'type=\'text\' aria-label=\'{{ $select.focusserTitle }}\' aria-haspopup=\'true\' ' +
+                    'role=\'button\' />'
+                );
 
                 scope.$on('uixSelect:activate', function () {
                     focusser.prop('disabled', true); //Will reactivate it on .close()
@@ -1651,42 +1686,42 @@ angular.module('ui.xg.select', [])
                 $select.focusInput = focusser;
 
                 element.parent().append(focusser);
-                focusser.bind("focus", function () {
+                focusser.bind('focus', function () {
                     scope.$evalAsync(function () {
                         $select.focus = true;
                     });
                 });
-                focusser.bind("blur", function () {
+                focusser.bind('blur', function () {
                     scope.$evalAsync(function () {
                         $select.focus = false;
                     });
                 });
-                focusser.bind("keydown", function (e) {
+                focusser.bind('keydown', function (evt) {
 
-                    if (e.which === KEY.BACKSPACE) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                    if (evt.which === KEY.BACKSPACE) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
                         $select.select();
                         scope.$apply();
                         return;
                     }
 
-                    if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
+                    if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC) {
                         return;
                     }
 
-                    if (e.which === KEY.DOWN || e.which === KEY.UP || e.which === KEY.ENTER || e.which === KEY.SPACE) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                    if (evt.which === KEY.DOWN || evt.which === KEY.UP || evt.which === KEY.ENTER || evt.which === KEY.SPACE) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
                         $select.activate();
                     }
 
                     scope.$digest();
                 });
 
-                focusser.bind("keyup input", function (e) {
+                focusser.bind('keyup input', function (evt) {
 
-                    if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC || e.which === KEY.ENTER || e.which === KEY.BACKSPACE) {
+                    if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC || evt.which === KEY.ENTER || evt.which === KEY.BACKSPACE) {
                         return;
                     }
 
@@ -1700,12 +1735,12 @@ angular.module('ui.xg.select', [])
             }
         };
     }])
-    .directive('uixSelectSort', ['$timeout', 'uixSelectConfig', 'uixSelectMinErr', function ($timeout, uixSelectConfig, uixSelectMinErr) {
+    .directive('uixSelectSort', ['$timeout', 'uixSelectMinErr', function ($timeout, uixSelectMinErr) {
         return {
             require: '^uixSelect',
             link: function (scope, element, attrs, $select) {
                 if (scope[attrs.uixSelectSort] === null) {
-                    throw uixSelectMinErr('sort', "Expected a list to sort");
+                    throw uixSelectMinErr('sort', 'Expected a list to sort');
                 }
 
                 var options = angular.extend({
@@ -1720,18 +1755,18 @@ angular.module('ui.xg.select', [])
 
                 scope.$watch(function () {
                     return $select.sortable;
-                }, function (n) {
-                    if (n) {
+                }, function (val) {
+                    if (val) {
                         element.attr('draggable', true);
                     } else {
                         element.removeAttr('draggable');
                     }
                 });
 
-                element.on('dragstart', function (e) {
+                element.on('dragstart', function (evt) {
                     element.addClass(draggingClassName);
 
-                    (e.dataTransfer || e.originalEvent.dataTransfer).setData('text/plain', scope.$index);
+                    (evt.dataTransfer || evt.originalEvent.dataTransfer).setData('text/plain', scope.$index);
                 });
 
                 element.on('dragend', function () {
@@ -1743,10 +1778,12 @@ angular.module('ui.xg.select', [])
                     this.splice(to, 0, this.splice(from, 1)[0]);
                 };
 
-                var dragOverHandler = function (e) {
-                    e.preventDefault();
+                var dragOverHandler = function (evt) {
+                    evt.preventDefault();
 
-                    var offset = axis === 'vertical' ? e.offsetY || e.layerY || (e.originalEvent ? e.originalEvent.offsetY : 0) : e.offsetX || e.layerX || (e.originalEvent ? e.originalEvent.offsetX : 0);
+                    var offset = axis === 'vertical'
+                        ? evt.offsetY || evt.layerY || (evt.originalEvent ? evt.originalEvent.offsetY : 0)
+                        : evt.offsetX || evt.layerX || (evt.originalEvent ? evt.originalEvent.offsetX : 0);
 
                     if (offset < (this[axis === 'vertical' ? 'offsetHeight' : 'offsetWidth'] / 2)) {
                         element.removeClass(droppingAfterClassName);
@@ -1760,10 +1797,10 @@ angular.module('ui.xg.select', [])
 
                 var dropTimeout;
 
-                var dropHandler = function (e) {
-                    e.preventDefault();
+                var dropHandler = function (evt) {
+                    evt.preventDefault();
 
-                    var droppedItemIndex = parseInt((e.dataTransfer || e.originalEvent.dataTransfer).getData('text/plain'), 10);
+                    var droppedItemIndex = parseInt((evt.dataTransfer || evt.originalEvent.dataTransfer).getData('text/plain'), 10);
 
                     // prevent event firing multiple times in firefox
                     $timeout.cancel(dropTimeout);
@@ -1818,8 +1855,8 @@ angular.module('ui.xg.select', [])
                     element.on('drop', dropHandler);
                 });
 
-                element.on('dragleave', function (e) {
-                    if (e.target !== element) {
+                element.on('dragleave', function (evt) {
+                    if (evt.target !== element) {
                         return;
                     }
                     element.removeClass(droppingClassName);
@@ -1847,7 +1884,7 @@ angular.module('ui.xg.select', [])
             var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
             if (!match) {
-                throw uixSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                throw uixSelectMinErr('iexp', 'Expected expression in form of \'_item_ in _collection_[ track by _id_]\' but got \'{0}\'.',
                     expression);
             }
 

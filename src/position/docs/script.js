@@ -1,9 +1,9 @@
-angular.module('uixDemo').controller('dropdownDemoCtrl',['$scope','$window','$uixPosition', function ($scope,$window,$uixPosition) {
+angular.module('uixDemo').controller('dropdownDemoCtrl', ['$scope', '$window', '$uixPosition', function ($scope, $window, $uixPosition) {
     $scope.elemVals = {};
     $scope.parentScrollable = true;
     $scope.parentRelative = true;
 
-    $scope.getValues = function() {
+    $scope.getValues = function () {
         var divEl = $window.document.querySelector('#posdemodiv');
         var btnEl = $window.document.querySelector('#posdemobtn');
 

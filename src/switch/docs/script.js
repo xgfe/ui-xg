@@ -6,6 +6,6 @@ angular.module('uixDemo').controller('switchDemoCtrl', ['$scope', '$log', functi
         $log.log('changed');
     };
     $scope.status = 'A';
-    $scope.A = 'A';
-    $scope.B = 'B';
+    $scope.trueVal = 'A';
+    $scope.falseVal = 'B';
 }]);

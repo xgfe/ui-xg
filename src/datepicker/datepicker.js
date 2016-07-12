@@ -52,118 +52,128 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
         }
 
     }])
-    .controller('uixDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$uixPosition', 'uixDatepickerService', 'uixDatepickerConfig',
-        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $uixPosition, uixDatepickerService, uixDatepickerConfig) {
-            var ngModelCtrl = {$setViewValue: angular.noop};
-            var self = this;
-            var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
-                '<div class="arrow"></div>' +
-                '<div class="popover-inner">' +
-                '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></uix-calendar>' +
-                '</div></div>';
-            this.init = function (_ngModelCtrl) {
-                ngModelCtrl = _ngModelCtrl;
-                ngModelCtrl.$render = this.render;
-                ngModelCtrl.$formatters.unshift(function (modelValue) {
-                    return modelValue ? new Date(modelValue) : null;
-                });
-                var calendarDOM = $compile(template)($scope);
-                $element.after(calendarDOM);
-            };
-            $scope.showCalendar = false;
-            this.toggle = function (open) {
-                var show = arguments.length ? !!open : !$scope.showCalendar;
-                if (show) {
-                    adjustPosition();
-                }
-                $scope.showCalendar = show;
-            };
-            function adjustPosition() {
-                var popoverEle = $element.next('.uix-datepicker-popover');
-                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
-                popoverEle.removeClass('top bottom');
-                if (elePosition.placement.indexOf('top') !== -1) {
-                    popoverEle.addClass('top');
-                } else {
-                    popoverEle.addClass('bottom');
-                }
-                popoverEle.css({
-                    top: elePosition.top + 'px',
-                    left: elePosition.left + 'px'
-                });
-            }
-
-            this.showCalendar = function () {
-                return $scope.showCalendar;
-            };
-            angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
-                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
-            });
-
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
-
-            this.render = function () {
-                var date = ngModelCtrl.$modelValue;
-                if (isNaN(date)) {
-                    $log.warn('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                }
-                $scope.selectDate = date;
-                $scope.inputValue = dateFilter(date, format);
-            };
-            // 显示隐藏日历
-            $scope.toggleCalendarHandler = function (evt) {
-                $element.find('input')[0].blur();
-                if (evt) {
-                    evt.preventDefault();
-                }
-                if (!$scope.isDisabled) {
-                    self.toggle();
-                }
-            };
-
-            // 获取日历面板和被点击的元素
-            $scope.getCanledarElement = function () {
-                return $element.next('.uix-datepicker-popover');
-            };
-            $scope.getToggleElement = function () {
-                return angular.element($element[0].querySelector('.input-group'));
-            };
-            // 清除日期
-            $scope.clearDateHandler = function () {
-                $scope.inputValue = null;
-                $scope.selectDate = null;
-                ngModelCtrl.$setViewValue(null);
-                ngModelCtrl.$render();
-            };
-            $scope.$watch('showCalendar', function (showCalendar) {
-                if (showCalendar) {
-                    uixDatepickerService.open($scope);
-                } else {
-                    uixDatepickerService.close($scope);
-                }
-            });
-
-            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
-            // 选择日期
-            $scope.changeDateHandler = function (date) {
-                $scope.inputValue = dateFilter(date, format);
-                $scope.selectDate = date;
-                if (autoClose) {
-                    self.toggle();
-                }
-                ngModelCtrl.$setViewValue(date);
-                ngModelCtrl.$render();
-
-                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
-                if (angular.isDefined(fn)) {
-                    fn();
-                }
-            };
-            $scope.$on('$locationChangeSuccess', function () {
+    .controller('uixDatepickerCtrl',
+        ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$uixPosition',
+            'uixDatepickerService', 'uixDatepickerConfig',
+            function ($scope, $element, $compile, $attrs, $log, dateFilter, $uixPosition,
+                      uixDatepickerService, uixDatepickerConfig) {
+                var ngModelCtrl = {$setViewValue: angular.noop};
+                var self = this;
+                var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+                    '<div class="arrow"></div>' +
+                    '<div class="popover-inner">' +
+                    '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" ' +
+                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime">' +
+                    '</uix-calendar>' +
+                    '</div></div>';
+                this.init = function (_ngModelCtrl) {
+                    ngModelCtrl = _ngModelCtrl;
+                    ngModelCtrl.$render = this.render;
+                    ngModelCtrl.$formatters.unshift(function (modelValue) {
+                        return modelValue ? new Date(modelValue) : null;
+                    });
+                    var calendarDOM = $compile(template)($scope);
+                    $element.after(calendarDOM);
+                };
                 $scope.showCalendar = false;
-            });
+                this.toggle = function (open) {
+                    var show = arguments.length ? !!open : !$scope.showCalendar;
+                    if (show) {
+                        adjustPosition();
+                    }
+                    $scope.showCalendar = show;
+                };
+                function adjustPosition() {
+                    var popoverEle = $element.next('.uix-datepicker-popover');
+                    var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                    popoverEle.removeClass('top bottom');
+                    if (elePosition.placement.indexOf('top') !== -1) {
+                        popoverEle.addClass('top');
+                    } else {
+                        popoverEle.addClass('bottom');
+                    }
+                    popoverEle.css({
+                        top: elePosition.top + 'px',
+                        left: elePosition.left + 'px'
+                    });
+                }
 
-        }])
+                this.showCalendar = function () {
+                    return $scope.showCalendar;
+                };
+                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
+                    $scope[key] = angular.isDefined($attrs[key])
+                        ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
+                });
+
+                var format = angular.isDefined($attrs.format)
+                    ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
+
+                this.render = function () {
+                    var date = ngModelCtrl.$modelValue;
+                    if (isNaN(date)) {
+                        $log.warn('Datepicker directive: "ng-model" value must be a Date object, ' +
+                            'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                            'or ISO 8601 date.');
+                    }
+                    $scope.selectDate = date;
+                    $scope.inputValue = dateFilter(date, format);
+                };
+                // 显示隐藏日历
+                $scope.toggleCalendarHandler = function (evt) {
+                    $element.find('input')[0].blur();
+                    if (evt) {
+                        evt.preventDefault();
+                    }
+                    if (!$scope.isDisabled) {
+                        self.toggle();
+                    }
+                };
+
+                // 获取日历面板和被点击的元素
+                $scope.getCanledarElement = function () {
+                    return $element.next('.uix-datepicker-popover');
+                };
+                $scope.getToggleElement = function () {
+                    return angular.element($element[0].querySelector('.input-group'));
+                };
+                // 清除日期
+                $scope.clearDateHandler = function () {
+                    $scope.inputValue = null;
+                    $scope.selectDate = null;
+                    ngModelCtrl.$setViewValue(null);
+                    ngModelCtrl.$render();
+                };
+                $scope.$watch('showCalendar', function (showCalendar) {
+                    if (showCalendar) {
+                        uixDatepickerService.open($scope);
+                    } else {
+                        uixDatepickerService.close($scope);
+                    }
+                });
+
+                var autoClose = angular.isDefined($attrs.autoClose)
+                    ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
+                // 选择日期
+                $scope.changeDateHandler = function (date) {
+                    $scope.inputValue = dateFilter(date, format);
+                    $scope.selectDate = date;
+                    if (autoClose) {
+                        self.toggle();
+                    }
+                    ngModelCtrl.$setViewValue(date);
+                    ngModelCtrl.$render();
+
+                    var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                    if (angular.isDefined(fn)) {
+                        fn();
+                    }
+                };
+                $scope.$on('$locationChangeSuccess', function () {
+                    $scope.showCalendar = false;
+                });
+
+            }])
     .directive('uixDatepicker', function () {
         return {
             restrict: 'AE',
@@ -184,5 +194,5 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     ngModelCtrl = ctrls[1];
                 datepickerCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });

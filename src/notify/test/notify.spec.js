@@ -1,4 +1,4 @@
-describe("uix-notify", function() {
+describe('uix-notify', function () {
 
     var $compile,
         $rootScope;

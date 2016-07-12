@@ -1,5 +1,5 @@
 describe('ui.xg.modal', function () {
-    var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q,stackedMap;
+    var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q, stackedMap;
     var $uixModal, $uixModalProvider;
 
     beforeEach(function () {
@@ -7,11 +7,12 @@ describe('ui.xg.modal', function () {
         module('ui.xg.stackedMap');
         module('modal/templates/backdrop.html');
         module('modal/templates/window.html');
-        module(function(_$controllerProvider_, _$uixModalProvider_){
+        module(function (_$controllerProvider_, _$uixModalProvider_) {
             $controllerProvider = _$controllerProvider_;
             $uixModalProvider = _$uixModalProvider_;
         });
-        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_, _$timeout_, _$q_, _$uixModal_,$uixStackedMap) {
+        inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_,
+                         _$timeout_, _$q_, _$uixModal_, $uixStackedMap) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;
@@ -20,16 +21,16 @@ describe('ui.xg.modal', function () {
             $q = _$q_;
             $uixModal = _$uixModal_;
             stackedMap = $uixStackedMap.createNew();
-        })
+        });
     });
     beforeEach(function () {
         jasmine.addMatchers({
 
-            toBeResolvedWith: function() {
+            toBeResolvedWith: function () {
                 return {
-                    compare: function(actual, value) {
+                    compare: function (actual, value) {
                         var resolved;
-                        actual.then(function(result){
+                        actual.then(function (result) {
                             resolved = result;
                         });
                         $rootScope.$digest();
@@ -39,9 +40,11 @@ describe('ui.xg.modal', function () {
                         };
 
                         if (result.pass) {
-                            result.message = 'Expected "' + angular.mock.dump(actual) + '" not to be resolved with "' + value + '".';
+                            result.message = 'Expected "' + angular.mock.dump(actual) +
+                                '" not to be resolved with "' + value + '".';
                         } else {
-                            result.message = 'Expected "' + angular.mock.dump(actual) + '" to be resolved with "' + value + '".';
+                            result.message = 'Expected "' + angular.mock.dump(actual) +
+                                '" to be resolved with "' + value + '".';
                         }
 
                         return result;
@@ -49,12 +52,12 @@ describe('ui.xg.modal', function () {
                 };
             },
 
-            toBeRejectedWith: function() {
+            toBeRejectedWith: function () {
                 return {
-                    compare: function(actual, value) {
+                    compare: function (actual, value) {
 
                         var rejected;
-                        actual.then(angular.noop, function(reason){
+                        actual.then(angular.noop, function (reason) {
                             rejected = reason;
                         });
                         $rootScope.$digest();
@@ -64,9 +67,11 @@ describe('ui.xg.modal', function () {
                         };
 
                         if (result.pass) {
-                            result.message = 'Expected "' + angular.mock.dump(actual) + '" not to be rejected with "' + value + '".';
+                            result.message = 'Expected "' + angular.mock.dump(actual) +
+                                '" not to be rejected with "' + value + '".';
                         } else {
-                            result.message = 'Expected "' + angular.mock.dump(actual) + '" to be rejected with "' + value + '".';
+                            result.message = 'Expected "' + angular.mock.dump(actual) +
+                                '" to be rejected with "' + value + '".';
                         }
 
                         return result;
@@ -74,20 +79,23 @@ describe('ui.xg.modal', function () {
                 };
             },
 
-            toHaveModalOpenWithContent: function() {
+            toHaveModalOpenWithContent: function () {
                 return {
-                    compare: function(actual, content, selector) {
-                        var contentToCompare, modalDomEls = actual.find('body > div.modal > div.modal-dialog > div.modal-content');
+                    compare: function (actual, content, selector) {
+                        var contentToCompare,
+                            modalDomEls = actual.find('body > div.modal > div.modal-dialog > div.modal-content');
                         contentToCompare = selector ? modalDomEls.find(selector) : modalDomEls;
 
                         var result = {
-                            pass: modalDomEls.css('display') === 'block' &&  contentToCompare.html() == content
+                            pass: modalDomEls.css('display') === 'block' && contentToCompare.html() === content
                         };
 
                         if (result.pass) {
-                            result.message = '"Expected "' + angular.mock.dump(modalDomEls) + '" not to be open with "' + content + '".';
+                            result.message = '"Expected "' + angular.mock.dump(modalDomEls) +
+                                '" not to be open with "' + content + '".';
                         } else {
-                            result.message = '"Expected "' + angular.mock.dump(modalDomEls) + '" to be open with "' + content + '".';
+                            result.message = '"Expected "' + angular.mock.dump(modalDomEls) +
+                                '" to be open with "' + content + '".';
                         }
 
                         return result;
@@ -95,24 +103,26 @@ describe('ui.xg.modal', function () {
                 };
             },
 
-            toHaveModalsOpen: function() {
+            toHaveModalsOpen: function () {
                 return {
-                    compare: function(actual, expected) {
+                    compare: function (actual, expected) {
                         var modalDomEls = actual.find('body > div.modal');
                         var result = {
                             pass: modalDomEls.length === expected
                         };
                         if (result.pass) {
-                            result.message = 'Expected "' + actual + '" not to have ' + expected + ' modal'+(expected>1?'s.':'.');
+                            result.message = 'Expected "' + actual +
+                                '" not to have ' + expected + ' modal' + (expected > 1 ? 's.' : '.');
                         } else {
-                            result.message = 'Expected "' + actual + '" to have ' + expected + ' modal'+(expected>1?'s.':'.');
+                            result.message = 'Expected "' + actual +
+                                '" to have ' + expected + ' modal' + (expected > 1 ? 's.' : '.');
                         }
                         return result;
                     }
                 };
             },
 
-            toHaveBackdrop: function() {
+            toHaveBackdrop: function () {
                 return {
                     compare: function (actual) {
                         var backdropDomEls = actual.find('body > div.modal-backdrop');
@@ -121,9 +131,11 @@ describe('ui.xg.modal', function () {
                         };
 
                         if (result.pass) {
-                            result.message = 'Expected "' + angular.mock.dump(backdropDomEls) + '" not to be a backdrop element".'
+                            result.message = 'Expected "' + angular.mock.dump(backdropDomEls) +
+                                '" not to be a backdrop element".';
                         } else {
-                            result.message = 'Expected "' + angular.mock.dump(backdropDomEls) + '" to be a backdrop element".'
+                            result.message = 'Expected "' + angular.mock.dump(backdropDomEls) +
+                                '" to be a backdrop element".';
                         }
 
                         return result;
@@ -133,9 +145,9 @@ describe('ui.xg.modal', function () {
         });
     });
     function triggerKeyDown(element, keyCode) {
-        var e = $.Event('keydown');
-        e.which = keyCode;
-        element.trigger(e);
+        var evt = $.Event('keydown');
+        evt.which = keyCode;
+        element.trigger(evt);
     }
 
     function waitForBackdropAnimation() {
@@ -145,6 +157,7 @@ describe('ui.xg.modal', function () {
             }
         });
     }
+
     function open(modalOptions) {
         var modal = $uixModal.open(modalOptions);
         $rootScope.$digest();
@@ -162,6 +175,7 @@ describe('ui.xg.modal', function () {
         $timeout.flush();
         $rootScope.$digest();
     }
+
     afterEach(function () {
         var body = $document.find('body');
         body.find('div.modal').remove();
@@ -274,18 +288,24 @@ describe('ui.xg.modal', function () {
         });
 
         it('should expose a promise linked to the templateUrl / resolve promises', function () {
-            var modal = open({template: '<div>Content</div>', resolve: {
-                    ok: function() {return $q.when('ok');}
-                }}
-            );
+            var modal = open({
+                template: '<div>Content</div>', resolve: {
+                    ok: function () {
+                        return $q.when('ok');
+                    }
+                }
+            });
             expect(modal.opened).toBeResolvedWith(true);
         });
 
         it('should expose a promise linked to the templateUrl / resolve promises and reject it if needed', function () {
-            var modal = open({template: '<div>Content</div>', resolve: {
-                    ok: function() {return $q.reject('ko');}
-                }}
-            );
+            var modal = open({
+                template: '<div>Content</div>', resolve: {
+                    ok: function () {
+                        return $q.reject('ko');
+                    }
+                }
+            });
             expect(modal.opened).toBeRejectedWith(false);
         });
 
@@ -318,7 +338,7 @@ describe('ui.xg.modal', function () {
         describe('template and templateUrl', function () {
 
             it('should throw an error if none of template and templateUrl are provided', function () {
-                expect(function(){
+                expect(function () {
                     open({});
                 }).toThrow(new Error('One of template or templateUrl options is required.'));
             });
@@ -331,9 +351,11 @@ describe('ui.xg.modal', function () {
             });
 
             it('should accept template as a function', function () {
-                open({template: function() {
-                    return '<div>From a function</div>';
-                }});
+                open({
+                    template: function () {
+                        return '<div>From a function</div>';
+                    }
+                });
 
                 expect($document).toHaveModalOpenWithContent('From a function', 'div');
             });
@@ -341,9 +363,11 @@ describe('ui.xg.modal', function () {
             it('should not fail if a templateUrl as a function', function () {
 
                 $templateCache.put('whitespace.html', '  <div>Whitespaces</div>  ');
-                open({templateUrl: function(){
-                    return 'whitespace.html';
-                }});
+                open({
+                    templateUrl: function () {
+                        return 'whitespace.html';
+                    }
+                });
                 expect($document).toHaveModalOpenWithContent('Whitespaces', 'div');
             });
 
@@ -352,9 +376,10 @@ describe('ui.xg.modal', function () {
         describe('controller', function () {
 
             it('should accept controllers and inject modal instances', function () {
-                var TestCtrl = function($scope, $uixModalInstance) {
+                var TestCtrl = function ($scope, $uixModalInstance) {
                     $scope.fromCtrl = 'Content from ctrl';
-                    $scope.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
+                    $scope.isModalInstance = angular.isObject($uixModalInstance) &&
+                        angular.isFunction($uixModalInstance.close);
                 };
 
                 open({template: '<div>{{fromCtrl}} {{isModalInstance}}</div>', controller: TestCtrl});
@@ -362,37 +387,51 @@ describe('ui.xg.modal', function () {
             });
 
             it('should accept controllerAs alias', function () {
-                $controllerProvider.register('TestCtrl', function($uixModalInstance) {
+                $controllerProvider.register('TestCtrl', function ($uixModalInstance) {
                     this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
+                    this.isModalInstance = angular.isObject($uixModalInstance) &&
+                        angular.isFunction($uixModalInstance.close);
                 });
 
-                open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: 'TestCtrl as test'});
+                open({
+                    template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>',
+                    controller: 'TestCtrl as test'
+                });
                 expect($document).toHaveModalOpenWithContent('Content from ctrl true', 'div');
             });
 
             it('should respect the controllerAs property as an alternative for the controller-as syntax', function () {
-                $controllerProvider.register('TestCtrl', function($uixModalInstance) {
+                $controllerProvider.register('TestCtrl', function ($uixModalInstance) {
                     this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
+                    this.isModalInstance = angular.isObject($uixModalInstance) &&
+                        angular.isFunction($uixModalInstance.close);
                 });
 
-                open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: 'TestCtrl', controllerAs: 'test'});
+                open({
+                    template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>',
+                    controller: 'TestCtrl',
+                    controllerAs: 'test'
+                });
                 expect($document).toHaveModalOpenWithContent('Content from ctrl true', 'div');
             });
 
             it('should allow defining in-place controller-as controllers', function () {
-                open({template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>', controller: function($uixModalInstance) {
-                    this.fromCtrl = 'Content from ctrl';
-                    this.isModalInstance = angular.isObject($uixModalInstance) && angular.isFunction($uixModalInstance.close);
-                }, controllerAs: 'test'});
+                open({
+                    template: '<div>{{test.fromCtrl}} {{test.isModalInstance}}</div>',
+                    controller: function ($uixModalInstance) {
+                        this.fromCtrl = 'Content from ctrl';
+                        this.isModalInstance = angular.isObject($uixModalInstance) &&
+                            angular.isFunction($uixModalInstance.close);
+                    },
+                    controllerAs: 'test'
+                });
                 expect($document).toHaveModalOpenWithContent('Content from ctrl true', 'div');
             });
         });
 
         describe('resolve', function () {
 
-            var ExposeCtrl = function($scope, value) {
+            var ExposeCtrl = function ($scope, value) {
                 $scope.value = value;
             };
 
@@ -418,7 +457,9 @@ describe('ui.xg.modal', function () {
 
                 open(modalDefinition('<div>{{value}}</div>', {
                     value: function () {
-                        return $timeout(function(){ return 'Promise'; }, 100);
+                        return $timeout(function () {
+                            return 'Promise';
+                        }, 100);
                     }
                 }));
                 expect($document).toHaveModalsOpen(0);
@@ -448,8 +489,8 @@ describe('ui.xg.modal', function () {
             it('should support injection with minification-safe syntax in resolve functions', function () {
 
                 open(modalDefinition('<div>{{value.id}}</div>', {
-                    value: ['$locale', function (e) {
-                        return e;
+                    value: ['$locale', function (evt) {
+                        return evt;
                     }]
                 }));
 
@@ -501,7 +542,7 @@ describe('ui.xg.modal', function () {
         describe('backdrop', function () {
 
             it('should not have any backdrop element if backdrop set to false', function () {
-                var modal =open({
+                var modal = open({
                     template: '<div>No backdrop</div>',
                     backdrop: false
                 });
@@ -527,7 +568,7 @@ describe('ui.xg.modal', function () {
 
             it('should animate backdrop on each modal opening', function () {
 
-                var modal = open({ template: '<div>With backdrop</div>' });
+                var modal = open({template: '<div>With backdrop</div>'});
                 var backdropEl = $document.find('body > div.modal-backdrop');
                 expect(backdropEl).not.toHaveClass('in');
 
@@ -537,7 +578,7 @@ describe('ui.xg.modal', function () {
                 dismiss(modal);
                 waitForBackdropAnimation();
 
-                modal = open({ template: '<div>With backdrop</div>' });
+                modal = open({template: '<div>With backdrop</div>'});
                 backdropEl = $document.find('body > div.modal-backdrop');
                 expect(backdropEl).not.toHaveClass('in');
 

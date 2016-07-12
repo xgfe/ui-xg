@@ -37,7 +37,7 @@ describe('ui.xg.timepanel', function () {
             second: secondInputEl.val(),
             second_smaller: secondInputEl.parent().next().text(),
             second_larger: secondInputEl.parent().prev().text()
-        }
+        };
     }
 
     function increaseHour() {
@@ -61,27 +61,27 @@ describe('ui.xg.timepanel', function () {
     }
 
     function wheelMouse(delta) {
-        var e = $.Event('mousewheel');
-        e.wheelDelta = delta;
-        return e;
+        var evt = $.Event('mousewheel');
+        evt.wheelDelta = delta;
+        return evt;
     }
     function keydown(key) {
-        var e = $.Event('keydown');
+        var evt = $.Event('keydown');
         switch(key) {
             case 'left':
-                e.which = 37;
+                evt.which = 37;
                 break;
             case 'up':
-                e.which = 38;
+                evt.which = 38;
                 break;
             case 'right':
-                e.which = 39;
+                evt.which = 39;
                 break;
             case 'down':
-                e.which = 40;
+                evt.which = 40;
                 break;
         }
-        return e;
+        return evt;
     }
 
     it('should show correct number', function () {

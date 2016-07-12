@@ -10,11 +10,11 @@ describe('ui.xg.sortable', function () {
         //    scope = $rootScope.$new();
         //});
     });
-    afterEach(function() {
+    afterEach(function () {
 
     });
 
-    it('should run without an error',function(){
+    it('should run without an error', function () {
 
     });
 

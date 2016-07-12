@@ -21,8 +21,8 @@ angular.module('ui.xg.dropdown', [])
                 getColsNum: function () {
                     return _colsNum;
                 }
-            }
-        }
+            };
+        };
     })
     .service('uixDropdownService', ['$document', function ($document) {
         var openScope = null;
@@ -73,89 +73,92 @@ angular.module('ui.xg.dropdown', [])
         }
     }])
 
-    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
-        function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
-            var self = this,
-                scope = $scope.$new(), // create a child scope so we are not polluting original one
-                openClass = uixDropdownConfig.openClass,
-                getIsOpen,
-                setIsOpen = angular.noop,
-                toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
+    .controller('DropdownController',
+        ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
+            function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
+                var self = this,
+                    scope = $scope.$new(), // create a child scope so we are not polluting original one
+                    openClass = uixDropdownConfig.openClass,
+                    getIsOpen,
+                    setIsOpen = angular.noop,
+                    toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
 
-            this.init = function (element) {
-                self.$element = element;
-                self.colsNum = angular.isDefined($attrs.colsNum) ?
-                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
-                if ($attrs.isOpen) {
-                    getIsOpen = $parse($attrs.isOpen);
-                    setIsOpen = getIsOpen.assign;
+                this.init = function (element) {
+                    self.$element = element;
+                    self.colsNum = angular.isDefined($attrs.colsNum)
+                        ? angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
+                    if ($attrs.isOpen) {
+                        getIsOpen = $parse($attrs.isOpen);
+                        setIsOpen = getIsOpen.assign;
 
-                    $scope.$watch(getIsOpen, function (value) {
-                        scope.isOpen = !!value;
-                    });
+                        $scope.$watch(getIsOpen, function (value) {
+                            scope.isOpen = !!value;
+                        });
+                    }
+                };
+
+                this.toggle = function (open) {
+                    scope.isOpen = arguments.length ? !!open : !scope.isOpen;
+                    return scope.isOpen;
+                };
+
+                // Allow other directives to watch status
+                this.isOpen = function () {
+                    return scope.isOpen;
+                };
+
+                scope.getToggleElement = function () {
+                    return self.toggleElement;
+                };
+
+                scope.focusToggleElement = function () {
+                    if (self.toggleElement) {
+                        self.toggleElement[0].focus();
+                    }
+                };
+
+                scope.$watch('isOpen', function (isOpen, wasOpen) {
+                    if (isOpen) {
+                        setMultiCols();
+                    }
+                    $animate[isOpen ? 'addClass' : 'removeClass'](self.$element, openClass);
+
+                    if (isOpen) {
+                        scope.focusToggleElement();
+                        uixDropdownService.open(scope);
+                    } else {
+                        uixDropdownService.close(scope);
+                    }
+
+                    setIsOpen($scope, isOpen);
+                    if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
+                        toggleInvoker($scope, {open: !!isOpen});
+                    }
+                });
+                // set multi column
+                function setMultiCols() {
+                    var eachItemWidth = uixDropdownConfig.eachItemWidth;
+                    var colsNum = self.colsNum;
+                    var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
+                    var dropdownList = angular.element(
+                        self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)')
+                    );
+                    if (dropdownList.length <= colsNum || colsNum === 1) {
+                        return;
+                    }
+                    self.$element.addClass(uixDropdownConfig.multiColClass);
+                    dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
+                    dropdownList.css('width', 100 / colsNum + '%');
                 }
-            };
 
-            this.toggle = function (open) {
-                scope.isOpen = arguments.length ? !!open : !scope.isOpen;
-                return scope.isOpen;
-            };
+                $scope.$on('$locationChangeSuccess', function () {
+                    scope.isOpen = false;
+                });
 
-            // Allow other directives to watch status
-            this.isOpen = function () {
-                return scope.isOpen;
-            };
-
-            scope.getToggleElement = function () {
-                return self.toggleElement;
-            };
-
-            scope.focusToggleElement = function () {
-                if (self.toggleElement) {
-                    self.toggleElement[0].focus();
-                }
-            };
-
-            scope.$watch('isOpen', function (isOpen, wasOpen) {
-                if (isOpen) {
-                    setMultiCols();
-                }
-                $animate[isOpen ? 'addClass' : 'removeClass'](self.$element, openClass);
-
-                if (isOpen) {
-                    scope.focusToggleElement();
-                    uixDropdownService.open(scope);
-                } else {
-                    uixDropdownService.close(scope);
-                }
-
-                setIsOpen($scope, isOpen);
-                if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
-                    toggleInvoker($scope, {open: !!isOpen});
-                }
-            });
-            // set multi column
-            function setMultiCols() {
-                var eachItemWidth = uixDropdownConfig.eachItemWidth;
-                var colsNum = self.colsNum;
-                var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
-                var dropdownList = angular.element(self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)'));
-                if (dropdownList.length <= colsNum || colsNum === 1) {
-                    return;
-                }
-                self.$element.addClass(uixDropdownConfig.multiColClass);
-                dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
-                dropdownList.css('width', 100 / colsNum + '%');
-            }
-
-            $scope.$on('$locationChangeSuccess', function () {
-                scope.isOpen = false;
-            });
-
-            $scope.$on('$destroy', function () {
-                scope.$destroy();
-            });
-        }])
+                $scope.$on('$destroy', function () {
+                    scope.$destroy();
+                });
+            }])
 
     .directive('uixDropdown', function () {
         return {

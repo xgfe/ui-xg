@@ -1,4 +1,4 @@
-describe('popover', function() {
+describe('popover', function () {
     var elm,
         elmBody,
         scope,
@@ -16,7 +16,7 @@ describe('popover', function() {
         module('popover/templates/popover-html-popup.html');
     });
 
-    beforeEach(inject(function($rootScope, $compile, $sce, _$document_) {
+    beforeEach(inject(function ($rootScope, $compile, $sce, _$document_) {
         $document = _$document_;
         elmBody = angular.element(
             '<div><span uix-popover-html="template">Selector Text</span></div>'
@@ -31,11 +31,11 @@ describe('popover', function() {
         tooltipScope = elmScope.$$childTail;
     }));
 
-    afterEach(function() {
+    afterEach(function () {
         $document.off('keypress');
     });
 
-    it('should not be open initially', inject(function() {
+    it('should not be open initially', inject(function () {
         expect(tooltipScope.isOpen).toBe(false);
 
         // We can only test *that* the popover-popup element wasn't created as the
@@ -43,7 +43,7 @@ describe('popover', function() {
         expect(elmBody.children().length).toBe(1);
     }));
 
-    it('should open on click', inject(function() {
+    it('should open on click', inject(function () {
         elm.trigger('click');
         tooltipScope.$digest();
         expect(tooltipScope.isOpen).toBe(true);
@@ -53,7 +53,7 @@ describe('popover', function() {
         expect(elmBody.children().length).toBe(2);
     }));
 
-    it('should close on second click', inject(function() {
+    it('should close on second click', inject(function () {
         elm.trigger('click');
         tooltipScope.$digest();
         expect(tooltipScope.isOpen).toBe(true);
@@ -62,7 +62,7 @@ describe('popover', function() {
         expect(tooltipScope.isOpen).toBe(false);
     }));
 
-    it('should not open on click if template is empty', inject(function() {
+    it('should not open on click if template is empty', inject(function () {
         scope.template = null;
         scope.$digest();
 
@@ -73,7 +73,7 @@ describe('popover', function() {
         expect(elmBody.children().length).toBe(1);
     }));
 
-    it('should show updated text', inject(function($sce) {
+    it('should show updated text', inject(function ($sce) {
         scope.template = $sce.trustAsHtml('<span>My template</span>');
         scope.$digest();
 
@@ -89,7 +89,7 @@ describe('popover', function() {
         expect(elmBody.children().eq(1).text().trim()).toBe('Another template');
     }));
 
-    it('should hide popover when template becomes empty', inject(function($timeout) {
+    it('should hide popover when template becomes empty', inject(function ($timeout) {
         elm.trigger('click');
         tooltipScope.$digest();
         expect(tooltipScope.isOpen).toBe(true);
@@ -104,8 +104,8 @@ describe('popover', function() {
     }));
 
 
-    it('should not unbind event handlers created by other directives - issue 456', inject(function($compile) {
-        scope.click = function() {
+    it('should not unbind event handlers created by other directives - issue 456', inject(function ($compile) {
+        scope.click = function () {
             scope.clicked = !scope.clicked;
         };
 
@@ -127,7 +127,7 @@ describe('popover', function() {
         expect(scope.clicked).toBeTruthy();
     }));
 
-    it('should popup with animate class by default', inject(function() {
+    it('should popup with animate class by default', inject(function () {
         elm.trigger('click');
         tooltipScope.$digest();
         expect(tooltipScope.isOpen).toBe(true);
@@ -135,7 +135,7 @@ describe('popover', function() {
         expect(elmBody.children().eq(1)).toHaveClass('fade');
     }));
 
-    it('should popup without animate class when animation disabled', inject(function($compile) {
+    it('should popup without animate class when animation disabled', inject(function ($compile) {
         elmBody = angular.element(
             '<div><span uix-popover-html="template" popover-animation="false">Selector Text</span></div>'
         );
@@ -152,9 +152,9 @@ describe('popover', function() {
         expect(elmBody.children().eq(1)).not.toHaveClass('fade');
     }));
 
-    describe('supports options', function() {
-        describe('placement', function() {
-            it('can specify an alternative, valid placement', inject(function($compile) {
+    describe('supports options', function () {
+        describe('placement', function () {
+            it('can specify an alternative, valid placement', inject(function ($compile) {
                 elmBody = angular.element(
                     '<div><span uix-popover-html="template" popover-placement="left">Trigger here</span></div>'
                 );
@@ -175,8 +175,8 @@ describe('popover', function() {
 
         });
 
-        describe('class', function() {
-            it('can specify a custom class', inject(function($compile) {
+        describe('class', function () {
+            it('can specify a custom class', inject(function ($compile) {
                 elmBody = angular.element(
                     '<div><span uix-popover-html="template" popover-class="custom">Trigger here</span></div>'
                 );

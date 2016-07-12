@@ -11,14 +11,14 @@ describe('ui.xg.timepicker', function () {
         module('timepanel/templates/timepanel.html');
         module('ui.xg.timepicker');
         module('timepicker/templates/timepicker.html');
-        inject(function( $compile, $rootScope,uixTimepickerConfig,dateFilter) {
+        inject(function ($compile, $rootScope, uixTimepickerConfig, dateFilter) {
             compile = $compile;
             scope = $rootScope.$new();
             timepickerConfig = uixTimepickerConfig;
             date = dateFilter;
         });
     });
-    afterEach(function() {
+    afterEach(function () {
         element.remove();
     });
 
@@ -26,6 +26,7 @@ describe('ui.xg.timepicker', function () {
         element = compile(el)(scope);
         scope.$digest();
     }
+
     function getDate() {
         var dt = new Date();
         dt.setHours(12);
@@ -33,20 +34,25 @@ describe('ui.xg.timepicker', function () {
         dt.setSeconds(30);
         return dt;
     }
-    function getInputVal(){
+
+    function getInputVal() {
         return element.find('.uix-timepicker-input').val();
     }
-    function clickInput(){
+
+    function clickInput() {
         element.find('.uix-timepicker-input').click();
         scope.$digest();
     }
-    function clickButton(){
+
+    function clickButton() {
         element.find('.input-group button').click();
         scope.$digest();
     }
-    function getTimepanel(){
+
+    function getTimepanel() {
         return element.next('.uix-timepicker-popover');
     }
+
     function increaseHour() {
         var el = getTimepanel().find('.uix-timepanel-col').eq(0).find('.uix-timepanel-top');
         el.click();
@@ -58,6 +64,7 @@ describe('ui.xg.timepicker', function () {
         el.click();
         scope.$digest();
     }
+
     function getTimes() {
         var inputs = getTimepanel().find('input');
         var hourInputEl = inputs.eq(0),
@@ -73,17 +80,17 @@ describe('ui.xg.timepicker', function () {
             second: secondInputEl.val(),
             second_smaller: secondInputEl.parent().next().text(),
             second_larger: secondInputEl.parent().prev().text()
-        }
+        };
     }
 
-    it('should show format time',function(){
+    it('should show format time', function () {
         var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         var dt = getDate();
         scope.time = dt;
         createTimepicker(el);
         expect(element).toHaveClass('uix-timepicker');
         var val = getInputVal();
-        expect(val).toEqual(date(dt,timepickerConfig.format));
+        expect(val).toEqual(date(dt, timepickerConfig.format));
     });
 
     it('should toggle timepanel when click input and button', function () {
@@ -141,7 +148,7 @@ describe('ui.xg.timepicker', function () {
         scope.format = 'HH-mm-ss';
         createTimepicker(el);
         var val = getInputVal();
-        expect(val).toEqual(date(dt,scope.format));
+        expect(val).toEqual(date(dt, scope.format));
     });
     it('disable input and button when ngDisabled set to be false', function () {
         var el = '<uix-timepicker ng-disabled="isDisabled" ng-model="time"></uix-timepicker>';

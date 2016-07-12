@@ -11,12 +11,12 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
-    .factory('$transition', function() {
+    .factory('$transition', ['$document', function ($document) {
 
         var $transition = {};
 
         // Work out the name of the transitionEnd event
-        var transElement = document.createElement('trans');
+        var transElement = $document[0].createElement('trans');
         var transitionEndEventNames = {
             'WebkitTransition': 'webkitTransitionEnd',
             'MozTransition': 'transitionend',
@@ -29,17 +29,19 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
             'OTransition': 'oAnimationEnd',
             'transition': 'animationend'
         };
+
         function findEndEventName(endEventNames) {
-            for (var name in endEventNames){
-                if (!angular.isUndefined(transElement.style[name])) {
+            for (var name in endEventNames) {
+                if (angular.isDefined(transElement.style[name])) {
                     return endEventNames[name];
                 }
             }
         }
+
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
-    })
+    }])
 
     /**
      * A helper directive for the $uixModal service. It creates a backdrop element.
@@ -95,7 +97,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
                 scope.close = function (evt) {
                     var modal = $uixModalStack.getTop();
-                    if (modal && modal.value.backdrop && modal.value.backdrop != 'static' && (evt.target === evt.currentTarget)) {
+                    if (modal && modal.value.backdrop && modal.value.backdrop !== 'static' &&
+                        (evt.target === evt.currentTarget)) {
                         evt.preventDefault();
                         evt.stopPropagation();
                         $uixModalStack.dismiss(modal.key, 'backdrop click');
@@ -107,9 +110,9 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
     .directive('uixModalTransclude', function () {
         return {
-            link: function($scope, $element, $attrs, controller, $transclude) {
+            link: function ($scope, $element, $attrs, controller, $transclude) {
                 // TODO 这个$transclude是自动注入的吗?
-                $transclude($scope.$parent, function(clone) {
+                $transclude($scope.$parent, function (clone) {
                     $element.empty();
                     $element.append(clone);
                 });
@@ -137,7 +140,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                 return topBackdropIndex;
             }
 
-            $rootScope.$watch(backdropIndex, function(newBackdropIndex){
+            $rootScope.$watch(backdropIndex, function (newBackdropIndex) {
                 if (backdropScope) {
                     backdropScope.index = newBackdropIndex;
                 }
@@ -151,7 +154,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                 openedWindows.remove(modalInstance);
 
                 //remove window DOM element
-                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function() {
+                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function () {
                     modalWindow.modalScope.$destroy();
                     body.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
                     checkRemoveBackdrop();
@@ -160,7 +163,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
             function checkRemoveBackdrop() {
                 //remove backdrop if no longer needed
-                if (backdropDomEl && backdropIndex() == -1) {
+                if (backdropDomEl && backdropIndex() === -1) {
                     var backdropScopeRef = backdropScope;
                     removeAfterAnimate(backdropDomEl, backdropScope, 150, function () {
                         backdropScopeRef.$destroy();
@@ -297,12 +300,12 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                  * @returns {*|Promise}
                  */
                 function getTemplatePromise(options) {
-                    return options.template ? $q.when(options.template) :
-                        $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
-                            {cache: $templateCache})
+                    return options.template ? $q.when(options.template)
+                        : $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
+                        {cache: $templateCache})
                         .then(function (result) {
-                                return result.data;
-                            });
+                            return result.data;
+                        });
                 }
 
                 /**
@@ -319,6 +322,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                     });
                     return promisesArr;
                 }
+
                 return {
                     open: function (modalOptions) {
                         var modalResultDeferred = $q.defer();
