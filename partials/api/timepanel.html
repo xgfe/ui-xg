@@ -18,13 +18,14 @@
     <pre>{{time | date:'shortTime'}}</pre>
     showSeconds:<input type="checkbox" ng-model="showSeconds">
     readonlyInput:<input type="checkbox" ng-model="readonlyInput">
-</div></div><script>angular.module('uixDemo').controller('timepanelDemoCtrl',['$scope','$log', function ($scope,$log) {
+</div></div><script>angular.module('uixDemo').controller('timepanelDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.time = new Date();
     $scope.changed = function (time) {
         $log.log(time);
     };
     $scope.showSeconds = true;
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -46,13 +47,14 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'timepanelDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$log)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'timepanelDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
     $scope.time = <span class="hljs-keyword">new</span> Date();
     $scope.changed = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(time)</span> </span>{
         $log.log(time);
     };
     $scope.showSeconds = <span class="hljs-keyword">true</span>;
-}]);</code></pre>
+}]);
+</code></pre>
     </div>
     
     

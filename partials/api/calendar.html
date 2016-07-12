@@ -15,9 +15,9 @@
     <uix-calendar min-date="minDate" max-date="maxDate" ng-model="date" exceptions="exceptions"></uix-calendar>
     <pre>{{date | date:'yyyy-MM-dd hh:mm:ss'}}</pre>
 </div></div><script>angular.module('uixDemo').config(['uixCalendarProvider', function (uixCalendarProvider) {
-    uixCalendarProvider.setFormats('SHORTDAY',['日','一','二','三','四','五','六'])
+    uixCalendarProvider.setFormats('SHORTDAY', ['日', '一', '二', '三', '四', '五', '六']);
 }]);
-angular.module('uixDemo').controller('calendarDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('calendarDemoCtrl', ['$scope', function ($scope) {
     $scope.date = new Date();
 
     $scope.minDate = new Date();
@@ -32,10 +32,11 @@ angular.module('uixDemo').controller('calendarDemoCtrl',['$scope', function ($sc
     dt1.setDate(5);
     var dt2 = new Date();
     dt2.setFullYear(2017);
-    dt2.setMonth($scope.date.getMonth()+1);
+    dt2.setMonth($scope.date.getMonth() + 1);
     dt2.setDate(5);
-    $scope.exceptions = [dt1,dt2];
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+    $scope.exceptions = [dt1, dt2];
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -56,9 +57,9 @@ angular.module('uixDemo').controller('calendarDemoCtrl',['$scope', function ($sc
     
     <div class="tab-pane " id="script_js">
 <pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).config([<span class="hljs-string">'uixCalendarProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(uixCalendarProvider)</span> </span>{
-    uixCalendarProvider.setFormats(<span class="hljs-string">'SHORTDAY'</span>,[<span class="hljs-string">'日'</span>,<span class="hljs-string">'一'</span>,<span class="hljs-string">'二'</span>,<span class="hljs-string">'三'</span>,<span class="hljs-string">'四'</span>,<span class="hljs-string">'五'</span>,<span class="hljs-string">'六'</span>])
+    uixCalendarProvider.setFormats(<span class="hljs-string">'SHORTDAY'</span>, [<span class="hljs-string">'日'</span>, <span class="hljs-string">'一'</span>, <span class="hljs-string">'二'</span>, <span class="hljs-string">'三'</span>, <span class="hljs-string">'四'</span>, <span class="hljs-string">'五'</span>, <span class="hljs-string">'六'</span>]);
 }]);
-angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'calendarDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.date = <span class="hljs-keyword">new</span> Date();
 
     $scope.minDate = <span class="hljs-keyword">new</span> Date();
@@ -73,10 +74,11 @@ angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span clas
     dt1.setDate(<span class="hljs-number">5</span>);
     <span class="hljs-keyword">var</span> dt2 = <span class="hljs-keyword">new</span> Date();
     dt2.setFullYear(<span class="hljs-number">2017</span>);
-    dt2.setMonth($scope.date.getMonth()+<span class="hljs-number">1</span>);
+    dt2.setMonth($scope.date.getMonth() + <span class="hljs-number">1</span>);
     dt2.setDate(<span class="hljs-number">5</span>);
-    $scope.exceptions = [dt1,dt2];
-}]);</code></pre>
+    $scope.exceptions = [dt1, dt2];
+}]);
+</code></pre>
     </div>
     
     

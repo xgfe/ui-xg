@@ -46,15 +46,15 @@
     <uix-button loading="loading" text="'被控制loading效果'"></uix-button>
     <p>icon设置按钮图标，默认无</p>
     <uix-button icon="icon" text="'add'" size="'x-small'"></uix-button>
-</div></div><script>angular.module('uixDemo').controller('buttonDemoCtrl',['$scope', function ($scope) {
+</div></div><script>angular.module('uixDemo').controller('buttonDemoCtrl', ['$scope', function ($scope) {
     $scope.text = '设置text';
     $scope.typeArr = ['button', 'reset', 'submit'];
     $scope.btnClass = 'primary';
     $scope.formContent = '表单内容';
-    $scope.submit = "Submit";
-    $scope.reset = "Reset";
+    $scope.submit = 'Submit';
+    $scope.reset = 'Reset';
     $scope.block = true;
-    $scope.clickText = "";
+    $scope.clickText = '';
 
     $scope.activeTrue = true;
     $scope.activeFalse = false;
@@ -68,15 +68,16 @@
     $scope.icon = 'plus';
 
     $scope.loading = false;
-    $scope.clickFn = function(){
+    $scope.clickFn = function () {
         $scope.loading = !$scope.loading;
     };
-    $scope.submitFn = function(){
+    $scope.submitFn = function () {
         $scope.clickText = 'submit function';
     };
-    $scope.classArr = ['danger', 'warning' , 'default' , 'success' , 'info' , 'primary', 'link'];
-    $scope.sizeArr = ['x-small', 'small' , 'large'];
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+    $scope.classArr = ['danger', 'warning', 'default', 'success', 'info', 'primary', 'link'];
+    $scope.sizeArr = ['x-small', 'small', 'large'];
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -126,15 +127,15 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'buttonDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
     $scope.text = <span class="hljs-string">'设置text'</span>;
     $scope.typeArr = [<span class="hljs-string">'button'</span>, <span class="hljs-string">'reset'</span>, <span class="hljs-string">'submit'</span>];
     $scope.btnClass = <span class="hljs-string">'primary'</span>;
     $scope.formContent = <span class="hljs-string">'表单内容'</span>;
-    $scope.submit = <span class="hljs-string">"Submit"</span>;
-    $scope.reset = <span class="hljs-string">"Reset"</span>;
+    $scope.submit = <span class="hljs-string">'Submit'</span>;
+    $scope.reset = <span class="hljs-string">'Reset'</span>;
     $scope.block = <span class="hljs-keyword">true</span>;
-    $scope.clickText = <span class="hljs-string">""</span>;
+    $scope.clickText = <span class="hljs-string">''</span>;
 
     $scope.activeTrue = <span class="hljs-keyword">true</span>;
     $scope.activeFalse = <span class="hljs-keyword">false</span>;
@@ -148,15 +149,16 @@
     $scope.icon = <span class="hljs-string">'plus'</span>;
 
     $scope.loading = <span class="hljs-keyword">false</span>;
-    $scope.clickFn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    $scope.clickFn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $scope.loading = !$scope.loading;
     };
-    $scope.submitFn = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    $scope.submitFn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $scope.clickText = <span class="hljs-string">'submit function'</span>;
     };
-    $scope.classArr = [<span class="hljs-string">'danger'</span>, <span class="hljs-string">'warning'</span> , <span class="hljs-string">'default'</span> , <span class="hljs-string">'success'</span> , <span class="hljs-string">'info'</span> , <span class="hljs-string">'primary'</span>, <span class="hljs-string">'link'</span>];
-    $scope.sizeArr = [<span class="hljs-string">'x-small'</span>, <span class="hljs-string">'small'</span> , <span class="hljs-string">'large'</span>];
-}]);</code></pre>
+    $scope.classArr = [<span class="hljs-string">'danger'</span>, <span class="hljs-string">'warning'</span>, <span class="hljs-string">'default'</span>, <span class="hljs-string">'success'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'primary'</span>, <span class="hljs-string">'link'</span>];
+    $scope.sizeArr = [<span class="hljs-string">'x-small'</span>, <span class="hljs-string">'small'</span>, <span class="hljs-string">'large'</span>];
+}]);
+</code></pre>
     </div>
     
     

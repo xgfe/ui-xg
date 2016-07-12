@@ -75,12 +75,12 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
     viewportOffset: {{elemVals.viewportOffset}}
     <br />
     positionElements: {{elemVals.positionElements}}
-</div></div><script>angular.module('uixDemo').controller('dropdownDemoCtrl',['$scope','$window','$uixPosition', function ($scope,$window,$uixPosition) {
+</div></div><script>angular.module('uixDemo').controller('dropdownDemoCtrl', ['$scope', '$window', '$uixPosition', function ($scope, $window, $uixPosition) {
     $scope.elemVals = {};
     $scope.parentScrollable = true;
     $scope.parentRelative = true;
 
-    $scope.getValues = function() {
+    $scope.getValues = function () {
         var divEl = $window.document.querySelector('#posdemodiv');
         var btnEl = $window.document.querySelector('#posdemobtn');
 
@@ -100,7 +100,8 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
 
         $scope.elemVals.positionElements = $uixPosition.positionElements(btnEl, divEl, 'auto bottom-left');
     };
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -152,12 +153,12 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>,<span class="hljs-string">'$window'</span>,<span class="hljs-string">'$uixPosition'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope,$window,$uixPosition)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'dropdownDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$window'</span>, <span class="hljs-string">'$uixPosition'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $window, $uixPosition)</span> </span>{
     $scope.elemVals = {};
     $scope.parentScrollable = <span class="hljs-keyword">true</span>;
     $scope.parentRelative = <span class="hljs-keyword">true</span>;
 
-    $scope.getValues = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    $scope.getValues = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         <span class="hljs-keyword">var</span> divEl = $window.document.querySelector(<span class="hljs-string">'#posdemodiv'</span>);
         <span class="hljs-keyword">var</span> btnEl = $window.document.querySelector(<span class="hljs-string">'#posdemobtn'</span>);
 
@@ -177,7 +178,8 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
 
         $scope.elemVals.positionElements = $uixPosition.positionElements(btnEl, divEl, <span class="hljs-string">'auto bottom-left'</span>);
     };
-}]);</code></pre>
+}]);
+</code></pre>
     </div>
     
     

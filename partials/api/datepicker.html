@@ -43,7 +43,7 @@
             <input type="checkbox" id="disabled" ng-model="isDisabled">
         </div>
     </div>
-</div></div><script>angular.module('uixDemo').controller('datepickerDemoCtrl',['$scope', '$log', function ($scope, $log) {
+</div></div><script>angular.module('uixDemo').controller('datepickerDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.date = new Date();
     $scope.minDate = new Date('2016-3-10');
     $scope.maxDate = new Date('2017-3-21');
@@ -56,7 +56,8 @@
     $scope.onChange = function () {
         $log.log('date changed');
     };
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -102,7 +103,7 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'datepickerDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'datepickerDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$log'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $log)</span> </span>{
     $scope.date = <span class="hljs-keyword">new</span> Date();
     $scope.minDate = <span class="hljs-keyword">new</span> Date(<span class="hljs-string">'2016-3-10'</span>);
     $scope.maxDate = <span class="hljs-keyword">new</span> Date(<span class="hljs-string">'2017-3-21'</span>);
@@ -115,7 +116,8 @@
     $scope.onChange = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $log.log(<span class="hljs-string">'date changed'</span>);
     };
-}]);</code></pre>
+}]);
+</code></pre>
     </div>
     
     

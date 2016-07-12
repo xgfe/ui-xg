@@ -27,7 +27,7 @@
     <p>Changed</p>
     <uix-switch ng-model="open" on-change="statusChange()" type="success"></uix-switch>
     <p>trueValue and falseValue</p>
-    <uix-switch ng-model="status" type="success" true-value="A" false-value="B"></uix-switch>
+    <uix-switch ng-model="status" type="success" true-value="trueVal" false-value="falseVal"></uix-switch>
     <pre>status:{{status}}</pre>
 </div></div><script>angular.module('uixDemo').controller('switchDemoCtrl', ['$scope', '$log', function ($scope, $log) {
     $scope.open = false;
@@ -37,9 +37,10 @@
         $log.log('changed');
     };
     $scope.status = 'A';
-    $scope.A = 'A';
-    $scope.B = 'B';
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+    $scope.trueVal = 'A';
+    $scope.falseVal = 'B';
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -70,7 +71,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Changed<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">uix-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"open"</span> <span class="hljs-attr">on-change</span>=<span class="hljs-string">"statusChange()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-switch</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>trueValue and falseValue<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">uix-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"status"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span> <span class="hljs-attr">true-value</span>=<span class="hljs-string">"A"</span> <span class="hljs-attr">false-value</span>=<span class="hljs-string">"B"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-switch</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-switch</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"status"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span> <span class="hljs-attr">true-value</span>=<span class="hljs-string">"trueVal"</span> <span class="hljs-attr">false-value</span>=<span class="hljs-string">"falseVal"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-switch</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>status:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>status&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
@@ -85,9 +86,10 @@
         $log.log(<span class="hljs-string">'changed'</span>);
     };
     $scope.status = <span class="hljs-string">'A'</span>;
-    $scope.A = <span class="hljs-string">'A'</span>;
-    $scope.B = <span class="hljs-string">'B'</span>;
-}]);</code></pre>
+    $scope.trueVal = <span class="hljs-string">'A'</span>;
+    $scope.falseVal = <span class="hljs-string">'B'</span>;
+}]);
+</code></pre>
     </div>
     
     

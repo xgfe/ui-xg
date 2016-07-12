@@ -59,7 +59,7 @@
     <h4>其他</h4>
     <button popover-animation="true" uix-popover="I fade in and out!" type="button" class="btn btn-default">fading</button>
     <button uix-popover="I have a title!" popover-title="我是title." type="button" class="btn btn-default">title</button>
-</div></div><script>angular.module('uixDemo').controller('popoverDemoCtrl',['$scope', function ($scope) {
+</div></div><script>angular.module('uixDemo').controller('popoverDemoCtrl', ['$scope', function ($scope) {
     $scope.dynamicPopover = {
         content: 'Hello, World!',
         title: 'Title'
@@ -82,7 +82,8 @@
         ],
         selected: 'top'
     };
-}]);</script><div><ul class="nav nav-tabs" id="codeTabs">
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
     
     <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
     
@@ -135,7 +136,7 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'popoverDemoCtrl'</span>,[<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'popoverDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
     $scope.dynamicPopover = {
         content: <span class="hljs-string">'Hello, World!'</span>,
         title: <span class="hljs-string">'Title'</span>
@@ -158,7 +159,8 @@
         ],
         selected: <span class="hljs-string">'top'</span>
     };
-}]);</code></pre>
+}]);
+</code></pre>
     </div>
     
     
