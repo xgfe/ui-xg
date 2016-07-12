@@ -6,16 +6,16 @@ describe('uix-search-box', function () {
     beforeEach(function () {
         module('ui.xg.searchBox');
         module('searchBox/templates/searchBox.html');
-        inject(function( $compile, $rootScope, uixSearchBoxConfig) {
+        inject(function ($compile, $rootScope, uixSearchBoxConfig) {
             compile = $compile;
             scope = $rootScope.$new();
             searchBoxConfig = uixSearchBoxConfig;
         });
     });
-    afterEach(function() {
+    afterEach(function () {
         element.remove();
     });
-    function createSearchBox(el){
+    function createSearchBox(el) {
         element = compile(el)(scope);
         scope.$digest();
     }
@@ -88,7 +88,7 @@ describe('uix-search-box', function () {
         createSearchBox(el);
 
         var input = element.find('input');
-        var evt = $.Event("keyup");
+        var evt = $.Event('keyup');
         evt.keyCode = 13;
         input.trigger(evt);
 

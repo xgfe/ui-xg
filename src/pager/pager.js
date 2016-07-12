@@ -132,7 +132,7 @@ angular.module('ui.xg.pager', [])
 
                     // Default page limits
                     var startPage = 1, endPage = totalPages;
-                    var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
+                    var isMaxSized = angular.isDefined(maxSize) && maxSize < totalPages;
 
                     // recompute if maxSize
                     if (isMaxSized) {
@@ -185,5 +185,5 @@ angular.module('ui.xg.pager', [])
                     }
                 };
             }
-        }
+        };
     }]);

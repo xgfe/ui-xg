@@ -11,72 +11,74 @@ angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/but
  * Author:heqingyang@meituan.com
  * Date:2015-01-11
  */
-angular.module('ui.xg.alert',[])
-.controller('uixAlertCtrl',['$scope','$attrs', '$timeout','$interpolate', function ($scope,$attrs,$timeout,$interpolate) {
+angular.module('ui.xg.alert', [])
+    .controller('uixAlertCtrl', ['$scope', '$attrs', '$timeout', '$interpolate',
+        function ($scope, $attrs, $timeout, $interpolate) {
+            //指令初始化
+            function initConfig() {
+                $scope.closeable = !!($scope.close && ($scope.close === 'true' || $scope.close === '1'));
+                $scope.defaultclose = false;
+                $scope.hasIcon = !!($scope.hasIcon && ($scope.hasIcon === 'true' || $scope.hasIcon === '1'));
+            }
 
-    //指令初始化
-    function initConfig(){
-        $scope.closeable = !!($scope.close&&($scope.close=="true"||$scope.close=="1"));
-        $scope.defaultclose = false;
-        $scope.hasIcon = !!($scope.hasIcon&&($scope.hasIcon=="true"||$scope.hasIcon=="1"));
-    }
-    initConfig();
+            initConfig();
 
-    //添加默认close方法
-    if(!$attrs.closeFunc){
-        $scope.closeFunc = function(){
-            $scope.defaultclose = true;
-        }
-    }
+            //添加默认close方法
+            if (!$attrs.closeFunc) {
+                $scope.closeFunc = function () {
+                    $scope.defaultclose = true;
+                };
+            }
 
-    //判断是否显示图标
-    var type = angular.isDefined($attrs.type)? $interpolate($attrs.type)($scope.$parent): null;
+            //判断是否显示图标
+            var type = angular.isDefined($attrs.type) ? $interpolate($attrs.type)($scope.$parent) : null;
 
-    if($scope.hasIcon) {
-    switch(type){
-        case 'danger':
-            $scope.iconClass = 'remove-sign';
-            break;
-        case 'success':
-            $scope.iconClass = 'ok-sign';
-            break;
-        case 'info':
-            $scope.iconClass = 'info-sign';
-            break;
-        default:
-            $scope.iconClass = 'exclamation-sign';
-            break;
-        }
-    }
+            if ($scope.hasIcon) {
+                switch (type) {
+                    case 'danger':
+                        $scope.iconClass = 'remove-sign';
+                        break;
+                    case 'success':
+                        $scope.iconClass = 'ok-sign';
+                        break;
+                    case 'info':
+                        $scope.iconClass = 'info-sign';
+                        break;
+                    default:
+                        $scope.iconClass = 'exclamation-sign';
+                        break;
+                }
+            }
 
-    //判断是否有时间参数
-    var dismissOnTimeout = angular.isDefined($attrs.dismissOnTimeout)?
-        $interpolate($attrs.dismissOnTimeout)($scope.$parent): null;
-    if(dismissOnTimeout) {
-        $timeout(function(){
-            $scope.closeFunc();
-        },parseInt(dismissOnTimeout, 10))
-    }
-}])
-.directive('uixAlert',function () {
-    return {
-        restrict: 'E',
-        templateUrl: function(element, attrs){
-            return attrs.templateUrl || 'templates/alert.html';
-        },
-        replace:true,
-        transclude:true,
-        scope:{
-            type:'@',
-            close : '@',
-            closeFunc : '&',
-            closeText : '@',
-            hasIcon : '@'
-        },
-        controller:'uixAlertCtrl',
-        controllerAs: 'alert'
-    }
-});
+            //判断是否有时间参数
+            var dismissOnTimeout = angular.isUndefined($attrs.dismissOnTimeout) ? null
+                : $interpolate($attrs.dismissOnTimeout)($scope.$parent);
+            if (dismissOnTimeout) {
+                $timeout(function () {
+                    $scope.closeFunc();
+                }, parseInt(dismissOnTimeout, 10));
+            }
+        }])
+    .directive('uixAlert', function () {
+        return {
+            restrict: 'E',
+            templateUrl: function (element, attrs) {
+                return attrs.templateUrl || 'templates/alert.html';
+            },
+            replace: true,
+            transclude: true,
+            scope: {
+                type: '@',
+                close: '@',
+                closeFunc: '&',
+                closeText: '@',
+                hasIcon: '@'
+            },
+            controller: 'uixAlertCtrl',
+            controllerAs: 'alert'
+        };
+    });
+
 /**
  * button
  * 按钮指令
@@ -84,47 +86,48 @@ angular.module('ui.xg.alert',[])
  * Date:2016-01-12
  */
 angular.module('ui.xg.button', [])
-    .directive('uixButton', [function(){
+    .directive('uixButton', [function () {
         return {
             restrict: 'AE',
-            scope:{
+            scope: {
                 disabled: '=?',   // 对于不是必须传递需要使用?
                 loading: '=?',
-                onClick : '&?click'
+                onClick: '&?click'
             },
-            replace:false,
+            replace: false,
             templateUrl: 'templates/button.html',
             controller: 'buttonController',
-            link: function(scope, element, attrs){
-               element = angular.element(element.children()[0]);
-               var btnClass = getAttrValue(attrs.btnclass, 'default'), // 样式:primary|info等,默认default
-                    size  = getAttrValue(attrs.size, 'default'), // 大小:x-small,small等,默认为default
+            link: function (scope, element, attrs) {
+                element = angular.element(element.children()[0]);
+                var btnClass = getAttrValue(attrs.btnclass, 'default'), // 样式:primary|info等,默认default
+                    size = getAttrValue(attrs.size, 'default'), // 大小:x-small,small等,默认为default
                     block = getAttrValue(attrs.block, false), //是否按100%的width填充父标签,默认为false
-                    active = getAttrValue(attrs.active, false),// 激活状态,默认为false
+                    active = getAttrValue(attrs.active, false), // 激活状态,默认为false
                     type = getAttrValue(attrs.type, 'button'), // 按钮类型:button|submit|reset,默认为button
                     text = getAttrValue(attrs.text, 'button'), //按钮显示文本,默认为Button
                     icon = getAttrValue(attrs.icon, ''); //按钮图标,默认没有
                 scope.text = scope.initText = text;
                 scope.type = type;
                 scope.icon = 'glyphicon-' + icon;
-                scope.iconFlag = icon !== ''  ? true : false;
-                scope.disabled =  scope.initDisabled =angular.isDefined(scope.disabled) ?  scope.disabled : false; // 是否不可用,默认为false
-                scope.loading = angular.isDefined(scope.loading) ?  scope.loading : false; // 是否有加载效果,默认为false
-               /**
+                scope.iconFlag = icon !== '';
+                // 是否不可用,默认为false
+                scope.disabled = scope.initDisabled = angular.isDefined(scope.disabled) ? scope.disabled : false;
+                scope.loading = angular.isDefined(scope.loading) ? scope.loading : false; // 是否有加载效果,默认为false
+                /**
                  * 获取属性值:数据绑定(通过变量设置|定义常量)|默认值
                  * @param {string} attributeValue 标签绑定数据(可解析|定值)
                  * @param {string | boolean} defaultValue 默认值
                  * @returns {*} 最终值
                  */
-               function getAttrValue(attributeValue, defaultValue){
+                function getAttrValue(attributeValue, defaultValue) {
                     var val = scope.$parent.$eval(attributeValue);   //变量解析
-                    return angular.isDefined(val) ? val :  attributeValue ? attributeValue : defaultValue;
-               }
-               element.addClass('btn-' + btnClass); //设置按钮样式
+                    return angular.isDefined(val) ? val : attributeValue ? attributeValue : defaultValue;
+                }
 
-               // 设置按钮大小
-               switch(size)
-               {
+                element.addClass('btn-' + btnClass); //设置按钮样式
+
+                // 设置按钮大小
+                switch (size) {
                     case 'large':
                         size = 'lg';
                         break;
@@ -137,59 +140,59 @@ angular.module('ui.xg.button', [])
                     default:
                         size = 'default';
                         break;
-               }
+                }
 
-               element.addClass('btn-' + size); //设置按钮大小
+                element.addClass('btn-' + size); //设置按钮大小
 
-               // 设置block
-               if(block){
+                // 设置block
+                if (block) {
                     element.addClass('btn-block');
-               }
+                }
 
-               // 设置active状态
-               if(active){
+                // 设置active状态
+                if (active) {
                     element.addClass('active');
-               }
+                }
 
-               scope.$watch('disabled', function(val){
-                    if(val){
+                scope.$watch('disabled', function (val) {
+                    if (val) {
                         element.attr('disabled', 'disabled');
-                    }else{
+                    } else {
                         element.removeAttr('disabled');
                     }
-               });
+                });
 
-               // button绑定click事件
-               element.bind('click', function(){
-                    if(scope.onClick){
+                // button绑定click事件
+                element.bind('click', function () {
+                    if (scope.onClick) {
                         scope.onClick();
                         scope.$parent.$apply();
                     }
-               });
-               scope.$watch('loading', function(val){
+                });
+                scope.$watch('loading', function (val) {
                     var spanEle = element.children('span.glyphicon-refresh-animate'),
                         ele = null;
-                   if(val){
+                    if (val) {
                         scope.disabled = val;
-                        if(spanEle.length > 0){
+                        if (spanEle.length > 0) {
                             spanEle.removeClass('hidden');
-                        }else{
+                        } else {
                             scope.text = 'isLoading...';
                             ele = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>';
                             element.prepend(ele);
                         }
-                    }else{
+                    } else {
                         scope.disabled = scope.initDisabled;
                         scope.text = scope.initText;
-                        if(spanEle.length > 0){
+                        if (spanEle.length > 0) {
                             spanEle.addClass('hidden');
                         }
                     }
-               });
+                });
             }
-        }
+        };
     }])
-    .controller('buttonController', ['$scope', function($scope){
+    .controller('buttonController', ['$scope', function ($scope) {
         $scope.btnClassArr = ['default', 'primary', 'success', 'info', 'warning', 'danger', 'link'];  // 所有可设置样式
         $scope.sizeArr = ['large', 'small', 'x-small', 'default'];  // 所有可设置大小
         $scope.typeArr = ['button', 'reset', 'submit'];  // 所有可设置类型
@@ -203,77 +206,81 @@ angular.module('ui.xg.button', [])
  */
 angular.module('ui.xg.buttonGroup', [])
     .constant('buttonGroupConfig', {
-        size : 'default',   // 按钮组大小:x-small,small,default,larger
-        type : 'radio',  // 按钮组类型:radio 或者 checkbox类型
-        showClass : 'default', //按钮组样式:danger | warning | default | success | info ｜ primary
-        checkboxTrue : true, // 按钮选中对应ngModel的值
-        checkboxFalse : false, //按钮不选对应ngModel的值
-        disabled : false  // 按钮组不可用状态
+        size: 'default',   // 按钮组大小:x-small,small,default,larger
+        type: 'radio',  // 按钮组类型:radio 或者 checkbox类型
+        showClass: 'default', //按钮组样式:danger | warning | default | success | info ｜ primary
+        checkboxTrue: true, // 按钮选中对应ngModel的值
+        checkboxFalse: false, //按钮不选对应ngModel的值
+        disabled: false  // 按钮组不可用状态
     })
-    .controller('buttonGroupController',['$transclude', '$scope', '$element', '$attrs', 'buttonGroupConfig', function($transclude, $scope, $element, $attrs, buttonGroupConfig){
-        var transcludeEles = $transclude(),// 获取嵌入元素 TODO:1.2.25版本不需要传入$scope，否则会报错
-            i = 0,
-            tagName,
-            childElements = [],
-            btnObj = {};
-
-        // 根据插入按钮，生成嵌入元素数据对象
-        for (;i < transcludeEles.length; i++ ){
-            tagName = transcludeEles[i].tagName;
-            if(tagName && tagName.toLocaleLowerCase() === 'button'){
+    .controller('buttonGroupController', ['$transclude', '$scope', '$attrs', 'buttonGroupConfig',
+        function ($transclude, $scope, $attrs, buttonGroupConfig) {
+            var transcludeEles = $transclude(), // 获取嵌入元素 TODO:1.2.25版本不需要传入$scope，否则会报错
+                i = 0,
+                tagName,
+                childElements = [],
                 btnObj = {};
-                btnObj.value = transcludeEles[i].innerText;   // 获取button显示内容
-                btnObj.btnRadio = getAttrValue(angular.element(transcludeEles[i]).attr('btn-radio'), "");  //获取btn-radio属性对应值:控制选中状态
-                btnObj.btnCheckbox = getAttrValue(angular.element(transcludeEles[i]).attr('btn-checkbox'), "");  //获取btn-checkbox属性对应值:控制勾选状态
-                childElements.push(btnObj);
+
+            // 根据插入按钮，生成嵌入元素数据对象
+            for (; i < transcludeEles.length; i++) {
+                tagName = transcludeEles[i].tagName;
+                if (tagName && tagName.toLocaleLowerCase() === 'button') {
+                    btnObj = {};
+                    btnObj.value = transcludeEles[i].innerText;   // 获取button显示内容
+                    //获取btn-radio属性对应值:控制选中状态
+                    btnObj.btnRadio = getAttrValue(angular.element(transcludeEles[i]).attr('btn-radio'), '');
+                    //获取btn-checkbox属性对应值:控制勾选状态
+                    btnObj.btnCheckbox = getAttrValue(angular.element(transcludeEles[i]).attr('btn-checkbox'), '');
+                    childElements.push(btnObj);
+                }
             }
-        }
 
-        $scope.buttonGroup = {};
-        $scope.buttons = childElements;
-        $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
-        $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
-        $scope.showClass = getAttrValue($attrs.showClass, buttonGroupConfig.showClass); //按钮组样式
-        $scope.checkboxTrue = getAttrValue($attrs.checkboxTrue, buttonGroupConfig.checkboxTrue);   //checkbox选中对应model值
-        $scope.checkboxFalse = getAttrValue($attrs.checkboxFalse, buttonGroupConfig.checkboxFalse);   //checkbox不选对应model值
-        $scope.disabled = getAttrValue($attrs.disabled, buttonGroupConfig.disabled);
+            $scope.buttonGroup = {};
+            $scope.buttons = childElements;
+            $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
+            $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
+            $scope.showClass = getAttrValue($attrs.showClass, buttonGroupConfig.showClass); //按钮组样式
+            //checkbox选中对应model值
+            $scope.checkboxTrue = getAttrValue($attrs.checkboxTrue, buttonGroupConfig.checkboxTrue);
+            //checkbox不选对应model值
+            $scope.checkboxFalse = getAttrValue($attrs.checkboxFalse, buttonGroupConfig.checkboxFalse);
+            $scope.disabled = getAttrValue($attrs.disabled, buttonGroupConfig.disabled);
 
-        // 设置按钮大小,转变成class
-        switch($scope.size)
-        {
-            case 'large':
-                $scope.size = 'btn-lg';
-                break;
-            case 'small':
-                $scope.size = 'btn-sm';
-                break;
-            case 'x-small':
-                $scope.size = 'btn-xs';
-                break;
-            default:
-                $scope.size = 'btn-default';
-                break;
-        }
+            // 设置按钮大小,转变成class
+            switch ($scope.size) {
+                case 'large':
+                    $scope.size = 'btn-lg';
+                    break;
+                case 'small':
+                    $scope.size = 'btn-sm';
+                    break;
+                case 'x-small':
+                    $scope.size = 'btn-xs';
+                    break;
+                default:
+                    $scope.size = 'btn-default';
+                    break;
+            }
 
-        // 设置按钮样式类型,转变成class
-        $scope.showClass = "btn-" + $scope.showClass;
+            // 设置按钮样式类型,转变成class
+            $scope.showClass = 'btn-' + $scope.showClass;
 
-        // 设置不可用
-        if($scope.disabled) {
-            $scope.disabled = 'disabled';
-        }
-        /**
-         * 获取属性值:数据绑定(通过变量设置|定义常量)|默认值
-         * @param {string} attributeValue 标签绑定数据(可解析|定值)
-         * @param {string | boolean} defaultValue 默认值
-         * @returns {*} 最终值
-         */
-        function getAttrValue(attributeValue, defaultValue){
-            var val = $scope.$parent.$eval(attributeValue);   //变量解析
-            return angular.isDefined(val) ? val :  attributeValue ? attributeValue : defaultValue;
-        }
-    }])
-    .directive('uixButtonGroup', [function() {
+            // 设置不可用
+            if ($scope.disabled) {
+                $scope.disabled = 'disabled';
+            }
+            /**
+             * 获取属性值:数据绑定(通过变量设置|定义常量)|默认值
+             * @param {string} attributeValue 标签绑定数据(可解析|定值)
+             * @param {string | boolean} defaultValue 默认值
+             * @returns {*} 最终值
+             */
+            function getAttrValue(attributeValue, defaultValue) {
+                var val = $scope.$parent.$eval(attributeValue);   //变量解析
+                return angular.isDefined(val) ? val : attributeValue ? attributeValue : defaultValue;
+            }
+        }])
+    .directive('uixButtonGroup', [function () {
         return {
             restrict: 'AE',
             replace: true,
@@ -282,27 +289,26 @@ angular.module('ui.xg.buttonGroup', [])
             },
             require: '^ngModel',
             templateUrl: 'templates/buttonGroup.html',
-            transclude:true,
+            transclude: true,
             controller: 'buttonGroupController',
             link: function (scope, element, attrs, ngModelCtrl) {
-                var _scope = scope,
-                    o, i;
-                if(scope.type === 'radio'){   //radio类型
+                var _scope = scope;
+                if (scope.type === 'radio') {   //radio类型
 
                     // model的render事件:model->ui
-                    ngModelCtrl.$render = function(){   // 重写render方法
-                        if(ngModelCtrl.$viewValue){
+                    ngModelCtrl.$render = function () {   // 重写render方法
+                        if (ngModelCtrl.$viewValue) {
                             scope.modelObj = ngModelCtrl.$viewValue;  // 获取元素的model
                         }
-                        angular.forEach(scope.buttons, function(val){
-                            if(!val.btnRadio){  // 没有设置btn-radio,使用元素的text作为默认值
+                        angular.forEach(scope.buttons, function (val) {
+                            if (!val.btnRadio) {  // 没有设置btn-radio,使用元素的text作为默认值
                                 val.btnRadio = val.value;
                             }
 
                             // 判断按钮组是否选中:btn-radio设置model值
-                            if(angular.equals(ngModelCtrl.$viewValue, val.btnRadio)){
+                            if (angular.equals(ngModelCtrl.$viewValue, val.btnRadio)) {
                                 val.active = 'active';
-                            }else{
+                            } else {
                                 val.active = '';
                             }
                         });
@@ -310,39 +316,40 @@ angular.module('ui.xg.buttonGroup', [])
                     };
 
                     // 按钮点击事件:修改model,实现ui->model
-                    scope.clickFn = function(btn, event){
+                    scope.clickFn = function (btn, event) {
                         event.stopPropagation();
                         event.preventDefault();
-                        if(_scope.disabled){
+                        if (_scope.disabled) {
                             return;
                         }
                         ngModelCtrl.$setViewValue(btn.btnRadio); // 修改选中对应model值
                         ngModelCtrl.$render();
                     };
-                }else{    // checkbox类型
+                } else {    // checkbox类型
                     // model的render事件:model->ui
-                    ngModelCtrl.$render = function(){   // 重写render方法
-                        if(ngModelCtrl.$viewValue){
+                    ngModelCtrl.$render = function () {   // 重写render方法
+                        if (ngModelCtrl.$viewValue) {
                             scope.modelObj = ngModelCtrl.$viewValue;   // 获取元素的model
                         }
-                        angular.forEach(scope.buttons, function(val, idx){
-                            i = 0;
-                            if(!val.btnCheckbox){  // 没有设置值,则使用对应ng-model的key作为默认值
-                                for(o in scope.modelObj){
-                                    if(i === idx){
-                                        val.btnCheckbox = o;
+                        var obj, index;
+                        angular.forEach(scope.buttons, function (val, idx) {
+                            index = 0;
+                            if (!val.btnCheckbox) {  // 没有设置值,则使用对应ng-model的key作为默认值
+                                for (obj in scope.modelObj) {
+                                    if (index === idx) {
+                                        val.btnCheckbox = obj;
                                         break;
-                                    }else{
-                                        i++;
+                                    } else {
+                                        index++;
                                     }
                                 }
                             }
 
                             // 判断给定当前checkbox状态是否选中model的值(btn-checkbox对应model中的值是否为true)
                             // btn-checkbox值的设置为ng-model对应对象的key
-                            if(angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)){
+                            if (angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)) {
                                 val.active = 'active';
-                            }else{
+                            } else {
                                 val.active = '';
                                 val.active = '';
                             }
@@ -350,16 +357,16 @@ angular.module('ui.xg.buttonGroup', [])
                     };
 
                     // 按钮点击事件:修改model,实现ui->model
-                    scope.clickFn = function(btn, event){
+                    scope.clickFn = function (btn, event) {
                         event.stopPropagation();
                         event.preventDefault();
-                        if(_scope.disabled){
+                        if (_scope.disabled) {
                             return;
                         }
 
-                        if(btn.active){
+                        if (btn.active) {
                             scope.modelObj[btn.btnCheckbox] = _scope.checkboxFalse; // 修改选中状态:选中->不选,对应model值
-                        }else{
+                        } else {
                             scope.modelObj[btn.btnCheckbox] = _scope.checkboxTrue; //修改选中状态:不选->选中,对应model值
                         }
                         ngModelCtrl.$setViewValue(scope.modelObj);  // 修改model
@@ -367,7 +374,7 @@ angular.module('ui.xg.buttonGroup', [])
                     };
                 }
             }
-        }
+        };
     }]);
 
 /**
@@ -386,294 +393,306 @@ angular.module('ui.xg.timepanel', [])
         arrowkeys: true,
         readonlyInput: false
     })
-    .controller('uixTimepanelCtrl', ['$scope', '$element', '$attrs', '$parse', '$log', 'uixTimepanelConfig', function ($scope, $element, $attrs, $parse, $log, timepanelConfig) {
-        var ngModelCtrl = {$setViewValue: angular.noop};
+    .controller('uixTimepanelCtrl', ['$scope', '$attrs', '$parse', '$log', 'uixTimepanelConfig',
+        function ($scope, $attrs, $parse, $log, timepanelConfig) {
+            var ngModelCtrl = {$setViewValue: angular.noop};
 
-        this.init = function (_ngModelCtrl, inputs) {
-            ngModelCtrl = _ngModelCtrl;
-            ngModelCtrl.$render = this.render;
-            ngModelCtrl.$formatters.unshift(function (modelValue) {
-                return modelValue ? new Date(modelValue) : null;
-            });
-            //$scope.$$postDigest(function(){}); // 如果showSeconds用的是ng-if，此时second还没有插入DOM，无法获取元素和绑定事件
-            var hoursInputEl = inputs.eq(0),
-                minutesInputEl = inputs.eq(1),
-                secondsInputEl = inputs.eq(2);
-            hoursInputEl.on('focus', function () {
-                hoursInputEl[0].select();
-            });
-            minutesInputEl.on('focus', function () {
-                minutesInputEl[0].select();
-            });
-            secondsInputEl.on('focus', function () {
-                secondsInputEl[0].select();
-            });
+            this.init = function (_ngModelCtrl, inputs) {
+                ngModelCtrl = _ngModelCtrl;
+                ngModelCtrl.$render = this.render;
+                ngModelCtrl.$formatters.unshift(function (modelValue) {
+                    return modelValue ? new Date(modelValue) : null;
+                });
+                //$scope.$$postDigest(function(){}); // 如果showSeconds用的是ng-if，此时second还没有插入DOM，无法获取元素和绑定事件
+                var hoursInputEl = inputs.eq(0),
+                    minutesInputEl = inputs.eq(1),
+                    secondsInputEl = inputs.eq(2);
+                hoursInputEl.on('focus', function () {
+                    hoursInputEl[0].select();
+                });
+                minutesInputEl.on('focus', function () {
+                    minutesInputEl[0].select();
+                });
+                secondsInputEl.on('focus', function () {
+                    secondsInputEl[0].select();
+                });
 
-            var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : timepanelConfig.mousewheel;
-            if (mousewheel) {
-                this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
-            }
-            var arrowkeys = angular.isDefined($attrs.arrowkeys) ? $scope.$parent.$eval($attrs.arrowkeys) : timepanelConfig.arrowkeys;
-            if (arrowkeys) {
-                this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
-            }
-        };
-
-        $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
-        $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
-        $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
-
-        // show seconds
-        $scope.showSeconds = timepanelConfig.showSeconds;
-        if ($attrs.showSeconds) {
-            $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
-                $scope.showSeconds = !!value;
-                if (!$scope.showSeconds) {
-                    $scope.panelStyles = {width: '75px'};
-                } else {
-                    $scope.panelStyles = {width: '50px'};
+                var mousewheel = angular.isDefined($attrs.mousewheel)
+                    ? $scope.$parent.$eval($attrs.mousewheel) : timepanelConfig.mousewheel;
+                if (mousewheel) {
+                    this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
                 }
-            });
-        }
-        // readonly input
-        $scope.readonlyInput = timepanelConfig.readonlyInput;
-        if ($attrs.readonlyInput) {
-            $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
-                $scope.readonlyInput = !!value;
-            });
-        }
-        // 使用对象存储是否可以点击某一个时间进行增长或减少
-        $scope.isMaxTime = {};
-        $scope.isMinTime = {};
-        //减少时/分/秒
-        $scope.decrease = function (type) {
-            if ($scope.isMinTime[type]) {
-                return;
-            }
-            var step = parseInt($scope[type + 'Step']);
-            var oldVal = parseInt($scope[type], 10);
-            var smallerVal = $scope['smaller' + type[0].toUpperCase() + type.slice(1)];
-            if (timeIsOutOfRange(type, smallerVal)) {
-                return;
-            }
-            $scope[type] = smallerVal;
-            if (oldVal - step < 0) {
-                carryTime(type, 'decrease');
-            }
-            changeHandler();
-        };
-        //增加时/分/秒
-        $scope.increase = function (type) {
-            if ($scope.isMaxTime[type]) {
-                return;
-            }
-            var maxValue = type === 'minute' || type === 'second' ? 60 : 24;
-            var step = parseInt($scope[type + 'Step']);
-            var oldVal = parseInt($scope[type], 10);
-            var largerValue = $scope['larger' + type[0].toUpperCase() + type.slice(1)];
-            if (timeIsOutOfRange(type, largerValue)) {
-                return;
-            }
-            $scope[type] = largerValue;
-            if (oldVal + step >= maxValue) {
-                carryTime(type, 'increase');
-            }
-            changeHandler();
-        };
-        $scope.$watch('hour', function (newVal) {
-            var step = parseInt($scope.hourStep);
-            $scope.smallerHour = getSmallerVal(newVal, step, 24);
-            $scope.largerHour = getLargerVal(newVal, step, 24);
-        });
-        $scope.$watch('minute', function (newVal) {
-            var step = parseInt($scope.minuteStep);
-            $scope.smallerMinute = getSmallerVal(newVal, step, 60);
-            $scope.largerMinute = getLargerVal(newVal, step, 60);
-        });
-        $scope.$watch('second', function (newVal) {
-            var step = parseInt($scope.secondStep);
-            $scope.smallerSecond = getSmallerVal(newVal, step, 60);
-            $scope.largerSecond = getLargerVal(newVal, step, 60);
-        });
-        function getSmallerVal(val, step, maxValue) {
-            var result = parseInt(val, 10) - parseInt(step, 10);
-            if (result < 0) {
-                result = maxValue + result;
-            }
-            if (result < 10) {
-                result = '0' + result;
-            }
-            return result;
-        }
-
-        function getLargerVal(val, step, maxValue) {
-            var result = parseInt(val, 10) + parseInt(step, 10);
-            if (result >= maxValue) {
-                result = result - maxValue;
-            }
-            if (result < 10) {
-                result = '0' + result
-            }
-            return result;
-        }
-
-        // 时间进位,秒和分钟满60进一
-        var timeCarrys = {
-            hour: null,
-            minute: 'hour',
-            second: 'minute'
-        };
-
-        function carryTime(type, dir) {
-            var val = timeCarrys[type];
-            if (!val) {
-                return;
-            }
-            $scope[dir](val);
-        }
-
-        $scope.changeInputValue = function (type, maxValue) {
-            if (isNaN($scope[type])) {
-                return;
-            }
-            $scope[type] = parseInt($scope[type], 10);
-            if ($scope[type] < 0) {
-                $scope[type] = 0;
-            }
-            if ($scope[type] > maxValue) {
-                $scope[type] = maxValue;
-            }
-            $scope[type] = addZero($scope[type]);
-            changeHandler();
-        };
-        this.render = function () {
-            var date = ngModelCtrl.$modelValue;
-
-            if (isNaN(date)) {
-                $log.warn('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
-            }
-            $scope.hour = date ? addZero(date.getHours()) : null;
-            $scope.minute = date ? addZero(date.getMinutes()) : null;
-            $scope.second = date ? addZero(date.getSeconds()) : null;
-        };
-        this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            var isScrollingUp = function (e) {
-                if (e.originalEvent) {
-                    e = e.originalEvent;
+                var arrowkeys = angular.isDefined($attrs.arrowkeys)
+                    ? $scope.$parent.$eval($attrs.arrowkeys) : timepanelConfig.arrowkeys;
+                if (arrowkeys) {
+                    this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
                 }
-                var delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
-                return e.detail || delta > 0;
             };
 
-            hoursInputEl.on('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('hour') : $scope.decrease('hour'));
-                e.preventDefault();
+            $scope.hourStep = angular.isDefined($attrs.hourStep)
+                ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
+            $scope.minuteStep = angular.isDefined($attrs.minuteStep)
+                ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
+            $scope.secondStep = angular.isDefined($attrs.secondStep)
+                ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep;
+
+            // show seconds
+            $scope.showSeconds = timepanelConfig.showSeconds;
+            if ($attrs.showSeconds) {
+                $scope.$parent.$watch($parse($attrs.showSeconds), function (value) {
+                    $scope.showSeconds = !!value;
+                    if (!$scope.showSeconds) {
+                        $scope.panelStyles = {width: '75px'};
+                    } else {
+                        $scope.panelStyles = {width: '50px'};
+                    }
+                });
+            }
+            // readonly input
+            $scope.readonlyInput = timepanelConfig.readonlyInput;
+            if ($attrs.readonlyInput) {
+                $scope.$parent.$watch($parse($attrs.readonlyInput), function (value) {
+                    $scope.readonlyInput = !!value;
+                });
+            }
+            // 使用对象存储是否可以点击某一个时间进行增长或减少
+            $scope.isMaxTime = {};
+            $scope.isMinTime = {};
+            //减少时/分/秒
+            $scope.decrease = function (type) {
+                if ($scope.isMinTime[type]) {
+                    return;
+                }
+                var step = parseInt($scope[type + 'Step'], 10);
+                var oldVal = parseInt($scope[type], 10);
+                var smallerVal = $scope['smaller' + type[0].toUpperCase() + type.slice(1)];
+                if (timeIsOutOfRange(type, smallerVal)) {
+                    return;
+                }
+                $scope[type] = smallerVal;
+                if (oldVal - step < 0) {
+                    carryTime(type, 'decrease');
+                }
+                changeHandler();
+            };
+            //增加时/分/秒
+            $scope.increase = function (type) {
+                if ($scope.isMaxTime[type]) {
+                    return;
+                }
+                var maxValue = type === 'minute' || type === 'second' ? 60 : 24;
+                var step = parseInt($scope[type + 'Step'], 10);
+                var oldVal = parseInt($scope[type], 10);
+                var largerValue = $scope['larger' + type[0].toUpperCase() + type.slice(1)];
+                if (timeIsOutOfRange(type, largerValue)) {
+                    return;
+                }
+                $scope[type] = largerValue;
+                if (oldVal + step >= maxValue) {
+                    carryTime(type, 'increase');
+                }
+                changeHandler();
+            };
+            $scope.$watch('hour', function (newVal) {
+                var step = parseInt($scope.hourStep, 10);
+                $scope.smallerHour = getSmallerVal(newVal, step, 24);
+                $scope.largerHour = getLargerVal(newVal, step, 24);
             });
-
-            minutesInputEl.on('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('minute') : $scope.decrease('minute'));
-                e.preventDefault();
+            $scope.$watch('minute', function (newVal) {
+                var step = parseInt($scope.minuteStep, 10);
+                $scope.smallerMinute = getSmallerVal(newVal, step, 60);
+                $scope.largerMinute = getLargerVal(newVal, step, 60);
             });
-
-            secondsInputEl.on('mousewheel wheel', function (e) {
-                $scope.$apply(isScrollingUp(e) ? $scope.increase('second') : $scope.decrease('second'));
-                e.preventDefault();
+            $scope.$watch('second', function (newVal) {
+                var step = parseInt($scope.secondStep, 10);
+                $scope.smallerSecond = getSmallerVal(newVal, step, 60);
+                $scope.largerSecond = getLargerVal(newVal, step, 60);
             });
-        };
-
-        this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
-            hoursInputEl.on('keydown', arrowkeyEventHandler('hour'));
-            minutesInputEl.on('keydown', arrowkeyEventHandler('minute'));
-            secondsInputEl.on('keydown', arrowkeyEventHandler('second'));
-        };
-        function changeHandler() {
-            var dt = angular.copy(ngModelCtrl.$modelValue);
-            if(timeIsInvalid(dt)){
-                dt = new Date();
-            }
-            dt.setHours($scope.hour);
-            dt.setMinutes($scope.minute);
-            dt.setSeconds($scope.second);
-            if ($scope.onChange) {
-                var fn = $scope.onChange();
-                if (angular.isFunction(fn)) {
-                    fn(dt);
+            function getSmallerVal(val, step, maxValue) {
+                var result = parseInt(val, 10) - parseInt(step, 10);
+                if (result < 0) {
+                    result = maxValue + result;
                 }
-            }
-            ngModelCtrl.$setViewValue(dt);
-            ngModelCtrl.$render();
-        }
-
-        // 判断time是否是时间对象
-        function timeIsInvalid(time) {
-            var dt = new Date(time);
-            return isNaN(dt.getTime());
-        }
-
-        /**
-         * 判断时间是否超出min和max设置的时间范围
-         * @param type - 类型,hour,minute,second
-         * @param value - 需要改变的值
-         * @returns {boolean}
-         */
-        function timeIsOutOfRange(type, value) {
-            var method = 'set' + type[0].toUpperCase() + type.slice(1) + 's';
-            var result = false;
-            var currentTime, minTime, maxTime;
-            if (angular.isDefined($attrs.minTime) && angular.isDefined($scope.minTime)) {
-                if (timeIsInvalid($scope.minTime)) {
-                    $log.warn('Timepicker directive: "min-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                } else {
-                    currentTime = buildDate();
-                    minTime = new Date($scope.minTime);
-                    currentTime[method](value);
-                    result = currentTime < minTime;
+                if (result < 10) {
+                    result = '0' + result;
                 }
+                return result;
             }
-            if (result) {
-                return true;
-            }
-            if (angular.isDefined($attrs.maxTime) && angular.isDefined($scope.maxTime)) {
-                if (timeIsInvalid($scope.maxTime)) {
-                    $log.warn('Timepicker directive: "max-time" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                } else {
-                    currentTime = buildDate();
-                    maxTime = new Date($scope.maxTime);
-                    currentTime[method](value);
-                    result = currentTime > maxTime;
+
+            function getLargerVal(val, step, maxValue) {
+                var result = parseInt(val, 10) + parseInt(step, 10);
+                if (result >= maxValue) {
+                    result = result - maxValue;
                 }
-            }
-            return result;
-        }
-
-        // 根据输入框的内容生成时间
-        function buildDate() {
-            var dt = new Date();
-            dt.setHours($scope.hour);
-            dt.setMinutes($scope.minute);
-            dt.setSeconds($scope.second);
-            return dt;
-        }
-
-        function arrowkeyEventHandler(type) {
-            return function (e) {
-                if (e.which === 38) { // up
-                    e.preventDefault();
-                    $scope.increase(type);
-                    $scope.$apply();
-                } else if (e.which === 40) { // down
-                    e.preventDefault();
-                    $scope.decrease(type);
-                    $scope.$apply();
+                if (result < 10) {
+                    result = '0' + result;
                 }
+                return result;
             }
-        }
 
-        function addZero(value) {
-            return value > 9 ? value : '0' + value;
-        }
-    }])
+            // 时间进位,秒和分钟满60进一
+            var timeCarrys = {
+                hour: null,
+                minute: 'hour',
+                second: 'minute'
+            };
+
+            function carryTime(type, dir) {
+                var val = timeCarrys[type];
+                if (!val) {
+                    return;
+                }
+                $scope[dir](val);
+            }
+
+            $scope.changeInputValue = function (type, maxValue) {
+                if (isNaN($scope[type])) {
+                    return;
+                }
+                $scope[type] = parseInt($scope[type], 10);
+                if ($scope[type] < 0) {
+                    $scope[type] = 0;
+                }
+                if ($scope[type] > maxValue) {
+                    $scope[type] = maxValue;
+                }
+                $scope[type] = addZero($scope[type]);
+                changeHandler();
+            };
+            this.render = function () {
+                var date = ngModelCtrl.$modelValue;
+
+                if (isNaN(date)) {
+                    $log.warn('Timepicker directive: "ng-model" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
+                    date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
+                }
+                $scope.hour = date ? addZero(date.getHours()) : null;
+                $scope.minute = date ? addZero(date.getMinutes()) : null;
+                $scope.second = date ? addZero(date.getSeconds()) : null;
+            };
+            this.setupMousewheelEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+                function isScrollingUp(evt) {
+                    if (evt.originalEvent) {
+                        evt = evt.originalEvent;
+                    }
+                    var delta = evt.wheelDelta ? evt.wheelDelta : -evt.deltaY;
+                    return evt.detail || delta > 0;
+                }
+
+                hoursInputEl.on('mousewheel wheel', function (evt) {
+                    $scope.$apply(isScrollingUp(evt) ? $scope.increase('hour') : $scope.decrease('hour'));
+                    evt.preventDefault();
+                });
+
+                minutesInputEl.on('mousewheel wheel', function (evt) {
+                    $scope.$apply(isScrollingUp(evt) ? $scope.increase('minute') : $scope.decrease('minute'));
+                    evt.preventDefault();
+                });
+
+                secondsInputEl.on('mousewheel wheel', function (evt) {
+                    $scope.$apply(isScrollingUp(evt) ? $scope.increase('second') : $scope.decrease('second'));
+                    evt.preventDefault();
+                });
+            };
+
+            this.setupArrowkeyEvents = function (hoursInputEl, minutesInputEl, secondsInputEl) {
+                hoursInputEl.on('keydown', arrowkeyEventHandler('hour'));
+                minutesInputEl.on('keydown', arrowkeyEventHandler('minute'));
+                secondsInputEl.on('keydown', arrowkeyEventHandler('second'));
+            };
+            function changeHandler() {
+                var dt = angular.copy(ngModelCtrl.$modelValue);
+                if (timeIsInvalid(dt)) {
+                    dt = new Date();
+                }
+                dt.setHours($scope.hour);
+                dt.setMinutes($scope.minute);
+                dt.setSeconds($scope.second);
+                if ($scope.onChange) {
+                    var fn = $scope.onChange();
+                    if (angular.isFunction(fn)) {
+                        fn(dt);
+                    }
+                }
+                ngModelCtrl.$setViewValue(dt);
+                ngModelCtrl.$render();
+            }
+
+            // 判断time是否是时间对象
+            function timeIsInvalid(time) {
+                var dt = new Date(time);
+                return isNaN(dt.getTime());
+            }
+
+            /**
+             * 判断时间是否超出min和max设置的时间范围
+             * @param type - 类型,hour,minute,second
+             * @param value - 需要改变的值
+             * @returns {boolean}
+             */
+            function timeIsOutOfRange(type, value) {
+                var method = 'set' + type[0].toUpperCase() + type.slice(1) + 's';
+                var result = false;
+                var currentTime, minTime, maxTime;
+                if (angular.isDefined($attrs.minTime) && angular.isDefined($scope.minTime)) {
+                    if (timeIsInvalid($scope.minTime)) {
+                        $log.warn('Timepicker directive: "min-time" value must be a Date object, ' +
+                            'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                            'or ISO 8601 date.');
+                    } else {
+                        currentTime = buildDate();
+                        minTime = new Date($scope.minTime);
+                        currentTime[method](value);
+                        result = currentTime < minTime;
+                    }
+                }
+                if (result) {
+                    return true;
+                }
+                if (angular.isDefined($attrs.maxTime) && angular.isDefined($scope.maxTime)) {
+                    if (timeIsInvalid($scope.maxTime)) {
+                        $log.warn('Timepicker directive: "max-time" value must be a Date object,' +
+                            ' a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                            'or ISO 8601 date.');
+                    } else {
+                        currentTime = buildDate();
+                        maxTime = new Date($scope.maxTime);
+                        currentTime[method](value);
+                        result = currentTime > maxTime;
+                    }
+                }
+                return result;
+            }
+
+            // 根据输入框的内容生成时间
+            function buildDate() {
+                var dt = new Date();
+                dt.setHours($scope.hour);
+                dt.setMinutes($scope.minute);
+                dt.setSeconds($scope.second);
+                return dt;
+            }
+
+            function arrowkeyEventHandler(type) {
+                return function (evt) {
+                    if (evt.which === 38) { // up
+                        evt.preventDefault();
+                        $scope.increase(type);
+                        $scope.$apply();
+                    } else if (evt.which === 40) { // down
+                        evt.preventDefault();
+                        $scope.decrease(type);
+                        $scope.$apply();
+                    }
+                };
+            }
+
+            function addZero(value) {
+                return value > 9 ? value : '0' + value;
+            }
+        }])
     .directive('uixTimepanel', function () {
         return {
             restrict: 'AE',
@@ -690,8 +709,9 @@ angular.module('ui.xg.timepanel', [])
                 var timepanelCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepanelCtrl.init(ngModelCtrl, el.find('input'));
             }
-        }
+        };
     });
+
 /**
  * calendar
  * calendar directive
@@ -721,17 +741,17 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 getFormats: function () {
                     FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS), FORMATS);
                     if (!angular.isArray(FORMATS.SHORTMONTH) ||
-                        FORMATS.SHORTMONTH.length != 12 || !angular.isArray(FORMATS.MONTH) ||
-                        FORMATS.MONTH.length != 12 || !angular.isArray(FORMATS.SHORTDAY) ||
-                        FORMATS.SHORTDAY.length != 7
+                        FORMATS.SHORTMONTH.length !== 12 || !angular.isArray(FORMATS.MONTH) ||
+                        FORMATS.MONTH.length !== 12 || !angular.isArray(FORMATS.SHORTDAY) ||
+                        FORMATS.SHORTDAY.length !== 7
                     ) {
                         $log.warn('invalid date time formats');
                         FORMATS = $locale.DATETIME_FORMATS;
                     }
                     return FORMATS;
                 }
-            }
-        }]
+            };
+        }];
     })
     .controller('uixCalendarCtrl', ['$scope', '$attrs', '$log', 'uixCalendar', 'uixCalendarConfig',
         function ($scope, $attrs, $log, uixCalendarProvider, calendarConfig) {
@@ -748,10 +768,11 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
             var self = this;
             angular.forEach(['startingDay', 'exceptions'], function (key) {
-                self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+                self[key] = angular.isDefined($attrs[key])
+                    ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
             });
-            $scope.showTime = angular.isDefined($attrs.showTime) ?
-                $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
+            $scope.showTime = angular.isDefined($attrs.showTime)
+                ? $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
 
 
             if (self.startingDay > 6 || self.startingDay < 0) {
@@ -770,7 +791,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             this.render = function () {
                 var date = ngModelCtrl.$modelValue;
                 if (isNaN(date) || !date) {
-                    $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                    $log.warn('Calendar directive: "ng-model" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
                     date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
                 }
                 date = new Date(date);
@@ -784,8 +807,8 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
             // 选择某一个面板
             $scope.selectPanel = function (panel) {
-                angular.forEach($scope.panels, function (a, i) {
-                    $scope.panels[i] = false;
+                angular.forEach($scope.panels, function (pan, index) {
+                    $scope.panels[index] = false;
                 });
                 $scope.panels[panel] = true;
             };
@@ -948,7 +971,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             // 获取周一到周日的名字
             function dayNames(startingDay) {
                 var shortDays = angular.copy(FORMATS.SHORTDAY).map(function (day) {
-                    return day
+                    return day;
                 });
                 var delDays = shortDays.splice(0, startingDay);
                 return shortDays.concat(delDays);
@@ -1054,11 +1077,14 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 var tempDate = splitDate(date);
                 var selectedDt = splitDate($scope.selectDate);
                 var today = splitDate(new Date());
-                var isToday = tempDate.year === today.year && tempDate.month === today.month && tempDate.day === today.day;
-                var isSelected = tempDate.year === selectedDt.year && tempDate.month === selectedDt.month
-                    && tempDate.day === selectedDt.day;
-                var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date))
-                    || ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
+                var isToday = tempDate.year === today.year &&
+                    tempDate.month === today.month &&
+                    tempDate.day === today.day;
+                var isSelected = tempDate.year === selectedDt.year &&
+                    tempDate.month === selectedDt.month &&
+                    tempDate.day === selectedDt.day;
+                var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date)) ||
+                    ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
                 var day = date.getDay();
                 return {
                     date: date,
@@ -1072,7 +1098,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     isSelected: isSelected,
                     isDisabled: isDisabled,
                     index: tempDate.year + '-' + tempDate.month + '-' + tempDate.day
-                }
+                };
             }
 
             function isExceptionDay(date) {
@@ -1089,7 +1115,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     year: date.getFullYear(),
                     month: date.getMonth(),
                     day: date.getDate()
-                }
+                };
             }
         }])
     .directive('uixCalendar', function () {
@@ -1109,8 +1135,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     ngModelCtrl = ctrls[1];
                 calendarCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });
+
 /**
  * position
  * position factory
@@ -1144,7 +1171,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} A HTML element.
              */
-            getRawNode: function(elem) {
+            getRawNode: function (elem) {
                 return elem[0] || elem;
             },
 
@@ -1156,7 +1183,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {number} A valid number.
              */
-            parseStyle: function(value) {
+            parseStyle: function (value) {
                 value = parseFloat(value);
                 return isFinite(value) ? value : 0;
             },
@@ -1168,7 +1195,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} The closest positioned ancestor.
              */
-            offsetParent: function(elem) {
+            offsetParent: function (elem) {
                 elem = this.getRawNode(elem);
 
                 var offsetParent = elem.offsetParent || $document[0].documentElement;
@@ -1190,7 +1217,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {number} The width of the browser scollbar.
              */
-            scrollbarWidth: function() {
+            scrollbarWidth: function () {
                 if (angular.isUndefined(SCROLLBAR_WIDTH)) {
                     var scrollElem = angular.element('<div style="position: absolute; top: -9999px; width: 50px; height: 50px; overflow: scroll;"></div>');
                     $document.find('body').append(scrollElem);
@@ -1213,7 +1240,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} A HTML element.
              */
-            scrollParent: function(elem, includeHidden) {
+            scrollParent: function (elem, includeHidden) {
                 elem = this.getRawNode(elem);
 
                 var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
@@ -1258,7 +1285,7 @@ angular.module('ui.xg.position', [])
              *     <li>**left**: distance to left edge of offset parent</li>
              *   </ul>
              */
-            position: function(elem, includeMagins) {
+            position: function (elem, includeMagins) {
                 elem = this.getRawNode(elem);
 
                 var elemOffset = this.offset(elem);
@@ -1300,7 +1327,7 @@ angular.module('ui.xg.position', [])
              *     <li>**right**: distance to bottom edge of viewport</li>
              *   </ul>
              */
-            offset: function(elem) {
+            offset: function (elem) {
                 elem = this.getRawNode(elem);
 
                 var elemBCR = elem.getBoundingClientRect();
@@ -1335,7 +1362,7 @@ angular.module('ui.xg.position', [])
              *     <li>**right**: distance to the right content edge of viewport element</li>
              *   </ul>
              */
-            viewportOffset: function(elem, useDocument, includePadding) {
+            viewportOffset: function (elem, useDocument, includePadding) {
                 elem = this.getRawNode(elem);
                 includePadding = includePadding !== false ? true : false;
 
@@ -1403,7 +1430,7 @@ angular.module('ui.xg.position', [])
              *   <li>**[2]**: If auto is passed: true, else undefined.</li>
              * </ul>
              */
-            parsePlacement: function(placement) {
+            parsePlacement: function (placement) {
                 var autoPlace = PLACEMENT_REGEX.auto.test(placement);
                 if (autoPlace) {
                     placement = placement.replace(PLACEMENT_REGEX.auto, '');
@@ -1468,7 +1495,7 @@ angular.module('ui.xg.position', [])
              *     <li>**placement**: The resolved placement.</li>
              *   </ul>
              */
-            positionElements: function(hostElem, targetElem, placement, appendToBody) {
+            positionElements: function (hostElem, targetElem, placement, appendToBody) {
                 hostElem = this.getRawNode(hostElem);
                 targetElem = this.getRawNode(targetElem);
 
@@ -1490,17 +1517,41 @@ angular.module('ui.xg.position', [])
                         height: targetHeight + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginTop) + this.parseStyle(targetElemStyle.marginBottom)))
                     };
 
-                    placement[0] = placement[0] === 'top' && adjustedSize.height > viewportOffset.top && adjustedSize.height <= viewportOffset.bottom ? 'bottom' :
-                        placement[0] === 'bottom' && adjustedSize.height > viewportOffset.bottom && adjustedSize.height <= viewportOffset.top ? 'top' :
-                            placement[0] === 'left' && adjustedSize.width > viewportOffset.left && adjustedSize.width <= viewportOffset.right ? 'right' :
-                                placement[0] === 'right' && adjustedSize.width > viewportOffset.right && adjustedSize.width <= viewportOffset.left ? 'left' :
-                                    placement[0];
+                    placement[0] = placement[0] === 'top' &&
+                    adjustedSize.height > viewportOffset.top &&
+                    adjustedSize.height <= viewportOffset.bottom
+                        ? 'bottom'
+                        : placement[0] === 'bottom' &&
+                    adjustedSize.height > viewportOffset.bottom &&
+                    adjustedSize.height <= viewportOffset.top
+                        ? 'top'
+                        : placement[0] === 'left' &&
+                    adjustedSize.width > viewportOffset.left &&
+                    adjustedSize.width <= viewportOffset.right
+                        ? 'right'
+                        : placement[0] === 'right' &&
+                    adjustedSize.width > viewportOffset.right &&
+                    adjustedSize.width <= viewportOffset.left
+                        ? 'left'
+                        : placement[0];
 
-                    placement[1] = placement[1] === 'top' && adjustedSize.height - hostElemPos.height > viewportOffset.bottom && adjustedSize.height - hostElemPos.height <= viewportOffset.top ? 'bottom' :
-                        placement[1] === 'bottom' && adjustedSize.height - hostElemPos.height > viewportOffset.top && adjustedSize.height - hostElemPos.height <= viewportOffset.bottom ? 'top' :
-                            placement[1] === 'left' && adjustedSize.width - hostElemPos.width > viewportOffset.right && adjustedSize.width - hostElemPos.width <= viewportOffset.left ? 'right' :
-                                placement[1] === 'right' && adjustedSize.width - hostElemPos.width > viewportOffset.left && adjustedSize.width - hostElemPos.width <= viewportOffset.right ? 'left' :
-                                    placement[1];
+                    placement[1] = placement[1] === 'top' &&
+                    adjustedSize.height - hostElemPos.height > viewportOffset.bottom &&
+                    adjustedSize.height - hostElemPos.height <= viewportOffset.top
+                        ? 'bottom'
+                        : placement[1] === 'bottom' &&
+                    adjustedSize.height - hostElemPos.height > viewportOffset.top &&
+                    adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
+                        ? 'top'
+                        : placement[1] === 'left' &&
+                    adjustedSize.width - hostElemPos.width > viewportOffset.right &&
+                    adjustedSize.width - hostElemPos.width <= viewportOffset.left
+                        ? 'right'
+                        : placement[1] === 'right' &&
+                    adjustedSize.width - hostElemPos.width > viewportOffset.left &&
+                    adjustedSize.width - hostElemPos.width <= viewportOffset.right
+                        ? 'left'
+                        : placement[1];
 
                     if (placement[1] === 'center') {
                         if (PLACEMENT_REGEX.vertical.test(placement[0])) {
@@ -1573,7 +1624,7 @@ angular.module('ui.xg.position', [])
              * @param {element} elem - The tooltip/dropdown element.
              * @param {string} placement - The placement for the elem.
              */
-            positionArrow: function(elem, placement) {
+            positionArrow: function (elem, placement) {
                 elem = this.getRawNode(elem);
 
                 var isTooltip = true;
@@ -1640,6 +1691,7 @@ angular.module('ui.xg.position', [])
             }
         };
     }]);
+
 /**
  * datepicker
  * datepicker directive
@@ -1694,118 +1746,128 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
         }
 
     }])
-    .controller('uixDatepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$timeout', '$uixPosition', 'uixDatepickerService', 'uixDatepickerConfig',
-        function ($scope, $element, $compile, $attrs, $log, dateFilter, $timeout, $uixPosition, uixDatepickerService, uixDatepickerConfig) {
-            var ngModelCtrl = {$setViewValue: angular.noop};
-            var self = this;
-            var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
-                '<div class="arrow"></div>' +
-                '<div class="popover-inner">' +
-                '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime"></uix-calendar>' +
-                '</div></div>';
-            this.init = function (_ngModelCtrl) {
-                ngModelCtrl = _ngModelCtrl;
-                ngModelCtrl.$render = this.render;
-                ngModelCtrl.$formatters.unshift(function (modelValue) {
-                    return modelValue ? new Date(modelValue) : null;
-                });
-                var calendarDOM = $compile(template)($scope);
-                $element.after(calendarDOM);
-            };
-            $scope.showCalendar = false;
-            this.toggle = function (open) {
-                var show = arguments.length ? !!open : !$scope.showCalendar;
-                if (show) {
-                    adjustPosition();
-                }
-                $scope.showCalendar = show;
-            };
-            function adjustPosition() {
-                var popoverEle = $element.next('.uix-datepicker-popover');
-                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
-                popoverEle.removeClass('top bottom');
-                if (elePosition.placement.indexOf('top') !== -1) {
-                    popoverEle.addClass('top');
-                } else {
-                    popoverEle.addClass('bottom');
-                }
-                popoverEle.css({
-                    top: elePosition.top + 'px',
-                    left: elePosition.left + 'px'
-                });
-            }
-
-            this.showCalendar = function () {
-                return $scope.showCalendar;
-            };
-            angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
-                $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
-            });
-
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
-
-            this.render = function () {
-                var date = ngModelCtrl.$modelValue;
-                if (isNaN(date)) {
-                    $log.warn('Datepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
-                }
-                $scope.selectDate = date;
-                $scope.inputValue = dateFilter(date, format);
-            };
-            // 显示隐藏日历
-            $scope.toggleCalendarHandler = function (evt) {
-                $element.find('input')[0].blur();
-                if (evt) {
-                    evt.preventDefault();
-                }
-                if (!$scope.isDisabled) {
-                    self.toggle();
-                }
-            };
-
-            // 获取日历面板和被点击的元素
-            $scope.getCanledarElement = function () {
-                return $element.next('.uix-datepicker-popover');
-            };
-            $scope.getToggleElement = function () {
-                return angular.element($element[0].querySelector('.input-group'));
-            };
-            // 清除日期
-            $scope.clearDateHandler = function () {
-                $scope.inputValue = null;
-                $scope.selectDate = null;
-                ngModelCtrl.$setViewValue(null);
-                ngModelCtrl.$render();
-            };
-            $scope.$watch('showCalendar', function (showCalendar) {
-                if (showCalendar) {
-                    uixDatepickerService.open($scope);
-                } else {
-                    uixDatepickerService.close($scope);
-                }
-            });
-
-            var autoClose = angular.isDefined($attrs.autoClose) ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
-            // 选择日期
-            $scope.changeDateHandler = function (date) {
-                $scope.inputValue = dateFilter(date, format);
-                $scope.selectDate = date;
-                if (autoClose) {
-                    self.toggle();
-                }
-                ngModelCtrl.$setViewValue(date);
-                ngModelCtrl.$render();
-
-                var fn = $scope.onChange ? $scope.onChange() : angular.noop();
-                if (angular.isDefined(fn)) {
-                    fn();
-                }
-            };
-            $scope.$on('$locationChangeSuccess', function () {
+    .controller('uixDatepickerCtrl',
+        ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$uixPosition',
+            'uixDatepickerService', 'uixDatepickerConfig',
+            function ($scope, $element, $compile, $attrs, $log, dateFilter, $uixPosition,
+                      uixDatepickerService, uixDatepickerConfig) {
+                var ngModelCtrl = {$setViewValue: angular.noop};
+                var self = this;
+                var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
+                    '<div class="arrow"></div>' +
+                    '<div class="popover-inner">' +
+                    '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" ' +
+                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime">' +
+                    '</uix-calendar>' +
+                    '</div></div>';
+                this.init = function (_ngModelCtrl) {
+                    ngModelCtrl = _ngModelCtrl;
+                    ngModelCtrl.$render = this.render;
+                    ngModelCtrl.$formatters.unshift(function (modelValue) {
+                        return modelValue ? new Date(modelValue) : null;
+                    });
+                    var calendarDOM = $compile(template)($scope);
+                    $element.after(calendarDOM);
+                };
                 $scope.showCalendar = false;
-            });
+                this.toggle = function (open) {
+                    var show = arguments.length ? !!open : !$scope.showCalendar;
+                    if (show) {
+                        adjustPosition();
+                    }
+                    $scope.showCalendar = show;
+                };
+                function adjustPosition() {
+                    var popoverEle = $element.next('.uix-datepicker-popover');
+                    var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
+                    popoverEle.removeClass('top bottom');
+                    if (elePosition.placement.indexOf('top') !== -1) {
+                        popoverEle.addClass('top');
+                    } else {
+                        popoverEle.addClass('bottom');
+                    }
+                    popoverEle.css({
+                        top: elePosition.top + 'px',
+                        left: elePosition.left + 'px'
+                    });
+                }
 
-        }])
+                this.showCalendar = function () {
+                    return $scope.showCalendar;
+                };
+                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
+                    $scope[key] = angular.isDefined($attrs[key])
+                        ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
+                });
+
+                var format = angular.isDefined($attrs.format)
+                    ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
+
+                this.render = function () {
+                    var date = ngModelCtrl.$modelValue;
+                    if (isNaN(date)) {
+                        $log.warn('Datepicker directive: "ng-model" value must be a Date object, ' +
+                            'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                            'or ISO 8601 date.');
+                    }
+                    $scope.selectDate = date;
+                    $scope.inputValue = dateFilter(date, format);
+                };
+                // 显示隐藏日历
+                $scope.toggleCalendarHandler = function (evt) {
+                    $element.find('input')[0].blur();
+                    if (evt) {
+                        evt.preventDefault();
+                    }
+                    if (!$scope.isDisabled) {
+                        self.toggle();
+                    }
+                };
+
+                // 获取日历面板和被点击的元素
+                $scope.getCanledarElement = function () {
+                    return $element.next('.uix-datepicker-popover');
+                };
+                $scope.getToggleElement = function () {
+                    return angular.element($element[0].querySelector('.input-group'));
+                };
+                // 清除日期
+                $scope.clearDateHandler = function () {
+                    $scope.inputValue = null;
+                    $scope.selectDate = null;
+                    ngModelCtrl.$setViewValue(null);
+                    ngModelCtrl.$render();
+                };
+                $scope.$watch('showCalendar', function (showCalendar) {
+                    if (showCalendar) {
+                        uixDatepickerService.open($scope);
+                    } else {
+                        uixDatepickerService.close($scope);
+                    }
+                });
+
+                var autoClose = angular.isDefined($attrs.autoClose)
+                    ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
+                // 选择日期
+                $scope.changeDateHandler = function (date) {
+                    $scope.inputValue = dateFilter(date, format);
+                    $scope.selectDate = date;
+                    if (autoClose) {
+                        self.toggle();
+                    }
+                    ngModelCtrl.$setViewValue(date);
+                    ngModelCtrl.$render();
+
+                    var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                    if (angular.isDefined(fn)) {
+                        fn();
+                    }
+                };
+                $scope.$on('$locationChangeSuccess', function () {
+                    $scope.showCalendar = false;
+                });
+
+            }])
     .directive('uixDatepicker', function () {
         return {
             restrict: 'AE',
@@ -1826,8 +1888,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     ngModelCtrl = ctrls[1];
                 datepickerCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });
+
 /**
  * dropdown
  * 多列下拉按钮组指令
@@ -1851,8 +1914,8 @@ angular.module('ui.xg.dropdown', [])
                 getColsNum: function () {
                     return _colsNum;
                 }
-            }
-        }
+            };
+        };
     })
     .service('uixDropdownService', ['$document', function ($document) {
         var openScope = null;
@@ -1903,89 +1966,92 @@ angular.module('ui.xg.dropdown', [])
         }
     }])
 
-    .controller('DropdownController', ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
-        function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
-            var self = this,
-                scope = $scope.$new(), // create a child scope so we are not polluting original one
-                openClass = uixDropdownConfig.openClass,
-                getIsOpen,
-                setIsOpen = angular.noop,
-                toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
+    .controller('DropdownController',
+        ['$scope', '$attrs', '$parse', 'uixDropdown', 'uixDropdownConfig', 'uixDropdownService', '$animate',
+            function ($scope, $attrs, $parse, uixDropdown, uixDropdownConfig, uixDropdownService, $animate) {
+                var self = this,
+                    scope = $scope.$new(), // create a child scope so we are not polluting original one
+                    openClass = uixDropdownConfig.openClass,
+                    getIsOpen,
+                    setIsOpen = angular.noop,
+                    toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop;
 
-            this.init = function (element) {
-                self.$element = element;
-                self.colsNum = angular.isDefined($attrs.colsNum) ?
-                    angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
-                if ($attrs.isOpen) {
-                    getIsOpen = $parse($attrs.isOpen);
-                    setIsOpen = getIsOpen.assign;
+                this.init = function (element) {
+                    self.$element = element;
+                    self.colsNum = angular.isDefined($attrs.colsNum)
+                        ? angular.copy($scope.$parent.$eval($attrs.colsNum)) : uixDropdown.getColsNum();
+                    if ($attrs.isOpen) {
+                        getIsOpen = $parse($attrs.isOpen);
+                        setIsOpen = getIsOpen.assign;
 
-                    $scope.$watch(getIsOpen, function (value) {
-                        scope.isOpen = !!value;
-                    });
+                        $scope.$watch(getIsOpen, function (value) {
+                            scope.isOpen = !!value;
+                        });
+                    }
+                };
+
+                this.toggle = function (open) {
+                    scope.isOpen = arguments.length ? !!open : !scope.isOpen;
+                    return scope.isOpen;
+                };
+
+                // Allow other directives to watch status
+                this.isOpen = function () {
+                    return scope.isOpen;
+                };
+
+                scope.getToggleElement = function () {
+                    return self.toggleElement;
+                };
+
+                scope.focusToggleElement = function () {
+                    if (self.toggleElement) {
+                        self.toggleElement[0].focus();
+                    }
+                };
+
+                scope.$watch('isOpen', function (isOpen, wasOpen) {
+                    if (isOpen) {
+                        setMultiCols();
+                    }
+                    $animate[isOpen ? 'addClass' : 'removeClass'](self.$element, openClass);
+
+                    if (isOpen) {
+                        scope.focusToggleElement();
+                        uixDropdownService.open(scope);
+                    } else {
+                        uixDropdownService.close(scope);
+                    }
+
+                    setIsOpen($scope, isOpen);
+                    if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
+                        toggleInvoker($scope, {open: !!isOpen});
+                    }
+                });
+                // set multi column
+                function setMultiCols() {
+                    var eachItemWidth = uixDropdownConfig.eachItemWidth;
+                    var colsNum = self.colsNum;
+                    var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
+                    var dropdownList = angular.element(
+                        self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)')
+                    );
+                    if (dropdownList.length <= colsNum || colsNum === 1) {
+                        return;
+                    }
+                    self.$element.addClass(uixDropdownConfig.multiColClass);
+                    dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
+                    dropdownList.css('width', 100 / colsNum + '%');
                 }
-            };
 
-            this.toggle = function (open) {
-                scope.isOpen = arguments.length ? !!open : !scope.isOpen;
-                return scope.isOpen;
-            };
+                $scope.$on('$locationChangeSuccess', function () {
+                    scope.isOpen = false;
+                });
 
-            // Allow other directives to watch status
-            this.isOpen = function () {
-                return scope.isOpen;
-            };
-
-            scope.getToggleElement = function () {
-                return self.toggleElement;
-            };
-
-            scope.focusToggleElement = function () {
-                if (self.toggleElement) {
-                    self.toggleElement[0].focus();
-                }
-            };
-
-            scope.$watch('isOpen', function (isOpen, wasOpen) {
-                if (isOpen) {
-                    setMultiCols();
-                }
-                $animate[isOpen ? 'addClass' : 'removeClass'](self.$element, openClass);
-
-                if (isOpen) {
-                    scope.focusToggleElement();
-                    uixDropdownService.open(scope);
-                } else {
-                    uixDropdownService.close(scope);
-                }
-
-                setIsOpen($scope, isOpen);
-                if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
-                    toggleInvoker($scope, {open: !!isOpen});
-                }
-            });
-            // set multi column
-            function setMultiCols() {
-                var eachItemWidth = uixDropdownConfig.eachItemWidth;
-                var colsNum = self.colsNum;
-                var dropdownMenu = angular.element(self.$element[0].querySelector('.dropdown-menu'));
-                var dropdownList = angular.element(self.$element[0].querySelectorAll('.dropdown-menu > li:not(.divider)'));
-                if (dropdownList.length <= colsNum || colsNum === 1) {
-                    return;
-                }
-                self.$element.addClass(uixDropdownConfig.multiColClass);
-                dropdownMenu.css('width', eachItemWidth * colsNum + 'px');
-                dropdownList.css('width', 100 / colsNum + '%');
-            }
-
-            $scope.$on('$locationChangeSuccess', function () {
-                scope.isOpen = false;
-            });
-
-            $scope.$on('$destroy', function () {
-                scope.$destroy();
-            });
-        }])
+                $scope.$on('$destroy', function () {
+                    scope.$destroy();
+                });
+            }])
 
     .directive('uixDropdown', function () {
         return {
@@ -2057,7 +2123,7 @@ angular.module('ui.xg.stackedMap', [])
                             }
                         }
                     },
-                    keys: function() {
+                    keys: function () {
                         var keys = [];
                         for (var i = 0; i < stack.length; i++) {
                             keys.push(stack[i].key);
@@ -2087,6 +2153,7 @@ angular.module('ui.xg.stackedMap', [])
             }
         };
     });
+
 /**
  * modal
  * modal directive
@@ -2100,12 +2167,12 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
     /**
      * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
      */
-    .factory('$transition', function() {
+    .factory('$transition', ['$document', function ($document) {
 
         var $transition = {};
 
         // Work out the name of the transitionEnd event
-        var transElement = document.createElement('trans');
+        var transElement = $document[0].createElement('trans');
         var transitionEndEventNames = {
             'WebkitTransition': 'webkitTransitionEnd',
             'MozTransition': 'transitionend',
@@ -2118,17 +2185,19 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
             'OTransition': 'oAnimationEnd',
             'transition': 'animationend'
         };
+
         function findEndEventName(endEventNames) {
-            for (var name in endEventNames){
-                if (!angular.isUndefined(transElement.style[name])) {
+            for (var name in endEventNames) {
+                if (angular.isDefined(transElement.style[name])) {
                     return endEventNames[name];
                 }
             }
         }
+
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
-    })
+    }])
 
     /**
      * A helper directive for the $uixModal service. It creates a backdrop element.
@@ -2184,7 +2253,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
                 scope.close = function (evt) {
                     var modal = $uixModalStack.getTop();
-                    if (modal && modal.value.backdrop && modal.value.backdrop != 'static' && (evt.target === evt.currentTarget)) {
+                    if (modal && modal.value.backdrop && modal.value.backdrop !== 'static' &&
+                        (evt.target === evt.currentTarget)) {
                         evt.preventDefault();
                         evt.stopPropagation();
                         $uixModalStack.dismiss(modal.key, 'backdrop click');
@@ -2196,9 +2266,9 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
     .directive('uixModalTransclude', function () {
         return {
-            link: function($scope, $element, $attrs, controller, $transclude) {
+            link: function ($scope, $element, $attrs, controller, $transclude) {
                 // TODO 这个$transclude是自动注入的吗?
-                $transclude($scope.$parent, function(clone) {
+                $transclude($scope.$parent, function (clone) {
                     $element.empty();
                     $element.append(clone);
                 });
@@ -2226,7 +2296,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                 return topBackdropIndex;
             }
 
-            $rootScope.$watch(backdropIndex, function(newBackdropIndex){
+            $rootScope.$watch(backdropIndex, function (newBackdropIndex) {
                 if (backdropScope) {
                     backdropScope.index = newBackdropIndex;
                 }
@@ -2240,7 +2310,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                 openedWindows.remove(modalInstance);
 
                 //remove window DOM element
-                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function() {
+                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function () {
                     modalWindow.modalScope.$destroy();
                     body.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
                     checkRemoveBackdrop();
@@ -2249,7 +2319,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
 
             function checkRemoveBackdrop() {
                 //remove backdrop if no longer needed
-                if (backdropDomEl && backdropIndex() == -1) {
+                if (backdropDomEl && backdropIndex() === -1) {
                     var backdropScopeRef = backdropScope;
                     removeAfterAnimate(backdropDomEl, backdropScope, 150, function () {
                         backdropScopeRef.$destroy();
@@ -2386,12 +2456,12 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                  * @returns {*|Promise}
                  */
                 function getTemplatePromise(options) {
-                    return options.template ? $q.when(options.template) :
-                        $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
-                            {cache: $templateCache})
+                    return options.template ? $q.when(options.template)
+                        : $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
+                        {cache: $templateCache})
                         .then(function (result) {
-                                return result.data;
-                            });
+                            return result.data;
+                        });
                 }
 
                 /**
@@ -2408,6 +2478,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
                     });
                     return promisesArr;
                 }
+
                 return {
                     open: function (modalOptions) {
                         var modalResultDeferred = $q.defer();
@@ -2593,7 +2664,7 @@ angular.module('ui.xg.notify', [])
                 } else {
                     messages.push(message);
                 }
-                if (typeof message.onopen === 'function') {
+                if (angular.isFunction(message.onopen)) {
                     message.onopen();
                 }
                 if (message.ttl && message.ttl !== -1) {
@@ -2611,7 +2682,7 @@ angular.module('ui.xg.notify', [])
                     messages[index].close = true;
                     messages.splice(index, 1);
                 }
-                if (typeof message.onclose === 'function') {
+                if (angular.isFunction(message.onclose)) {
                     message.onclose();
                 }
             };
@@ -2629,7 +2700,7 @@ angular.module('ui.xg.notify', [])
             $scope.inlineMessage = angular.isDefined($scope.inline) ? $scope.inline : $uixNotify.inlineMessages();
             $scope.$watch('limitMessages', function (limitMessages) {
                 var directive = notifyServices.directives[$scope.referenceId];
-                if (!angular.isUndefined(limitMessages) && !angular.isUndefined(directive)) {
+                if (angular.isDefined(limitMessages) && angular.isDefined(directive)) {
                     directive.limitMessages = limitMessages;
                 }
             });
@@ -2688,7 +2759,7 @@ angular.module('ui.xg.notify', [])
             _referenceId = 0, _inline = false, _position = 'top-right', _disableCloseButton = false,
             _disableIcons = false, _reverseOrder = false, _disableCountDown = false, _translateMessages = true;
         this.globalTimeToLive = function (ttl) {
-            if (typeof ttl === 'object') {
+            if (angular.isObject(ttl)) {
                 for (var k in ttl) {
                     if (ttl.hasOwnProperty(k)) {
                         _ttl[k] = ttl[k];
@@ -2790,7 +2861,7 @@ angular.module('ui.xg.notify', [])
                 notifyServices.reverseOrder = _reverseOrder;
                 try {
                     translate = $filter('translate');
-                } catch (e) {
+                } catch (error) {
                     translate = null;
                 }
                 function broadcastMessage(message) {
@@ -2816,7 +2887,7 @@ angular.module('ui.xg.notify', [])
                         severity: severity,
                         ttl: _config.ttl || _ttl[severity],
                         variables: _config.variables || {},
-                        disableCloseButton:  angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
+                        disableCloseButton: angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
                         disableIcons: angular.isUndefined(_config.disableIcons) ? _disableIcons : _config.disableIcons,
                         disableCountDown: angular.isUndefined(_config.disableCountDown) ? _disableCountDown : _config.disableCountDown,
                         position: _config.position || _position,
@@ -3052,7 +3123,7 @@ angular.module('ui.xg.pager', [])
 
                     // Default page limits
                     var startPage = 1, endPage = totalPages;
-                    var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
+                    var isMaxSized = angular.isDefined(maxSize) && maxSize < totalPages;
 
                     // recompute if maxSize
                     if (isMaxSized) {
@@ -3105,8 +3176,9 @@ angular.module('ui.xg.pager', [])
                     }
                 };
             }
-        }
+        };
     }]);
+
 /**
  * tooltip
  * 提示指令
@@ -3143,15 +3215,6 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
         // The options specified to the provider globally.
         var globalOptions = {};
 
-        /**
-         * `options({})` allows global configuration of all tooltips in the
-         * application.
-         *
-         *   var app = angular.module( 'App', ['ui.bootstrap.tooltip'], function( $tooltipProvider ) {
-   *     // place tooltips left instead of top by default
-   *     $tooltipProvider.options( { placement: 'left' } );
-   *   });
-         */
         this.options = function (value) {
             angular.extend(globalOptions, value);
         };
@@ -3168,7 +3231,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
         /**
          * This is a helper function for translating camel-case to snake-case.
          */
-        function snake_case(name) {
+        function snakeCase(name) {
             var regexp = /[A-Z]/g;
             var separator = '-';
             return name.replace(regexp, function (letter, pos) {
@@ -3180,511 +3243,520 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
          * Returns the actual instance of the $tooltip service.
          * TODO support multiple triggers
          */
-        this.$get = ['$window', '$compile', '$timeout', '$document', '$uixPosition', '$interpolate', '$rootScope', '$parse', '$uixStackedMap', function ($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
-            var openedTooltips = $$stackedMap.createNew();
-            $document.on('keypress', keypressListener);
+        this.$get = ['$compile', '$timeout', '$document', '$uixPosition', '$interpolate',
+            '$rootScope', '$parse', '$uixStackedMap',
+            function ($compile, $timeout, $document, $position, $interpolate,
+                      $rootScope, $parse, $uixStackedMap) {
+                var openedTooltips = $uixStackedMap.createNew();
+                $document.on('keypress', keypressListener);
 
-            $rootScope.$on('$destroy', function () {
-                $document.off('keypress', keypressListener);
-            });
+                $rootScope.$on('$destroy', function () {
+                    $document.off('keypress', keypressListener);
+                });
 
-            function keypressListener(e) {
-                if (e.which === 27) {
-                    var last = openedTooltips.top();
-                    if (last) {
-                        last.value.close();
-                        openedTooltips.removeTop();
-                        last = null;
+                function keypressListener(evt) {
+                    if (evt.which === 27) {
+                        var last = openedTooltips.top();
+                        if (last) {
+                            last.value.close();
+                            openedTooltips.removeTop();
+                            last = null;
+                        }
                     }
                 }
-            }
 
-            return function $tooltip(ttType, prefix, defaultTriggerShow, options) {
-                options = angular.extend({}, defaultOptions, globalOptions, options);
+                return function $tooltip(ttType, prefix, defaultTriggerShow, options) {
+                    options = angular.extend({}, defaultOptions, globalOptions, options);
 
-                /**
-                 * Returns an object of show and hide triggers.
-                 *
-                 * If a trigger is supplied,
-                 * it is used to show the tooltip; otherwise, it will use the `trigger`
-                 * option passed to the `$tooltipProvider.options` method; else it will
-                 * default to the trigger supplied to this directive factory.
-                 *
-                 * The hide trigger is based on the show trigger. If the `trigger` option
-                 * was passed to the `$tooltipProvider.options` method, it will use the
-                 * mapped trigger from `triggerMap` or the passed trigger if the map is
-                 * undefined; otherwise, it uses the `triggerMap` value of the show
-                 * trigger; else it will just use the show trigger.
-                 */
-                function getTriggers(trigger) {
-                    var show = (trigger || options.trigger || defaultTriggerShow).split(' ');
-                    var hide = show.map(function (trigger) {
-                        return triggerMap[trigger] || trigger;
-                    });
+                    /**
+                     * Returns an object of show and hide triggers.
+                     *
+                     * If a trigger is supplied,
+                     * it is used to show the tooltip; otherwise, it will use the `trigger`
+                     * option passed to the `$tooltipProvider.options` method; else it will
+                     * default to the trigger supplied to this directive factory.
+                     *
+                     * The hide trigger is based on the show trigger. If the `trigger` option
+                     * was passed to the `$tooltipProvider.options` method, it will use the
+                     * mapped trigger from `triggerMap` or the passed trigger if the map is
+                     * undefined; otherwise, it uses the `triggerMap` value of the show
+                     * trigger; else it will just use the show trigger.
+                     */
+                    function getTriggers(trigger) {
+                        var show = (trigger || options.trigger || defaultTriggerShow).split(' ');
+                        var hide = show.map(function (trigger) {
+                            return triggerMap[trigger] || trigger;
+                        });
+                        return {
+                            show: show,
+                            hide: hide
+                        };
+                    }
+
+                    var directiveName = snakeCase(ttType);
+
+                    var startSym = $interpolate.startSymbol();
+                    var endSym = $interpolate.endSymbol();
+                    var template =
+                        '<div ' + directiveName + '-popup ' +
+                        'title="' + startSym + 'title' + endSym + '" ' +
+                        (options.useContentExp
+                            ? 'content-exp="contentExp()" '
+                            : 'content="' + startSym + 'content' + endSym + '" ') +
+                        'placement="' + startSym + 'placement' + endSym + '" ' +
+                        'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
+                        'animation="animation" ' +
+                        'is-open="isOpen"' +
+                        'origin-scope="origScope" ' +
+                        'style="visibility: hidden; display: block; top: -9999px; left: -9999px;"' +
+                        '>' +
+                        '</div>';
+
                     return {
-                        show: show,
-                        hide: hide
-                    };
-                }
+                        compile: function () {
+                            var tooltipLinker = $compile(template);
 
-                var directiveName = snake_case(ttType);
+                            return function link(scope, element, attrs) {
+                                var tooltip;
+                                var tooltipLinkedScope;
+                                var transitionTimeout;
+                                var showTimeout;
+                                var hideTimeout;
+                                var positionTimeout;
+                                var appendToBody = angular.isDefined(options.appendToBody)
+                                    ? options.appendToBody : false;
+                                var triggers = getTriggers();
+                                var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
+                                var ttScope = scope.$new(true);
+                                var repositionScheduled = false;
+                                var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen'])
+                                    ? $parse(attrs[prefix + 'IsOpen']) : false;
+                                var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
+                                var observers = [];
 
-                var startSym = $interpolate.startSymbol();
-                var endSym = $interpolate.endSymbol();
-                var template =
-                    '<div ' + directiveName + '-popup ' +
-                    'title="' + startSym + 'title' + endSym + '" ' +
-                    (options.useContentExp ?
-                        'content-exp="contentExp()" ' :
-                    'content="' + startSym + 'content' + endSym + '" ') +
-                    'placement="' + startSym + 'placement' + endSym + '" ' +
-                    'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
-                    'animation="animation" ' +
-                    'is-open="isOpen"' +
-                    'origin-scope="origScope" ' +
-                    'style="visibility: hidden; display: block; top: -9999px; left: -9999px;"' +
-                    '>' +
-                    '</div>';
-
-                return {
-                    compile: function () {
-                        var tooltipLinker = $compile(template);
-
-                        return function link(scope, element, attrs) {
-                            var tooltip;
-                            var tooltipLinkedScope;
-                            var transitionTimeout;
-                            var showTimeout;
-                            var hideTimeout;
-                            var positionTimeout;
-                            var appendToBody = angular.isDefined(options.appendToBody) ? options.appendToBody : false;
-                            var triggers = getTriggers();
-                            var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
-                            var ttScope = scope.$new(true);
-                            var repositionScheduled = false;
-                            var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen']) ? $parse(attrs[prefix + 'IsOpen']) : false;
-                            var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
-                            var observers = [];
-
-                            var positionTooltip = function () {
-                                // check if tooltip exists and is not empty
-                                if (!tooltip || !tooltip.html()) {
-                                    return;
-                                }
-                                if (!positionTimeout) {
-                                    positionTimeout = $timeout(function () {
-                                        if (!tooltip) {
-                                            return;
-                                        }
-                                        // Reset the positioning.
-                                        tooltip.css({top: 0, left: 0});
-
-                                        // Now set the calculated positioning.
-                                        var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
-                                        tooltip.css({
-                                            top: ttPosition.top + 'px',
-                                            left: ttPosition.left + 'px',
-                                            visibility: 'visible'
-                                        });
-
-                                        // If the placement class is prefixed, still need
-                                        // to remove the TWBS standard class.
-                                        if (options.placementClassPrefix) {
-                                            tooltip.removeClass('top bottom left right');
-                                        }
-
-                                        tooltip.removeClass(
-                                            options.placementClassPrefix + 'top ' +
-                                            options.placementClassPrefix + 'top-left ' +
-                                            options.placementClassPrefix + 'top-right ' +
-                                            options.placementClassPrefix + 'bottom ' +
-                                            options.placementClassPrefix + 'bottom-left ' +
-                                            options.placementClassPrefix + 'bottom-right ' +
-                                            options.placementClassPrefix + 'left ' +
-                                            options.placementClassPrefix + 'left-top ' +
-                                            options.placementClassPrefix + 'left-bottom ' +
-                                            options.placementClassPrefix + 'right ' +
-                                            options.placementClassPrefix + 'right-top ' +
-                                            options.placementClassPrefix + 'right-bottom');
-
-                                        var placement = ttPosition.placement.split('-');
-                                        tooltip.addClass(placement[0], options.placementClassPrefix + ttPosition.placement);
-                                        $position.positionArrow(tooltip, ttPosition.placement);
-
-                                        positionTimeout = null;
-                                    }, 0, false);
-                                }
-                            };
-
-                            // Set up the correct scope to allow transclusion later
-                            ttScope.origScope = scope;
-
-                            // By default, the tooltip is not open.
-                            // TODO add ability to start tooltip opened
-                            ttScope.isOpen = false;
-                            openedTooltips.add(ttScope, {
-                                close: hide
-                            });
-
-                            function toggleTooltipBind() {
-                                if (!ttScope.isOpen) {
-                                    showTooltipBind();
-                                } else {
-                                    hideTooltipBind();
-                                }
-                            }
-
-                            // Show the tooltip with delay if specified, otherwise show it immediately
-                            function showTooltipBind() {
-                                if (hasEnableExp && !scope.$eval(attrs[prefix + 'Enable'])) {
-                                    return;
-                                }
-
-                                cancelHide();
-                                prepareTooltip();
-
-                                if (ttScope.popupDelay) {
-                                    // Do nothing if the tooltip was already scheduled to pop-up.
-                                    // This happens if show is triggered multiple times before any hide is triggered.
-                                    if (!showTimeout) {
-                                        showTimeout = $timeout(show, ttScope.popupDelay, false);
+                                var positionTooltip = function () {
+                                    // check if tooltip exists and is not empty
+                                    if (!tooltip || !tooltip.html()) {
+                                        return;
                                     }
-                                } else {
-                                    show();
-                                }
-                            }
+                                    if (!positionTimeout) {
+                                        positionTimeout = $timeout(function () {
+                                            if (!tooltip) {
+                                                return;
+                                            }
+                                            // Reset the positioning.
+                                            tooltip.css({top: 0, left: 0});
 
-                            function hideTooltipBind() {
-                                cancelShow();
+                                            // Now set the calculated positioning.
+                                            var ttPosition = $position.positionElements(element, tooltip,
+                                                ttScope.placement, appendToBody);
+                                            tooltip.css({
+                                                top: ttPosition.top + 'px',
+                                                left: ttPosition.left + 'px',
+                                                visibility: 'visible'
+                                            });
 
-                                if (ttScope.popupCloseDelay) {
-                                    if (!hideTimeout) {
-                                        hideTimeout = $timeout(hide, ttScope.popupCloseDelay, false);
+                                            // If the placement class is prefixed, still need
+                                            // to remove the TWBS standard class.
+                                            if (options.placementClassPrefix) {
+                                                tooltip.removeClass('top bottom left right');
+                                            }
+
+                                            tooltip.removeClass(
+                                                options.placementClassPrefix + 'top ' +
+                                                options.placementClassPrefix + 'top-left ' +
+                                                options.placementClassPrefix + 'top-right ' +
+                                                options.placementClassPrefix + 'bottom ' +
+                                                options.placementClassPrefix + 'bottom-left ' +
+                                                options.placementClassPrefix + 'bottom-right ' +
+                                                options.placementClassPrefix + 'left ' +
+                                                options.placementClassPrefix + 'left-top ' +
+                                                options.placementClassPrefix + 'left-bottom ' +
+                                                options.placementClassPrefix + 'right ' +
+                                                options.placementClassPrefix + 'right-top ' +
+                                                options.placementClassPrefix + 'right-bottom');
+
+                                            var placement = ttPosition.placement.split('-');
+                                            tooltip.addClass(placement[0],
+                                                options.placementClassPrefix + ttPosition.placement);
+                                            $position.positionArrow(tooltip, ttPosition.placement);
+
+                                            positionTimeout = null;
+                                        }, 0, false);
                                     }
-                                } else {
-                                    hide();
-                                }
-                            }
+                                };
 
-                            // Show the tooltip popup element.
-                            function show() {
-                                cancelShow();
-                                cancelHide();
+                                // Set up the correct scope to allow transclusion later
+                                ttScope.origScope = scope;
 
-                                // Don't show empty tooltips.
-                                if (!ttScope.content) {
-                                    return angular.noop;
-                                }
-
-                                createTooltip();
-
-                                // And show the tooltip.
-                                ttScope.$evalAsync(function () {
-                                    ttScope.isOpen = true;
-                                    assignIsOpen(true);
-                                    positionTooltip();
+                                // By default, the tooltip is not open.
+                                // TODO add ability to start tooltip opened
+                                ttScope.isOpen = false;
+                                openedTooltips.add(ttScope, {
+                                    close: hide
                                 });
-                            }
 
-                            function cancelShow() {
-                                if (showTimeout) {
-                                    $timeout.cancel(showTimeout);
-                                    showTimeout = null;
+                                function toggleTooltipBind() {
+                                    if (!ttScope.isOpen) {
+                                        showTooltipBind();
+                                    } else {
+                                        hideTooltipBind();
+                                    }
                                 }
 
-                                if (positionTimeout) {
-                                    $timeout.cancel(positionTimeout);
-                                    positionTimeout = null;
-                                }
-                            }
+                                // Show the tooltip with delay if specified, otherwise show it immediately
+                                function showTooltipBind() {
+                                    if (hasEnableExp && !scope.$eval(attrs[prefix + 'Enable'])) {
+                                        return;
+                                    }
 
-                            // Hide the tooltip popup element.
-                            function hide() {
-                                if (!ttScope) {
-                                    return;
-                                }
+                                    cancelHide();
+                                    prepareTooltip();
 
-                                // First things first: we don't show it anymore.
-                                ttScope.$evalAsync(function () {
-                                    ttScope.isOpen = false;
-                                    assignIsOpen(false);
-                                    // And now we remove it from the DOM. However, if we have animation, we
-                                    // need to wait for it to expire beforehand.
-                                    // FIXME: this is a placeholder for a port of the transitions library.
-                                    // The fade transition in TWBS is 150ms.
-                                    if (ttScope.animation) {
-                                        if (!transitionTimeout) {
-                                            transitionTimeout = $timeout(removeTooltip, 150, false);
+                                    if (ttScope.popupDelay) {
+                                        // Do nothing if the tooltip was already scheduled to pop-up.
+                                        // happens if show is triggered multiple times before any hide is triggered.
+                                        if (!showTimeout) {
+                                            showTimeout = $timeout(show, ttScope.popupDelay, false);
                                         }
                                     } else {
-                                        removeTooltip();
+                                        show();
                                     }
-                                });
-                            }
-
-                            function cancelHide() {
-                                if (hideTimeout) {
-                                    $timeout.cancel(hideTimeout);
-                                    hideTimeout = null;
-                                }
-                                if (transitionTimeout) {
-                                    $timeout.cancel(transitionTimeout);
-                                    transitionTimeout = null;
-                                }
-                            }
-
-                            function createTooltip() {
-                                // There can only be one tooltip element per directive shown at once.
-                                if (tooltip) {
-                                    return;
                                 }
 
-                                tooltipLinkedScope = ttScope.$new();
-                                tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
-                                    if (appendToBody) {
-                                        $document.find('body').append(tooltip);
-                                    } else {
-                                        element.after(tooltip);
-                                    }
-                                });
-
-                                prepObservers();
-                            }
-
-                            function removeTooltip() {
-                                cancelShow();
-                                cancelHide();
-                                unregisterObservers();
-
-                                if (tooltip) {
-                                    tooltip.remove();
-                                    tooltip = null;
-                                }
-                                if (tooltipLinkedScope) {
-                                    tooltipLinkedScope.$destroy();
-                                    tooltipLinkedScope = null;
-                                }
-                            }
-
-                            /**
-                             * Set the inital scope values. Once
-                             * the tooltip is created, the observers
-                             * will be added to keep things in synch.
-                             */
-                            function prepareTooltip() {
-                                ttScope.title = attrs[prefix + 'Title'];
-                                if (contentParse) {
-                                    ttScope.content = contentParse(scope);
-                                } else {
-                                    ttScope.content = attrs[ttType];
-                                }
-
-                                ttScope.popupClass = attrs[prefix + 'Class'];
-                                ttScope.placement = angular.isDefined(attrs[prefix + 'Placement']) ? attrs[prefix + 'Placement'] : options.placement;
-
-                                var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
-                                var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
-                                ttScope.popupDelay = !isNaN(delay) ? delay : options.popupDelay;
-                                ttScope.popupCloseDelay = !isNaN(closeDelay) ? closeDelay : options.popupCloseDelay;
-                            }
-
-                            function assignIsOpen(isOpen) {
-                                if (isOpenParse && angular.isFunction(isOpenParse.assign)) {
-                                    isOpenParse.assign(scope, isOpen);
-                                }
-                            }
-
-                            ttScope.contentExp = function () {
-                                return ttScope.content;
-                            };
-
-                            /**
-                             * Observe the relevant attributes.
-                             */
-                            attrs.$observe('disabled', function (val) {
-                                if (val) {
+                                function hideTooltipBind() {
                                     cancelShow();
+
+                                    if (ttScope.popupCloseDelay) {
+                                        if (!hideTimeout) {
+                                            hideTimeout = $timeout(hide, ttScope.popupCloseDelay, false);
+                                        }
+                                    } else {
+                                        hide();
+                                    }
                                 }
 
-                                if (val && ttScope.isOpen) {
-                                    hide();
-                                }
-                            });
+                                // Show the tooltip popup element.
+                                function show() {
+                                    cancelShow();
+                                    cancelHide();
 
-                            if (isOpenParse) {
-                                scope.$watch(isOpenParse, function (val) {
-                                    if (ttScope && !val === ttScope.isOpen) {
-                                        toggleTooltipBind();
+                                    // Don't show empty tooltips.
+                                    if (!ttScope.content) {
+                                        return angular.noop;
+                                    }
+
+                                    createTooltip();
+
+                                    // And show the tooltip.
+                                    ttScope.$evalAsync(function () {
+                                        ttScope.isOpen = true;
+                                        assignIsOpen(true);
+                                        positionTooltip();
+                                    });
+                                }
+
+                                function cancelShow() {
+                                    if (showTimeout) {
+                                        $timeout.cancel(showTimeout);
+                                        showTimeout = null;
+                                    }
+
+                                    if (positionTimeout) {
+                                        $timeout.cancel(positionTimeout);
+                                        positionTimeout = null;
+                                    }
+                                }
+
+                                // Hide the tooltip popup element.
+                                function hide() {
+                                    if (!ttScope) {
+                                        return;
+                                    }
+
+                                    // First things first: we don't show it anymore.
+                                    ttScope.$evalAsync(function () {
+                                        ttScope.isOpen = false;
+                                        assignIsOpen(false);
+                                        // And now we remove it from the DOM. However, if we have animation, we
+                                        // need to wait for it to expire beforehand.
+                                        // FIXME: this is a placeholder for a port of the transitions library.
+                                        // The fade transition in TWBS is 150ms.
+                                        if (ttScope.animation) {
+                                            if (!transitionTimeout) {
+                                                transitionTimeout = $timeout(removeTooltip, 150, false);
+                                            }
+                                        } else {
+                                            removeTooltip();
+                                        }
+                                    });
+                                }
+
+                                function cancelHide() {
+                                    if (hideTimeout) {
+                                        $timeout.cancel(hideTimeout);
+                                        hideTimeout = null;
+                                    }
+                                    if (transitionTimeout) {
+                                        $timeout.cancel(transitionTimeout);
+                                        transitionTimeout = null;
+                                    }
+                                }
+
+                                function createTooltip() {
+                                    // There can only be one tooltip element per directive shown at once.
+                                    if (tooltip) {
+                                        return;
+                                    }
+
+                                    tooltipLinkedScope = ttScope.$new();
+                                    tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
+                                        if (appendToBody) {
+                                            $document.find('body').append(tooltip);
+                                        } else {
+                                            element.after(tooltip);
+                                        }
+                                    });
+
+                                    prepObservers();
+                                }
+
+                                function removeTooltip() {
+                                    cancelShow();
+                                    cancelHide();
+                                    unregisterObservers();
+
+                                    if (tooltip) {
+                                        tooltip.remove();
+                                        tooltip = null;
+                                    }
+                                    if (tooltipLinkedScope) {
+                                        tooltipLinkedScope.$destroy();
+                                        tooltipLinkedScope = null;
+                                    }
+                                }
+
+                                /**
+                                 * Set the inital scope values. Once
+                                 * the tooltip is created, the observers
+                                 * will be added to keep things in synch.
+                                 */
+                                function prepareTooltip() {
+                                    ttScope.title = attrs[prefix + 'Title'];
+                                    if (contentParse) {
+                                        ttScope.content = contentParse(scope);
+                                    } else {
+                                        ttScope.content = attrs[ttType];
+                                    }
+
+                                    ttScope.popupClass = attrs[prefix + 'Class'];
+                                    ttScope.placement = angular.isDefined(attrs[prefix + 'Placement'])
+                                        ? attrs[prefix + 'Placement'] : options.placement;
+
+                                    var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
+                                    var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
+                                    ttScope.popupDelay = !isNaN(delay) ? delay : options.popupDelay;
+                                    ttScope.popupCloseDelay = !isNaN(closeDelay) ? closeDelay : options.popupCloseDelay;
+                                }
+
+                                function assignIsOpen(isOpen) {
+                                    if (isOpenParse && angular.isFunction(isOpenParse.assign)) {
+                                        isOpenParse.assign(scope, isOpen);
+                                    }
+                                }
+
+                                ttScope.contentExp = function () {
+                                    return ttScope.content;
+                                };
+
+                                /**
+                                 * Observe the relevant attributes.
+                                 */
+                                attrs.$observe('disabled', function (val) {
+                                    if (val) {
+                                        cancelShow();
+                                    }
+
+                                    if (val && ttScope.isOpen) {
+                                        hide();
                                     }
                                 });
-                            }
 
-                            function prepObservers() {
-                                observers.length = 0;
+                                if (isOpenParse) {
+                                    scope.$watch(isOpenParse, function (val) {
+                                        if (ttScope && !val === ttScope.isOpen) {
+                                            toggleTooltipBind();
+                                        }
+                                    });
+                                }
 
-                                if (contentParse) {
+                                function prepObservers() {
+                                    observers.length = 0;
+
+                                    if (contentParse) {
+                                        observers.push(
+                                            scope.$watch(contentParse, function (val) {
+                                                ttScope.content = val;
+                                                if (!val && ttScope.isOpen) {
+                                                    hide();
+                                                }
+                                            })
+                                        );
+
+                                        observers.push(
+                                            tooltipLinkedScope.$watch(function () {
+                                                if (!repositionScheduled) {
+                                                    repositionScheduled = true;
+                                                    tooltipLinkedScope.$$postDigest(function () {
+                                                        repositionScheduled = false;
+                                                        if (ttScope && ttScope.isOpen) {
+                                                            positionTooltip();
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                        );
+                                    } else {
+                                        observers.push(
+                                            attrs.$observe(ttType, function (val) {
+                                                ttScope.content = val;
+                                                if (!val && ttScope.isOpen) {
+                                                    hide();
+                                                } else {
+                                                    positionTooltip();
+                                                }
+                                            })
+                                        );
+                                    }
+
                                     observers.push(
-                                        scope.$watch(contentParse, function (val) {
-                                            ttScope.content = val;
-                                            if (!val && ttScope.isOpen) {
-                                                hide();
+                                        attrs.$observe(prefix + 'Title', function (val) {
+                                            ttScope.title = val;
+                                            if (ttScope.isOpen) {
+                                                positionTooltip();
                                             }
                                         })
                                     );
 
                                     observers.push(
-                                        tooltipLinkedScope.$watch(function () {
-                                            if (!repositionScheduled) {
-                                                repositionScheduled = true;
-                                                tooltipLinkedScope.$$postDigest(function () {
-                                                    repositionScheduled = false;
-                                                    if (ttScope && ttScope.isOpen) {
-                                                        positionTooltip();
-                                                    }
-                                                });
-                                            }
-                                        })
-                                    );
-                                } else {
-                                    observers.push(
-                                        attrs.$observe(ttType, function (val) {
-                                            ttScope.content = val;
-                                            if (!val && ttScope.isOpen) {
-                                                hide();
-                                            } else {
+                                        attrs.$observe(prefix + 'Placement', function (val) {
+                                            ttScope.placement = val ? val : options.placement;
+                                            if (ttScope.isOpen) {
                                                 positionTooltip();
                                             }
                                         })
                                     );
                                 }
 
-                                observers.push(
-                                    attrs.$observe(prefix + 'Title', function (val) {
-                                        ttScope.title = val;
-                                        if (ttScope.isOpen) {
-                                            positionTooltip();
-                                        }
-                                    })
-                                );
-
-                                observers.push(
-                                    attrs.$observe(prefix + 'Placement', function (val) {
-                                        ttScope.placement = val ? val : options.placement;
-                                        if (ttScope.isOpen) {
-                                            positionTooltip();
-                                        }
-                                    })
-                                );
-                            }
-
-                            function unregisterObservers() {
-                                if (observers.length) {
-                                    angular.forEach(observers, function (observer) {
-                                        observer();
-                                    });
-                                    observers.length = 0;
-                                }
-                            }
-
-                            // hide tooltips/popovers for outsideClick trigger
-                            function bodyHideTooltipBind(e) {
-                                if (!ttScope || !ttScope.isOpen || !tooltip) {
-                                    return;
-                                }
-                                // make sure the tooltip/popover link or tool tooltip/popover itself were not clicked
-                                if (!element[0].contains(e.target) && !tooltip[0].contains(e.target)) {
-                                    hideTooltipBind();
-                                }
-                            }
-
-                            var unregisterTriggers = function () {
-                                triggers.show.forEach(function (trigger) {
-                                    if (trigger === 'outsideClick') {
-                                        element[0].removeEventListener('click', toggleTooltipBind);
-                                    } else {
-                                        element[0].removeEventListener(trigger, showTooltipBind);
-                                        element[0].removeEventListener(trigger, toggleTooltipBind);
+                                function unregisterObservers() {
+                                    if (observers.length) {
+                                        angular.forEach(observers, function (observer) {
+                                            observer();
+                                        });
+                                        observers.length = 0;
                                     }
-                                });
-                                triggers.hide.forEach(function (trigger) {
-                                    trigger.split(' ').forEach(function (hideTrigger) {
+                                }
+
+                                // hide tooltips/popovers for outsideClick trigger
+                                function bodyHideTooltipBind(evt) {
+                                    if (!ttScope || !ttScope.isOpen || !tooltip) {
+                                        return;
+                                    }
+                                    // make sure the tooltip/popover link
+                                    // or tool tooltip/popover itself were not clicked
+                                    if (!element[0].contains(evt.target) && !tooltip[0].contains(evt.target)) {
+                                        hideTooltipBind();
+                                    }
+                                }
+
+                                var unregisterTriggers = function () {
+                                    triggers.show.forEach(function (trigger) {
                                         if (trigger === 'outsideClick') {
-                                            $document[0].removeEventListener('click', bodyHideTooltipBind);
+                                            element[0].removeEventListener('click', toggleTooltipBind);
                                         } else {
-                                            element[0].removeEventListener(hideTrigger, hideTooltipBind);
+                                            element[0].removeEventListener(trigger, showTooltipBind);
+                                            element[0].removeEventListener(trigger, toggleTooltipBind);
                                         }
                                     });
-                                });
-                            };
-
-                            function prepTriggers() {
-                                var val = attrs[prefix + 'Trigger'];
-                                unregisterTriggers();
-
-                                triggers = getTriggers(val);
-
-                                if (triggers.show !== 'none') {
-                                    triggers.show.forEach(function (trigger, idx) {
-                                        // Using raw addEventListener due to jqLite/jQuery bug - #4060
-                                        if (trigger === 'outsideClick') {
-                                            element[0].addEventListener('click', toggleTooltipBind);
-                                            $document[0].addEventListener('click', bodyHideTooltipBind);
-                                        } else if (trigger === triggers.hide[idx]) {
-                                            element[0].addEventListener(trigger, toggleTooltipBind);
-                                        } else if (trigger) {
-                                            element[0].addEventListener(trigger, showTooltipBind);
-                                            triggers.hide[idx].split(' ').forEach(function (trigger) {
-                                                element[0].addEventListener(trigger, hideTooltipBind);
-                                            });
-                                        }
-
-                                        element.on('keypress', function (e) {
-                                            if (e.which === 27) {
-                                                hideTooltipBind();
+                                    triggers.hide.forEach(function (trigger) {
+                                        trigger.split(' ').forEach(function (hideTrigger) {
+                                            if (trigger === 'outsideClick') {
+                                                $document[0].removeEventListener('click', bodyHideTooltipBind);
+                                            } else {
+                                                element[0].removeEventListener(hideTrigger, hideTooltipBind);
                                             }
                                         });
                                     });
-                                }
-                            }
+                                };
 
-                            prepTriggers();
+                                function prepTriggers() {
+                                    var val = attrs[prefix + 'Trigger'];
+                                    unregisterTriggers();
 
-                            var animation = scope.$eval(attrs[prefix + 'Animation']);
-                            ttScope.animation = angular.isDefined(animation) ? !!animation : options.animation;
+                                    triggers = getTriggers(val);
 
-                            var appendToBodyVal;
-                            var appendKey = prefix + 'AppendToBody';
-                            if (appendKey in attrs && angular.isUndefined(attrs[appendKey])) {
-                                appendToBodyVal = true;
-                            } else {
-                                appendToBodyVal = scope.$eval(attrs[appendKey]);
-                            }
+                                    if (triggers.show !== 'none') {
+                                        triggers.show.forEach(function (trigger, idx) {
+                                            // Using raw addEventListener due to jqLite/jQuery bug - #4060
+                                            if (trigger === 'outsideClick') {
+                                                element[0].addEventListener('click', toggleTooltipBind);
+                                                $document[0].addEventListener('click', bodyHideTooltipBind);
+                                            } else if (trigger === triggers.hide[idx]) {
+                                                element[0].addEventListener(trigger, toggleTooltipBind);
+                                            } else if (trigger) {
+                                                element[0].addEventListener(trigger, showTooltipBind);
+                                                triggers.hide[idx].split(' ').forEach(function (trigger) {
+                                                    element[0].addEventListener(trigger, hideTooltipBind);
+                                                });
+                                            }
 
-                            appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
-
-                            // if a tooltip is attached to <body> we need to remove it on
-                            // location change as its parent scope will probably not be destroyed
-                            // by the change.
-                            if (appendToBody) {
-                                scope.$on('$locationChangeSuccess', function closeTooltipOnLocationChangeSuccess() {
-                                    if (ttScope.isOpen) {
-                                        hide();
+                                            element.on('keypress', function (evt) {
+                                                if (evt.which === 27) {
+                                                    hideTooltipBind();
+                                                }
+                                            });
+                                        });
                                     }
-                                });
-                            }
+                                }
 
-                            // Make sure tooltip is destroyed and removed.
-                            scope.$on('$destroy', function onDestroyTooltip() {
-                                unregisterTriggers();
-                                removeTooltip();
-                                openedTooltips.remove(ttScope);
-                                ttScope = null;
-                            });
-                        };
-                    }
+                                prepTriggers();
+
+                                var animation = scope.$eval(attrs[prefix + 'Animation']);
+                                ttScope.animation = angular.isDefined(animation) ? !!animation : options.animation;
+
+                                var appendToBodyVal;
+                                var appendKey = prefix + 'AppendToBody';
+                                if (appendKey in attrs && angular.isUndefined(attrs[appendKey])) {
+                                    appendToBodyVal = true;
+                                } else {
+                                    appendToBodyVal = scope.$eval(attrs[appendKey]);
+                                }
+
+                                appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
+
+                                // if a tooltip is attached to <body> we need to remove it on
+                                // location change as its parent scope will probably not be destroyed
+                                // by the change.
+                                if (appendToBody) {
+                                    scope.$on('$locationChangeSuccess', function closeTooltipOnLocationChangeSuccess() {
+                                        if (ttScope.isOpen) {
+                                            hide();
+                                        }
+                                    });
+                                }
+
+                                // Make sure tooltip is destroyed and removed.
+                                scope.$on('$destroy', function onDestroyTooltip() {
+                                    unregisterTriggers();
+                                    removeTooltip();
+                                    openedTooltips.remove(ttScope);
+                                    ttScope = null;
+                                });
+                            };
+                        }
+                    };
                 };
-            };
-        }];
+            }];
     })
 
     // This is mostly ngInclude code but with a custom scope
@@ -3752,7 +3824,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
                             } else {
                                 $http.get(src).then(function (response) {
                                     template = response.data;
-                                    $templateCache.put(src,template);
+                                    $templateCache.put(src, template);
                                     compileTemplate(template, src);
                                 }, function () {
                                     if (thisChangeId === changeCounter) {
@@ -3837,12 +3909,12 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
             templateUrl: 'templates/tooltip-template-popup.html'
         };
     })
-
     .directive('uixTooltipTemplate', ['$uixTooltip', function ($uixTooltip) {
         return $uixTooltip('uixTooltipTemplate', 'tooltip', 'mouseenter', {
             useContentExp: true
         });
     }]);
+
 /**
  * popover
  * 提示指令
@@ -3850,113 +3922,117 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
  * Update:yjy972080142@gmail.com
  * Date:2016-02-18
  */
-angular.module('ui.xg.popover',['ui.xg.tooltip'])
+angular.module('ui.xg.popover', ['ui.xg.tooltip'])
 
-    .directive('uixPopoverTemplatePopup', function() {
+    .directive('uixPopoverTemplatePopup', function () {
         return {
             replace: true,
-            scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
-                originScope: '&' },
+            scope: {
+                title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+                originScope: '&'
+            },
             templateUrl: 'templates/popover-template-popup.html'
         };
     })
 
-    .directive('uixPopoverTemplate', ['$uixTooltip', function($uixTooltip) {
+    .directive('uixPopoverTemplate', ['$uixTooltip', function ($uixTooltip) {
         return $uixTooltip('uixPopoverTemplate', 'popover', 'click', {
             useContentExp: true
         });
     }])
-    .directive('uixPopoverHtmlPopup', function() {
+    .directive('uixPopoverHtmlPopup', function () {
         return {
             replace: true,
-            scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+            scope: {contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
             templateUrl: 'templates/popover-html-popup.html'
         };
     })
 
-    .directive('uixPopoverHtml', ['$uixTooltip', function($uixTooltip) {
+    .directive('uixPopoverHtml', ['$uixTooltip', function ($uixTooltip) {
         return $uixTooltip('uixPopoverHtml', 'popover', 'click', {
             useContentExp: true
         });
     }])
 
-    .directive('uixPopoverPopup', function() {
+    .directive('uixPopoverPopup', function () {
         return {
             replace: true,
-            scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+            scope: {title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&'},
             templateUrl: 'templates/popover-popup.html'
         };
     })
 
-    .directive('uixPopover', ['$uixTooltip', function($uixTooltip) {
+    .directive('uixPopover', ['$uixTooltip', function ($uixTooltip) {
         return $uixTooltip('uixPopover', 'popover', 'click');
     }]);
+
 /**
  * searchBox
  * 搜索框
  * Author:yangjiyuan@meituan.com
  * Date:2016-1-25
  */
-angular.module('ui.xg.searchBox',[])
-.constant('uixSearchBoxConfig', {
-    btnText: '搜索', // 默认搜索按钮文本
-    showBtn: true   // 默认显示按钮
-})
-.controller('uixSearchBoxCtrl',['$scope','$attrs','uixSearchBoxConfig', function ($scope,$attrs,uixSearchBoxConfig) {
-    var ngModelCtrl = { $setViewValue: angular.noop };
-    $scope.searchBox = {};
-    this.init = function (_ngModelCtrl) {
-        ngModelCtrl = _ngModelCtrl;
-        ngModelCtrl.$render = this.render;
-        $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : uixSearchBoxConfig.showBtn;
-    };
-    var btnText;
-    $scope.getText = function () {
-        if(btnText){
+angular.module('ui.xg.searchBox', [])
+    .constant('uixSearchBoxConfig', {
+        btnText: '搜索', // 默认搜索按钮文本
+        showBtn: true   // 默认显示按钮
+    })
+    .controller('uixSearchBoxCtrl', ['$scope', '$attrs', 'uixSearchBoxConfig', function ($scope, $attrs, uixSearchBoxConfig) {
+        var ngModelCtrl = {$setViewValue: angular.noop};
+        $scope.searchBox = {};
+        this.init = function (_ngModelCtrl) {
+            ngModelCtrl = _ngModelCtrl;
+            ngModelCtrl.$render = this.render;
+            $scope.showBtn = angular.isDefined($attrs.showBtn) ? $scope.$parent.$eval($attrs.showBtn) : uixSearchBoxConfig.showBtn;
+        };
+        var btnText;
+        $scope.getText = function () {
+            if (btnText) {
+                return btnText;
+            }
+            btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : uixSearchBoxConfig.btnText;
             return btnText;
-        }
-        btnText = angular.isDefined($attrs.btnText) ? $attrs.btnText : uixSearchBoxConfig.btnText;
-        return btnText;
-    };
-    $scope.$watch('searchBox.query', function (val) {
-        ngModelCtrl.$setViewValue(val);
-        ngModelCtrl.$render();
+        };
+        $scope.$watch('searchBox.query', function (val) {
+            ngModelCtrl.$setViewValue(val);
+            ngModelCtrl.$render();
+        });
+        $scope.keyUpToSearch = function (evt) {
+            if (evt && evt.keyCode === 13) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                $scope.doSearch();
+            }
+        };
+        $scope.doSearch = function () {
+            if (angular.isDefined($scope.search) && angular.isFunction($scope.search)) {
+                $scope.search();
+            }
+        };
+        this.render = function () {
+            $scope.searchBox.query = ngModelCtrl.$modelValue;
+        };
+    }])
+    .directive('uixSearchBox', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/searchBox.html',
+            replace: true,
+            require: ['uixSearchBox', '?ngModel'],
+            scope: {
+                btnText: '@?',
+                showBtn: '=?',
+                placeholder: '@?',
+                search: '&?'
+            },
+            controller: 'uixSearchBoxCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var searchBoxCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+                searchBoxCtrl.init(ngModelCtrl);
+            }
+        };
     });
-    $scope.keyUpToSearch = function (evt) {
-        if (evt && evt.keyCode === 13) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            $scope.doSearch();
-        }
-    };
-    $scope.doSearch = function () {
-        if(angular.isDefined($scope.search) && typeof $scope.search === 'function'){
-            $scope.search();
-        }
-    };
-    this.render = function() {
-        $scope.searchBox.query = ngModelCtrl.$modelValue;
-    };
-}])
-.directive('uixSearchBox',function () {
-    return {
-        restrict: 'E',
-        templateUrl:'templates/searchBox.html',
-        replace:true,
-        require:['uixSearchBox', '?ngModel'],
-        scope:{
-            btnText:'@?',
-            showBtn:'=?',
-            placeholder:'@?',
-            search:'&?'
-        },
-        controller:'uixSearchBoxCtrl',
-        link: function (scope,el,attrs,ctrls) {
-            var searchBoxCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-            searchBoxCtrl.init(ngModelCtrl);
-        }
-    }
-});
+
 /**
  * select
  * select directive fork from ui-select[https://github.com/angular-ui/ui-select]
@@ -3985,110 +4061,110 @@ angular.module('ui.xg.select', [])
             DELETE: 46,
             COMMAND: 91,
             MAP: {
-                91: "COMMAND",
-                8: "BACKSPACE",
-                9: "TAB",
-                13: "ENTER",
-                16: "SHIFT",
-                17: "CTRL",
-                18: "ALT",
-                19: "PAUSEBREAK",
-                20: "CAPSLOCK",
-                27: "ESC",
-                32: "SPACE",
-                33: "PAGE_UP",
-                34: "PAGE_DOWN",
-                35: "END",
-                36: "HOME",
-                37: "LEFT",
-                38: "UP",
-                39: "RIGHT",
-                40: "DOWN",
-                43: "+",
-                44: "PRINTSCREEN",
-                45: "INSERT",
-                46: "DELETE",
-                48: "0",
-                49: "1",
-                50: "2",
-                51: "3",
-                52: "4",
-                53: "5",
-                54: "6",
-                55: "7",
-                56: "8",
-                57: "9",
-                59: ";",
-                61: "=",
-                65: "A",
-                66: "B",
-                67: "C",
-                68: "D",
-                69: "E",
-                70: "F",
-                71: "G",
-                72: "H",
-                73: "I",
-                74: "J",
-                75: "K",
-                76: "L",
-                77: "M",
-                78: "N",
-                79: "O",
-                80: "P",
-                81: "Q",
-                82: "R",
-                83: "S",
-                84: "T",
-                85: "U",
-                86: "V",
-                87: "W",
-                88: "X",
-                89: "Y",
-                90: "Z",
-                96: "0",
-                97: "1",
-                98: "2",
-                99: "3",
-                100: "4",
-                101: "5",
-                102: "6",
-                103: "7",
-                104: "8",
-                105: "9",
-                106: "*",
-                107: "+",
-                109: "-",
-                110: ".",
-                111: "/",
-                112: "F1",
-                113: "F2",
-                114: "F3",
-                115: "F4",
-                116: "F5",
-                117: "F6",
-                118: "F7",
-                119: "F8",
-                120: "F9",
-                121: "F10",
-                122: "F11",
-                123: "F12",
-                144: "NUMLOCK",
-                145: "SCROLLLOCK",
-                186: ";",
-                187: "=",
-                188: ",",
-                189: "-",
-                190: ".",
-                191: "/",
-                192: "`",
-                219: "[",
-                220: "\\",
-                221: "]",
-                222: "'"
+                91: 'COMMAND',
+                8: 'BACKSPACE',
+                9: 'TAB',
+                13: 'ENTER',
+                16: 'SHIFT',
+                17: 'CTRL',
+                18: 'ALT',
+                19: 'PAUSEBREAK',
+                20: 'CAPSLOCK',
+                27: 'ESC',
+                32: 'SPACE',
+                33: 'PAGE_UP',
+                34: 'PAGE_DOWN',
+                35: 'END',
+                36: 'HOME',
+                37: 'LEFT',
+                38: 'UP',
+                39: 'RIGHT',
+                40: 'DOWN',
+                43: '+',
+                44: 'PRINTSCREEN',
+                45: 'INSERT',
+                46: 'DELETE',
+                48: '0',
+                49: '1',
+                50: '2',
+                51: '3',
+                52: '4',
+                53: '5',
+                54: '6',
+                55: '7',
+                56: '8',
+                57: '9',
+                59: ';',
+                61: '=',
+                65: 'A',
+                66: 'B',
+                67: 'C',
+                68: 'D',
+                69: 'E',
+                70: 'F',
+                71: 'G',
+                72: 'H',
+                73: 'I',
+                74: 'J',
+                75: 'K',
+                76: 'L',
+                77: 'M',
+                78: 'N',
+                79: 'O',
+                80: 'P',
+                81: 'Q',
+                82: 'R',
+                83: 'S',
+                84: 'T',
+                85: 'U',
+                86: 'V',
+                87: 'W',
+                88: 'X',
+                89: 'Y',
+                90: 'Z',
+                96: '0',
+                97: '1',
+                98: '2',
+                99: '3',
+                100: '4',
+                101: '5',
+                102: '6',
+                103: '7',
+                104: '8',
+                105: '9',
+                106: '*',
+                107: '+',
+                109: '-',
+                110: '.',
+                111: '/',
+                112: 'F1',
+                113: 'F2',
+                114: 'F3',
+                115: 'F4',
+                116: 'F5',
+                117: 'F6',
+                118: 'F7',
+                119: 'F8',
+                120: 'F9',
+                121: 'F10',
+                122: 'F11',
+                123: 'F12',
+                144: 'NUMLOCK',
+                145: 'SCROLLLOCK',
+                186: ';',
+                187: '=',
+                188: ',',
+                189: '-',
+                190: '.',
+                191: '/',
+                192: '`',
+                219: '[',
+                220: '\\',
+                221: ']',
+                222: '\''
             },
-            isControl: function (e) {
-                var k = e.which;
+            isControl: function (evt) {
+                var k = evt.which;
                 switch (k) {
                     case this.COMMAND:
                     case this.SHIFT:
@@ -4097,7 +4173,7 @@ angular.module('ui.xg.select', [])
                         return true;
                 }
 
-                return e.metaKey;
+                return evt.metaKey;
             },
             isFunctionKey: function (k) {
                 k = k.which ? k.which : k;
@@ -4144,7 +4220,10 @@ angular.module('ui.xg.select', [])
         }
 
         return function (matchItem, query) {
-            return query && matchItem ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<span class="uix-select-highlight">$&</span>') : matchItem;
+            return query && matchItem
+                ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'),
+                '<span class="uix-select-highlight">$&</span>')
+                : matchItem;
         };
     })
     // 位置偏移
@@ -4160,8 +4239,10 @@ angular.module('ui.xg.select', [])
             };
         };
     }])
-    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser', 'uixSelectMinErr', 'uixSelectConfig',
-        function ($scope, $element, $timeout, $filter, RepeatParser, uixSelectMinErr, uixSelectConfig) {
+    .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser',
+        'uixSelectMinErr', 'uixSelectConfig',
+        function ($scope, $element, $timeout, $filter, RepeatParser,
+                  uixSelectMinErr, uixSelectConfig) {
             var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
@@ -4196,7 +4277,8 @@ angular.module('ui.xg.select', [])
 
             ctrl.searchInput = angular.element($element[0].querySelectorAll('input.uix-select-search'));
             if (ctrl.searchInput.length !== 1) {
-                throw uixSelectMinErr('searchInput', "Expected 1 input.uix-select-search but got '{0}'.", ctrl.searchInput.length);
+                throw uixSelectMinErr('searchInput', 'Expected 1 input.uix-select-search but got \'{0}\'.',
+                    ctrl.searchInput.length);
             }
 
             ctrl.isEmpty = function () {
@@ -4205,7 +4287,8 @@ angular.module('ui.xg.select', [])
 
             // Most of the time the user does not want to empty the search input when in typeahead mode
             function _resetSearchInput() {
-                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) && uixSelectConfig.resetSearchInput)) {
+                if (ctrl.resetSearchInput || (angular.isUndefined(ctrl.resetSearchInput) &&
+                    uixSelectConfig.resetSearchInput)) {
                     ctrl.search = EMPTY_SEARCH;
                     //reset activeIndex
                     if (ctrl.selected && ctrl.items.length && !ctrl.multiple) {
@@ -4255,8 +4338,8 @@ angular.module('ui.xg.select', [])
 
             ctrl.findGroupByName = function (name) {
                 return ctrl.groups && ctrl.groups.filter(function (group) {
-                        return group.name === name;
-                    })[0];
+                    return group.name === name;
+                })[0];
             };
 
             ctrl.parseRepeatAttr = function (repeatAttr, groupByExp, groupFilterExp) {
@@ -4318,17 +4401,18 @@ angular.module('ui.xg.select', [])
                 $scope.$watchCollection(ctrl.parserResult.source, function (items) {
                     if (angular.isUndefined(items) || items === null) {
                         // If the user specifies undefined or null => reset the collection
-                        // Special case: items can be undefined if the user did not initialized the collection on the scope
+                        // Special case: items can be undefined if the user did not initialized
                         // i.e $scope.addresses = [] is missing
                         ctrl.items = [];
                     } else {
                         if (!angular.isArray(items)) {
-                            throw uixSelectMinErr('items', "Expected an array but got '{0}'.", items);
+                            throw uixSelectMinErr('items', 'Expected an array but got \'{0}\'.', items);
                         } else {
                             //Remove already selected items (ex: while searching)
                             //TODO Should add a test
                             ctrl.refreshItems(items);
-                            ctrl.ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
+                            //Force scope model value and ngModel value to be out of sync to re-run formatters
+                            ctrl.ngModel.$modelValue = null;
                         }
                     }
                 });
@@ -4340,14 +4424,16 @@ angular.module('ui.xg.select', [])
             /**
              * Typeahead mode: lets the user refresh the collection using his own function.
              *
-             * See Expose $select.search for external / remote filtering https://github.com/angular-ui/uix-select/pull/31
+             * See Expose $select.search for external / remote filtering
+             * https://github.com/angular-ui/ui-select/pull/31
              */
             ctrl.refresh = function (refreshAttr) {
                 if (angular.isDefined(refreshAttr)) {
 
                     // Debounce
                     // See https://github.com/angular-ui/bootstrap/blob/0.10.0/src/typeahead/typeahead.js#L155
-                    // FYI AngularStrap typeahead does not have debouncing: https://github.com/mgcrea/angular-strap/blob/v2.0.0-rc.4/src/typeahead/typeahead.js#L177
+                    // FYI AngularStrap typeahead does not have debouncing:
+                    // https://github.com/mgcrea/angular-strap/blob/v2.0.0-rc.4/src/typeahead/typeahead.js#L177
                     if (_refreshDelayPromise) {
                         $timeout.cancel(_refreshDelayPromise);
                     }
@@ -4368,11 +4454,12 @@ angular.module('ui.xg.select', [])
                 var itemIndex = ctrl.items.indexOf(itemScope[ctrl.itemProperty]);
                 var isActive = itemIndex === ctrl.activeIndex;
 
-                if (!isActive || ( itemIndex < 0 && ctrl.taggingLabel !== false ) || ( itemIndex < 0 && ctrl.taggingLabel === false)) {
+                if (!isActive || (itemIndex < 0 && ctrl.taggingLabel !== false) ||
+                    (itemIndex < 0 && ctrl.taggingLabel === false)) {
                     return false;
                 }
 
-                if (isActive && !angular.isUndefined(ctrl.onHighlightCallback)) {
+                if (isActive && angular.isDefined(ctrl.onHighlightCallback)) {
                     itemScope.$eval(ctrl.onHighlightCallback);
                 }
 
@@ -4389,7 +4476,7 @@ angular.module('ui.xg.select', [])
                 var isDisabled = false;
                 var item;
 
-                if (itemIndex >= 0 && !angular.isUndefined(ctrl.disableChoiceExpression)) {
+                if (itemIndex >= 0 && angular.isDefined(ctrl.disableChoiceExpression)) {
                     item = ctrl.items[itemIndex];
                     isDisabled = !!(itemScope.$eval(ctrl.disableChoiceExpression)); // force the boolean value
                     item._uixSelectChoiceDisabled = isDisabled; // store this for later reference
@@ -4432,24 +4519,29 @@ angular.module('ui.xg.select', [])
 
                                     // create new item on the fly if we don't already have one;
                                     // use tagging function if we have one
-                                    if (angular.isDefined(ctrl.tagging.fct) && ctrl.tagging.fct !== null && typeof item === 'string') {
+                                    if (angular.isDefined(ctrl.tagging.fct) &&
+                                        ctrl.tagging.fct !== null &&
+                                        angular.isString(item)) {
                                         item = ctrl.tagging.fct(ctrl.search);
                                         if (!item) {
                                             return;
                                         }
                                         // if item type is 'string', apply the tagging label
-                                    } else if (typeof item === 'string') {
+                                    } else if (angular.isString(item)) {
                                         // trim the trailing space
                                         item = item.replace(ctrl.taggingLabel, '').trim();
                                     }
                                 }
                             }
                             // search ctrl.selected for dupes potentially caused by tagging and return early if found
-                            if (ctrl.selected && angular.isArray(ctrl.selected) && ctrl.selected.filter(function (selection) {
+                            if (ctrl.selected && angular.isArray(ctrl.selected)) {
+                                var len = ctrl.selected.filter(function (selection) {
                                     return angular.equals(selection, item);
-                                }).length > 0) {
-                                ctrl.close(skipFocusser);
-                                return;
+                                }).length;
+                                if(len > 0) {
+                                    ctrl.close(skipFocusser);
+                                    return;
+                                }
                             }
                         }
 
@@ -4505,11 +4597,11 @@ angular.module('ui.xg.select', [])
             };
 
             // Toggle dropdown
-            ctrl.toggle = function (e) {
+            ctrl.toggle = function (evt) {
                 if (ctrl.open) {
                     ctrl.close();
-                    e.preventDefault();
-                    e.stopPropagation();
+                    evt.preventDefault();
+                    evt.stopPropagation();
                 } else {
                     ctrl.activate();
                 }
@@ -4518,7 +4610,7 @@ angular.module('ui.xg.select', [])
             ctrl.isLocked = function (itemScope, itemIndex) {
                 var isLocked, item = ctrl.selected[itemIndex];
 
-                if (item && !angular.isUndefined(ctrl.lockChoiceExpression)) {
+                if (item && angular.isDefined(ctrl.lockChoiceExpression)) {
                     isLocked = !!(itemScope.$eval(ctrl.lockChoiceExpression)); // force the boolean value
                     item._uixSelectChoiceLocked = isLocked; // store this for later reference
                 }
@@ -4573,7 +4665,10 @@ angular.module('ui.xg.select', [])
                     case KEY.UP:
                         if (!ctrl.open && ctrl.multiple) {
                             ctrl.activate(false, true);//In case its the search input in 'multiple' mode
-                        } else if (ctrl.activeIndex > 0 || (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)) {
+                        } else if (
+                            ctrl.activeIndex > 0 ||
+                            (ctrl.search.length === 0 && ctrl.tagging.isActivated && ctrl.activeIndex > -1)
+                        ) {
                             ctrl.activeIndex--;
                         }
                         break;
@@ -4584,7 +4679,8 @@ angular.module('ui.xg.select', [])
                         break;
                     case KEY.ENTER:
                         if (ctrl.open && (ctrl.tagging.isActivated || ctrl.activeIndex >= 0)) {
-                            ctrl.select(ctrl.items[ctrl.activeIndex]); // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
+                            // Make sure at least one dropdown item is highlighted before adding if not in tagging mode
+                            ctrl.select(ctrl.items[ctrl.activeIndex]);
                         } else {
                             ctrl.activate(false, true); //In case its the search input in 'multiple' mode
                         }
@@ -4599,9 +4695,9 @@ angular.module('ui.xg.select', [])
             }
 
             // Bind to keyboard shortcuts
-            ctrl.searchInput.on('keydown', function (e) {
+            ctrl.searchInput.on('keydown', function (evt) {
 
-                var key = e.which;
+                var key = evt.which;
 
                 // if(~[KEY.ESC,KEY.TAB].indexOf(key)){
                 //   //TODO: SEGURO?
@@ -4616,7 +4712,7 @@ angular.module('ui.xg.select', [])
                         _handleDropDownSelection(key);
                         if (ctrl.taggingTokens.isActivated) {
                             for (var i = 0; i < ctrl.taggingTokens.tokens.length; i++) {
-                                if (ctrl.taggingTokens.tokens[i] === KEY.MAP[e.keyCode]) {
+                                if (ctrl.taggingTokens.tokens[i] === KEY.MAP[evt.keyCode]) {
                                     // make sure there is a new value to push via tagging
                                     if (ctrl.search.length > 0) {
                                         tagged = true;
@@ -4626,7 +4722,7 @@ angular.module('ui.xg.select', [])
                             if (tagged) {
                                 $timeout(function () {
                                     ctrl.searchInput.triggerHandler('tagged');
-                                    var newItem = ctrl.search.replace(KEY.MAP[e.keyCode], '').trim();
+                                    var newItem = ctrl.search.replace(KEY.MAP[evt.keyCode], '').trim();
                                     if (ctrl.tagging.fct) {
                                         newItem = ctrl.tagging.fct(newItem);
                                     }
@@ -4645,15 +4741,15 @@ angular.module('ui.xg.select', [])
                 }
 
                 if (key === KEY.ENTER || key === KEY.ESC) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    evt.preventDefault();
+                    evt.stopPropagation();
                 }
 
             });
 
             // If tagging try to split by tokens and add items
-            ctrl.searchInput.on('paste', function (e) {
-                var data = e.originalEvent.clipboardData.getData('text/plain');
+            ctrl.searchInput.on('paste', function (evt) {
+                var data = evt.originalEvent.clipboardData.getData('text/plain');
                 if (data && data.length > 0 && ctrl.taggingTokens.isActivated && ctrl.tagging.fct) {
                     var items = data.split(ctrl.taggingTokens.tokens[0]); // split by first token only
                     if (items && items.length > 0) {
@@ -4663,8 +4759,8 @@ angular.module('ui.xg.select', [])
                                 ctrl.select(newItem, true);
                             }
                         });
-                        e.preventDefault();
-                        e.stopPropagation();
+                        evt.preventDefault();
+                        evt.stopPropagation();
                     }
                 }
             });
@@ -4680,7 +4776,8 @@ angular.module('ui.xg.select', [])
                 var container = angular.element($element[0].querySelectorAll('.uix-select-choices-content'));
                 var choices = angular.element(container[0].querySelectorAll('.uix-select-choices-row'));
                 if (choices.length < 1) {
-                    throw uixSelectMinErr('choices', "Expected multiple .uix-select-choices-row but got '{0}'.", choices.length);
+                    throw uixSelectMinErr('choices', 'Expected multiple .uix-select-choices-row but got \'{0}\'.',
+                        choices.length);
                 }
 
                 if (ctrl.activeIndex < 0) {
@@ -4706,12 +4803,14 @@ angular.module('ui.xg.select', [])
                 ctrl.searchInput.off('keyup keydown tagged blur paste');
             });
         }])
-    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset', '$compile', '$parse', '$timeout',
-        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $compile, $parse, $timeout) {
+    .directive('uixSelect', ['$document', 'uixSelectConfig', 'uixSelectMinErr', 'uixSelectOffset',
+        '$parse', '$timeout',
+        function ($document, uixSelectConfig, uixSelectMinErr, uixSelectOffset, $parse, $timeout) {
             return {
                 restrict: 'EA',
                 templateUrl: function (tElement, tAttrs) {
-                    return angular.isDefined(tAttrs.multiple) ? 'templates/select-multiple.html' : 'templates/select.html';
+                    return angular.isDefined(tAttrs.multiple)
+                        ? 'templates/select-multiple.html' : 'templates/select.html';
                 },
                 replace: true,
                 transclude: true,
@@ -4722,9 +4821,9 @@ angular.module('ui.xg.select', [])
                 compile: function (tElement, tAttrs) {
                     //Multiple or Single depending if multiple attribute presence
                     if (angular.isDefined(tAttrs.multiple)) {
-                        tElement.append("<uix-select-multiple/>").removeAttr('multiple');
+                        tElement.append('<uix-select-multiple/>').removeAttr('multiple');
                     } else {
-                        tElement.append("<uix-select-single/>");
+                        tElement.append('<uix-select-single/>');
                     }
 
                     return function (scope, element, attrs, ctrls, transcludeFn) {
@@ -4755,14 +4854,15 @@ angular.module('ui.xg.select', [])
 
                         if (attrs.tabindex) {
                             attrs.$observe('tabindex', function (value) {
-                                $select.focusInput.attr("tabindex", value);
-                                element.removeAttr("tabindex");
+                                $select.focusInput.attr('tabindex', value);
+                                element.removeAttr('tabindex');
                             });
                         }
 
                         scope.$watch('searchEnabled', function () {
                             var searchEnabled = scope.$eval(attrs.searchEnabled);
-                            $select.searchEnabled = angular.isDefined(searchEnabled) ? searchEnabled : uixSelectConfig.searchEnabled;
+                            $select.searchEnabled = angular.isDefined(searchEnabled)
+                                ? searchEnabled : uixSelectConfig.searchEnabled;
                         });
 
                         scope.$watch('sortable', function () {
@@ -4772,7 +4872,8 @@ angular.module('ui.xg.select', [])
 
                         attrs.$observe('disabled', function () {
                             // No need to use $eval() (thanks to ng-disabled) since we already get a boolean instead of a string
-                            $select.disabled = angular.isDefined(attrs.disabled) ? attrs.disabled : false;
+                            $select.disabled = angular.isDefined(attrs.disabled)
+                                ? attrs.disabled : false;
                         });
 
                         attrs.$observe('resetSearchInput', function () {
@@ -4802,14 +4903,16 @@ angular.module('ui.xg.select', [])
                                     $select.taggingLabel = false;
                                 }
                                 else {
-                                    $select.taggingLabel = angular.isDefined(attrs.taggingLabel) ? attrs.taggingLabel : '(new)';
+                                    $select.taggingLabel = angular.isDefined(attrs.taggingLabel)
+                                        ? attrs.taggingLabel : '(new)';
                                 }
                             }
                         });
 
                         attrs.$observe('taggingTokens', function () {
                             if (angular.isDefined(attrs.tagging)) {
-                                var tokens = angular.isDefined(attrs.taggingTokens) ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
+                                var tokens = angular.isDefined(attrs.taggingTokens)
+                                    ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
                                 $select.taggingTokens = {isActivated: true, tokens: tokens};
                             }
                         });
@@ -4830,28 +4933,31 @@ angular.module('ui.xg.select', [])
                             });
                         }
 
-                        function onDocumentClick(e) {
+                        function onDocumentClick(evt) {
                             if (!$select.open) {
                                 return;//Skip it if dropdown is close
                             }
 
                             var contains = false;
 
-                            if (window.jQuery) {
+                            if (angular.element.contains) {
                                 // Firefox 3.6 does not support element.contains()
                                 // See Node.contains https://developer.mozilla.org/en-US/docs/Web/API/Node.contains
-                                contains = window.jQuery.contains(element[0], e.target);
+                                contains = angular.element.contains(element[0], evt.target);
                             } else {
-                                contains = element[0].contains(e.target);
+                                contains = element[0].contains(evt.target);
                             }
 
                             if (!contains && !$select.clickTriggeredSelect) {
                                 //Will lose focus only with certain targets
                                 var focusableControls = ['input', 'button', 'textarea'];
-                                var targetScope = angular.element(e.target).scope(); //To check if target is other uix-select
-                                var skipFocusser = targetScope && targetScope.$select && targetScope.$select !== $select; //To check if target is other uix-select
+                                //To check if target is other uix-select
+                                var targetScope = angular.element(evt.target).scope();
+                                //To check if target is other uix-select
+                                var skipFocusser = targetScope && targetScope.$select &&
+                                    targetScope.$select !== $select;
                                 if (!skipFocusser) {//Check if target is input, button or textarea
-                                    skipFocusser = focusableControls.indexOf(e.target.tagName.toLowerCase()) !== -1;
+                                    skipFocusser = focusableControls.indexOf(evt.target.tagName.toLowerCase()) !== -1;
                                 }
                                 $select.close(skipFocusser);
                                 scope.$digest();
@@ -4868,7 +4974,6 @@ angular.module('ui.xg.select', [])
 
                         // Move transcluded elements to their correct position in main template
                         transcludeFn(scope, function (clone) {
-                            // See Transclude in AngularJS http://blog.omkarpatil.com/2012/11/transclude-in-angularjs.html
 
                             // One day jqLite will be replaced by jQuery and we will be able to write:
                             // var transcludedElement = clone.filter('.my-class')
@@ -4878,7 +4983,7 @@ angular.module('ui.xg.select', [])
                             transcludedMatch.removeAttr('uix-select-match'); //To avoid loop in case directive as attr
                             transcludedMatch.removeAttr('data-uix-select-match'); // Properly handle HTML5 data-attributes
                             if (transcludedMatch.length !== 1) {
-                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-match but got '{0}'.", transcludedMatch.length);
+                                throw uixSelectMinErr('transcluded', 'Expected 1 .uix-select-match but got \'{0}\'.', transcludedMatch.length);
                             }
                             angular.element(element[0].querySelectorAll('.uix-select-match')).replaceWith(transcludedMatch);
 
@@ -4886,7 +4991,7 @@ angular.module('ui.xg.select', [])
                             transcludedChoices.removeAttr('uix-select-choices'); //To avoid loop in case directive as attr
                             transcludedChoices.removeAttr('data-uix-select-choices'); // Properly handle HTML5 data-attributes
                             if (transcludedChoices.length !== 1) {
-                                throw uixSelectMinErr('transcluded', "Expected 1 .uix-select-choices but got '{0}'.", transcludedChoices.length);
+                                throw uixSelectMinErr('transcluded', 'Expected 1 .uix-select-choices but got \'{0}\'.', transcludedChoices.length);
                             }
                             angular.element(element[0].querySelectorAll('.uix-select-choices')).replaceWith(transcludedChoices);
                         });
@@ -5008,7 +5113,7 @@ angular.module('ui.xg.select', [])
                 compile: function (tElement, tAttrs) {
 
                     if (!tAttrs.repeat) {
-                        throw uixSelectMinErr('repeat', "Expected 'repeat' expression.");
+                        throw uixSelectMinErr('repeat', 'Expected \'repeat\' expression.');
                     }
 
                     return function link(scope, element, attrs, $select, transcludeFn) {
@@ -5025,14 +5130,14 @@ angular.module('ui.xg.select', [])
                         if (groupByExp) {
                             var groups = angular.element(element[0].querySelectorAll('.uix-select-choices-group'));
                             if (groups.length !== 1) {
-                                throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-group but got '{0}'.", groups.length);
+                                throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-group but got \'{0}\'.', groups.length);
                             }
                             groups.attr('ng-repeat', RepeatParser.getGroupNgRepeatExpression());
                         }
 
                         var choices = angular.element(element[0].querySelectorAll('.uix-select-choices-row'));
                         if (choices.length !== 1) {
-                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row but got '{0}'.", choices.length);
+                            throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-row but got \'{0}\'.', choices.length);
                         }
 
                         choices.attr('ng-repeat', RepeatParser.getNgRepeatExpression($select.parserResult.itemName, '$select.items', $select.parserResult.trackByExp, groupByExp))
@@ -5042,7 +5147,7 @@ angular.module('ui.xg.select', [])
 
                         var rowsInner = angular.element(element[0].querySelectorAll('.uix-select-choices-row-inner'));
                         if (rowsInner.length !== 1) {
-                            throw uixSelectMinErr('rows', "Expected 1 .uix-select-choices-row-inner but got '{0}'.", rowsInner.length);
+                            throw uixSelectMinErr('rows', 'Expected 1 .uix-select-choices-row-inner but got \'{0}\'.', rowsInner.length);
                         }
                         rowsInner.attr('uix-transclude-append', ''); //Adding uixTranscludeAppend directive to row element after choices element has ngRepeat
                         $compile(element, transcludeFn)(scope); //Passing current transcludeFn to be able to append elements correctly from uixTranscludeAppend
@@ -5204,27 +5309,29 @@ angular.module('ui.xg.select', [])
                             return inputValue;
                         }
                         var resultMultiple = [];
-                        var checkFnMultiple = function (list, value) {
+
+                        function checkFnMultiple(list, value) {
                             if (!list || !list.length) {
                                 return;
                             }
-                            for (var p = list.length - 1; p >= 0; p--) {
-                                locals[$select.parserResult.itemName] = list[p];
+                            for (var index = list.length - 1; index >= 0; index--) {
+                                locals[$select.parserResult.itemName] = list[index];
                                 result = $select.parserResult.modelMapper(scope, locals);
                                 if ($select.parserResult.trackByExp) {
                                     var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
-                                    if (matches.length > 0 && result[matches[1]] == value[matches[1]]) {
-                                        resultMultiple.unshift(list[p]);
+                                    if (matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                        resultMultiple.unshift(list[index]);
                                         return true;
                                     }
                                 }
                                 if (angular.equals(result, value)) {
-                                    resultMultiple.unshift(list[p]);
+                                    resultMultiple.unshift(list[index]);
                                     return true;
                                 }
                             }
                             return false;
-                        };
+                        }
+
                         if (!inputValue) {
                             return resultMultiple;//If ngModel was undefined
                         }
@@ -5245,7 +5352,7 @@ angular.module('ui.xg.select', [])
                     scope.$watchCollection(function () {
                         return ngModel.$modelValue;
                     }, function (newValue, oldValue) {
-                        if (oldValue != newValue) {
+                        if (oldValue !== newValue) {
                             ngModel.$modelValue = null; //Force scope model value and ngModel value to be out of sync to re-run formatters
                             $selectMultiple.refreshComponent();
                         }
@@ -5258,7 +5365,7 @@ angular.module('ui.xg.select', [])
                             if (angular.isUndefined(ngModel.$viewValue) || ngModel.$viewValue === null) {
                                 $select.selected = [];
                             } else {
-                                throw uixSelectMinErr('multiarr', "Expected model value to be array but got '{0}'", ngModel.$viewValue);
+                                throw uixSelectMinErr('multiarr', 'Expected model value to be array but got \'{0}\'', ngModel.$viewValue);
                             }
                         }
                         $select.selected = ngModel.$viewValue;
@@ -5281,19 +5388,19 @@ angular.module('ui.xg.select', [])
                         }
                     });
 
-                    $select.searchInput.on('keydown', function (e) {
-                        var key = e.which;
+                    $select.searchInput.on('keydown', function (evt) {
+                        var key = evt.which;
                         scope.$apply(function () {
                             var processed = false;
                             // var tagged = false; //Checkme
                             if (KEY.isHorizontalMovement(key)) {
                                 processed = _handleMatchSelection(key);
                             }
-                            if (processed && key != KEY.TAB) {
+                            if (processed && key !== KEY.TAB) {
                                 //TODO Check si el tab selecciona aun correctamente
                                 //Crear test
-                                e.preventDefault();
-                                e.stopPropagation();
+                                evt.preventDefault();
+                                evt.stopPropagation();
                             }
                         });
                     });
@@ -5319,7 +5426,7 @@ angular.module('ui.xg.select', [])
                             prev = $selectMultiple.activeMatchIndex - 1,
                             newIndex = curr;
 
-                        if (caretPosition > 0 || ($select.search.length && key == KEY.RIGHT)) {
+                        if (caretPosition > 0 || ($select.search.length && key === KEY.RIGHT)) {
                             return false;
                         }
 
@@ -5359,7 +5466,7 @@ angular.module('ui.xg.select', [])
                                     if ($selectMultiple.activeMatchIndex !== -1) {
                                         $selectMultiple.removeChoice($selectMultiple.activeMatchIndex);
                                         res = curr;
-                                    }else{
+                                    } else {
                                         res = false;
                                     }
                             }
@@ -5377,9 +5484,9 @@ angular.module('ui.xg.select', [])
                         return true;
                     }
 
-                    $select.searchInput.on('keyup', function (e) {
+                    $select.searchInput.on('keyup', function (evt) {
 
-                        if (!KEY.isVerticalMovement(e.which)) {
+                        if (!KEY.isVerticalMovement(evt.which)) {
                             scope.$evalAsync(function () {
                                 $select.activeIndex = $select.taggingLabel === false ? -1 : 0;
                             });
@@ -5388,7 +5495,7 @@ angular.module('ui.xg.select', [])
                         if ($select.tagging.isActivated && $select.search.length > 0) {
 
                             // return early with these keys
-                            if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC || KEY.isVerticalMovement(e.which)) {
+                            if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC || KEY.isVerticalMovement(evt.which)) {
                                 return;
                             }
                             // always reset the activeIndex to the first item when tagging
@@ -5422,9 +5529,10 @@ angular.module('ui.xg.select', [])
                                 newItem = $select.tagging.fct($select.search);
                                 newItem.isTag = true;
                                 // verify the the tag doesn't match the value of an existing item
-                                if (stashArr.filter(function (origItem) {
-                                        return angular.equals(origItem, $select.tagging.fct($select.search));
-                                    }).length > 0) {
+                                var len = stashArr.filter(function (origItem) {
+                                    return angular.equals(origItem, $select.tagging.fct($select.search));
+                                }).length;
+                                if (len > 0) {
                                     return;
                                 }
                                 newItem.isTag = true;
@@ -5492,11 +5600,11 @@ angular.module('ui.xg.select', [])
                             return false;
                         }
                         return arr.filter(function (origItem) {
-                                if (angular.isUndefined($select.search.toUpperCase()) || angular.isUndefined(origItem)) {
-                                    return false;
-                                }
-                                return origItem.toUpperCase() === $select.search.toUpperCase();
-                            }).length > 0;
+                            if (angular.isUndefined($select.search.toUpperCase()) || angular.isUndefined(origItem)) {
+                                return false;
+                            }
+                            return origItem.toUpperCase() === $select.search.toUpperCase();
+                        }).length > 0;
                     }
 
                     function _findApproxDupe(haystack, needle) {
@@ -5596,8 +5704,11 @@ angular.module('ui.xg.select', [])
                     }, 0, false);
                 });
 
-                //Idea from: https://github.com/ivaynberg/select2/blob/79b5bf6db918d7560bdd959109b7bcfb47edaf43/select2.js#L1954
-                var focusser = angular.element("<input ng-disabled='$select.disabled' class='uix-select-focusser uix-select-offscreen' type='text' aria-label='{{ $select.focusserTitle }}' aria-haspopup='true' role='button' />");
+                var focusser = angular.element(
+                    '<input ng-disabled=\'$select.disabled\' class=\'uix-select-focusser uix-select-offscreen\' ' +
+                    'type=\'text\' aria-label=\'{{ $select.focusserTitle }}\' aria-haspopup=\'true\' ' +
+                    'role=\'button\' />'
+                );
 
                 scope.$on('uixSelect:activate', function () {
                     focusser.prop('disabled', true); //Will reactivate it on .close()
@@ -5610,42 +5721,42 @@ angular.module('ui.xg.select', [])
                 $select.focusInput = focusser;
 
                 element.parent().append(focusser);
-                focusser.bind("focus", function () {
+                focusser.bind('focus', function () {
                     scope.$evalAsync(function () {
                         $select.focus = true;
                     });
                 });
-                focusser.bind("blur", function () {
+                focusser.bind('blur', function () {
                     scope.$evalAsync(function () {
                         $select.focus = false;
                     });
                 });
-                focusser.bind("keydown", function (e) {
+                focusser.bind('keydown', function (evt) {
 
-                    if (e.which === KEY.BACKSPACE) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                    if (evt.which === KEY.BACKSPACE) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
                         $select.select();
                         scope.$apply();
                         return;
                     }
 
-                    if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC) {
+                    if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC) {
                         return;
                     }
 
-                    if (e.which === KEY.DOWN || e.which === KEY.UP || e.which === KEY.ENTER || e.which === KEY.SPACE) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                    if (evt.which === KEY.DOWN || evt.which === KEY.UP || evt.which === KEY.ENTER || evt.which === KEY.SPACE) {
+                        evt.preventDefault();
+                        evt.stopPropagation();
                         $select.activate();
                     }
 
                     scope.$digest();
                 });
 
-                focusser.bind("keyup input", function (e) {
+                focusser.bind('keyup input', function (evt) {
 
-                    if (e.which === KEY.TAB || KEY.isControl(e) || KEY.isFunctionKey(e) || e.which === KEY.ESC || e.which === KEY.ENTER || e.which === KEY.BACKSPACE) {
+                    if (evt.which === KEY.TAB || KEY.isControl(evt) || KEY.isFunctionKey(evt) || evt.which === KEY.ESC || evt.which === KEY.ENTER || evt.which === KEY.BACKSPACE) {
                         return;
                     }
 
@@ -5659,12 +5770,12 @@ angular.module('ui.xg.select', [])
             }
         };
     }])
-    .directive('uixSelectSort', ['$timeout', 'uixSelectConfig', 'uixSelectMinErr', function ($timeout, uixSelectConfig, uixSelectMinErr) {
+    .directive('uixSelectSort', ['$timeout', 'uixSelectMinErr', function ($timeout, uixSelectMinErr) {
         return {
             require: '^uixSelect',
             link: function (scope, element, attrs, $select) {
                 if (scope[attrs.uixSelectSort] === null) {
-                    throw uixSelectMinErr('sort', "Expected a list to sort");
+                    throw uixSelectMinErr('sort', 'Expected a list to sort');
                 }
 
                 var options = angular.extend({
@@ -5679,18 +5790,18 @@ angular.module('ui.xg.select', [])
 
                 scope.$watch(function () {
                     return $select.sortable;
-                }, function (n) {
-                    if (n) {
+                }, function (val) {
+                    if (val) {
                         element.attr('draggable', true);
                     } else {
                         element.removeAttr('draggable');
                     }
                 });
 
-                element.on('dragstart', function (e) {
+                element.on('dragstart', function (evt) {
                     element.addClass(draggingClassName);
 
-                    (e.dataTransfer || e.originalEvent.dataTransfer).setData('text/plain', scope.$index);
+                    (evt.dataTransfer || evt.originalEvent.dataTransfer).setData('text/plain', scope.$index);
                 });
 
                 element.on('dragend', function () {
@@ -5702,10 +5813,12 @@ angular.module('ui.xg.select', [])
                     this.splice(to, 0, this.splice(from, 1)[0]);
                 };
 
-                var dragOverHandler = function (e) {
-                    e.preventDefault();
+                var dragOverHandler = function (evt) {
+                    evt.preventDefault();
 
-                    var offset = axis === 'vertical' ? e.offsetY || e.layerY || (e.originalEvent ? e.originalEvent.offsetY : 0) : e.offsetX || e.layerX || (e.originalEvent ? e.originalEvent.offsetX : 0);
+                    var offset = axis === 'vertical'
+                        ? evt.offsetY || evt.layerY || (evt.originalEvent ? evt.originalEvent.offsetY : 0)
+                        : evt.offsetX || evt.layerX || (evt.originalEvent ? evt.originalEvent.offsetX : 0);
 
                     if (offset < (this[axis === 'vertical' ? 'offsetHeight' : 'offsetWidth'] / 2)) {
                         element.removeClass(droppingAfterClassName);
@@ -5719,10 +5832,10 @@ angular.module('ui.xg.select', [])
 
                 var dropTimeout;
 
-                var dropHandler = function (e) {
-                    e.preventDefault();
+                var dropHandler = function (evt) {
+                    evt.preventDefault();
 
-                    var droppedItemIndex = parseInt((e.dataTransfer || e.originalEvent.dataTransfer).getData('text/plain'), 10);
+                    var droppedItemIndex = parseInt((evt.dataTransfer || evt.originalEvent.dataTransfer).getData('text/plain'), 10);
 
                     // prevent event firing multiple times in firefox
                     $timeout.cancel(dropTimeout);
@@ -5777,8 +5890,8 @@ angular.module('ui.xg.select', [])
                     element.on('drop', dropHandler);
                 });
 
-                element.on('dragleave', function (e) {
-                    if (e.target !== element) {
+                element.on('dragleave', function (evt) {
+                    if (evt.target !== element) {
                         return;
                     }
                     element.removeClass(droppingClassName);
@@ -5806,7 +5919,7 @@ angular.module('ui.xg.select', [])
             var match = expression.match(/^\s*(?:([\s\S]+?)\s+as\s+)?([\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 
             if (!match) {
-                throw uixSelectMinErr('iexp', "Expected expression in form of '_item_ in _collection_[ track by _id_]' but got '{0}'.",
+                throw uixSelectMinErr('iexp', 'Expected expression in form of \'_item_ in _collection_[ track by _id_]\' but got \'{0}\'.',
                     expression);
             }
 
@@ -5831,6 +5944,7 @@ angular.module('ui.xg.select', [])
             return expression;
         };
     }]);
+
 /**
  * sortable
  * sortable directive
@@ -5841,13 +5955,13 @@ angular.module('ui.xg.sortable', [])
     .service('uixSortableService', function () {
         return {};
     })
-    .directive('uixSortable', ['$parse', '$timeout', 'uixSortableService',
-        function ($parse, $timeout, uixSortableService) {
+    .directive('uixSortable', ['$timeout', 'uixSortableService',
+        function ($timeout, uixSortableService) {
             return {
                 restrict: 'AE',
                 scope: {
                     uixSortable: '=',
-                    onChange:'&'
+                    onChange: '&'
                 },
                 link: function ($scope, ele) {
                     var self = this;
@@ -5870,12 +5984,13 @@ angular.module('ui.xg.sortable', [])
                         element.off('dragenter dragover drop dragleave');
                         angular.forEach(children, function (item, i) {
                             var child = angular.element(item);
-                            child.attr('draggable', 'true').css({cursor: 'move'}).on('dragstart', function (event) {
+                            child.attr('draggable', 'true').css({cursor: 'move'})
+                                .on('dragstart', function (event) {
                                     event = event.originalEvent || event;
-                                    if (element.attr('draggable') == 'false') {
+                                    if (element.attr('draggable') === 'false') {
                                         return;
                                     }
-                                    event.dataTransfer.effectAllowed = "move";
+                                    event.dataTransfer.effectAllowed = 'move';
                                     event.dataTransfer.setDragImage(item, 10, 10);
 
                                     $timeout(function () {
@@ -5910,10 +6025,11 @@ angular.module('ui.xg.sortable', [])
 
                         //父元素绑定drop事件
                         var listNode = element[0], placeholder, placeholderNode;
-                        element.on('dragenter', function (event) {
+                        element
+                            .on('dragenter', function (event) {
                                 event = event.originalEvent || event;
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return false;
                                 }
                                 placeholder = uixSortableService.placeholder;
@@ -5922,11 +6038,11 @@ angular.module('ui.xg.sortable', [])
                             })
                             .on('dragover', function (event) {
                                 event = event.originalEvent || event;
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return false;
                                 }
-                                if (placeholderNode.parentNode != listNode) {
+                                if (placeholderNode.parentNode !== listNode) {
                                     element.append(placeholder);
                                 }
                                 if (event.target !== listNode) {
@@ -5943,19 +6059,21 @@ angular.module('ui.xg.sortable', [])
                                     }
                                 } else {
                                     if (isMouseInFirstHalf(event, placeholderNode, true)) {
-                                        while (placeholderNode.previousElementSibling
-                                        && (isMouseInFirstHalf(event, placeholderNode.previousElementSibling, true)
-                                        || placeholderNode.previousElementSibling.offsetHeight === 0)) {
-                                            listNode.insertBefore(placeholderNode, placeholderNode.previousElementSibling);
+                                        while (placeholderNode.previousElementSibling &&
+                                        (isMouseInFirstHalf(event, placeholderNode.previousElementSibling, true) ||
+                                        placeholderNode.previousElementSibling.offsetHeight === 0)) {
+                                            listNode.insertBefore(placeholderNode,
+                                                placeholderNode.previousElementSibling);
                                         }
                                     } else {
-                                        while (placeholderNode.nextElementSibling && !isMouseInFirstHalf(event, placeholderNode.nextElementSibling, true)) {
+                                        while (placeholderNode.nextElementSibling &&
+                                        !isMouseInFirstHalf(event, placeholderNode.nextElementSibling, true)) {
                                             listNode.insertBefore(placeholderNode,
                                                 placeholderNode.nextElementSibling.nextElementSibling);
                                         }
                                     }
                                 }
-                                element.addClass("uix-sortable-dragover");
+                                element.addClass('uix-sortable-dragover');
                                 event.preventDefault();
                                 event.stopPropagation();
                                 return false;
@@ -5963,8 +6081,8 @@ angular.module('ui.xg.sortable', [])
                             .on('drop', function (event) {
                                 event = event.originalEvent || event;
 
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return true;
                                 }
                                 var dragIndex = uixSortableService.dragIndex;
@@ -5974,18 +6092,18 @@ angular.module('ui.xg.sortable', [])
                                     var dragObj = scope.uixSortable[dragIndex];
                                     scope.uixSortable.splice(dragIndex, 1);
                                     scope.uixSortable.splice(placeholderIndex, 0, dragObj);
-                                    if(scope.onChange && angular.isFunction(scope.onChange)){
+                                    if (scope.onChange && angular.isFunction(scope.onChange)) {
                                         scope.onChange();
                                     }
                                 });
                                 placeholder.remove();
-                                element.removeClass("uix-sortable-dragover");
+                                element.removeClass('uix-sortable-dragover');
                                 event.stopPropagation();
                                 return false;
                             })
                             .on('dragleave', function (event) {
                                 event = event.originalEvent || event;
-                                element.removeClass("uix-sortable-dragover");
+                                element.removeClass('uix-sortable-dragover');
                                 $timeout(function () {
                                     if (!element.hasClass('uix-sortable-dragover') && placeholder) {
                                         placeholder.remove();
@@ -6035,8 +6153,9 @@ angular.module('ui.xg.sortable', [])
                         return placeholder;
                     }
                 }
-            }
+            };
         }]);
+
 /**
  * switch
  * 开关
@@ -6048,36 +6167,36 @@ angular.module('ui.xg.switch', [])
         type: 'default',
         size: 'md',
         isDisabled: false,
-        trueValue:true,
-        falseValue:false
+        trueValue: true,
+        falseValue: false
     })
-    .controller('uixSwitchCtrl', ['$scope', '$attrs','uixSwitchConfig', function ($scope, $attrs,uixSwitchConfig) {
+    .controller('uixSwitchCtrl', ['$scope', '$attrs', 'uixSwitchConfig', function ($scope, $attrs, uixSwitchConfig) {
         var ngModelCtrl = {$setViewValue: angular.noop};
         $scope.switchObj = {};
         this.init = function (_ngModelCtrl) {
             ngModelCtrl = _ngModelCtrl;
             ngModelCtrl.$render = this.render;
-            $scope.switchObj.isDisabled = getAttrValue('ngDisabled','isDisabled');
+            $scope.switchObj.isDisabled = getAttrValue('ngDisabled', 'isDisabled');
             $scope.switchObj.type = $scope.type || uixSwitchConfig.type;
             $scope.switchObj.size = $scope.size || uixSwitchConfig.size;
             $scope.switchObj.trueValue = getAttrValue('trueValue');
             $scope.switchObj.falseValue = getAttrValue('falseValue');
         };
         $scope.$watch('switchObj.query', function (val) {
-            ngModelCtrl.$setViewValue(val?$scope.switchObj.trueValue:$scope.switchObj.falseValue);
+            ngModelCtrl.$setViewValue(val ? $scope.switchObj.trueValue : $scope.switchObj.falseValue);
             ngModelCtrl.$render();
         });
         $scope.changeSwitchHandler = function () {
-            if($scope.onChange){
+            if ($scope.onChange) {
                 $scope.onChange();
             }
         };
         this.render = function () {
             $scope.switchObj.query = ngModelCtrl.$viewValue === $scope.switchObj.trueValue;
         };
-        function getAttrValue(attributeValue,defaultValue) {
+        function getAttrValue(attributeValue, defaultValue) {
             var val = $scope.$parent.$eval($attrs[attributeValue]);   //变量解析
-            return angular.isDefined(val) ? val : uixSwitchConfig[defaultValue||attributeValue];
+            return angular.isDefined(val) ? val : uixSwitchConfig[defaultValue || attributeValue];
         }
     }])
     .directive('uixSwitch', function () {
@@ -6087,17 +6206,18 @@ angular.module('ui.xg.switch', [])
             replace: true,
             require: ['uixSwitch', 'ngModel'],
             scope: {
-                type:'@?',
-                size:'@?',
-                onChange:'&?'
+                type: '@?',
+                size: '@?',
+                onChange: '&?'
             },
             controller: 'uixSwitchCtrl',
             link: function (scope, el, attrs, ctrls) {
                 var switchCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 switchCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });
+
 /**
  * timepicker
  * timepicker directive
@@ -6148,13 +6268,18 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
         }
 
     }])
-    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$timeout', '$uixPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log, uixTimepickerService, timepickerConfig, dateFilter, $timeout, $uixPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$uixPosition',
+        function ($scope, $element, $compile, $attrs, $parse, $log,
+                  uixTimepickerService, timepickerConfig, dateFilter, $uixPosition) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></uix-timepanel>' +
+                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" ' +
+                'second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" ' +
+                'on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds">' +
+                '</uix-timepanel>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -6171,9 +6296,12 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
              不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
              http://xgfe.github.io/2015/12/22/penglu/link-controller/
              */
-            $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-            $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-            $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
+            $scope.hourStep = angular.isDefined($attrs.hourStep)
+                ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
+            $scope.minuteStep = angular.isDefined($attrs.minuteStep)
+                ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
+            $scope.secondStep = angular.isDefined($attrs.secondStep)
+                ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
 
             // readonly input
             $scope.readonlyInput = timepickerConfig.readonlyInput;
@@ -6201,11 +6329,14 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
             };
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+            var format = angular.isDefined($attrs.format)
+                ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
             this.render = function () {
                 var date = ngModelCtrl.$viewValue;
                 if (isNaN(date)) {
-                    $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                    $log.error('Timepicker directive: "ng-model" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
                 } else if (date) {
                     $scope.selectedTime = date;
                     $scope.inputValue = dateFilter(date, format);
@@ -6277,8 +6408,9 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                 var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepickerCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });
+
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert uix-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+

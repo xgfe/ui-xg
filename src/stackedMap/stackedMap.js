@@ -24,7 +24,7 @@ angular.module('ui.xg.stackedMap', [])
                             }
                         }
                     },
-                    keys: function() {
+                    keys: function () {
                         var keys = [];
                         for (var i = 0; i < stack.length; i++) {
                             keys.push(stack[i].key);

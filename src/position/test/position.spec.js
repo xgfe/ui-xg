@@ -1,9 +1,10 @@
+/* eslint angular/document-service:0 */
 describe('$uixPosition service', function () {
-    var TargetElMock = function(width, height) {
+    var TargetElMock = function (width, height) {
         this.width = width;
         this.height = height;
 
-        this.prop = function(propName) {
+        this.prop = function (propName) {
             return propName === 'offsetWidth' ? width : height;
         };
     };
@@ -13,16 +14,16 @@ describe('$uixPosition service', function () {
 
     beforeEach(module('ui.xg.position'));
 
-    beforeEach(inject(function(_$document_, _$uixPosition_) {
+    beforeEach(inject(function (_$document_, _$uixPosition_) {
         $document = _$document_;
         $uixPosition = _$uixPosition_;
     }));
 
     beforeEach(function () {
         jasmine.addMatchers({
-            toBePositionedAt: function(util, customEqualityTesters) {
+            toBePositionedAt: function (util, customEqualityTesters) {
                 return {
-                    compare: function(actual, top, left) {
+                    compare: function (actual, top, left) {
                         var result = {
                             pass: util.equals(actual.top, top, customEqualityTesters) &&
                             util.equals(actual.left, left, customEqualityTesters)
@@ -41,8 +42,8 @@ describe('$uixPosition service', function () {
         });
     });
 
-    describe('offset', function() {
-        it('returns getBoundingClientRect by default', function() {
+    describe('offset', function () {
+        it('returns getBoundingClientRect by default', function () {
             var el = angular.element('<div>Foo</div>');
 
             /* getBoundingClientRect values will be based on the testing Chrome window
@@ -68,19 +69,23 @@ describe('$uixPosition service', function () {
         });
     });
 
-    describe('viewportOffset', function() {
+    describe('viewportOffset', function () {
         var el;
 
-        beforeEach(function() {
-            el = angular.element('<div id="outer" style="overflow: auto; width: 200px; height: 200px; padding: 25px; box-sizing: border-box;"><div id="inner" style="margin: 20px; width: 100px; height: 100px; box-sizing: border-box;"></div></div>');
+        beforeEach(function () {
+            el = angular.element(
+                '<div id="outer" style="overflow: auto; width: 200px; height: 200px; padding: 25px; box-sizing: border-box;">' +
+                '<div id="inner" style="margin: 20px; width: 100px; height: 100px; box-sizing: border-box;"></div>' +
+                '</div>'
+            );
             $document.find('body').append(el);
         });
 
-        afterEach(function() {
+        afterEach(function () {
             el.remove();
         });
 
-        it('measures the offset', function() {
+        it('measures the offset', function () {
             var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'));
             expect(vpOffset).toEqual({
                 top: 20,
@@ -90,7 +95,7 @@ describe('$uixPosition service', function () {
             });
         });
 
-        it('measures the offset without padding', function() {
+        it('measures the offset without padding', function () {
             var outerEl = document.getElementById('outer');
             outerEl.style.paddingTop = '0px';
             outerEl.style.paddingBottom = '0px';
@@ -106,7 +111,7 @@ describe('$uixPosition service', function () {
             });
         });
 
-        it('measures the offset with borders', function() {
+        it('measures the offset with borders', function () {
             var outerEl = document.getElementById('outer');
             outerEl.style.width = '220px';
             outerEl.style.height = '220px';
@@ -121,7 +126,7 @@ describe('$uixPosition service', function () {
             });
         });
 
-        it('measures the offset excluding padding', function() {
+        it('measures the offset excluding padding', function () {
             var vpOffset = $uixPosition.viewportOffset(document.getElementById('inner'), false, false);
             expect(vpOffset).toEqual({
                 top: 45,
@@ -131,7 +136,7 @@ describe('$uixPosition service', function () {
             });
         });
 
-        it('measures the offset when scrolled', function() {
+        it('measures the offset when scrolled', function () {
             var innerEl = document.getElementById('inner');
             innerEl.style.width = '300px';
             innerEl.style.height = '300px';
@@ -156,14 +161,14 @@ describe('$uixPosition service', function () {
 
     });
 
-    describe('position', function() {
+    describe('position', function () {
         var el;
 
-        afterEach(function() {
+        afterEach(function () {
             el.remove();
         });
 
-        it('gets position with document as the relative parent', function() {
+        it('gets position with document as the relative parent', function () {
             el = angular.element('<div>Foo</div>');
 
             spyOn(el[0], 'getBoundingClientRect').and.returnValue({
@@ -185,7 +190,7 @@ describe('$uixPosition service', function () {
             });
         });
 
-        it('gets position with an element as the relative parent', function() {
+        it('gets position with an element as the relative parent', function () {
             el = angular.element('<div id="outer" style="position:relative;"><div id="inner">Foo</div></div>');
 
             $document.find('body').append(el);
@@ -217,14 +222,14 @@ describe('$uixPosition service', function () {
         });
     });
 
-    describe('scrollParent', function() {
+    describe('scrollParent', function () {
         var el;
 
-        afterEach(function() {
+        afterEach(function () {
             el.remove();
         });
 
-        it('gets the closest scrollable ancestor', function() {
+        it('gets the closest scrollable ancestor', function () {
             el = angular.element('<div id="outer" style="overflow: auto;"><div>Foo<div id="inner">Bar</div></div></div>');
 
             $document.find('body').css({overflow: 'auto'}).append(el);
@@ -236,7 +241,7 @@ describe('$uixPosition service', function () {
             expect(scrollParent).toEqual(outerEl);
         });
 
-        it('gets the closest scrollable ancestor with overflow-x: scroll', function() {
+        it('gets the closest scrollable ancestor with overflow-x: scroll', function () {
             el = angular.element('<div id="outer" style="overflow-x: scroll;"><div>Foo<div id="inner">Bar</div></div></div>');
 
             $document.find('body').css({overflow: 'auto'}).append(el);
@@ -248,7 +253,7 @@ describe('$uixPosition service', function () {
             expect(scrollParent).toEqual(outerEl);
         });
 
-        it('gets the closest scrollable ancestor with overflow-y: hidden', function() {
+        it('gets the closest scrollable ancestor with overflow-y: hidden', function () {
             el = angular.element('<div id="outer" style="overflow-y: hidden;"><div>Foo<div id="inner">Bar</div></div></div>');
 
             $document.find('body').css({overflow: 'auto'}).append(el);
@@ -260,7 +265,7 @@ describe('$uixPosition service', function () {
             expect(scrollParent).toEqual(outerEl);
         });
 
-        it('gets the document element if no scrollable ancestor exists', function() {
+        it('gets the document element if no scrollable ancestor exists', function () {
             el = angular.element('<div id="outer"><div>Foo<div id="inner">Bar</div></div></div>');
 
             $document.find('body').css({overflow: ''}).append(el);
@@ -271,8 +276,11 @@ describe('$uixPosition service', function () {
             expect(scrollParent).toEqual($document[0].documentElement);
         });
 
-        it('gets the closest scrollable ancestor after a positioned ancestor when positioned absolute', function() {
-            el = angular.element('<div id="outer" style="overflow: auto; position: relative;"><div style="overflow: auto;">Foo<div id="inner" style="position: absolute;">Bar</div></div></div>');
+        it('gets the closest scrollable ancestor after a positioned ancestor when positioned absolute', function () {
+            el = angular.element(
+                '<div id="outer" style="overflow: auto; position: relative;">' +
+                '<div style="overflow: auto;">Foo<div id="inner" style="position: absolute;">Bar</div></div>' +
+                '</div>');
 
             $document.find('body').css({overflow: 'auto'}).append(el);
 
@@ -284,10 +292,10 @@ describe('$uixPosition service', function () {
         });
     });
 
-    describe('positionElements - append-to-body: false', function() {
-        beforeEach(function() {
+    describe('positionElements - append-to-body: false', function () {
+        beforeEach(function () {
             //mock position info normally queried from the DOM
-            $uixPosition.position = function() {
+            $uixPosition.position = function () {
                 return {
                     width: 20,
                     height: 20,
@@ -297,64 +305,64 @@ describe('$uixPosition service', function () {
             };
         });
 
-        it('should position element on top-center by default', function() {
+        it('should position element on top-center by default', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'other')).toBePositionedAt(90, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top')).toBePositionedAt(90, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-center')).toBePositionedAt(90, 105);
         });
 
-        it('should position on top-left', function() {
+        it('should position on top-left', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-left')).toBePositionedAt(90, 100);
         });
 
-        it('should position on top-right', function() {
+        it('should position on top-right', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-right')).toBePositionedAt(90, 110);
         });
 
-        it('should position elements on bottom-center when "bottom" specified', function() {
+        it('should position elements on bottom-center when "bottom" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom')).toBePositionedAt(120, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center')).toBePositionedAt(120, 105);
         });
 
-        it('should position elements on bottom-left', function() {
+        it('should position elements on bottom-left', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left')).toBePositionedAt(120, 100);
         });
 
-        it('should position elements on bottom-right', function() {
+        it('should position elements on bottom-right', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right')).toBePositionedAt(120, 110);
         });
 
-        it('should position elements on left-center when "left" specified', function() {
+        it('should position elements on left-center when "left" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left')).toBePositionedAt(105, 90);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-center')).toBePositionedAt(105, 90);
         });
 
-        it('should position elements on left-top when "left-top" specified', function() {
+        it('should position elements on left-top when "left-top" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-top')).toBePositionedAt(100, 90);
         });
 
-        it('should position elements on left-bottom when "left-bottom" specified', function() {
+        it('should position elements on left-bottom when "left-bottom" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom')).toBePositionedAt(110, 90);
         });
 
-        it('should position elements on right-center when "right" specified', function() {
+        it('should position elements on right-center when "right" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right')).toBePositionedAt(105, 120);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-center')).toBePositionedAt(105, 120);
         });
 
-        it('should position elements on right-top when "right-top" specified', function() {
+        it('should position elements on right-top when "right-top" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-top')).toBePositionedAt(100, 120);
         });
 
-        it('should position elements on right-top when "right-top" specified', function() {
+        it('should position elements on right-top when "right-top" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom')).toBePositionedAt(110, 120);
         });
     });
 
-    describe('positionElements - append-to-body: true', function() {
-        beforeEach(function() {
+    describe('positionElements - append-to-body: true', function () {
+        beforeEach(function () {
             //mock offset info normally queried from the DOM
-            $uixPosition.offset = function() {
+            $uixPosition.offset = function () {
                 return {
                     width: 20,
                     height: 20,
@@ -364,69 +372,69 @@ describe('$uixPosition service', function () {
             };
         });
 
-        it('should position element on top-center by default', function() {
+        it('should position element on top-center by default', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'other', true)).toBePositionedAt(90, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top', true)).toBePositionedAt(90, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-center', true)).toBePositionedAt(90, 105);
         });
 
-        it('should position on top-left', function() {
+        it('should position on top-left', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-left', true)).toBePositionedAt(90, 100);
         });
 
-        it('should position on top-right', function() {
+        it('should position on top-right', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'top-right', true)).toBePositionedAt(90, 110);
         });
 
-        it('should position elements on bottom-center when "bottom" specified', function() {
+        it('should position elements on bottom-center when "bottom" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom', true)).toBePositionedAt(120, 105);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-center', true)).toBePositionedAt(120, 105);
         });
 
-        it('should position elements on bottom-left', function() {
+        it('should position elements on bottom-left', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-left', true)).toBePositionedAt(120, 100);
         });
 
-        it('should position elements on bottom-right', function() {
+        it('should position elements on bottom-right', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'bottom-right', true)).toBePositionedAt(120, 110);
         });
 
-        it('should position elements on left-center when "left" specified', function() {
+        it('should position elements on left-center when "left" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left', true)).toBePositionedAt(105, 90);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-center', true)).toBePositionedAt(105, 90);
         });
 
-        it('should position elements on left-top when "left-top" specified', function() {
+        it('should position elements on left-top when "left-top" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-top', true)).toBePositionedAt(100, 90);
         });
 
-        it('should position elements on left-bottom when "left-bottom" specified', function() {
+        it('should position elements on left-bottom when "left-bottom" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'left-bottom', true)).toBePositionedAt(110, 90);
         });
 
-        it('should position elements on right-center when "right" specified', function() {
+        it('should position elements on right-center when "right" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right', true)).toBePositionedAt(105, 120);
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-center', true)).toBePositionedAt(105, 120);
         });
 
-        it('should position elements on right-top when "right-top" specified', function() {
+        it('should position elements on right-top when "right-top" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-top', true)).toBePositionedAt(100, 120);
         });
 
-        it('should position elements on right-bottom when "right-bottom" specified', function() {
+        it('should position elements on right-bottom when "right-bottom" specified', function () {
             expect($uixPosition.positionElements({}, new TargetElMock(10, 10), 'right-bottom', true)).toBePositionedAt(110, 120);
         });
     });
 
-    describe('smart positioning', function() {
+    describe('smart positioning', function () {
         var viewportOffset, el;
 
-        beforeEach(function() {
+        beforeEach(function () {
             el = angular.element('<div></div>');
             $document.find('body').append(el);
 
             //mock position info normally queried from the DOM
-            $uixPosition.position = function() {
+            $uixPosition.position = function () {
                 return {
                     width: 40,
                     height: 40,
@@ -444,76 +452,76 @@ describe('$uixPosition service', function () {
                 right: 10
             };
 
-            $uixPosition.viewportOffset = function() {
+            $uixPosition.viewportOffset = function () {
                 return viewportOffset;
             };
         });
 
-        afterEach(function() {
+        afterEach(function () {
             el.remove();
         });
 
         // tests primary top -> bottom
         // tests secondary left -> right
-        it('should position element on bottom-right when top-left does not fit', function() {
+        it('should position element on bottom-right when top-left does not fit', function () {
             viewportOffset.bottom = 20;
             viewportOffset.left = 20;
-            el.css({ width: '60px', height: '20px' });
+            el.css({width: '60px', height: '20px'});
             expect($uixPosition.positionElements({}, el, 'auto top-left')).toBePositionedAt(140, 80);
         });
 
         // tests primary bottom -> top
         // tests secondary right -> left
-        it('should position element on top-left when bottom-right does not fit', function() {
+        it('should position element on top-left when bottom-right does not fit', function () {
             viewportOffset.top = 20;
             viewportOffset.right = 20;
-            el.css({ width: '60px', height: '20px' });
+            el.css({width: '60px', height: '20px'});
             expect($uixPosition.positionElements({}, el, 'auto bottom-right')).toBePositionedAt(80, 100);
         });
 
         // tests primary left -> right
         // tests secondary top -> bottom
-        it('should position element on right-bottom when left-top does not fit', function() {
+        it('should position element on right-bottom when left-top does not fit', function () {
             viewportOffset.top = 20;
             viewportOffset.right = 20;
-            el.css({ width: '20px', height: '60px' });
+            el.css({width: '20px', height: '60px'});
             expect($uixPosition.positionElements({}, el, 'auto left-top')).toBePositionedAt(80, 140);
         });
 
         // tests primary right -> left
         // tests secondary bottom -> top
-        it('should position element on left-top when right-bottom does not fit', function() {
+        it('should position element on left-top when right-bottom does not fit', function () {
             viewportOffset.bottom = 20;
             viewportOffset.left = 20;
-            el.css({ width: '20px', height: '60px' });
+            el.css({width: '20px', height: '60px'});
             expect($uixPosition.positionElements({}, el, 'auto right-bottom')).toBePositionedAt(100, 80);
         });
 
         // tests vertical center -> top
-        it('should position element on left-top when left-center does not fit vetically', function() {
+        it('should position element on left-top when left-center does not fit vetically', function () {
             viewportOffset.bottom = 100;
-            el.css({ width: '20px', height: '120px' });
+            el.css({width: '20px', height: '120px'});
             expect($uixPosition.positionElements({}, el, 'auto left')).toBePositionedAt(100, 80);
         });
 
         // tests vertical center -> bottom
-        it('should position element on left-bottom when left-center does not fit vertically', function() {
+        it('should position element on left-bottom when left-center does not fit vertically', function () {
             viewportOffset.top = 100;
-            el.css({ width: '20px', height: '120px' });
+            el.css({width: '20px', height: '120px'});
             expect($uixPosition.positionElements({}, el, 'auto left')).toBePositionedAt(20, 80);
         });
 
         // tests horizontal center -> left
-        it('should position element on top-left when top-center does not fit horizontally', function() {
+        it('should position element on top-left when top-center does not fit horizontally', function () {
             viewportOffset.right = 100;
-            el.css({ width: '120px', height: '20px' });
+            el.css({width: '120px', height: '20px'});
             expect($uixPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 100);
         });
 
         // tests horizontal center -> right
-        it('should position element on top-right when top-center does not fit horizontally', function() {
+        it('should position element on top-right when top-center does not fit horizontally', function () {
             viewportOffset.left = 100;
-            el.css({ width: '120px', height: '20px' });
+            el.css({width: '120px', height: '20px'});
             expect($uixPosition.positionElements({}, el, 'auto top')).toBePositionedAt(80, 20);
         });
     });

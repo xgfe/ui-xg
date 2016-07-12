@@ -31,7 +31,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} A HTML element.
              */
-            getRawNode: function(elem) {
+            getRawNode: function (elem) {
                 return elem[0] || elem;
             },
 
@@ -43,7 +43,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {number} A valid number.
              */
-            parseStyle: function(value) {
+            parseStyle: function (value) {
                 value = parseFloat(value);
                 return isFinite(value) ? value : 0;
             },
@@ -55,7 +55,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} The closest positioned ancestor.
              */
-            offsetParent: function(elem) {
+            offsetParent: function (elem) {
                 elem = this.getRawNode(elem);
 
                 var offsetParent = elem.offsetParent || $document[0].documentElement;
@@ -77,7 +77,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {number} The width of the browser scollbar.
              */
-            scrollbarWidth: function() {
+            scrollbarWidth: function () {
                 if (angular.isUndefined(SCROLLBAR_WIDTH)) {
                     var scrollElem = angular.element('<div style="position: absolute; top: -9999px; width: 50px; height: 50px; overflow: scroll;"></div>');
                     $document.find('body').append(scrollElem);
@@ -100,7 +100,7 @@ angular.module('ui.xg.position', [])
              *
              * @returns {element} A HTML element.
              */
-            scrollParent: function(elem, includeHidden) {
+            scrollParent: function (elem, includeHidden) {
                 elem = this.getRawNode(elem);
 
                 var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
@@ -145,7 +145,7 @@ angular.module('ui.xg.position', [])
              *     <li>**left**: distance to left edge of offset parent</li>
              *   </ul>
              */
-            position: function(elem, includeMagins) {
+            position: function (elem, includeMagins) {
                 elem = this.getRawNode(elem);
 
                 var elemOffset = this.offset(elem);
@@ -187,7 +187,7 @@ angular.module('ui.xg.position', [])
              *     <li>**right**: distance to bottom edge of viewport</li>
              *   </ul>
              */
-            offset: function(elem) {
+            offset: function (elem) {
                 elem = this.getRawNode(elem);
 
                 var elemBCR = elem.getBoundingClientRect();
@@ -222,7 +222,7 @@ angular.module('ui.xg.position', [])
              *     <li>**right**: distance to the right content edge of viewport element</li>
              *   </ul>
              */
-            viewportOffset: function(elem, useDocument, includePadding) {
+            viewportOffset: function (elem, useDocument, includePadding) {
                 elem = this.getRawNode(elem);
                 includePadding = includePadding !== false ? true : false;
 
@@ -290,7 +290,7 @@ angular.module('ui.xg.position', [])
              *   <li>**[2]**: If auto is passed: true, else undefined.</li>
              * </ul>
              */
-            parsePlacement: function(placement) {
+            parsePlacement: function (placement) {
                 var autoPlace = PLACEMENT_REGEX.auto.test(placement);
                 if (autoPlace) {
                     placement = placement.replace(PLACEMENT_REGEX.auto, '');
@@ -355,7 +355,7 @@ angular.module('ui.xg.position', [])
              *     <li>**placement**: The resolved placement.</li>
              *   </ul>
              */
-            positionElements: function(hostElem, targetElem, placement, appendToBody) {
+            positionElements: function (hostElem, targetElem, placement, appendToBody) {
                 hostElem = this.getRawNode(hostElem);
                 targetElem = this.getRawNode(targetElem);
 
@@ -377,17 +377,41 @@ angular.module('ui.xg.position', [])
                         height: targetHeight + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginTop) + this.parseStyle(targetElemStyle.marginBottom)))
                     };
 
-                    placement[0] = placement[0] === 'top' && adjustedSize.height > viewportOffset.top && adjustedSize.height <= viewportOffset.bottom ? 'bottom' :
-                        placement[0] === 'bottom' && adjustedSize.height > viewportOffset.bottom && adjustedSize.height <= viewportOffset.top ? 'top' :
-                            placement[0] === 'left' && adjustedSize.width > viewportOffset.left && adjustedSize.width <= viewportOffset.right ? 'right' :
-                                placement[0] === 'right' && adjustedSize.width > viewportOffset.right && adjustedSize.width <= viewportOffset.left ? 'left' :
-                                    placement[0];
+                    placement[0] = placement[0] === 'top' &&
+                    adjustedSize.height > viewportOffset.top &&
+                    adjustedSize.height <= viewportOffset.bottom
+                        ? 'bottom'
+                        : placement[0] === 'bottom' &&
+                    adjustedSize.height > viewportOffset.bottom &&
+                    adjustedSize.height <= viewportOffset.top
+                        ? 'top'
+                        : placement[0] === 'left' &&
+                    adjustedSize.width > viewportOffset.left &&
+                    adjustedSize.width <= viewportOffset.right
+                        ? 'right'
+                        : placement[0] === 'right' &&
+                    adjustedSize.width > viewportOffset.right &&
+                    adjustedSize.width <= viewportOffset.left
+                        ? 'left'
+                        : placement[0];
 
-                    placement[1] = placement[1] === 'top' && adjustedSize.height - hostElemPos.height > viewportOffset.bottom && adjustedSize.height - hostElemPos.height <= viewportOffset.top ? 'bottom' :
-                        placement[1] === 'bottom' && adjustedSize.height - hostElemPos.height > viewportOffset.top && adjustedSize.height - hostElemPos.height <= viewportOffset.bottom ? 'top' :
-                            placement[1] === 'left' && adjustedSize.width - hostElemPos.width > viewportOffset.right && adjustedSize.width - hostElemPos.width <= viewportOffset.left ? 'right' :
-                                placement[1] === 'right' && adjustedSize.width - hostElemPos.width > viewportOffset.left && adjustedSize.width - hostElemPos.width <= viewportOffset.right ? 'left' :
-                                    placement[1];
+                    placement[1] = placement[1] === 'top' &&
+                    adjustedSize.height - hostElemPos.height > viewportOffset.bottom &&
+                    adjustedSize.height - hostElemPos.height <= viewportOffset.top
+                        ? 'bottom'
+                        : placement[1] === 'bottom' &&
+                    adjustedSize.height - hostElemPos.height > viewportOffset.top &&
+                    adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
+                        ? 'top'
+                        : placement[1] === 'left' &&
+                    adjustedSize.width - hostElemPos.width > viewportOffset.right &&
+                    adjustedSize.width - hostElemPos.width <= viewportOffset.left
+                        ? 'right'
+                        : placement[1] === 'right' &&
+                    adjustedSize.width - hostElemPos.width > viewportOffset.left &&
+                    adjustedSize.width - hostElemPos.width <= viewportOffset.right
+                        ? 'left'
+                        : placement[1];
 
                     if (placement[1] === 'center') {
                         if (PLACEMENT_REGEX.vertical.test(placement[0])) {
@@ -460,7 +484,7 @@ angular.module('ui.xg.position', [])
              * @param {element} elem - The tooltip/dropdown element.
              * @param {string} placement - The placement for the elem.
              */
-            positionArrow: function(elem, placement) {
+            positionArrow: function (elem, placement) {
                 elem = this.getRawNode(elem);
 
                 var isTooltip = true;

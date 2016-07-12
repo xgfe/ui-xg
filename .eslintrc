@@ -1,39 +1,162 @@
 {
-  "extends": "eslint:recommended",
-  "env":{
-    "browser": true,
-    "jasmine":true,
-    "node":true
-  },
-  "globals": {
-    "angular": true,
-    "define":true,
-    "require":true,
-    "inject": true,
-    "jQuery":true,
-    "$":true
-  },
-  "rules": {
-    "no-func-assign":0,
-    "no-unexpected-multiline":2,
-    "block-scoped-var":2,
-    "curly":2,
-    "dot-location": [2, "property"],
-    "no-alert":[2],
-    "no-eval":[2],
-    "no-floating-decimal":[2],
-    "no-implied-eval":[2],
-    "no-lone-blocks":[2],
-    "no-loop-func":[2],
-    "no-multi-str":[2],
-    "no-new-func":[2],
-    "no-return-assign":[2],
-    "no-self-compare":[2],
-    "no-sequences":[2],
-    "no-unused-expressions":[2],
-    "no-delete-var":[2],
-    "no-undefined":[2],
-    "no-unused-vars":[2],
-    "no-use-before-define":[2,"nofunc"]
-  }
+    "extends": "eslint:recommended",
+    "env": {
+        "browser": true,
+        "jasmine": true,
+        "node": true
+    },
+    "globals": {
+        "angular": true,
+        "define": true,
+        "require": true,
+        "inject": true,
+        "jQuery": true,
+        "$": true
+    },
+    "plugins": [
+        "angular"
+    ],
+    "rules": {
+        "no-func-assign": 0,
+        "no-unexpected-multiline": 2,
+        "block-scoped-var": 2,
+        "dot-location": [
+            2,
+            "property"
+        ],
+        "no-floating-decimal": 2,
+        "no-lone-blocks": 2,
+        "no-multi-str": 2,
+        "no-return-assign": 2,
+        "no-self-compare": 2,
+        "no-sequences": 2,
+        "no-unused-expressions": 2,
+        "no-delete-var": 2,
+        "no-undefined": 2,
+        "no-unused-vars": 2,
+        "eol-last": 2,
+        "no-trailing-spaces": 2,
+        "indent": [
+            2,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "space-infix-ops": 2,
+        "space-unary-ops": 2,
+        "space-before-blocks": 2,
+        "space-before-keywords": 2,
+        "key-spacing": 2,
+        "no-spaced-func": 2,
+        "space-before-function-paren": [
+            2,
+            {
+                "anonymous": "always",
+                "named": "never"
+            }
+        ],
+        "semi-spacing": [
+            2,
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "comma-spacing": [
+            2,
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "space-in-parens": [
+            2,
+            "never"
+        ],
+        "max-len": [
+            2,
+            180
+        ],
+        "operator-linebreak": 2,
+        "comma-style": 2,
+        "semi": [
+            2,
+            "always"
+        ],
+        "curly": [
+            2,
+            "all"
+        ],
+        "wrap-iife": [
+            2,
+            "inside"
+        ],
+        "camelcase": [
+            2,
+            {
+                "properties": "never"
+            }
+        ],
+        "new-cap": [
+            2,
+            {
+                "capIsNewExceptions": [
+                    "Event"
+                ]
+            }
+        ],
+        "id-length": [
+            2,
+            {
+                "exceptions": [
+                    "i",
+                    "j",
+                    "k",
+                    "d",
+                    "x",
+                    "y",
+                    "_"
+                ]
+            }
+        ],
+        "no-use-before-define": [
+            2,
+            "nofunc"
+        ],
+        "eqeqeq": [
+            2,
+            "allow-null"
+        ],
+        "radix": 2,
+        "quotes": [
+            2,
+            "single"
+        ],
+        "no-new-object": 2,
+        "no-extend-native": 2,
+        "no-array-constructor": 2,
+        "no-eval": 2,
+        "no-implied-eval": 2,
+        "no-with": 2,
+        "angular/di-unused": 2,
+        "angular/empty-controller": 2,
+        "angular/no-inline-template": 2,
+        "angular/no-cookiestore": 2,
+        "angular/no-http-callback": 2,
+        "angular/definedundefined": 2,
+        "angular/document-service": 2,
+        "angular/window-service": 2,
+        "angular/interval-service": 2,
+        "angular/timeout-service": 2,
+        "angular/json-functions": 2,
+        "angular/log": 2,
+        "angular/no-jquery-angularelement": 2,
+        "angular/typecheck-array": 2,
+        "angular/typecheck-date": 2,
+        "angular/typecheck-function": 2,
+        "angular/typecheck-number": 2,
+        "angular/typecheck-object": 2,
+        "angular/typecheck-string": 2
+    }
 }

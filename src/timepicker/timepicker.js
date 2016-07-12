@@ -48,13 +48,18 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
         }
 
     }])
-    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log', 'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$timeout', '$uixPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log, uixTimepickerService, timepickerConfig, dateFilter, $timeout, $uixPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$uixPosition',
+        function ($scope, $element, $compile, $attrs, $parse, $log,
+                  uixTimepickerService, timepickerConfig, dateFilter, $uixPosition) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
                 '<div class="arrow"></div>' +
                 '<div class="popover-inner">' +
-                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds"></uix-timepanel>' +
+                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" ' +
+                'second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" ' +
+                'on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds">' +
+                '</uix-timepanel>' +
                 '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -71,9 +76,12 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
              不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
              http://xgfe.github.io/2015/12/22/penglu/link-controller/
              */
-            $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-            $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-            $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
+            $scope.hourStep = angular.isDefined($attrs.hourStep)
+                ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
+            $scope.minuteStep = angular.isDefined($attrs.minuteStep)
+                ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
+            $scope.secondStep = angular.isDefined($attrs.secondStep)
+                ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
 
             // readonly input
             $scope.readonlyInput = timepickerConfig.readonlyInput;
@@ -101,11 +109,14 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
             };
-            var format = angular.isDefined($attrs.format) ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+            var format = angular.isDefined($attrs.format)
+                ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
             this.render = function () {
                 var date = ngModelCtrl.$viewValue;
                 if (isNaN(date)) {
-                    $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                    $log.error('Timepicker directive: "ng-model" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
                 } else if (date) {
                     $scope.selectedTime = date;
                     $scope.inputValue = dateFilter(date, format);
@@ -177,5 +188,5 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                 var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 timepickerCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });

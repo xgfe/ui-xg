@@ -6,30 +6,31 @@ describe('uix-switch', function () {
     beforeEach(function () {
         module('ui.xg.switch');
         module('switch/templates/switch.html');
-        inject(function( $compile, $rootScope,uixSwitchConfig) {
+        inject(function ($compile, $rootScope, uixSwitchConfig) {
             compile = $compile;
             scope = $rootScope.$new();
-            switchConfig = uixSwitchConfig
+            switchConfig = uixSwitchConfig;
         });
     });
-    afterEach(function() {
+    afterEach(function () {
         element.remove();
     });
-    function createSwitch(el){
+    function createSwitch(el) {
         element = compile(el)(scope);
         scope.$digest();
     }
-    function isChecked(){
-        return element.children('input:checked').length>0;
+
+    function isChecked() {
+        return element.children('input:checked').length > 0;
     }
 
     it('should result in an error when ngModel is missed', function () {
         var errorType;
-        try{
+        try {
             createSwitch('<uix-switch></uix-switch>');
-        }catch(e){
-            errorType = e.message.match(/\[[^\]]+\]/)[0];
-            expect(typeof e).not.toBe('undefined');
+        } catch (evt) {
+            errorType = evt.message.match(/\[[^\]]+\]/)[0];
+            expect(typeof evt).not.toBe('undefined');
             expect(errorType).toEqual('[$compile:ctreq]');
         }
     });
@@ -56,7 +57,7 @@ describe('uix-switch', function () {
 
     it('different size', function () {
         createSwitch('<uix-switch ng-model="open"></uix-switch>');
-        expect(element).toHaveClass('uix-switch-'+switchConfig.size);
+        expect(element).toHaveClass('uix-switch-' + switchConfig.size);
         createSwitch('<uix-switch ng-model="open" size="sm"></uix-switch>');
         expect(element).toHaveClass('uix-switch-sm');
         createSwitch('<uix-switch ng-model="open" size="lg"></uix-switch>');
@@ -65,7 +66,7 @@ describe('uix-switch', function () {
 
     it('different typs', function () {
         createSwitch('<uix-switch ng-model="open"></uix-switch>');
-        expect(element).toHaveClass('uix-switch-'+switchConfig.type);
+        expect(element).toHaveClass('uix-switch-' + switchConfig.type);
         createSwitch('<uix-switch ng-model="open" type="primary"></uix-switch>');
         expect(element).toHaveClass('uix-switch-primary');
         createSwitch('<uix-switch ng-model="open" type="success"></uix-switch>');
@@ -78,29 +79,29 @@ describe('uix-switch', function () {
 
     it('should trigger ngChange event when scope data changes', function () {
         /* TODO onChange 事件测试用例,onChange事件在点击之后触发,而不是在ngModel改变之后触发
-        var el = '<uix-switch on-change="changeHandler()" ng-model="open"></uix-switch>';
-        scope.changeHandler = jasmine.createSpy('changeHandler');
-        createSwitch(el);
-        scope.open = true;
-        scope.$digest();
-        element.click();
-        scope.open = false;
-        expect(scope.changeHandler).toHaveBeenCalled();
-        */
+         var el = '<uix-switch on-change="changeHandler()" ng-model="open"></uix-switch>';
+         scope.changeHandler = jasmine.createSpy('changeHandler');
+         createSwitch(el);
+         scope.open = true;
+         scope.$digest();
+         element.click();
+         scope.open = false;
+         expect(scope.changeHandler).toHaveBeenCalled();
+         */
     });
 
     it('should get current value', function () {
         /* TODO trueValue 和 falseValue 没有测试
-        var el = '<uix-switch ng-model="status" true-value="A" false-value="B"></uix-switch>';
-        createSwitch(el);
-        scope.status = 'A';
-        scope.A = 'A';
-        scope.B = 'B';
-        scope.$digest();
-        expect(isChecked()).toBe(true);
-        scope.status = 'B';
-        scope.$digest();
-        expect(isChecked()).toBe(false);*/
+         var el = '<uix-switch ng-model="status" true-value="A" false-value="B"></uix-switch>';
+         createSwitch(el);
+         scope.status = 'A';
+         scope.A = 'A';
+         scope.B = 'B';
+         scope.$digest();
+         expect(isChecked()).toBe(true);
+         scope.status = 'B';
+         scope.$digest();
+         expect(isChecked()).toBe(false);*/
     });
 
 });

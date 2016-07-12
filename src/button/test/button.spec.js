@@ -3,23 +3,24 @@
  * Author: penglu02@meituan.com
  * Date: 2016-01-12
  */
-describe('uix-button', function( ){
+describe('uix-button', function () {
     var compile, scope;
 
     // 加载模块
     beforeEach(module('ui.xg.button'));
     beforeEach(module('button/templates/button.html'));
 
-    beforeEach(inject(function($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();
-        $rootScope.xSize = "x-small";
+        $rootScope.xSize = 'x-small';
     }));
 
     describe('Button', function () {
-        function clickFn(){
+        function clickFn() {
             scope.disabled = !scope.disabled;
         }
+
         function createButton(btnClass, size, block, active, disabled, loading, type) {
             btnClass = btnClass ? 'btnClass=' + btnClass : '';
             size = size ? ' size=' + size : '';
@@ -28,53 +29,55 @@ describe('uix-button', function( ){
             disabled = disabled ? ' disabled=' + disabled : '';
             loading = loading ? ' loading=' + loading : '';
             type = type ? ' type=' + type : '';
-            var ele = compile(angular.element('<uix-button '+ btnClass + size + block + active + disabled + loading +  type + '></uix-button>'))(scope);
+            var ele = compile(angular.element('<uix-button ' +
+                btnClass + size + block + active + disabled +
+                loading + type + '></uix-button>'))(scope);
             scope.$apply();
             return ele;
         }
 
-        it('Should output a button', function() {
+        it('Should output a button', function () {
             var ele = angular.element(createButton()).children()[0],
                 eleName = ele.nodeName.toLowerCase();
             expect(eleName).toEqual('button');
         });
 
-        it('Should have class="btn btn-default", type=button, button content show "button" by default', function(){
+        it('Should have class="btn btn-default", type=button, button content show "button" by default', function () {
             var ele = angular.element(angular.element(createButton()).children()[0]);
             // ele必须为angular.element,否则toHaveClass会报错
             expect(ele).toHaveClass('btn');
             expect(ele).toHaveClass('btn-default');
-            expect(ele).toHaveAttr('type','button');
+            expect(ele).toHaveAttr('type', 'button');
         });
 
-        it('Should show the type if passed one', function(){
-            var ele = angular.element(angular.element(createButton('','','','','','','reset')).children()[0]);
-            expect(ele).toHaveAttr('type','reset');
+        it('Should show the type if passed one', function () {
+            var ele = angular.element(angular.element(createButton('', '', '', '', '', '', 'reset')).children()[0]);
+            expect(ele).toHaveAttr('type', 'reset');
         });
 
-        it('Should show have btn-XXX class  if passed btnClass=XXX', function(){
-            var ele = createButton('danger','','','','','','').children();
+        it('Should show have btn-XXX class  if passed btnClass=XXX', function () {
+            var ele = createButton('danger', '', '', '', '', '', '').children();
             expect(ele).toHaveClass('btn-danger');
         });
 
-        it('Should show have btn-xs class  if passed size=x-small', function(){
-            var ele = createButton('','xSize','','','','','').children();
+        it('Should show have btn-xs class  if passed size=x-small', function () {
+            var ele = createButton('', 'xSize', '', '', '', '', '').children();
             expect(ele).toHaveClass('btn-xs');
         });
 
-        it('Should show have btn-block class  if passed block=true', function(){
+        it('Should show have btn-block class  if passed block=true', function () {
             // TODO 默认的时候应该测试不含btn-block
-            var ele = createButton('','',true,'','','','').children();
+            var ele = createButton('', '', true, '', '', '', '').children();
             expect(ele).toHaveClass('btn-block');
         });
 
-        it('Should show have active class  if passed active=true', function(){
+        it('Should show have active class  if passed active=true', function () {
             // TODO 默认的时候应该测试不含active
-            var ele = createButton('','','',true,'','','').children();
+            var ele = createButton('', '', '', true, '', '', '').children();
             expect(ele).toHaveClass('active');
         });
 
-        it('Should show icon before button text  if passed icon=plus', function(){
+        it('Should show icon before button text  if passed icon=plus', function () {
             var element = compile('<uix-button icon="plus"></uix-button>')(scope),
                 btnEle = null,
                 iEle = null;

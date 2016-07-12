@@ -8,13 +8,13 @@ angular.module('ui.xg.sortable', [])
     .service('uixSortableService', function () {
         return {};
     })
-    .directive('uixSortable', ['$parse', '$timeout', 'uixSortableService',
-        function ($parse, $timeout, uixSortableService) {
+    .directive('uixSortable', ['$timeout', 'uixSortableService',
+        function ($timeout, uixSortableService) {
             return {
                 restrict: 'AE',
                 scope: {
                     uixSortable: '=',
-                    onChange:'&'
+                    onChange: '&'
                 },
                 link: function ($scope, ele) {
                     var self = this;
@@ -37,12 +37,13 @@ angular.module('ui.xg.sortable', [])
                         element.off('dragenter dragover drop dragleave');
                         angular.forEach(children, function (item, i) {
                             var child = angular.element(item);
-                            child.attr('draggable', 'true').css({cursor: 'move'}).on('dragstart', function (event) {
+                            child.attr('draggable', 'true').css({cursor: 'move'})
+                                .on('dragstart', function (event) {
                                     event = event.originalEvent || event;
-                                    if (element.attr('draggable') == 'false') {
+                                    if (element.attr('draggable') === 'false') {
                                         return;
                                     }
-                                    event.dataTransfer.effectAllowed = "move";
+                                    event.dataTransfer.effectAllowed = 'move';
                                     event.dataTransfer.setDragImage(item, 10, 10);
 
                                     $timeout(function () {
@@ -77,10 +78,11 @@ angular.module('ui.xg.sortable', [])
 
                         //父元素绑定drop事件
                         var listNode = element[0], placeholder, placeholderNode;
-                        element.on('dragenter', function (event) {
+                        element
+                            .on('dragenter', function (event) {
                                 event = event.originalEvent || event;
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return false;
                                 }
                                 placeholder = uixSortableService.placeholder;
@@ -89,11 +91,11 @@ angular.module('ui.xg.sortable', [])
                             })
                             .on('dragover', function (event) {
                                 event = event.originalEvent || event;
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return false;
                                 }
-                                if (placeholderNode.parentNode != listNode) {
+                                if (placeholderNode.parentNode !== listNode) {
                                     element.append(placeholder);
                                 }
                                 if (event.target !== listNode) {
@@ -110,19 +112,21 @@ angular.module('ui.xg.sortable', [])
                                     }
                                 } else {
                                     if (isMouseInFirstHalf(event, placeholderNode, true)) {
-                                        while (placeholderNode.previousElementSibling
-                                        && (isMouseInFirstHalf(event, placeholderNode.previousElementSibling, true)
-                                        || placeholderNode.previousElementSibling.offsetHeight === 0)) {
-                                            listNode.insertBefore(placeholderNode, placeholderNode.previousElementSibling);
+                                        while (placeholderNode.previousElementSibling &&
+                                        (isMouseInFirstHalf(event, placeholderNode.previousElementSibling, true) ||
+                                        placeholderNode.previousElementSibling.offsetHeight === 0)) {
+                                            listNode.insertBefore(placeholderNode,
+                                                placeholderNode.previousElementSibling);
                                         }
                                     } else {
-                                        while (placeholderNode.nextElementSibling && !isMouseInFirstHalf(event, placeholderNode.nextElementSibling, true)) {
+                                        while (placeholderNode.nextElementSibling &&
+                                        !isMouseInFirstHalf(event, placeholderNode.nextElementSibling, true)) {
                                             listNode.insertBefore(placeholderNode,
                                                 placeholderNode.nextElementSibling.nextElementSibling);
                                         }
                                     }
                                 }
-                                element.addClass("uix-sortable-dragover");
+                                element.addClass('uix-sortable-dragover');
                                 event.preventDefault();
                                 event.stopPropagation();
                                 return false;
@@ -130,8 +134,8 @@ angular.module('ui.xg.sortable', [])
                             .on('drop', function (event) {
                                 event = event.originalEvent || event;
 
-                                if (!uixSortableService.isDragging
-                                    || uixSortableService.element !== element) {
+                                if (!uixSortableService.isDragging ||
+                                    uixSortableService.element !== element) {
                                     return true;
                                 }
                                 var dragIndex = uixSortableService.dragIndex;
@@ -141,18 +145,18 @@ angular.module('ui.xg.sortable', [])
                                     var dragObj = scope.uixSortable[dragIndex];
                                     scope.uixSortable.splice(dragIndex, 1);
                                     scope.uixSortable.splice(placeholderIndex, 0, dragObj);
-                                    if(scope.onChange && angular.isFunction(scope.onChange)){
+                                    if (scope.onChange && angular.isFunction(scope.onChange)) {
                                         scope.onChange();
                                     }
                                 });
                                 placeholder.remove();
-                                element.removeClass("uix-sortable-dragover");
+                                element.removeClass('uix-sortable-dragover');
                                 event.stopPropagation();
                                 return false;
                             })
                             .on('dragleave', function (event) {
                                 event = event.originalEvent || event;
-                                element.removeClass("uix-sortable-dragover");
+                                element.removeClass('uix-sortable-dragover');
                                 $timeout(function () {
                                     if (!element.hasClass('uix-sortable-dragover') && placeholder) {
                                         placeholder.remove();
@@ -202,5 +206,5 @@ angular.module('ui.xg.sortable', [])
                         return placeholder;
                     }
                 }
-            }
+            };
         }]);

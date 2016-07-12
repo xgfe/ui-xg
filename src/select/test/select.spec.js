@@ -1,5 +1,5 @@
 describe('uix-select tests', function () {
-    var scope, $rootScope, $compile, $timeout, $injector;
+    var scope, $rootScope, $compile, $timeout, $injector, $document;
 
     var Key = {
         Enter: 13,
@@ -50,11 +50,12 @@ describe('uix-select tests', function () {
     });
 
 
-    beforeEach(inject(function (_$rootScope_, _$compile_, _$timeout_, _$injector_) {
+    beforeEach(inject(function (_$rootScope_, _$compile_, _$timeout_, _$document_, _$injector_) {
         $rootScope = _$rootScope_;
         scope = $rootScope.$new();
         $compile = _$compile_;
         $timeout = _$timeout_;
+        $document = _$document_;
         $injector = _$injector_;
         scope.selection = {};
 
@@ -137,7 +138,8 @@ describe('uix-select tests', function () {
 
         return compileTemplate(
             '<uix-select ng-model="selection.selected"' + attrsHtml + '> ' +
-            '<uix-select-match placeholder="Pick one..."' + matchAttrsHtml + '>{{$select.selected.name}}</uix-select-match> ' +
+            '<uix-select-match placeholder="Pick one..."' + matchAttrsHtml + '>' +
+            '{{$select.selected.name}}</uix-select-match> ' +
             '<uix-select-choices repeat="person in people | filter: $select.search"> ' +
             ' <div ng-bind-html="person.name | highlight: $select.search"></div> ' +
             '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
@@ -169,27 +171,28 @@ describe('uix-select tests', function () {
     function isDropdownOpened(el) {
         // Does not work with jQuery 2.*, have to use jQuery 1.11.*
         // This will be fixed in AngularJS 1.3
-        // See issue with unit-testing directive using karma https://github.com/angular/angular.js/issues/4640#issuecomment-35002427
+        // See issue with unit-testing directive using karma
+        // https://github.com/angular/angular.js/issues/4640#issuecomment-35002427
         return el.scope().$select.open && el.hasClass('open');
     }
 
     function triggerKeydown(element, keyCode) {
-        var e = jQuery.Event("keydown");
-        e.which = keyCode;
-        e.keyCode = keyCode;
-        element.trigger(e);
+        var evt = jQuery.Event('keydown');
+        evt.which = keyCode;
+        evt.keyCode = keyCode;
+        element.trigger(evt);
     }
 
     function triggerPaste(element, text) {
-        var e = jQuery.Event("paste");
-        e.originalEvent = {
+        var evt = jQuery.Event('paste');
+        evt.originalEvent = {
             clipboardData: {
                 getData: function () {
                     return text;
                 }
             }
         };
-        element.trigger(e);
+        element.trigger(evt);
     }
 
     function setSearchText(el, text) {
@@ -269,7 +272,10 @@ describe('uix-select tests', function () {
             age: 30
         };
         scope.$digest();
-        expect($(el).find('.uix-select-container > .uix-select-match > span:first > span[ng-transclude]:not(.ng-hide)').text()).toEqual('Samantha');
+        expect(
+            $(el).find('.uix-select-container > .uix-select-match > span:first > span[ng-transclude]:not(.ng-hide)')
+                .text()
+        ).toEqual('Samantha');
     });
 
     it('should display the choices when activated', function () {
@@ -302,7 +308,7 @@ describe('uix-select tests', function () {
     it('should not select a non existing item', function () {
         var el = createUiSelect();
 
-        clickItem(el, "I don't exist");
+        clickItem(el, 'I don\'t exist');
 
         expect(getMatchLabel(el)).toEqual('');
     });
@@ -327,10 +333,10 @@ describe('uix-select tests', function () {
 
         expect($select.open).toEqual(false);
 
-        el.find(".uix-select-toggle").click();
+        el.find('.uix-select-toggle').click();
         expect($select.open).toEqual(true);
 
-        el.find(".uix-select-toggle").click();
+        el.find('.uix-select-toggle').click();
         expect($select.open).toEqual(true);
     });
 
@@ -429,9 +435,9 @@ describe('uix-select tests', function () {
         var el = createUiSelect({tagging: true});
         clickMatch(el);
 
-        el.scope().$select.select("I don't exist");
+        el.scope().$select.select('I don\'t exist');
 
-        expect(el.scope().$select.selected).toEqual("I don't exist");
+        expect(el.scope().$select.selected).toEqual('I don\'t exist');
     });
 
     it('should format new items using the tagging function when the attribute is a function', function () {
@@ -459,7 +465,8 @@ describe('uix-select tests', function () {
         });
     });
 
-    // See when an item that evaluates to false (such as "false" or "no") is selected, the placeholder is shown https://github.com/angular-ui/uix-select/pull/32
+    // See when an item that evaluates to false (such as "false" or "no") is selected
+    // the placeholder is shown https://github.com/angular-ui/uix-select/pull/32
     it('should not display the placeholder when item evaluates to false', function () {
         scope.items = ['false'];
 
@@ -482,8 +489,8 @@ describe('uix-select tests', function () {
     it('should close an opened select when another one is opened', function () {
         var el1 = createUiSelect();
         var el2 = createUiSelect();
-        el1.appendTo(document.body);
-        el2.appendTo(document.body);
+        el1.appendTo($document[0].body);
+        el2.appendTo($document[0].body);
 
         expect(isDropdownOpened(el1)).toEqual(false);
         expect(isDropdownOpened(el2)).toEqual(false);
@@ -530,7 +537,7 @@ describe('uix-select tests', function () {
 
             scope['_' + key] = angular.copy(scope[key]);
             scope[key].map(function (model) {
-                if (model[matchAttr] == matchVal) {
+                if (model[matchAttr] === matchVal) {
                     model[disableAttr] = disableBool;
                 }
                 return model;
@@ -635,7 +642,7 @@ describe('uix-select tests', function () {
             );
         }
 
-        it("should extract group value through function", function () {
+        it('should extract group value through function', function () {
             var el = createUiSelect();
             expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
@@ -647,17 +654,18 @@ describe('uix-select tests', function () {
         function createUiSelect() {
             return compileTemplate('<uix-select ng-model="selection.selected"> ' +
                 '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match> ' +
-                '<uix-select-choices group-by="\'group\'" group-filter="filterInvertOrder"  repeat="person in people | filter: $select.search"> ' +
+                '<uix-select-choices group-by="\'group\'" group-filter="filterInvertOrder"  ' +
+                'repeat="person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '</uix-select-choices> ' +
                 '</uix-select>');
         }
 
-        it("should sort groups using filter", function () {
+        it('should sort groups using filter', function () {
             var el = createUiSelect();
             expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
-            }).toArray()).toEqual(["Foo", "Baz", "bar"]);
+            }).toArray()).toEqual(['Foo', 'Baz', 'bar']);
         });
     });
 
@@ -672,11 +680,11 @@ describe('uix-select tests', function () {
                 '</uix-select>');
         }
 
-        it("should sort groups using filter", function () {
+        it('should sort groups using filter', function () {
             var el = createUiSelect();
             expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
-            }).toArray()).toEqual(["Foo"]);
+            }).toArray()).toEqual(['Foo']);
         });
     });
 
@@ -767,12 +775,12 @@ describe('uix-select tests', function () {
 
     it('should parse the model correctly using property of alias', function () {
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
         scope.selection.selected = 'Samantha';
@@ -806,12 +814,12 @@ describe('uix-select tests', function () {
     //TODO Is this really something we should expect?
     it('should parse the model correctly using property of alias but passed whole object', function () {
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
         scope.selection.selected = scope.people[5];
@@ -834,12 +842,12 @@ describe('uix-select tests', function () {
 
     it('should display choices correctly with child array', function () {
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person in someObject.people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person in someObject.people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
         scope.selection.selected = scope.people[5];
@@ -849,12 +857,12 @@ describe('uix-select tests', function () {
 
     it('should format the model correctly using property of alias and when using child array for choices', function () {
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in someObject.people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in someObject.people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
         clickItem(el, 'Samantha');
@@ -868,12 +876,12 @@ describe('uix-select tests', function () {
             scope.$model = $model;
         };
         var el = compileTemplate(
-            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -899,12 +907,13 @@ describe('uix-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices on-highlight="onHighlightFn(person)" repeat="person.name as person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices on-highlight="onHighlightFn(person)" ' +
+            'repeat="person.name as person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -928,12 +937,12 @@ describe('uix-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select on-select="onSelectFn($item, $model)" ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -953,12 +962,12 @@ describe('uix-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<uix-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select multiple on-remove="onRemoveFn($item, $model)" ng-model="selection.selected">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name" | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1011,12 +1020,12 @@ describe('uix-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name" | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1038,12 +1047,12 @@ describe('uix-select tests', function () {
         };
 
         var el = compileTemplate(
-            '<uix-select multiple ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">'+
-              '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name" | highlight: $select.search"></div>'+
-                '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select multiple ng-model="selection.selected" tagging="taggingFunc" tagging-label="false">' +
+            '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name" | highlight: $select.search"></div>' +
+            '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1059,14 +1068,14 @@ describe('uix-select tests', function () {
     it('should append/transclude content (with correct scope) that users add at <match> tag', function () {
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match>'+
-                '<span ng-if="$select.selected.name!==\'Wladimir\'">{{$select.selected.name}}</span>'+
-                '<span ng-if="$select.selected.name===\'Wladimir\'">{{$select.selected.name | uppercase}}</span>'+
-              '</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match>' +
+            '<span ng-if="$select.selected.name!==\'Wladimir\'">{{$select.selected.name}}</span>' +
+            '<span ng-if="$select.selected.name===\'Wladimir\'">{{$select.selected.name | uppercase}}</span>' +
+            '</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1081,15 +1090,15 @@ describe('uix-select tests', function () {
     it('should append/transclude content (with correct scope) that users add at <choices> tag', function () {
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match>'+
-              '</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-if="person.name==\'Wladimir\'">'+
-                  '<span class="only-once">I should appear only once</span>'+
-                '</div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match>' +
+            '</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-if="person.name==\'Wladimir\'">' +
+            '<span class="only-once">I should appear only once</span>' +
+            '</div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1102,16 +1111,16 @@ describe('uix-select tests', function () {
     it('should call refresh function when search text changes', function () {
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match>'+
-              '</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search"'+
-                'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-if="person.name==\'Wladimir\'">'+
-                  '<span class="only-once">I should appear only once</span>'+
-                '</div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match>' +
+            '</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search"' +
+            'refresh="fetchFromServer($select.search)" refresh-delay="0">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-if="person.name==\'Wladimir\'">' +
+            '<span class="only-once">I should appear only once</span>' +
+            '</div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1131,16 +1140,16 @@ describe('uix-select tests', function () {
     it('should call refresh function when search text changes', function () {
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match>'+
-              '</uix-select-match>'+
-              '<uix-select-choices repeat="person in people | filter: $select.search"'+
-                'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-if="person.name==\'Wladimir\'">'+
-                  '<span class="only-once">I should appear only once</span>'+
-                '</div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match>' +
+            '</uix-select-match>' +
+            '<uix-select-choices repeat="person in people | filter: $select.search"' +
+            'refresh="fetchFromServer($select.search)" refresh-delay="0">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-if="person.name==\'Wladimir\'">' +
+            '<span class="only-once">I should appear only once</span>' +
+            '</div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
@@ -1160,25 +1169,25 @@ describe('uix-select tests', function () {
     it('should format view value correctly when using single property binding and refresh function', function () {
 
         var el = compileTemplate(
-            '<uix-select ng-model="selection.selected">'+
-              '<uix-select-match>{{$select.selected.name}}</uix-select-match>'+
-              '<uix-select-choices repeat="person.name as person in people | filter: $select.search"'+
-                'refresh="fetchFromServer($select.search)" refresh-delay="0">'+
-                '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-                '<div ng-if="person.name==\'Wladimir\'">'+
-                  '<span class="only-once">I should appear only once</span>' +
-            '</div>'+
-              '</uix-select-choices>'+
+            '<uix-select ng-model="selection.selected">' +
+            '<uix-select-match>{{$select.selected.name}}</uix-select-match>' +
+            '<uix-select-choices repeat="person.name as person in people | filter: $select.search"' +
+            'refresh="fetchFromServer($select.search)" refresh-delay="0">' +
+            '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+            '<div ng-if="person.name==\'Wladimir\'">' +
+            '<span class="only-once">I should appear only once</span>' +
+            '</div>' +
+            '</uix-select-choices>' +
             '</uix-select>'
         );
 
         scope.fetchFromServer = function (searching) {
 
-            if (searching == 's') {
+            if (searching === 's') {
                 return scope.people;
             }
 
-            if (searching == 'o') {
+            if (searching === 'o') {
                 scope.people = []; //To simulate cases were previously selected item isnt in the list anymore
             }
 
@@ -1197,28 +1206,28 @@ describe('uix-select tests', function () {
 
         var el;
 
-        function setupSelectComponent(searchEnabled, theme) {
+        function setupSelectComponent(searchEnabled) {
             el = compileTemplate(
-                '<uix-select ng-model="selection.selected" theme="' + theme + '" search-enabled="' + searchEnabled + '">'+
-          '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>'+
-          '<uix-select-choices repeat="person in people | filter: $select.search">'+
-            '<div ng-bind-html="person.name | highlight: $select.search"></div>'+
-            '<div ng-bind-html="person.email | highlight: $select.search"></div>'+
-          '</uix-select-choices>'+
-        '</uix-select>'
+                '<uix-select ng-model="selection.selected" search-enabled="' + searchEnabled + '">' +
+                '<uix-select-match placeholder="Pick one...">{{$select.selected.name}}</uix-select-match>' +
+                '<uix-select-choices repeat="person in people | filter: $select.search">' +
+                '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
+                '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
+                '</uix-select-choices>' +
+                '</uix-select>'
             );
         }
 
         describe('bootstrap theme', function () {
 
             it('should show search input when true', function () {
-                setupSelectComponent('true', 'bootstrap');
+                setupSelectComponent('true');
                 clickMatch(el);
                 expect($(el).find('.uix-select-search')).not.toHaveClass('ng-hide');
             });
 
             it('should hide search input when false', function () {
-                setupSelectComponent('false', 'bootstrap');
+                setupSelectComponent('false');
                 clickMatch(el);
                 expect($(el).find('.uix-select-search')).toHaveClass('ng-hide');
             });
@@ -1254,8 +1263,10 @@ describe('uix-select tests', function () {
             }
 
             return compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple"' + attrsHtml + ' theme="bootstrap" style="width: 800px;"> ' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match> ' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"' + attrsHtml + ' style="width: 800px;"> ' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;' +
+                '</uix-select-match> ' +
                 '<uix-select-choices repeat="person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
@@ -1345,36 +1356,39 @@ describe('uix-select tests', function () {
 
         });
 
-        it('should remove highlighted match when pressing BACKSPACE key from search and decrease activeMatchIndex', function () {
+        it('should remove highlighted match when pressing BACKSPACE key from search and decrease activeMatchIndex',
+            function () {
+                scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
+                var el = createUiSelectMultiple();
+                var searchInput = el.find('.uix-select-search');
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
-            var el = createUiSelectMultiple();
-            var searchInput = el.find('.uix-select-search');
+                expect(isDropdownOpened(el)).toEqual(false);
+                triggerKeydown(searchInput, Key.Left);
+                triggerKeydown(searchInput, Key.Left);
+                triggerKeydown(searchInput, Key.Backspace);
+                expect(el.scope().$select.selected).toEqual([scope.people[4], scope.people[6]]); //Wladimir & Nicole
 
-            expect(isDropdownOpened(el)).toEqual(false);
-            triggerKeydown(searchInput, Key.Left);
-            triggerKeydown(searchInput, Key.Left);
-            triggerKeydown(searchInput, Key.Backspace);
-            expect(el.scope().$select.selected).toEqual([scope.people[4], scope.people[6]]); //Wladimir & Nicole
+                expect(el.scope().$selectMultiple.activeMatchIndex).toBe(0);
+            }
+        );
 
-            expect(el.scope().$selectMultiple.activeMatchIndex).toBe(0);
-        });
+        it('should remove highlighted match when pressing DELETE key from search and keep same activeMatchIndex',
+            function () {
 
-        it('should remove highlighted match when pressing DELETE key from search and keep same activeMatchIndex', function () {
+                //Wladimir, Samantha & Nicole
+                scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
+                var el = createUiSelectMultiple();
+                var searchInput = el.find('.uix-select-search');
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
-            var el = createUiSelectMultiple();
-            var searchInput = el.find('.uix-select-search');
+                expect(isDropdownOpened(el)).toEqual(false);
+                triggerKeydown(searchInput, Key.Left);
+                triggerKeydown(searchInput, Key.Left);
+                triggerKeydown(searchInput, Key.Delete);
+                expect(el.scope().$select.selected).toEqual([scope.people[4], scope.people[6]]); //Wladimir & Nicole
 
-            expect(isDropdownOpened(el)).toEqual(false);
-            triggerKeydown(searchInput, Key.Left);
-            triggerKeydown(searchInput, Key.Left);
-            triggerKeydown(searchInput, Key.Delete);
-            expect(el.scope().$select.selected).toEqual([scope.people[4], scope.people[6]]); //Wladimir & Nicole
+                expect(el.scope().$selectMultiple.activeMatchIndex).toBe(1);
 
-            expect(el.scope().$selectMultiple.activeMatchIndex).toBe(1);
-
-        });
+            });
 
         it('should move to last match when pressing LEFT key from search', function () {
 
@@ -1390,7 +1404,8 @@ describe('uix-select tests', function () {
 
         it('should move between matches when pressing LEFT key from search', function () {
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
+            //Wladimir, Samantha & Nicole
+            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
             var el = createUiSelectMultiple();
             var searchInput = el.find('.uix-select-search');
 
@@ -1408,7 +1423,8 @@ describe('uix-select tests', function () {
 
         it('should decrease $selectMultiple.activeMatchIndex when pressing LEFT key', function () {
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
+            //Wladimir, Samantha & Nicole
+            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
             var el = createUiSelectMultiple();
             var searchInput = el.find('.uix-select-search');
 
@@ -1421,7 +1437,8 @@ describe('uix-select tests', function () {
 
         it('should increase $selectMultiple.activeMatchIndex when pressing RIGHT key', function () {
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
+            //Wladimir, Samantha & Nicole
+            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
             var el = createUiSelectMultiple();
             var searchInput = el.find('.uix-select-search');
 
@@ -1499,7 +1516,8 @@ describe('uix-select tests', function () {
 
         it('should closes dropdown when pressing ESC key from search input', function () {
 
-            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]]; //Wladimir, Samantha & Nicole
+            //Wladimir, Samantha & Nicole
+            scope.selection.selectedMultiple = [scope.people[4], scope.people[5], scope.people[6]];
             var el = createUiSelectMultiple();
             var searchInput = el.find('.uix-select-search');
 
@@ -1591,8 +1609,9 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"  style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
@@ -1609,8 +1628,9 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select multiple ng-model="selection.selectedMultiple" style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
@@ -1631,8 +1651,9 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"  style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search"' +
                 'refresh="fetchFromServer($select.search)" refresh-delay="0">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
@@ -1644,11 +1665,11 @@ describe('uix-select tests', function () {
 
             scope.fetchFromServer = function (searching) {
 
-                if (searching == 'n') {
+                if (searching === 'n') {
                     return scope.people;
                 }
 
-                if (searching == 'o') {
+                if (searching === 'o') {
                     scope.people = []; //To simulate cases were previously selected item isnt in the list anymore
                 }
 
@@ -1658,12 +1679,12 @@ describe('uix-select tests', function () {
             clickItem(el, 'Nicole');
 
             expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
-                .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
+                .toBe('Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>');
 
             setSearchText(el, 'o');
 
             expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
-                .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
+                .toBe('Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>');
 
         });
 
@@ -1672,8 +1693,9 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"  style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
@@ -1682,12 +1704,12 @@ describe('uix-select tests', function () {
             );
 
             expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
-                .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>");
+                .toBe('Wladimir <wladimir@email.com>Samantha <samantha@email.com>');
 
             clickItem(el, 'Nicole');
 
             expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
-                .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
+                .toBe('Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>');
 
             expect(scope.selection.selectedMultiple.length).toBe(3);
 
@@ -1699,8 +1721,10 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select ng-change="onlyOnce()" multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select ng-change="onlyOnce()" multiple ' +
+                'ng-model="selection.selectedMultiple"  style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
@@ -1725,8 +1749,9 @@ describe('uix-select tests', function () {
             scope.selection.selectedMultiple = ['wladimir@email.com', 'samantha@email.com'];
 
             var el = compileTemplate(
-                '<uix-select multiple ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;"> ' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match> ' +
+                '<uix-select multiple ng-model="selection.selectedMultiple"  style="width: 800px;"> ' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match> ' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search"> ' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div> ' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div> ' +
@@ -1735,21 +1760,24 @@ describe('uix-select tests', function () {
 
             // var el2 = compileTemplate('<span class="resultDiv" ng-bind="selection.selectedMultiple"></span>');
 
-            scope.selection.selectedMultiple.push("nicole@email.com");
+            scope.selection.selectedMultiple.push('nicole@email.com');
 
             scope.$digest();
-            scope.$digest(); //2nd $digest needed when using angular 1.3.0-rc.1+, might be related with the fact that the value is an array
+            // 2nd $digest needed when using angular 1.3.0-rc.1+
+            // might be related with the fact that the value is an array
+            scope.$digest();
 
             expect(el.find('.uix-select-match-item [uix-transclude-append]:not(.ng-hide)').text())
-                .toBe("Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>");
+                .toBe('Wladimir <wladimir@email.com>Samantha <samantha@email.com>Nicole <nicole@email.com>');
 
         });
 
         it('should support multiple="multiple" attribute', function () {
 
             var el = compileTemplate(
-                '<uix-select multiple="multiple" ng-model="selection.selectedMultiple" theme="bootstrap" style="width: 800px;">' +
-                '<uix-select-match placeholder="Pick one...">{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
+                '<uix-select multiple="multiple" ng-model="selection.selectedMultiple"  style="width: 800px;">' +
+                '<uix-select-match placeholder="Pick one...">' +
+                '{{$item.name}} &lt;{{$item.email}}&gt;</uix-select-match>' +
                 '<uix-select-choices repeat="person.email as person in people | filter: $select.search">' +
                 '<div ng-bind-html="person.name | highlight: $select.search"></div>' +
                 '<div ng-bind-html="person.email | highlight: $select.search"></div>' +
@@ -1770,7 +1798,7 @@ describe('uix-select tests', function () {
                 };
             };
 
-            var el = createUiSelectMultiple({tagging: 'taggingFunc', taggingTokens: ",|ENTER"});
+            var el = createUiSelectMultiple({tagging: 'taggingFunc', taggingTokens: ',|ENTER'});
             clickMatch(el);
             triggerPaste(el.find('input'), 'tag1');
 
@@ -1787,7 +1815,7 @@ describe('uix-select tests', function () {
                 };
             };
 
-            var el = createUiSelectMultiple({tagging: 'taggingFunc', taggingTokens: ",|ENTER"});
+            var el = createUiSelectMultiple({tagging: 'taggingFunc', taggingTokens: ',|ENTER'});
             clickMatch(el);
             triggerPaste(el.find('input'), ',tag1,tag2,tag3,,tag5,');
 
@@ -1860,7 +1888,8 @@ describe('uix-select tests', function () {
             expect(createUiSelect().scope().$select.baseTitle).toBe('Select box');
             expect(createUiSelect().scope().$select.focusserTitle).toBe('Select box focus');
             expect(createUiSelect({title: 'Choose a person'}).scope().$select.baseTitle).toBe('Choose a person');
-            expect(createUiSelect({title: 'Choose a person'}).scope().$select.focusserTitle).toBe('Choose a person focus');
+            expect(createUiSelect({title: 'Choose a person'}).scope()
+                .$select.focusserTitle).toBe('Choose a person focus');
         });
 
         it('should have aria-label on all input and button elements', function () {
@@ -1896,12 +1925,14 @@ describe('uix-select tests', function () {
             expect(el.parent()[0]).not.toBe(body);
         });
 
-        it('should be moved to the body when the appendToBody is true in uixSelectConfig', inject(function (uixSelectConfig) {
-            uixSelectConfig.appendToBody = true;
-            var el = createUiSelect();
-            openDropdown(el);
-            expect(el.parent()[0]).toBe(body);
-        }));
+        it('should be moved to the body when the appendToBody is true in uixSelectConfig',
+            inject(function (uixSelectConfig) {
+                uixSelectConfig.appendToBody = true;
+                var el = createUiSelect();
+                openDropdown(el);
+                expect(el.parent()[0]).toBe(body);
+            })
+        );
 
         it('should be moved to the body when opened', function () {
             var el = createUiSelect({appendToBody: true});

@@ -27,17 +27,17 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 getFormats: function () {
                     FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS), FORMATS);
                     if (!angular.isArray(FORMATS.SHORTMONTH) ||
-                        FORMATS.SHORTMONTH.length != 12 || !angular.isArray(FORMATS.MONTH) ||
-                        FORMATS.MONTH.length != 12 || !angular.isArray(FORMATS.SHORTDAY) ||
-                        FORMATS.SHORTDAY.length != 7
+                        FORMATS.SHORTMONTH.length !== 12 || !angular.isArray(FORMATS.MONTH) ||
+                        FORMATS.MONTH.length !== 12 || !angular.isArray(FORMATS.SHORTDAY) ||
+                        FORMATS.SHORTDAY.length !== 7
                     ) {
                         $log.warn('invalid date time formats');
                         FORMATS = $locale.DATETIME_FORMATS;
                     }
                     return FORMATS;
                 }
-            }
-        }]
+            };
+        }];
     })
     .controller('uixCalendarCtrl', ['$scope', '$attrs', '$log', 'uixCalendar', 'uixCalendarConfig',
         function ($scope, $attrs, $log, uixCalendarProvider, calendarConfig) {
@@ -54,10 +54,11 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
             var self = this;
             angular.forEach(['startingDay', 'exceptions'], function (key) {
-                self[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
+                self[key] = angular.isDefined($attrs[key])
+                    ? angular.copy($scope.$parent.$eval($attrs[key])) : calendarConfig[key];
             });
-            $scope.showTime = angular.isDefined($attrs.showTime) ?
-                $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
+            $scope.showTime = angular.isDefined($attrs.showTime)
+                ? $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
 
 
             if (self.startingDay > 6 || self.startingDay < 0) {
@@ -76,7 +77,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             this.render = function () {
                 var date = ngModelCtrl.$modelValue;
                 if (isNaN(date) || !date) {
-                    $log.warn('Calendar directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+                    $log.warn('Calendar directive: "ng-model" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
                     date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
                 }
                 date = new Date(date);
@@ -90,8 +93,8 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
             // 选择某一个面板
             $scope.selectPanel = function (panel) {
-                angular.forEach($scope.panels, function (a, i) {
-                    $scope.panels[i] = false;
+                angular.forEach($scope.panels, function (pan, index) {
+                    $scope.panels[index] = false;
                 });
                 $scope.panels[panel] = true;
             };
@@ -254,7 +257,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             // 获取周一到周日的名字
             function dayNames(startingDay) {
                 var shortDays = angular.copy(FORMATS.SHORTDAY).map(function (day) {
-                    return day
+                    return day;
                 });
                 var delDays = shortDays.splice(0, startingDay);
                 return shortDays.concat(delDays);
@@ -360,11 +363,14 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 var tempDate = splitDate(date);
                 var selectedDt = splitDate($scope.selectDate);
                 var today = splitDate(new Date());
-                var isToday = tempDate.year === today.year && tempDate.month === today.month && tempDate.day === today.day;
-                var isSelected = tempDate.year === selectedDt.year && tempDate.month === selectedDt.month
-                    && tempDate.day === selectedDt.day;
-                var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date))
-                    || ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
+                var isToday = tempDate.year === today.year &&
+                    tempDate.month === today.month &&
+                    tempDate.day === today.day;
+                var isSelected = tempDate.year === selectedDt.year &&
+                    tempDate.month === selectedDt.month &&
+                    tempDate.day === selectedDt.day;
+                var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date)) ||
+                    ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
                 var day = date.getDay();
                 return {
                     date: date,
@@ -378,7 +384,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     isSelected: isSelected,
                     isDisabled: isDisabled,
                     index: tempDate.year + '-' + tempDate.month + '-' + tempDate.day
-                }
+                };
             }
 
             function isExceptionDay(date) {
@@ -395,7 +401,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     year: date.getFullYear(),
                     month: date.getMonth(),
                     day: date.getDate()
-                }
+                };
             }
         }])
     .directive('uixCalendar', function () {
@@ -415,5 +421,5 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     ngModelCtrl = ctrls[1];
                 calendarCtrl.init(ngModelCtrl);
             }
-        }
+        };
     });

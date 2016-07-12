@@ -1,39 +1,47 @@
-describe('dropdownToggle', function() {
+/* eslint angular/document-service:0 */
+describe('dropdownToggle', function () {
     var $compile, $rootScope, $document, element;
 
     beforeEach(module('ui.xg.dropdown'));
 
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$document_) {
+    beforeEach(inject(function (_$compile_, _$rootScope_, _$document_) {
         $compile = _$compile_;
         $rootScope = _$rootScope_;
         $document = _$document_;
     }));
 
-    var clickDropdownToggle = function(elm) {
+    var clickDropdownToggle = function (elm) {
         elm = elm || element;
         elm.find('a[uix-dropdown-toggle]').click();
     };
 
     var triggerKeyDown = function (element, keyCode) {
-        var e = $.Event('keydown');
-        e.which = keyCode;
-        element.trigger(e);
+        var evt = $.Event('keydown');
+        evt.which = keyCode;
+        element.trigger(evt);
     };
 
-    var isFocused = function(elm) {
+    var isFocused = function (elm) {
         return elm[0] === document.activeElement;
     };
 
-    describe('basic', function() {
+    describe('basic', function () {
         function dropdown() {
-            return $compile('<li uix-dropdown><a href uix-dropdown-toggle></a><ul><li><a href>Hello</a></li></ul></li>')($rootScope);
+            return $compile(
+                '<li uix-dropdown>' +
+                '<a href uix-dropdown-toggle></a>' +
+                '<ul>' +
+                '<li><a href>Hello</a></li>' +
+                '</ul>' +
+                '</li>'
+            )($rootScope);
         }
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = dropdown();
         });
 
-        it('should toggle on `a` click', function() {
+        it('should toggle on `a` click', function () {
             expect(element.hasClass('open')).toBe(false);
             clickDropdownToggle();
             expect(element.hasClass('open')).toBe(true);
@@ -41,7 +49,7 @@ describe('dropdownToggle', function() {
             expect(element.hasClass('open')).toBe(false);
         });
 
-        it('should toggle when an option is clicked', function() {
+        it('should toggle when an option is clicked', function () {
             $document.find('body').append(element);
             expect(element.hasClass('open')).toBe(false);
             clickDropdownToggle();
@@ -53,14 +61,14 @@ describe('dropdownToggle', function() {
             element.remove();
         });
 
-        it('should close on document click', function() {
+        it('should close on document click', function () {
             clickDropdownToggle();
             expect(element.hasClass('open')).toBe(true);
             $document.click();
             expect(element.hasClass('open')).toBe(false);
         });
 
-        it('should close on escape key & focus toggle element', function() {
+        it('should close on escape key & focus toggle element', function () {
             $document.find('body').append(element);
             clickDropdownToggle();
             triggerKeyDown($document, 27);
@@ -69,13 +77,13 @@ describe('dropdownToggle', function() {
             element.remove();
         });
 
-        it('should not close on backspace key', function() {
+        it('should not close on backspace key', function () {
             clickDropdownToggle();
             triggerKeyDown($document, 8);
             expect(element.hasClass('open')).toBe(true);
         });
 
-        it('should close on $location change', function() {
+        it('should close on $location change', function () {
             clickDropdownToggle();
             expect(element.hasClass('open')).toBe(true);
             $rootScope.$broadcast('$locationChangeSuccess');
@@ -83,36 +91,42 @@ describe('dropdownToggle', function() {
             expect(element.hasClass('open')).toBe(false);
         });
 
-        it('should only allow one dropdown to be open at once', function() {
+        it('should only allow one dropdown to be open at once', function () {
             var elm1 = dropdown();
             var elm2 = dropdown();
             expect(elm1.hasClass('open')).toBe(false);
             expect(elm2.hasClass('open')).toBe(false);
 
-            clickDropdownToggle( elm1 );
+            clickDropdownToggle(elm1);
             expect(elm1.hasClass('open')).toBe(true);
             expect(elm2.hasClass('open')).toBe(false);
 
-            clickDropdownToggle( elm2 );
+            clickDropdownToggle(elm2);
             expect(elm1.hasClass('open')).toBe(false);
             expect(elm2.hasClass('open')).toBe(true);
         });
 
-        it('should not toggle if the element has `disabled` class', function() {
-            var elm = $compile('<li uix-dropdown><a class="disabled" uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
-            clickDropdownToggle( elm );
+        it('should not toggle if the element has `disabled` class', function () {
+            var elm = $compile('<li uix-dropdown>' +
+                '<a class="disabled" uix-dropdown-toggle></a>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
+            clickDropdownToggle(elm);
             expect(elm.hasClass('open')).toBe(false);
         });
 
-        it('should not toggle if the element is disabled', function() {
-            var elm = $compile('<li uix-dropdown><button disabled="disabled" uix-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($rootScope);
+        it('should not toggle if the element is disabled', function () {
+            var elm = $compile('<li uix-dropdown>' +
+                '<button disabled="disabled" uix-dropdown-toggle></button>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             elm.find('button').click();
             expect(elm.hasClass('open')).toBe(false);
         });
 
-        it('should not toggle if the element has `ng-disabled` as true', function() {
+        it('should not toggle if the element has `ng-disabled` as true', function () {
             $rootScope.isdisabled = true;
-            var elm = $compile('<li uix-dropdown><div ng-disabled="isdisabled" uix-dropdown-toggle></div><ul><li>Hello</li></ul></li>')($rootScope);
+            var elm = $compile('<li uix-dropdown>' +
+                '<div ng-disabled="isdisabled" uix-dropdown-toggle></div>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
             elm.find('div').click();
             expect(elm.hasClass('open')).toBe(false);
@@ -123,9 +137,11 @@ describe('dropdownToggle', function() {
             expect(elm.hasClass('open')).toBe(true);
         });
 
-        it('should unbind events on scope destroy', function() {
+        it('should unbind events on scope destroy', function () {
             var $scope = $rootScope.$new();
-            var elm = $compile('<li uix-dropdown><button ng-disabled="isdisabled" uix-dropdown-toggle></button><ul><li>Hello</li></ul></li>')($scope);
+            var elm = $compile('<li uix-dropdown>' +
+                '<button ng-disabled="isdisabled" uix-dropdown-toggle></button>' +
+                '<ul><li>Hello</li></ul></li>')($scope);
             $scope.$digest();
 
             var buttonEl = elm.find('button');
@@ -140,7 +156,7 @@ describe('dropdownToggle', function() {
         });
 
         // issue 270
-        it('executes other document click events normally', function() {
+        it('executes other document click events normally', function () {
             var checkboxEl = $compile('<input type="checkbox" ng-click="clicked = true" />')($rootScope);
             $rootScope.$digest();
 
@@ -156,7 +172,7 @@ describe('dropdownToggle', function() {
         });
 
         // WAI-ARIA
-        it('should aria markup to the `dropdown-toggle`', function() {
+        it('should aria markup to the `dropdown-toggle`', function () {
             var toggleEl = element.find('a');
             expect(toggleEl.attr('aria-haspopup')).toBe('true');
             expect(toggleEl.attr('aria-expanded')).toBe('false');
@@ -168,7 +184,7 @@ describe('dropdownToggle', function() {
         });
     });
 
-    describe('integration with $location URL rewriting', function() {
+    describe('integration with $location URL rewriting', function () {
         function dropdown() {
 
             // Simulate URL rewriting behavior
@@ -181,11 +197,11 @@ describe('dropdownToggle', function() {
                 '<ul><li><a href="#something">Hello</a></li></ul></li>')($rootScope);
         }
 
-        beforeEach(function() {
+        beforeEach(function () {
             element = dropdown();
         });
 
-        it('should close without errors on $location change', function() {
+        it('should close without errors on $location change', function () {
             $document.find('body').append(element);
             clickDropdownToggle();
             expect(element.hasClass('open')).toBe(true);
@@ -195,47 +211,50 @@ describe('dropdownToggle', function() {
         });
     });
 
-    describe('without trigger', function() {
-        beforeEach(function() {
+    describe('without trigger', function () {
+        beforeEach(function () {
             $rootScope.isopen = true;
-            element = $compile('<li uix-dropdown is-open="isopen"><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown is-open="isopen">' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
-        it('should be open initially', function() {
+        it('should be open initially', function () {
             expect(element.hasClass('open')).toBe(true);
         });
 
-        it('should toggle when `is-open` changes', function() {
+        it('should toggle when `is-open` changes', function () {
             $rootScope.isopen = false;
             $rootScope.$digest();
             expect(element.hasClass('open')).toBe(false);
         });
     });
 
-    describe('`is-open`', function() {
-        beforeEach(function() {
+    describe('`is-open`', function () {
+        beforeEach(function () {
             $rootScope.isopen = true;
-            element = $compile('<li uix-dropdown is-open="isopen"><a href uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown is-open="isopen">' +
+                '<a href uix-dropdown-toggle></a>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
-        it('should be open initially', function() {
+        it('should be open initially', function () {
             expect(element.hasClass('open')).toBe(true);
         });
 
-        it('should change `is-open` binding when toggles', function() {
+        it('should change `is-open` binding when toggles', function () {
             clickDropdownToggle();
             expect($rootScope.isopen).toBe(false);
         });
 
-        it('should toggle when `is-open` changes', function() {
+        it('should toggle when `is-open` changes', function () {
             $rootScope.isopen = false;
             $rootScope.$digest();
             expect(element.hasClass('open')).toBe(false);
         });
 
-        it('focus toggle element when opening', function() {
+        it('focus toggle element when opening', function () {
             $document.find('body').append(element);
             clickDropdownToggle();
             $rootScope.isopen = false;
@@ -248,19 +267,21 @@ describe('dropdownToggle', function() {
         });
     });
 
-    describe('`on-toggle`', function() {
-        beforeEach(function() {
+    describe('`on-toggle`', function () {
+        beforeEach(function () {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
             $rootScope.isopen = false;
-            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)"  is-open="isopen"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)" is-open="isopen">' +
+                '<a uix-dropdown-toggle></a>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
-        it('should not have been called initially', function() {
+        it('should not have been called initially', function () {
             expect($rootScope.toggleHandler).not.toHaveBeenCalled();
         });
 
-        it('should call it correctly when toggles', function() {
+        it('should call it correctly when toggles', function () {
             $rootScope.isopen = true;
             $rootScope.$digest();
             expect($rootScope.toggleHandler).toHaveBeenCalledWith(true);
@@ -270,19 +291,21 @@ describe('dropdownToggle', function() {
         });
     });
 
-    describe('`on-toggle` with initially open', function() {
-        beforeEach(function() {
+    describe('`on-toggle` with initially open', function () {
+        beforeEach(function () {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
             $rootScope.isopen = true;
-            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)" is-open="isopen"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)" is-open="isopen">' +
+                '<a uix-dropdown-toggle></a>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
-        it('should not have been called initially', function() {
+        it('should not have been called initially', function () {
             expect($rootScope.toggleHandler).not.toHaveBeenCalled();
         });
 
-        it('should call it correctly when toggles', function() {
+        it('should call it correctly when toggles', function () {
             $rootScope.isopen = false;
             $rootScope.$digest();
             expect($rootScope.toggleHandler).toHaveBeenCalledWith(false);
@@ -293,18 +316,20 @@ describe('dropdownToggle', function() {
         });
     });
 
-    describe('`on-toggle` without is-open', function() {
-        beforeEach(function() {
+    describe('`on-toggle` without is-open', function () {
+        beforeEach(function () {
             $rootScope.toggleHandler = jasmine.createSpy('toggleHandler');
-            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)"><a uix-dropdown-toggle></a><ul><li>Hello</li></ul></li>')($rootScope);
+            element = $compile('<li uix-dropdown on-toggle="toggleHandler(open)">' +
+                '<a uix-dropdown-toggle></a>' +
+                '<ul><li>Hello</li></ul></li>')($rootScope);
             $rootScope.$digest();
         });
 
-        it('should not have been called initially', function() {
+        it('should not have been called initially', function () {
             expect($rootScope.toggleHandler).not.toHaveBeenCalled();
         });
 
-        it('should call it when clicked', function() {
+        it('should call it when clicked', function () {
             clickDropdownToggle();
             expect($rootScope.toggleHandler).toHaveBeenCalledWith(true);
 

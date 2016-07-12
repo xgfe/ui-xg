@@ -8,88 +8,92 @@ describe('ui.xg.calendar', function () {
 
     beforeEach(function () {
         module('ui.xg.timepanel');
-        module('ui.xg.calendar',['uixCalendarProvider',function (uixCalendarProvider) {
+        module('ui.xg.calendar', ['uixCalendarProvider', function (uixCalendarProvider) {
             calendarProvider = uixCalendarProvider;
         }]);
         module('calendar/templates/calendar.html');
         module('timepanel/templates/timepanel.html');
-        inject(function( $compile, $rootScope,uixCalendarConfig,_$locale_) {
+        inject(function ($compile, $rootScope, uixCalendarConfig, _$locale_) {
             compile = $compile;
             scope = $rootScope.$new();
             calendarConfig = uixCalendarConfig;
-            $locale = _$locale_
+            $locale = _$locale_;
         });
     });
-    afterEach(function() {
+    afterEach(function () {
         element.remove();
     });
 
     function createCalendar(el) {
-        if(!el){
+        if (!el) {
             el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate();
         }
         element = compile(el)(scope);
         scope.$digest();
     }
-    function  getAllWeekdays(year,month){
+
+    function getAllWeekdays(year, month) {
         var firstDay = getDate({
-            year:year,
-            month:month,
-            day:1
+            year: year,
+            month: month,
+            day: 1
         });
         var result = [];
         var day = 1;
         var firstDayWeek = firstDay.getDay();
-        var lastDay = getLastDayOfMonth(year,month);
-        if(firstDayWeek === 0){
-            while(day < lastDay){
+        var lastDay = getLastDayOfMonth(year, month);
+        if (firstDayWeek === 0) {
+            while (day < lastDay) {
                 result.push(day);
-                if(day+6 < lastDay){
-                    result.push(day+6);
+                if (day + 6 < lastDay) {
+                    result.push(day + 6);
                 }
                 day += 7;
             }
-        }else if(firstDayWeek === 6){
-            while(day < lastDay){
+        } else if (firstDayWeek === 6) {
+            while (day < lastDay) {
                 result.push(day);
-                if(day+1 < lastDay){
-                    result.push(day+1);
+                if (day + 1 < lastDay) {
+                    result.push(day + 1);
                 }
                 day += 7;
             }
-        }else{
+        } else {
             day = day + 6 - firstDayWeek;
-            while(day < lastDay){
+            while (day < lastDay) {
                 result.push(day);
-                if(day+1 < lastDay){
-                    result.push(day+1);
+                if (day + 1 < lastDay) {
+                    result.push(day + 1);
                 }
                 day += 7;
             }
         }
         return result;
     }
+
     //获取一个月里最后一天是几号
-    function getLastDayOfMonth(year,month){
-        var MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31]; //每个月的天数,2月会根据闰年调整
+    function getLastDayOfMonth(year, month) {
+        var MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //每个月的天数,2月会根据闰年调整
         var months = MONTH_DAYS.slice(0);
-        if(year % 100===0 && year % 400===0 || year % 100 !==0&& year % 4===0){
+        if (year % 100 === 0 && year % 400 === 0 || year % 100 !== 0 && year % 4 === 0) {
             months[1] = 29;
         }
         return months[month];
     }
+
     // 获取星期名称
-    function getShortDay(){
+    function getShortDay() {
         var res = [];
         var days = element.find('.uix-cal-panel-day .uix-cal-header').children();
         days.each(function () {
-           res.push($(this).text().trim());
+            res.push($(this).text().trim());
         });
         return res;
     }
+
     // 获取当月所有可选的天数
-    function getAllDays(){
+    function getAllDays() {
         var res = [];
         element.find('.uix-cal-panel-day .uix-cal-day:not(.uix-cal-outside)').each(function () {
             res.push($(this).text().trim());
@@ -102,59 +106,68 @@ describe('ui.xg.calendar', function () {
         opt = opt || {};
         var dt = new Date();
         dt.setFullYear(opt.year || 2016);
-        dt.setMonth(angular.isDefined(opt.month)?opt.month:2);
+        dt.setMonth(angular.isDefined(opt.month) ? opt.month : 2);
         dt.setDate(opt.day || 15);
         dt.setHours(opt.hour || 12);
         dt.setMinutes(opt.minute || 30);
         dt.setSeconds(opt.second || 30);
         return dt;
     }
-    function getDay(day,outside){
+
+    function getDay(day, outside) {
         var selector = '.uix-cal-panel-day .uix-cal-day';
-        if(outside){
+        if (outside) {
             selector += '.uix-cal-outside';
-        }else{
+        } else {
             selector += ':not(.uix-cal-outside)';
         }
-        selector += ':contains("'+day+'")';
+        selector += ':contains("' + day + '")';
         return element.find(selector);
     }
+
     // 选择当月某一天
-    function selectDay(day,outside){
-        var d = getDay(day,outside);
-        if(d){
+    function selectDay(day, outside) {
+        var d = getDay(day, outside);
+        if (d) {
             d.click();
             scope.$digest();
         }
     }
+
     // 获取月的显示文本
-    function getMonthText(){
+    function getMonthText() {
         return element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(0).text();
     }
-    function getYearText(){
+
+    function getYearText() {
         return element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(1).text();
     }
+
     // 选择上一个月
-    function clickPrevMonth(){
+    function clickPrevMonth() {
         element.find('.uix-cal-panel-day .uix-cal-pre-button').click();
         scope.$digest();
     }
-    function clickNextMonth(){
+
+    function clickNextMonth() {
         element.find('.uix-cal-panel-day .uix-cal-next-button').click();
         scope.$digest();
     }
+
     // day panel to month panel
-    function day2month(){
+    function day2month() {
         var monthPanelButton = element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(0);
         monthPanelButton.click();
         scope.$digest();
     }
+
     // day panel to year panel
-    function day2year(){
+    function day2year() {
         var yearPanelButton = element.find('.uix-cal-panel-day .uix-cal-month-name > a').eq(1);
         yearPanelButton.click();
         scope.$digest();
     }
+
     describe('basic usage', function () {
         it('should have four panel', function () {
             createCalendar();
@@ -173,7 +186,7 @@ describe('ui.xg.calendar', function () {
             var month = $locale.DATETIME_FORMATS.SHORTMONTH[scope.time.getMonth()];
             var year = scope.time.getFullYear();
             expect(getMonthText()).toBe(month);
-            expect(getYearText()).toBe(''+year);
+            expect(getYearText()).toBe('' + year);
         });
         it('should get day names', function () {
             createCalendar();
@@ -196,16 +209,16 @@ describe('ui.xg.calendar', function () {
         it('should be correct for all days in month', function () {
             createCalendar();
             var allDays = getAllDays();
-            var lastDay = getLastDayOfMonth(scope.time.getFullYear(),scope.time.getMonth());
+            var lastDay = getLastDayOfMonth(scope.time.getFullYear(), scope.time.getMonth());
             expect(allDays.length).toBe(lastDay);
         });
         it('should get all weekdays', function () {
             createCalendar();
             var day = scope.time;
-            var weekday = getAllWeekdays(day.getFullYear(),day.getMonth());
+            var weekday = getAllWeekdays(day.getFullYear(), day.getMonth());
             var divs = [];
             element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
-                divs.push(parseInt($(this).text().trim(),10));
+                divs.push(parseInt($(this).text().trim(), 10));
             });
             expect(weekday).toEqual(divs);
         });
@@ -224,16 +237,16 @@ describe('ui.xg.calendar', function () {
         });
         it('should change day panel when select a outside day', function () {
             createCalendar();
-            selectDay(28,true); // select prev month
+            selectDay(28, true); // select prev month
             expect(scope.time.getDate()).toBe(28);
             expect(scope.time.getMonth()).toBe(1);
         });
         it('should change month days when select a outside day', function () {
             createCalendar();
             var oldMonth = scope.time.getMonth();
-            selectDay(28,true); // select prev month
+            selectDay(28, true); // select prev month
             var allDays = getAllDays();
-            var lastDay = getLastDayOfMonth(scope.time.getFullYear(),scope.time.getMonth());
+            var lastDay = getLastDayOfMonth(scope.time.getFullYear(), scope.time.getMonth());
             expect(allDays.length).toBe(lastDay);
             var newMonth = $locale.DATETIME_FORMATS.SHORTMONTH[oldMonth - 1];
             expect(getMonthText()).toBe(newMonth);
@@ -241,10 +254,10 @@ describe('ui.xg.calendar', function () {
         it('should select prev month and across a year', function () {
             var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
-                month:0
+                month: 0
             });
             createCalendar(el);
-            selectDay(28,true); // select prev month
+            selectDay(28, true); // select prev month
             var year = getYearText();
             expect(year).toBe('2015');
         });
@@ -257,7 +270,7 @@ describe('ui.xg.calendar', function () {
         it('select prev month and cross prev year', function () {
             var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
-                month:0
+                month: 0
             });
             createCalendar(el);
             clickPrevMonth();
@@ -275,7 +288,7 @@ describe('ui.xg.calendar', function () {
         it('select next month and cross next year', function () {
             var el = '<uix-calendar ng-model="time"></uix-calendar>';
             scope.time = getDate({
-                month:11
+                month: 11
             });
             createCalendar(el);
             clickNextMonth();
@@ -288,42 +301,48 @@ describe('ui.xg.calendar', function () {
     // 时间选择面板的相关功能
     describe('calendar time panel', function () {
         var timePanel;
-        function clickToTimePanel(){
+
+        function clickToTimePanel() {
             var timeButton = element.find('.uix-cal-panel-day .uix-cal-time');
             timeButton.click();
             scope.$digest();
             timePanel = element.find('.uix-cal-panel-time');
         }
-        function clickBackBtn(){
+
+        function clickBackBtn() {
             var backButton = timePanel.find('.uix-cal-time-cancal');
             backButton.click();
             scope.$digest();
         }
-        function clickOkBtn(){
+
+        function clickOkBtn() {
             var okButton = timePanel.find('.uix-cal-time-ok');
             okButton.click();
             scope.$digest();
         }
-        function clickNowBtn(){
+
+        function clickNowBtn() {
             var nowButton = timePanel.find('.uix-cal-time-now');
             nowButton.click();
             scope.$digest();
         }
-        function changeTime(opt){
+
+        function changeTime(opt) {
             var inputs = timePanel.find('.uix-timepanel-input');
-            if(angular.isDefined(opt.hour)){
+            if (angular.isDefined(opt.hour)) {
                 inputs.eq(0).val(opt.hour);
                 inputs.eq(0).change();
             }
-            if(angular.isDefined(opt.minute)){
+            if (angular.isDefined(opt.minute)) {
                 inputs.eq(1).val(opt.minute);
                 inputs.eq(1).change();
             }
-            if(angular.isDefined(opt.second)){
+            if (angular.isDefined(opt.second)) {
                 inputs.eq(2).val(opt.second);
                 inputs.eq(2).change();
             }
         }
+
         it('day panel to time panel', function () {
             createCalendar();
             clickToTimePanel();
@@ -344,9 +363,9 @@ describe('ui.xg.calendar', function () {
             createCalendar();
             clickToTimePanel();
             var inputs = timePanel.find('.uix-timepanel-input');
-            expect(inputs.eq(0).val()).toBe(''+scope.time.getHours());
-            expect(inputs.eq(1).val()).toBe(''+scope.time.getMinutes());
-            expect(inputs.eq(2).val()).toBe(''+scope.time.getSeconds());
+            expect(inputs.eq(0).val()).toBe('' + scope.time.getHours());
+            expect(inputs.eq(1).val()).toBe('' + scope.time.getMinutes());
+            expect(inputs.eq(2).val()).toBe('' + scope.time.getSeconds());
         });
         it('should return day panel when click back button', function () {
             createCalendar();
@@ -365,18 +384,18 @@ describe('ui.xg.calendar', function () {
             createCalendar();
             clickToTimePanel();
             changeTime({
-                hour:16,
-                minute:12,
-                second:45
+                hour: 16,
+                minute: 12,
+                second: 45
             });
             var cache = angular.copy(scope.time);
             clickBackBtn();
             expect(scope.time).toEqual(cache);
             clickToTimePanel();
             var inputs = timePanel.find('.uix-timepanel-input');
-            expect(inputs.eq(0).val()).toBe(''+cache.getHours());
-            expect(inputs.eq(1).val()).toBe(''+cache.getMinutes());
-            expect(inputs.eq(2).val()).toBe(''+cache.getSeconds());
+            expect(inputs.eq(0).val()).toBe('' + cache.getHours());
+            expect(inputs.eq(1).val()).toBe('' + cache.getMinutes());
+            expect(inputs.eq(2).val()).toBe('' + cache.getSeconds());
         });
         it('should select now when click now button', function () {
             createCalendar();
@@ -402,9 +421,9 @@ describe('ui.xg.calendar', function () {
             createCalendar();
             clickToTimePanel();
             changeTime({
-                hour:16,
-                minute:12,
-                second:45
+                hour: 16,
+                minute: 12,
+                second: 45
             });
             clickOkBtn();
             expect(scope.time.getHours()).toBe(16);
@@ -429,7 +448,7 @@ describe('ui.xg.calendar', function () {
             createCalendar();
             day2month();
             var year = element.find('.uix-cal-panel-month .uix-cal-month-name > a').text().trim();
-            expect(year).toBe(''+scope.time.getFullYear());
+            expect(year).toBe('' + scope.time.getFullYear());
         });
         it('should have a table to show all month', function () {
             createCalendar();
@@ -463,10 +482,10 @@ describe('ui.xg.calendar', function () {
             element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
             expect(getMonthText()).toBe($locale.DATETIME_FORMATS.SHORTMONTH[selectMonth]);
-            var weekday = getAllWeekdays(getYearText(),selectMonth);
+            var weekday = getAllWeekdays(getYearText(), selectMonth);
             var divs = [];
             element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
-                divs.push(parseInt($(this).text().trim(),10));
+                divs.push(parseInt($(this).text().trim(), 10));
             });
             expect(weekday).toEqual(divs);
         });
@@ -484,13 +503,15 @@ describe('ui.xg.calendar', function () {
     });
     // 年选择面板
     describe('calendar year panel', function () {
-        function getYearRange(){
+        function getYearRange() {
             return element.find('.uix-cal-panel-year .uix-cal-month-name > a').text();
         }
-        function clickYear(year){
-            element.find('.uix-cal-panel-year .uix-cal-month-item:contains("'+year+'")').click();
+
+        function clickYear(year) {
+            element.find('.uix-cal-panel-year .uix-cal-month-item:contains("' + year + '")').click();
             scope.$digest();
         }
+
         it('day panel to year panel', function () {
             createCalendar();
             day2year();
@@ -535,7 +556,7 @@ describe('ui.xg.calendar', function () {
             day2year();
             var selectYear = element.find('.uix-cal-panel-year .uix-cal-month-select').text().trim();
             var currentYear = scope.time.getFullYear();
-            expect(selectYear).toBe(''+currentYear);
+            expect(selectYear).toBe('' + currentYear);
         });
         it('should change to month panel when click a year', function () {
             createCalendar();
@@ -571,10 +592,10 @@ describe('ui.xg.calendar', function () {
             var selectMonth = 5; // 选择2017年6月
             element.find('.uix-cal-panel-month .uix-cal-month-item').eq(selectMonth).click();
             scope.$digest();
-            var weekday = getAllWeekdays(2017,selectMonth);
+            var weekday = getAllWeekdays(2017, selectMonth);
             var divs = [];
             element.find('.uix-cal-panel-day .uix-cal-weekday:not(.uix-cal-outside)').each(function () {
-                divs.push(parseInt($(this).text().trim(),10));
+                divs.push(parseInt($(this).text().trim(), 10));
             });
             expect(weekday).toEqual(divs);
         });
@@ -657,22 +678,22 @@ describe('ui.xg.calendar', function () {
     // provider
     describe('uixCalendar provider', function () {
         it('should set SHORTDAY', function () {
-            var SHORTDAY = ['日','一','二','三','四','五','六'];
-            calendarProvider.setFormats('SHORTDAY',SHORTDAY);
+            var SHORTDAY = ['日', '一', '二', '三', '四', '五', '六'];
+            calendarProvider.setFormats('SHORTDAY', SHORTDAY);
             createCalendar();
             var shortDay = getShortDay();
             expect(SHORTDAY).toEqual(shortDay);
         });
         it('should show custom shortmonth name', function () {
-            var SHORTMONTH = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-            calendarProvider.setFormats('SHORTMONTH',SHORTMONTH);
+            var SHORTMONTH = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            calendarProvider.setFormats('SHORTMONTH', SHORTMONTH);
             createCalendar();
             var month = getMonthText();
             expect(month).toEqual(SHORTMONTH[scope.time.getMonth()]);
         });
         it('should show custom full month name', function () {
-            var MONTH = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-            calendarProvider.setFormats('MONTH',MONTH);
+            var MONTH = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+            calendarProvider.setFormats('MONTH', MONTH);
             createCalendar();
             day2month();
             var months = [];
@@ -687,7 +708,7 @@ describe('ui.xg.calendar', function () {
         it('should be disabled when a day is earlier than minDate', function () {
             var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:8 // 8 is the min date
+                day: 8 // 8 is the min date
             });
             scope.time = getDate();
             createCalendar(el);
@@ -697,7 +718,7 @@ describe('ui.xg.calendar', function () {
         it('should be disabled in earlier month', function () {
             var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:8 // 8 is the min date
+                day: 8 // 8 is the min date
             });
             scope.time = getDate();
             createCalendar(el);
@@ -707,7 +728,7 @@ describe('ui.xg.calendar', function () {
         it('should not select a day is earlier than minDate', function () {
             var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:8 // 8 is the min date
+                day: 8 // 8 is the min date
             });
             scope.time = getDate();
             var cache = angular.copy(scope.time);
@@ -718,12 +739,12 @@ describe('ui.xg.calendar', function () {
         it('should not select a day is earlier than minDate and in prev month', function () {
             var el = '<uix-calendar ng-model="time" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:8 // 8 is the min date
+                day: 8 // 8 is the min date
             });
             scope.time = getDate();
             var cache = angular.copy(scope.time);
             createCalendar(el);
-            selectDay(28,true);
+            selectDay(28, true);
             expect(scope.time).toEqual(cache);
         });
     });
@@ -732,7 +753,7 @@ describe('ui.xg.calendar', function () {
         it('should be disabled when a day is later than maxDate', function () {
             var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
-                day:25 // 25 is the max date
+                day: 25 // 25 is the max date
             });
             scope.time = getDate();
             createCalendar(el);
@@ -742,7 +763,7 @@ describe('ui.xg.calendar', function () {
         it('should be disabled in later month', function () {
             var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
-                day:25 // 25 is the max date
+                day: 25 // 25 is the max date
             });
             scope.time = getDate();
             createCalendar(el);
@@ -752,7 +773,7 @@ describe('ui.xg.calendar', function () {
         it('should not select a day is later than maxDate', function () {
             var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
-                day:25 // 25 is the max date
+                day: 25 // 25 is the max date
             });
             scope.time = getDate();
             var cache = angular.copy(scope.time);
@@ -763,12 +784,12 @@ describe('ui.xg.calendar', function () {
         it('should not select a day is later than maxDate and in next month', function () {
             var el = '<uix-calendar ng-model="time" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
-                day:25 // 25 is the max date
+                day: 25 // 25 is the max date
             });
             scope.time = getDate();
             var cache = angular.copy(scope.time);
             createCalendar(el);
-            selectDay(1,true);
+            selectDay(1, true);
             expect(scope.time).toEqual(cache);
         });
     });
@@ -777,11 +798,11 @@ describe('ui.xg.calendar', function () {
         it('should not be disabled when the day is exception even set minDate', function () {
             var el = '<uix-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:8
+                day: 8
             });
             scope.time = getDate();
             scope.exceptions = getDate({
-                day:5
+                day: 5
             });
             createCalendar(el);
             expect(getDay(7)).toHaveClass('uix-cal-day-disabled');
@@ -792,11 +813,11 @@ describe('ui.xg.calendar', function () {
         it('should not be disabled when the day is exception even set maxDate', function () {
             var el = '<uix-calendar ng-model="time" exceptions="exceptions" max-date="maxDate"></uix-calendar>';
             scope.maxDate = getDate({
-                day:25
+                day: 25
             });
             scope.time = getDate();
             scope.exceptions = getDate({
-                day:27
+                day: 27
             });
             createCalendar(el);
             expect(getDay(26)).toHaveClass('uix-cal-day-disabled');
@@ -807,13 +828,13 @@ describe('ui.xg.calendar', function () {
         it('should not be disabled when the exception is array', function () {
             var el = '<uix-calendar ng-model="time" exceptions="exceptions" min-date="minDate"></uix-calendar>';
             scope.minDate = getDate({
-                day:10
+                day: 10
             });
             scope.time = getDate();
             scope.exceptions = [getDate({
-                day:8
-            }),getDate({
-                day:3
+                day: 8
+            }), getDate({
+                day: 3
             })];
             createCalendar(el);
             expect(getDay(7)).toHaveClass('uix-cal-day-disabled');

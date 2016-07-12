@@ -1,11 +1,11 @@
-describe("notifyProvider Spec", function() {
+describe('notifyProvider Spec', function () {
     var notifyProvider,
         notifyServices;
 
     beforeEach(module('ui.xg.notify'));
     beforeEach(module('notify/templates/notify.html'));
 
-    describe('Default Configuration', function() {
+    describe('Default Configuration', function () {
 
         beforeEach(inject(['$uixNotify', function (np) {
             notifyProvider = np;
@@ -16,7 +16,7 @@ describe("notifyProvider Spec", function() {
             expect(notifyProvider).toBeDefined();
         });
 
-        it('Should get the default value', function(){
+        it('Should get the default value', function () {
             expect(notifyProvider.position()).toEqual('top-right');
             expect(notifyProvider.onlyUnique()).toEqual(true);
             expect(notifyProvider.reverseOrder()).toEqual(false);
@@ -50,7 +50,7 @@ describe("notifyProvider Spec", function() {
             }
         });
 
-        it('Should get default message type when call according function', function(){
+        it('Should get default message type when call according function', function () {
             var text = 'notify info message';
             var warningMsg = notifyProvider.warning(text, null);
             var errorMsg = notifyProvider.error(text, null);
@@ -68,10 +68,10 @@ describe("notifyProvider Spec", function() {
 
 
     });
-    describe('Provider Configuration', function() {
+    describe('Provider Configuration', function () {
 
-        beforeEach(function(){
-            module(function($uixNotifyProvider){
+        beforeEach(function () {
+            module(function ($uixNotifyProvider) {
                 $uixNotifyProvider.onlyUniqueMessages(false);
                 $uixNotifyProvider.globalPosition('bottom-center');
                 $uixNotifyProvider.globalReversedOrder(true);
@@ -80,14 +80,14 @@ describe("notifyProvider Spec", function() {
                 $uixNotifyProvider.globalDisableCloseButton(true);
                 $uixNotifyProvider.globalDisableIcons(true);
                 $uixNotifyProvider.globalDisableCountDown(true);
-            })
+            });
         });
 
         beforeEach(inject(['$uixNotify', function (np) {
             notifyProvider = np;
         }]));
 
-        it('Should get the configured value', function() {
+        it('Should get the configured value', function () {
             expect(notifyProvider.position()).toEqual('bottom-center');
             expect(notifyProvider.onlyUnique()).toEqual(false);
             expect(notifyProvider.reverseOrder()).toEqual(true);
@@ -121,7 +121,7 @@ describe("notifyProvider Spec", function() {
     });
 
 
-    describe('Services', function() {
+    describe('Services', function () {
 
         beforeEach(inject(['$uixNotify', 'notifyServices', function (nf, ns) {
             notifyProvider = nf;
