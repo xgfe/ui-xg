@@ -47,13 +47,12 @@ gulp.task('eslint', function () {
     return gulp.src(
         [
             'gulpfile.js',
-            'tasks/util.js',
+            'misc/tasks/util.js',
+            'misc/test-lib/matchers.js',
             config.src + '/**/*.js',
             '!' + config.src + '/*/templates/*.html.js'
         ])
-        .pipe(eslint({
-            plugins: ['angular']
-        }))
+        .pipe(eslint())
         .pipe(eslint.formatEach())
         .pipe(eslint.failOnError());
 });

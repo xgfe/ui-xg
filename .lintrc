@@ -1,0 +1,27 @@
+{
+    "htmls":{
+        "suffix":["html","htm"],
+        "ignore":["**/*","!src/**/*"],
+        "rules":{
+            "tag-self-close": true,
+            "doctype-first": false,
+            "meta-charset": true,
+            "src-not-empty": true,
+            "id-class-value": "dash",
+            "button-type-require": true,
+            "link-rel-require": true,
+            "style-disabled": true,
+            "img-size": true
+        }
+    },
+    "csss":{
+        "suffix": "css",
+        "ignore":["**/*","!src/**/*"],
+        "rules":{}
+    },
+    "js":{
+        "suffix":["js"],
+        "ignore":["**/*","!src/**/*","!misc/**/*","src/**/*.html.js"],
+        "extends": "./.eslintrc"
+    }
+}
