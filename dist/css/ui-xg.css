@@ -610,6 +610,17 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
+.uix-timepicker {
+  position: relative;
+  display: inline-block; }
+  .uix-timepicker button {
+    outline: none; }
+
+.uix-timepicker-popover.in {
+  display: block; }
+  .uix-timepicker-popover.in .uix-timepanel {
+    border: 0; }
+
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -659,14 +670,3 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
-
-.uix-timepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-timepicker button {
-    outline: none; }
-
-.uix-timepicker-popover.in {
-  display: block; }
-  .uix-timepicker-popover.in .uix-timepanel {
-    border: 0; }

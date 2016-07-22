@@ -37,6 +37,10 @@ define([
             .state('app.api',{
                 url: "/api",
                 templateUrl: 'partials/api.html'
+            })
+            .state('app.scene',{
+                url: "/scene",
+                templateUrl: 'partials/scene.html'
             });
 
         $urlRouterProvider.otherwise("/app/index");

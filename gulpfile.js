@@ -21,6 +21,7 @@ var config = {
     tplModules: [],
     moduleName: 'ui.xg',
     pkg: require('./package.json'),
+    scene: 'scene',
     src: 'src',
     dist: 'dist',
     filename: 'ui-xg',
@@ -192,6 +193,11 @@ function getDocsFile(name, filename) {
     var path = config.src + '/' + name + '/docs/' + filename;
     return _.readFile(path);
 }
+//场景组件
+function getDocsFile2(name, filename) {
+    var path = config.scene + '/' + name + '/' + filename;
+    return _.readFile(path);
+}
 function dependenciesForModule(name) {
     var deps = [];
     _.matchFile(config.src + '/' + name + '/*.js').map(_.readFile).forEach(function (contents) {
@@ -336,7 +342,15 @@ gulp.task('docs', ['copy'], function () {
     if (!_.isExists(docPath + 'partials/api')) {
         _.mkdir(docPath + 'partials/api');
     }
+    if (!_.isExists(docPath + 'partials/scene')) {
+        _.mkdir(docPath + 'partials/scene');
+    }
+    if (!_.isExists(docPath + 'api')) {
+        _.mkdir(docPath + 'api');
+    }
     var moduleNames = [], template, code;
+    var moduleNames2 = ['list', 'CRUD'];
+
     config.modules.forEach(function (module) {
         if (!module.hasDoc) {
             return;
@@ -345,20 +359,32 @@ gulp.task('docs', ['copy'], function () {
         createPartial(module, docPath);
         moduleNames.push(module.name);
     });
+
+    // 构建scene木姐
+    moduleNames2.forEach(function (module) {
+        // 构建组件文档页面
+        createScenePartial(module, docPath);
+    });
+
+    // 构建aside-scene
+    template = _.readFile(tplPath + 'aside.html.tpl');
+    code = ejs.render(template, {modules: moduleNames2, type: 'scene'});
+    _.writeFile(docPath + 'partials/aside-scene.html', code);
+
     // 构建aside
     template = _.readFile(tplPath + 'aside.html.tpl');
-    code = ejs.render(template, {modules: moduleNames});
+    code = ejs.render(template, {modules: moduleNames, type: 'api'});
     _.writeFile(docPath + 'partials/aside.html', code);
 
     // 构建路由控制js文件
     template = _.readFile(tplPath + 'routers.js.tpl');
-    code = ejs.render(template, {modules: moduleNames});
+    code = ejs.render(template, {modules: moduleNames, modules2: moduleNames2});
     _.writeFile(docPath + 'js/routers.js', code);
 
     // 构建导航栏组件跳转链接
     template = _.readFile(tplPath + 'app.html.tpl');
     var firstModule = config.modules.length ? config.modules[0].name : '';
-    code = ejs.render(template, {module: firstModule});
+    code = ejs.render(template, {module: firstModule, module2: moduleNames2[0]});
     _.writeFile(docPath + 'partials/app.html', code);
 
     // 没有docs目录的话，生成
@@ -386,6 +412,34 @@ gulp.task('docs', ['copy'], function () {
     _.writeFile(docPath + 'partials/docs/directiveDocs.html', code);
 
 });
+
+function createScenePartial(name, docPath) {
+
+    var html = getDocsFile2(name, 'index.html'),
+        js = getDocsFile2(name, 'script.js'),
+        css = getDocsFile2(name, 'style.css'),
+        code = '';
+
+    var jsonFiles = _.matchFile(config.scene + '/' + name + '/*.json');
+
+    if (jsonFiles) {
+        // 构建json文件
+        jsonFiles.forEach(function (item, index) {
+            code = _.readFile(item);
+            _.writeFile(docPath + 'api/' + name + (index + 1) + '.json', code);
+            code = '';
+        });
+    }
+
+    if (html) {
+        code += '<h2>Example</h2>';
+        code += '<style>' + css + '</style>';
+        code += '<div class="example">' + html + '</div>';
+        code += '<script>' + js + '</script>';
+        //code += '<div>'+result+'</div>';
+    }
+    _.writeFile(docPath + 'partials/scene/' + name + '.html', code);
+}
 function createPartial(module, docPath) {
     var code = module.docs.md,
         html = module.docs.html,
@@ -399,10 +453,13 @@ function createPartial(module, docPath) {
     });
     var jsCode = highlight.highlightAuto(js).value;
     var cssCode = highlight.highlightAuto(css).value;
+
+
     data.html = htmlCode || '';
     data.js = jsCode || '';
     data.css = cssCode || '';
     var result = template(data);
+
     if (html) {
         code += '<hr><h2>Example</h2>';
         code += '<style>' + css + '</style>';
