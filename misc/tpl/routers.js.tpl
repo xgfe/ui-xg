@@ -17,5 +17,10 @@ define([
                 $stateProvider.state('app.api.<%= module %>',{url: "/<%= module %>",templateUrl: 'partials/api/<%= module %>.html'});
             <%})%>
         <% }%>
+        <% if (modules2.length) { %>
+            <% modules2.forEach(function(module,index){%>
+                $stateProvider.state('app.scene.<%= module %>',{url: "/<%= module %>",templateUrl: 'partials/scene/<%= module %>.html'});
+            <%})%>
+        <% }%>
     }
 });
