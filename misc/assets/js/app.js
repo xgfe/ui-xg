@@ -2,57 +2,59 @@ define([
     'jquery',
     'angular',
     'ngAnimate',
+    'ngSanitize',
     'uiRouter',
     'uiXg'
-], function($,angular) {
+], function ($, angular) {
 
     //定义angular模块
     var app = angular.module('uixDemo', [
         'ui.router',
         'ui.xg',
-        'ngAnimate'
+        'ngAnimate',
+        'ngSanitize'
     ]);
-    app.config(['$stateProvider','$urlRouterProvider', function ($stateProvider,$urlRouterProvider) {
+    app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('app', {
                 url: '/app',
                 templateUrl: 'partials/app.html'
             })
             .state('app.index', {
-                url: "/index",
+                url: '/index',
                 templateUrl: 'partials/home.html'
             })
-            .state('app.start',{
-                url: "/start",
+            .state('app.start', {
+                url: '/start',
                 templateUrl: 'partials/docs/start.html'
             })
-            .state('app.guide',{
-                url: "/guide",
+            .state('app.guide', {
+                url: '/guide',
                 templateUrl: 'partials/docs/guide.html'
             })
-            .state('app.directiveDocs',{
-                url: "/directiveDocs",
+            .state('app.directiveDocs', {
+                url: '/directiveDocs',
                 templateUrl: 'partials/docs/directiveDocs.html'
             })
-            .state('app.api',{
-                url: "/api",
+            .state('app.api', {
+                url: '/api',
                 templateUrl: 'partials/api.html'
             })
-            .state('app.scene',{
-                url: "/scene",
+            .state('app.scene', {
+                url: '/scene',
                 templateUrl: 'partials/scene.html'
             });
 
-        $urlRouterProvider.otherwise("/app/index");
+        $urlRouterProvider.otherwise('/app/index');
     }]);
 
-    app.config([ '$controllerProvider',  function( $controllerProvider) {
-        app.controller = function() {
+    app.config(['$controllerProvider', function ($controllerProvider) {
+        app.controller = function () {
             $controllerProvider.register.apply(null, arguments);
         };
     }]);
 
-    app.run(['$rootScope','$state', function ($rootScope,$state) {
+    app.run(['$rootScope', '$state', function ($rootScope, $state) {
         $rootScope.$state = $state;
     }]);
 

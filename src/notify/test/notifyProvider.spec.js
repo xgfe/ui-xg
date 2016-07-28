@@ -3,6 +3,7 @@ describe('notifyProvider Spec', function () {
         notifyServices;
 
     beforeEach(module('ui.xg.notify'));
+    beforeEach(module('ngSanitize'));
     beforeEach(module('notify/templates/notify.html'));
 
     describe('Default Configuration', function () {
