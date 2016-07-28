@@ -37,6 +37,7 @@ body > .uix-select.open {
   .uix-select .uix-select-toggle {
     position: relative;
     outline: 0;
+    height: 30px;
     overflow-x: hidden; }
   .uix-select .uix-select-toggle > .caret {
     position: absolute;

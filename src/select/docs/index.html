@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-6">
             <uix-select ng-model="goods.brand">
-                <uix-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</uix-select-match>
+                <uix-select-match>{{$select.selected.brandName}}</uix-select-match>
                 <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
                 </uix-select-choices>
