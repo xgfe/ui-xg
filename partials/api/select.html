@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-md-6">
             <uix-select ng-model="goods.brand">
-                <uix-select-match placeholder="请选择品牌">{{$select.selected.brandName}}</uix-select-match>
+                <uix-select-match>{{$select.selected.brandName}}</uix-select-match>
                 <uix-select-choices repeat="item in brandList | filter:$select.search">
                     <span>{{item.brandName}}</span>
                 </uix-select-choices>
@@ -100,7 +100,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-6"</span>&gt;</span>
             <span class="hljs-tag">&lt;<span class="hljs-name">uix-select</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"goods.brand"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">uix-select-match</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"请选择品牌"</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">uix-select-match</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-select-match</span>&gt;</span></span><span class="hljs-template-variable">{{$<span class="hljs-keyword">select</span>.selected.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">uix-select-match</span>&gt;</span>
                 <span class="hljs-tag">&lt;<span class="hljs-name">uix-select-choices</span> <span class="hljs-attr">repeat</span>=<span class="hljs-string">"item in brandList | filter:$select.search"</span>&gt;</span>
                     <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span></span><span class="hljs-template-variable">{{item.brandName}</span><span class="xml">}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
                 <span class="hljs-tag">&lt;/<span class="hljs-name">uix-select-choices</span>&gt;</span>
