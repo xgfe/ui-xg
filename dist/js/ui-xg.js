@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-07-22
+ * Version: 1.1.0 - 2016-07-28
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
@@ -6738,7 +6738,7 @@ angular.module("select/templates/match-multiple.html",[]).run(["$templateCache",
     "<span class=\"uix-select-match\">"+
     "  <span ng-repeat=\"$item in $select.selected\">"+
     "    <span"+
-    "      class=\"uix-select-match-item btn btn-default btn-xs\""+
+    "      class=\"uix-select-match-item btn btn-default btn-sm\""+
     "      tabindex=\"-1\""+
     "      type=\"button\""+
     "      ng-disabled=\"$select.disabled\""+
@@ -6756,7 +6756,7 @@ angular.module("select/templates/match.html",[]).run(["$templateCache",function(
     $templateCache.put("templates/match.html",
     "<div class=\"uix-select-match\" ng-hide=\"$select.open\" ng-disabled=\"$select.disabled\" ng-class=\"{'uix-select-focus':$select.focus}\">"+
     "  <span tabindex=\"-1\""+
-    "      class=\"btn btn-default form-control uix-select-toggle\""+
+    "      class=\"btn btn-default btn-sm btn-block uix-select-toggle\""+
     "      aria-label=\"{{ $select.baseTitle }} activate\""+
     "      ng-disabled=\"$select.disabled\""+
     "      ng-click=\"$select.activate()\">"+
@@ -6781,7 +6781,7 @@ angular.module("select/templates/select-multiple.html",[]).run(["$templateCache"
     "           autocorrect=\"off\""+
     "           autocapitalize=\"off\""+
     "           spellcheck=\"false\""+
-    "           class=\"uix-select-search input-xs\""+
+    "           class=\"uix-select-search input-sm\""+
     "           placeholder=\"{{$selectMultiple.getPlaceholder()}}\""+
     "           ng-disabled=\"$select.disabled\""+
     "           ng-hide=\"$select.disabled\""+
@@ -6802,7 +6802,7 @@ angular.module("select/templates/select.html",[]).run(["$templateCache",function
     "  <input type=\"text\" autocomplete=\"off\" tabindex=\"-1\""+
     "         aria-expanded=\"true\""+
     "         aria-label=\"{{ $select.baseTitle }}\""+
-    "         class=\"form-control uix-select-search\""+
+    "         class=\"form-control uix-select-search input-sm\""+
     "         placeholder=\"{{$select.placeholder}}\""+
     "         ng-model=\"$select.search\""+
     "         ng-show=\"$select.searchEnabled && $select.open\">"+

@@ -1,25 +1,29 @@
-
 /* Fix Bootstrap dropdown position when inside a input-group */
 .input-group > .uix-select.dropdown {
     /* Instead of relative */
     position: static;
 }
+
 .input-group > .uix-select > input.uix-select-search.form-control {
     border-radius: 4px; /* FIXME hardcoded value :-/ */
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
+
 .input-group > .uix-select > input.uix-select-search.form-control {
     border-radius: 4px !important; /* FIXME hardcoded value :-/ */
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
+
 body > .uix-select.open {
     z-index: 1000; /* Standard Bootstrap dropdown z-index */
 }
-.uix-select{
-    .uix-select-allowclear{
-        margin-right: 10px
+
+.uix-select {
+    .uix-select-allowclear {
+        margin-right: 10px;
+        line-height:1;
     }
     .uix-select-highlight {
         font-weight: bold;
@@ -37,6 +41,7 @@ body > .uix-select.open {
     .uix-select-toggle {
         position: relative;
         outline: 0;
+        overflow-x: hidden;
     }
     .uix-select-toggle > .caret {
         position: absolute;
@@ -55,9 +60,9 @@ body > .uix-select.open {
         right: 15px;
     }
     .uix-select-choices {
-        width: 100%;
         height: auto;
-        max-height: 200px;
+        //width: 100%;
+        //max-height: 200px;
         overflow-x: hidden;
         margin-top: -1px;
     }
@@ -71,7 +76,7 @@ body > .uix-select.open {
         white-space: nowrap;
     }
     .uix-select-choices-row > a:hover,
-    .uix-select-choices-row > a:focus{
+    .uix-select-choices-row > a:focus {
         text-decoration: none;
         color: #262626;
         background-color: #f5f5f5;
@@ -99,17 +104,17 @@ body > .uix-select.open {
         box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
     }
     .uix-select-offscreen {
-        clip: rect(0 0 0 0)!important;
-        width: 1px!important;
-        height: 1px!important;
-        border: 0!important;
-        margin: 0!important;
-        padding: 0!important;
-        overflow: hidden!important;
-        position: absolute!important;
-        outline: 0!important;
-        left: 0!important;
-        top: 0!important;
+        clip: rect(0 0 0 0) !important;
+        width: 1px !important;
+        height: 1px !important;
+        border: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        position: absolute !important;
+        outline: 0 !important;
+        left: 0 !important;
+        top: 0 !important;
     }
 }
 
@@ -128,6 +133,7 @@ body > .uix-select.open {
         line-height: 0.75;
     }
     .uix-select-match-item {
+        padding: 1px 10px;
         outline: 0;
         margin: 0 3px 3px 0;
         position: relative;

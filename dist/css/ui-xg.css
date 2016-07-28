@@ -412,7 +412,8 @@ body > .uix-select.open {
 .uix-select {
   /* Helper class to show styles when focus */ }
   .uix-select .uix-select-allowclear {
-    margin-right: 10px; }
+    margin-right: 10px;
+    line-height: 1; }
   .uix-select .uix-select-highlight {
     font-weight: bold; }
   .uix-select .uix-select-focus {
@@ -425,7 +426,8 @@ body > .uix-select.open {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6); }
   .uix-select .uix-select-toggle {
     position: relative;
-    outline: 0; }
+    outline: 0;
+    overflow-x: hidden; }
   .uix-select .uix-select-toggle > .caret {
     position: absolute;
     height: 10px;
@@ -440,9 +442,7 @@ body > .uix-select.open {
     top: 45%;
     right: 15px; }
   .uix-select .uix-select-choices {
-    width: 100%;
     height: auto;
-    max-height: 200px;
     overflow-x: hidden;
     margin-top: -1px; }
   .uix-select .uix-select-choices-row > a {
@@ -502,6 +502,7 @@ body > .uix-select.open {
     font-size: 1.6em;
     line-height: 0.75; }
   .uix-select-multiple .uix-select-match-item {
+    padding: 1px 10px;
     outline: 0;
     margin: 0 3px 3px 0;
     position: relative; }
@@ -610,17 +611,6 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
-.uix-timepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-timepicker button {
-    outline: none; }
-
-.uix-timepicker-popover.in {
-  display: block; }
-  .uix-timepicker-popover.in .uix-timepanel {
-    border: 0; }
-
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -670,3 +660,14 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.uix-timepicker {
+  position: relative;
+  display: inline-block; }
+  .uix-timepicker button {
+    outline: none; }
+
+.uix-timepicker-popover.in {
+  display: block; }
+  .uix-timepicker-popover.in .uix-timepanel {
+    border: 0; }
