@@ -1,0 +1,270 @@
+<h2>Example</h2><style>.searchRow {
+    line-height: 30px;
+    height: 30px;
+    margin: 30px 0;
+}
+.tl-rt{
+    text-align: right;
+}</style><div class="example"><div ng-controller="listDemoCtrl">
+    <div class="content wrapper listArea">
+        <div class="searchRow">
+            <div class="col-sm-12">
+                <h2>{{scene.name}}</h2>
+            </div>
+        </div>
+
+        <div class="searchRow listTable">
+            <div class="col-sm-6">
+                <uix-search-box ng-model="query.search" placeholder="输入xxx进行查询" show-btn=search.showButton></uix-search-box>
+            </div>
+            <div class="col-sm-6">
+                <uix-button text="'查询'" btnClass="'primary'"></uix-button>
+            </div>
+        </div>
+        <div>
+            <div class="searchRow">
+                <div class="col-sm-6">
+                    <uix-button text="'新增'" btnClass="'default'" ng-click="addItem()"></uix-button>
+                    <uix-button text="'删除'" btnClass="'default'" ng-click="deleteItem()"></uix-button>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>
+                        <uix-switch ng-model="query.checkAll"></uix-switch>
+                    </th>
+                    <th>标题</th>
+                    <th>金额</th>
+                    <th>金融机构</th>
+                    <th>申请人</th>
+                    <th>日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in dataList|filter:query.search" >
+                    <td>
+                        <uix-switch ng-model="item.checked"></uix-switch>
+                    </td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.money.toFixed(2)}}(CNY)</td>
+                    <td>{{item.agent}}</td>
+                    <td>{{item.person}}</td>
+                    <td>{{item.date}}</td>
+                    <td>
+                        <uix-button text="'编辑'" type="primary" ng-click="editItem(item)"></uix-button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 text-right">
+                <uix-pager page-no="pages.pageNo" total-items="pages.totalCount" items-per-page="pages.pageSize" page-changed="getPage"></uix-pager>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="modalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{modalBodyText}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="myForm">
+            <div class="searchRow">
+                <div class="col-sm-6">
+                    <label for="title" class="col-sm-5 tl-rt">标题</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="title" class="form-control" ng-model="item.title" required>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="money" class="col-sm-4 tl-rt">金额</label>
+                    <div class="col-sm-7">
+                        <input type="number" id="money" class="form-control" ng-model="item.money" required>
+                    </div>
+                </div>
+            </div>
+            <div class="searchRow">
+                <div class="col-sm-6">
+                    <label for="compony" class="col-sm-5 tl-rt">金融机构</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="compony" class="form-control" ng-model="item.agent" required>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="people" class="col-sm-4 tl-rt">申请人</label>
+                    <div class="col-sm-7">
+                        <input type="text" id="people" class="form-control" ng-model="item.person" required>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()"ng-disabled="myForm.$invalid">OK</button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+<script type="text/ng-template" id="anotherModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">{{modalBodyText}}</h3>
+    </div>
+    <div class="modal-body">
+        确定要删除数据吗?
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok($index)">确定</button>
+        <button class="btn btn-primary" ng-click="cancel()">取消</button>
+    </div>
+</script>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+                tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div><script>/**
+ * Created by heqingyang on 16/7/8.
+ */
+
+angular.module('uixDemo').controller('listDemoCtrl',['$scope','$http','$uixModal', '$filter', function ($scope, $http, $uixModal, $filter) {
+    $scope.search = {
+        showButton : false
+    }
+    $scope.scene = {
+        name: '增删改查'
+    };
+    $scope.pages = {
+        pageNo: 1,
+        pageSize: 6,
+        totalCount: 12
+    }
+    $scope.pageNo = 1;
+    $scope.query = {
+        'search' : '',
+        'checkAll' : false
+    };
+    var _scope = $scope;
+
+    // 检测checkAll的变化
+    $scope.$watch('query.checkAll',function(newValue){
+        angular.forEach($scope.dataList, function(item) {
+            item.checked = newValue;
+        })
+    })
+
+    // 新增
+    $scope.addItem = function() {
+        var modalInstance = $uixModal.open({
+            templateUrl: 'modalContent.html',
+            controller: ['$scope','$uixModalInstance',
+                function ($scope, $uixModalInstance) {
+
+                    $scope.modalBodyText = "新增数据";
+                    $scope.item = {};
+                    $scope.ok = function () {
+                        $scope.item.date = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                        ;
+                        _scope.dataList.unshift($scope.item);
+                        $uixModalInstance.close();
+                    };
+                    $scope.cancel = function () {
+                        $uixModalInstance.close();
+                    };
+                }]
+        });
+    }
+
+    // 编辑
+    $scope.editItem = function(item) {
+        var modalInstance = $uixModal.open({
+            templateUrl: 'modalContent.html',
+            controller: ['$scope','$uixModalInstance',
+                function ($scope, $uixModalInstance) {
+
+                    $scope.modalBodyText = "编辑数据";
+                    $scope.item = item?angular.copy(item):{};
+                    $scope.ok = function () {
+                        item.title = $scope.item.title;
+                        item.money = $scope.item.money;
+                        item.agent = $scope.item.agent;
+                        item.person = $scope.item.person;
+                        item.date = $filter('date')(new Date(),'yyyy-MM-dd HH:mm:ss');
+                        $uixModalInstance.close();
+                    };
+                    $scope.cancel = function () {
+                        $uixModalInstance.close();
+                    };
+                }]
+        });
+    }
+
+    // 删除
+    $scope.deleteItem = function () {
+        var modalInstance = $uixModal.open({
+            templateUrl: 'anotherModal.html',
+            size: 'sm',
+            controller: ['$scope','$uixModalInstance',
+                function ($scope, $uixModalInstance) {
+
+                    $scope.modalBodyText = "删除数据";
+                    $scope.ok = function () {
+                        var tempDataList = [];
+                        _scope.dataList.forEach(function(item){
+                            if(!item.checked){
+                                tempDataList.push(item);
+                            }
+                        })
+                        _scope.dataList = angular.copy(tempDataList);
+                        $uixModalInstance.close();
+                    };
+                    $scope.cancel = function () {
+                        $uixModalInstance.close();
+                    };
+                }]
+        });
+    }
+
+    $scope.getPage = function(pageNo){
+        if(pageNo){
+            $scope.pageNo = pageNo;
+        }
+        $http({
+            method: 'GET',
+            url: 'api/list'+$scope.pageNo+'.json'
+        }).success(function(response){
+            $scope.dataList = response.data;
+            var componyMap = {};
+            var componyList = [];
+            var index = 0;
+            angular.forEach($scope.dataList, function(item){
+                if(componyMap[item.agent]){
+
+                }else{
+                    index++;
+                    componyMap[item.agent] = true;
+                    componyList.push(
+                        item.agent
+                    )
+                }
+            })
+            $scope.componyList = componyList;
+        })
+    }
+    $scope.getPage();
+
+}]);</script>

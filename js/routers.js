@@ -51,5 +51,12 @@ define([
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             
         
+        
+            
+                $stateProvider.state('app.scene.list',{url: "/list",templateUrl: 'partials/scene/list.html'});
+            
+                $stateProvider.state('app.scene.CRUD',{url: "/CRUD",templateUrl: 'partials/scene/CRUD.html'});
+            
+        
     }
 });
