@@ -1,7 +1,8 @@
 # notify
 
 ## Description
- 消息通知组件.全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示、是否允许提示html信息、是否显示关闭按钮、提示信息是否在一行显示、是否显示动画效果等. 
+ 消息通知组件.全局组件,可以通过Provider设置通知持续显示时间、是否显示关闭按钮、提示框是否重复显示、是否允许提示html信息、是否显示关闭按钮、提示信息是否在一行显示、是否显示动画效果等.   
+**需要使用手动依赖ngSanitize模块**
 
 ## Usage
 
@@ -48,6 +49,7 @@
 
 - config(object):上面函数传递的config参数对象
 	- `disableIcons`: 设置是否不显示提示图标,类型为boolean.
+	- `allowTag`: 是否允许使用插入HTML片段
 	- `disableCloseButton`: 是否不显示关闭图标,类型为boolean.
 	- `position`: 设置提示信息显示位置,取值有:`top-right|bottom-right|middle-right|top-left|bottom-left|middle-left|top-center|bottom-center|middle-center`.
 	- `disableCountDown`: 设置是否不显示关闭倒计时图标提示,类型为boolean.

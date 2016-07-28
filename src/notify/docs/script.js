@@ -27,7 +27,9 @@ angular.module('uixDemo').controller('notifyDemoCtrl', ['$scope', '$uixNotify', 
             case 'info':
                 config.referenceId = 0;
                 for (i = 0; i < 5; i++) {
-                    $uixNotify.info('info － referenceId=0;inline=false;limit-Messages不设置');
+                    $uixNotify.info('<p onclick="alert(132)">info － referenceId=0;inline=false;limit-Messages不设置</p>', {
+                        allowTag: i % 2
+                    });
                 }
                 break;
             case 'success':

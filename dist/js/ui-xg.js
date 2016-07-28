@@ -2639,7 +2639,7 @@ angular.module('ui.xg.notify', [])
                         return;
                     }
                 }
-                message.text = $sce.trustAsHtml(String(message.text));
+                //message.text = $sce.trustAsHtml(String(message.text));
                 if (message.ttl && message.ttl !== -1) {
                     message.countdown = message.ttl / 1000;
                     message.promises = [];
@@ -2851,11 +2851,10 @@ angular.module('ui.xg.notify', [])
         this.$get = [
             '$rootScope',
             '$interpolate',
-            '$sce',
             '$filter',
             '$interval',
             'notifyServices',
-            function ($rootScope, $interpolate, $sce, $filter, $interval, notifyServices) {
+            function ($rootScope, $interpolate, $filter, $interval, notifyServices) {
                 var translate;
                 notifyServices.onlyUnique = _onlyUniqueMessages;
                 notifyServices.reverseOrder = _reverseOrder;
@@ -2885,6 +2884,7 @@ angular.module('ui.xg.notify', [])
                         text: text,
                         title: _config.title,
                         severity: severity,
+                        allowTag: _config.allowTag,
                         ttl: _config.ttl || _ttl[severity],
                         variables: _config.variables || {},
                         disableCloseButton: angular.isUndefined(_config.disableCloseButton) ? _disableCloseButton : _config.disableCloseButton,
@@ -2895,9 +2895,6 @@ angular.module('ui.xg.notify', [])
                         translateMessage: angular.isUndefined(_config.translateMessage) ? _translateMessages : _config.translateMessage,
                         destroy: function () {
                             notifyServices.deleteMessage(message);
-                        },
-                        setText: function (newText) {
-                            message.text = $sce.trustAsHtml(String(newText));
                         },
                         onclose: _config.onclose,
                         onopen: _config.onopen
@@ -6597,7 +6594,8 @@ angular.module("notify/templates/notify.html",[]).run(["$templateCache",function
     "        <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-show=\"showCountDown(message)\">{{message.countdown}}"+
     "        </button>"+
     "        <h4 class=\"uix-notify-title\" ng-show=\"message.title\" ng-bind=\"message.title\"></h4>"+
-    "        <div class=\"uix-notify-message\" ng-bind-html=\"message.text\"></div>"+
+    "        <div ng-if=\"message.allowTag\" class=\"uix-notify-message\" ng-bind-html=\"message.text\"></div>"+
+    "        <div ng-if=\"!message.allowTag\" class=\"uix-notify-message\" ng-bind=\"message.text\"></div>"+
     "    </div>"+
     "</div>"+
     "");
