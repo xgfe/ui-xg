@@ -1748,9 +1748,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
     }])
     .controller('uixDatepickerCtrl',
         ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$uixPosition',
-            'uixDatepickerService', 'uixDatepickerConfig',
+            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
             function ($scope, $element, $compile, $attrs, $log, dateFilter, $uixPosition,
-                      uixDatepickerService, uixDatepickerConfig) {
+                      uixDatepickerService, uixDatepickerConfig, $parse) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
@@ -1800,8 +1800,14 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
 
-                var format = angular.isDefined($attrs.format)
-                    ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
+                // format
+                var format = uixDatepickerConfig.format;
+                if ($attrs.format) {
+                    $scope.$parent.$watch($parse($attrs.format), function (value) {
+                        format = value;
+                        $scope.inputValue = dateFilter($scope.selectDate, format);
+                    });
+                }
 
                 this.render = function () {
                     var date = ngModelCtrl.$modelValue;
@@ -2629,9 +2635,11 @@ angular.module('ui.xg.notify', [])
                 }
                 messages = directive.messages;
                 if (this.onlyUnique) {
+                    var _currentMsgText;
                     angular.forEach(messages, function (msg) {
                         msgText = $sce.getTrustedHtml(msg.text);
-                        if (message.text === msgText && message.severity === msg.severity && message.title === msg.title) {
+                        _currentMsgText = $sce.getTrustedHtml(message.text);
+                        if (_currentMsgText === msgText && message.severity === msg.severity && message.title === msg.title) {
                             found = true;
                         }
                     });
@@ -6317,6 +6325,14 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                     $scope.showSeconds = !!value;
                 });
             }
+            // format
+            var format = timepickerConfig.format;
+            if ($attrs.format) {
+                $scope.$parent.$watch($parse($attrs.format), function (value) {
+                    format = value;
+                    $scope.inputValue = dateFilter($scope.selectedTime, format);
+                });
+            }
 
             $scope.showTimepanel = false;
             this.toggle = function (open) {
@@ -6329,8 +6345,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
             };
-            var format = angular.isDefined($attrs.format)
-                ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+
             this.render = function () {
                 var date = ngModelCtrl.$viewValue;
                 if (isNaN(date)) {
