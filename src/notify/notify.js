@@ -69,9 +69,11 @@ angular.module('ui.xg.notify', [])
                 }
                 messages = directive.messages;
                 if (this.onlyUnique) {
+                    var _currentMsgText;
                     angular.forEach(messages, function (msg) {
                         msgText = $sce.getTrustedHtml(msg.text);
-                        if (message.text === msgText && message.severity === msg.severity && message.title === msg.title) {
+                        _currentMsgText = $sce.getTrustedHtml(message.text);
+                        if (_currentMsgText === msgText && message.severity === msg.severity && message.title === msg.title) {
                             found = true;
                         }
                     });

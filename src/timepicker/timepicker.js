@@ -97,6 +97,14 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                     $scope.showSeconds = !!value;
                 });
             }
+            // format
+            var format = timepickerConfig.format;
+            if ($attrs.format) {
+                $scope.$parent.$watch($parse($attrs.format), function (value) {
+                    format = value;
+                    $scope.inputValue = dateFilter($scope.selectedTime, format);
+                });
+            }
 
             $scope.showTimepanel = false;
             this.toggle = function (open) {
@@ -109,8 +117,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
             };
-            var format = angular.isDefined($attrs.format)
-                ? $scope.$parent.$eval($attrs.format) : timepickerConfig.format;
+
             this.render = function () {
                 var date = ngModelCtrl.$viewValue;
                 if (isNaN(date)) {

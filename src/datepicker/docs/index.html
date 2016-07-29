@@ -15,11 +15,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <uix-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
-                             placeholder="选择日期" on-change="onChange()" format="'yyyy-MM-dd hh:mm:ss a'" min-date="minDate" exceptions="exceptions"></uix-datepicker>
-        </div>
         <div class="col-md-4">
+            <uix-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
+                             placeholder="选择日期" on-change="onChange()" format="formattor" min-date="minDate" exceptions="exceptions"></uix-datepicker>
+        </div>
+        <div class="col-md-3">
+            <select ng-model="formattor" class="form-control">
+                <option value="yyyy-MM-dd hh:mm:ss a">yyyy-MM-dd hh:mm:ss a</option>
+                <option value="yyyy-MM-dd">yyyy-MM-dd</option>
+                <option value="yyyy-MM-dd hh:mm">yyyy-MM-dd hh:mm</option>
+            </select>
+        </div>
+        <div class="col-md-3">
             <pre>{{date | date:'yyyy:MM:dd hh:mm:ss a'}}</pre>
         </div>
         <div class="col-md-2">

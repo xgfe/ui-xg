@@ -54,9 +54,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
     }])
     .controller('uixDatepickerCtrl',
         ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$uixPosition',
-            'uixDatepickerService', 'uixDatepickerConfig',
+            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
             function ($scope, $element, $compile, $attrs, $log, dateFilter, $uixPosition,
-                      uixDatepickerService, uixDatepickerConfig) {
+                      uixDatepickerService, uixDatepickerConfig, $parse) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
@@ -106,8 +106,14 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
 
-                var format = angular.isDefined($attrs.format)
-                    ? $scope.$parent.$eval($attrs.format) : uixDatepickerConfig.format;
+                // format
+                var format = uixDatepickerConfig.format;
+                if ($attrs.format) {
+                    $scope.$parent.$watch($parse($attrs.format), function (value) {
+                        format = value;
+                        $scope.inputValue = dateFilter($scope.selectDate, format);
+                    });
+                }
 
                 this.render = function () {
                     var date = ngModelCtrl.$modelValue;
