@@ -6568,7 +6568,10 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/datepicker.html",
     "<div class=\"uix-datepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\" ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
+    "               ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\""+
+    "               ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\""+
+    "               ng-model=\"inputValue\" readonly>"+
     "        <span class=\"input-group-btn\" ng-if=\"clearBtn\">"+
     "            <button ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" ng-disabled=\"isDisabled\" class=\"btn btn-default uix-datepicker-remove\" type=\"button\" ng-click=\"clearDateHandler($event)\">"+
     "                <i class=\"glyphicon glyphicon-remove\"></i>"+
@@ -6834,7 +6837,9 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/timepicker.html",
     "<div class=\"uix-timepicker\">"+
     "    <div class=\"input-group\">"+
-    "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\" class=\"form-control uix-timepicker-input\" ng-click=\"toggleTimepanel($event)\" placeholder=\"{{placeholder}}\" ng-model=\"inputValue\">"+
+    "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
+    "               class=\"form-control uix-timepicker-input\" ng-click=\"toggleTimepanel($event)\""+
+    "               placeholder=\"{{placeholder}}\" ng-model=\"inputValue\" readonly>"+
     "        <span class=\"input-group-btn\">"+
     "            <button ng-disabled=\"isDisabled\" ng-class=\"{'btn-sm':size==='sm','btn-lg':size==='lg'}\" class=\"btn btn-default\" type=\"button\" ng-click=\"toggleTimepanel($event)\">"+
     "                <i class=\"glyphicon glyphicon-time\"></i>"+

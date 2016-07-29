@@ -4,6 +4,13 @@ $panel-height:120px;
 .uix-timepicker{
     position: relative;
     display: inline-block;
+    .uix-timepicker-input{
+        cursor: pointer;
+        background: transparent;
+        user-select:none;
+        -moz-user-select:none;
+        -webkit-user-select:none;
+    }
     button{
         outline: none;
     }
