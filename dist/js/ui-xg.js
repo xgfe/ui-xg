@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-07-28
+ * Version: 1.1.0 - 2016-07-29
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);

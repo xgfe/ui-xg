@@ -54,16 +54,20 @@ body > .uix-select.open {
     right: 15px; }
   .uix-select .uix-select-choices {
     height: auto;
+    width: 100%;
+    max-height: 200px;
     overflow-x: hidden;
     margin-top: -1px; }
   .uix-select .uix-select-choices-row > a {
     display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 3px 20px;
     clear: both;
     font-weight: 400;
     line-height: 1.42857143;
-    color: #333;
-    white-space: nowrap; }
+    color: #333; }
   .uix-select .uix-select-choices-row > a:hover,
   .uix-select .uix-select-choices-row > a:focus {
     text-decoration: none;
