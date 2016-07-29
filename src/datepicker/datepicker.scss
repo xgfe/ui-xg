@@ -14,6 +14,10 @@ $inpu-height: 30px;
         -moz-user-select:none;
         -webkit-user-select:none;
     }
+    .uix-datepicker-input.disabled,
+    .uix-datepicker-input[disabled]{
+        cursor: not-allowed;
+    }
     .uix-datepicker-remove {
         border-radius: 0;
         border-left: 0;

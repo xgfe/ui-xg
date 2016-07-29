@@ -11,6 +11,10 @@ $panel-height:120px;
         -moz-user-select:none;
         -webkit-user-select:none;
     }
+    .uix-timepicker-input.disabled,
+    .uix-timepicker-input[disabled]{
+        cursor: not-allowed;
+    }
     button{
         outline: none;
     }
