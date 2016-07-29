@@ -240,6 +240,12 @@
   display: inline-block; }
   .uix-datepicker button:focus {
     outline: 0; }
+  .uix-datepicker .uix-datepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
   .uix-datepicker .uix-datepicker-remove {
     border-radius: 0;
     border-left: 0; }
@@ -669,6 +675,12 @@ body > .uix-select.open {
 .uix-timepicker {
   position: relative;
   display: inline-block; }
+  .uix-timepicker .uix-timepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
   .uix-timepicker button {
     outline: none; }
 
