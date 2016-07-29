@@ -7,6 +7,9 @@
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none; }
+  .uix-timepicker .uix-timepicker-input.disabled,
+  .uix-timepicker .uix-timepicker-input[disabled] {
+    cursor: not-allowed; }
   .uix-timepicker button {
     outline: none; }
 
