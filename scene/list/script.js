@@ -2,10 +2,10 @@
  * Created by heqingyang on 16/7/8.
  */
 
-angular.module('uixDemo').controller('listDemoCtrl',['$scope','$http', function ($scope, $http) {
+angular.module('uixDemo').controller('listDemoCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.search = {
         showButton : false
-    }
+    };
     $scope.scene = {
         name: '列表页'
     };
@@ -13,7 +13,7 @@ angular.module('uixDemo').controller('listDemoCtrl',['$scope','$http', function 
         pageNo: 1,
         pageSize: 6,
         totalCount: 12
-    }
+    };
     $scope.pageNo = 1;
     $scope.query = {
         'search' : '',
@@ -28,39 +28,39 @@ angular.module('uixDemo').controller('listDemoCtrl',['$scope','$http', function 
     $scope.isCollapse = false;
     var defaultQuery = angular.copy($scope.query);
 
-    $scope.$watch('query',function(){
+    $scope.$watch('query', function () {
         console.log('changing!!');
-    },true)
+    }, true);
 
-    $scope.getPage = function(pageNo){
-        if(pageNo){
+    $scope.getPage = function (pageNo) {
+        if(pageNo) {
             $scope.pageNo = pageNo;
         }
         $http({
             method: 'GET',
-            url: 'api/list'+$scope.pageNo+'.json'
-        }).success(function(response){
+            url: 'api/list' + $scope.pageNo + '.json'
+        }).success(function (response) {
             $scope.dataList = response.data;
             var componyMap = {};
             var componyList = [];
             var index = 0;
-            angular.forEach($scope.dataList, function(item){
-                if(componyMap[item.agent]){
+            angular.forEach($scope.dataList, function (item) {
+                if(componyMap[item.agent]) {
 
-                }else{
+                } else {
                     index++;
                     componyMap[item.agent] = true;
                     componyList.push(
                         item.agent
-                    )
+                    );
                 }
-            })
+            });
             $scope.componyList = componyList;
-        })
-    }
+        });
+    };
     $scope.getPage();
 
-    $scope.defaultButton = function(){
+    $scope.defaultButton = function () {
         $scope.query = defaultQuery;
-    }
+    };
 }]);

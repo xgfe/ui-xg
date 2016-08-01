@@ -360,7 +360,7 @@ gulp.task('docs', ['copy'], function () {
         moduleNames.push(module.name);
     });
 
-    // 构建scene木姐
+    // 构建scene目录
     moduleNames2.forEach(function (module) {
         // 构建组件文档页面
         createScenePartial(module, docPath);
