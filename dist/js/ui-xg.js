@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-07-29
+ * Version: 1.1.0 - 2016-08-01
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
-angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
+angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","loader/templates/alert.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
 /**
  * alert
  * 警告提示指令
@@ -2100,6 +2100,76 @@ angular.module('ui.xg.dropdown', [])
                     element.unbind('click', toggleDropdown);
                 });
             }
+        };
+    });
+
+/**
+ * loader
+ * 加载Loading指令
+ * Author:heqingyang@meituan.com
+ * Date:2016-07-29
+ */
+angular.module('ui.xg.loader', [])
+    .controller('uixLoaderCtrl', ['$scope', '$timeout', '$element', '$window',
+        function ($scope, $timeout, $element, $window) {
+
+            var $ = angular.element;
+            var windowHeight = $($window).height();
+            var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
+            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+
+            var loadingTpl = $('<div class="loading">' +
+                '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
+                '</div>');
+            var errorTipTpl = $('<div class="error-tip">' +
+                '<span class="error-text">数据加载失败! </span>' +
+                '</div>');
+            var startTimer, endTimer;
+            $element.parent().addClass('uix-loader');
+            $scope.$watch('uixLoader', function (newValue) {
+
+                if(newValue === 1) {
+                    startTimer = new Date().getTime();
+                    errorTipTpl.hide();
+                    $element.hide().after(loadingTpl);
+                    loadingTpl.css('height', height);
+                } else
+                if(newValue === 0) {
+                    endTimer = new Date().getTime();
+                    timeoutHandle(startTimer, endTimer, function () {
+                        loadingTpl.remove();
+                        $element.show();
+                    });
+                } else
+                if(newValue === -1) {
+                    endTimer = new Date().getTime();
+                    timeoutHandle(startTimer, endTimer, function () {
+                        loadingTpl.remove();
+                        $element.after(errorTipTpl);
+                        errorTipTpl.show();
+                        errorTipTpl.css('height', height);
+                    });
+                }
+            });
+            function timeoutHandle(startTimer, endTimer, callback) {
+                var timer;
+                if((endTimer - startTimer) < 1000) {
+                    timer = 1000;
+                } else {
+                    timer = 0;
+                }
+                $timeout(callback, timer);
+            }
+        }])
+    .directive('uixLoader', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                uixLoader: '=',
+                loaderHeight: '@'
+            },
+            controller: 'uixLoaderCtrl',
+            controllerAs: 'loader'
         };
     });
 
@@ -6585,6 +6655,21 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     "    </div>"+
     "</div>"+
     "");
+}]);
+angular.module("loader/templates/alert.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/alert.html",
+    "<div ng-show=\"!defaultclose\" class=\"alert uix-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
+    "    <div ng-show=\"hasIcon\" class=\"alert-icon\">"+
+    "        <span class=\"alert-icon-span glyphicon\" ng-class=\"'glyphicon-'+iconClass\"></span>"+
+    "    </div>"+
+    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"closeFunc({$event: $event})\">"+
+    "        <span ng-if=\"!closeText\">&times;</span>"+
+    "        <span class=\"cancel-text\" ng-if=\"closeText\">{{closeText}}</span>"+
+    "    </button>"+
+    "    <!--<div ng-class=\"[hasIcon?'show-icon' : null]\" ng-transclude></div>-->"+
+    "    <div ng-class=\"{true:'show-icon' ,false: null}[hasIcon]\" ng-transclude></div>"+
+    ""+
+    "</div>");
 }]);
 angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/backdrop.html",

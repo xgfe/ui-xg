@@ -1,0 +1,41 @@
+<div ng-controller="loaderDemoCtrl">
+    <div class="table-responsive">
+        <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading">
+            <thead>
+            <tr>
+                <th>列表1</th>
+                <th>列表2</th>
+                <th>列表3</th>
+                <th>列表4</th>
+                <th>列表5</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in loadingList">
+                <td>{{item.column1 }}</td>
+                <td>{{item.column2 }}</td>
+                <td>{{item.column3 }}</td>
+                <td>{{item.column4 }}</td>
+                <td>{{item.column5 }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <uix-button text="'刷新数据'" click="reload()"></uix-button>
+    <uix-button text="'打开Modal'" click="open()"></uix-button>
+</div>
+
+<script type="text/ng-template" id="modalContent.html">
+    <div uix-loader="isLoading" loader-height="400">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            {{modalBodyText}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script>
