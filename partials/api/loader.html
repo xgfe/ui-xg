@@ -1,0 +1,222 @@
+<h1>Loader</h1><h2>Description</h2><p>数据加载loading组件,当加载数据时,会显示相应的loading图标。</p>
+<h2>Usage</h2><pre><code class="lang-javascript">&lt;tag uix-loader=<span class="hljs-string">"string"</span> 
+    [ loader-<span class="hljs-built_in">height</span>=<span class="hljs-string">"number"</span> ]
+/&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;A&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>uixLoader</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td> <code>必填值</code></td><td>指定当前loading效果的状态。<pre><code>0表示初始状态或已加载成功，不需要loading；1表示当前正在加载中；<span class="hljs-deletion">-1表示当前已加载失败。</span></code></pre></td></tr><tr><td>loaderHeight</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>auto</code></td><td>设置loader的默认高度。</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="loaderDemoCtrl">
+    <div class="table-responsive">
+        <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading">
+            <thead>
+            <tr>
+                <th>列表1</th>
+                <th>列表2</th>
+                <th>列表3</th>
+                <th>列表4</th>
+                <th>列表5</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in loadingList">
+                <td>{{item.column1 }}</td>
+                <td>{{item.column2 }}</td>
+                <td>{{item.column3 }}</td>
+                <td>{{item.column4 }}</td>
+                <td>{{item.column5 }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <uix-button text="'刷新数据'" click="reload()"></uix-button>
+    <uix-button text="'打开Modal'" click="open()"></uix-button>
+</div>
+
+<script type="text/ng-template" id="modalContent.html">
+    <div uix-loader="isLoading" loader-height="400">
+        <div class="modal-header">
+            <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+            {{modalBodyText}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</script></div><script>angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$uixModal',  function ($scope, $timeout, $uixModal) {
+    $scope.loadingList = [];
+
+    $scope.isLoading = 0;
+
+    $scope.reload = function () {
+        $scope.isLoading = 1;
+        $timeout(function () {
+            var test = {
+                column1: 'column1',
+                column2: 'column2',
+                column3: 'column3',
+                column4: 'column4',
+                column5: 'column5'
+            };
+            $scope.loadingList.push(test);
+            $scope.isLoading = 0;
+        }, 2000);
+    };
+
+    $scope.items = ['item1', 'item2', 'item3'];
+
+    $scope.open = function () {
+
+        var modalInstance = $uixModal.open({
+            templateUrl: 'modalContent.html',
+            controller: ['$scope', function ($scope) {
+                $scope.modalBodyText = 'Modal Loader.';
+                $scope.isLoading = 1;
+                $timeout(function () {
+                    $scope.isLoading = 0;
+                }, 2000);
+                $scope.ok = function () {
+                    $scope.$close('close modal by $scope');
+                };
+                $scope.cancel = function () {
+                    $scope.$dismiss('dismiss modal by $scope');
+                };
+            }]
+        });
+
+        modalInstance.result.then(function (result) {
+            $scope.items = result.items;
+            $scope.selected = result.selected;
+        }, function () {
+        });
+    };
+
+    $scope.reload();
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"loaderDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"table-responsive"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"table table-striped m-b-none b-light b-t"</span>  <span class="hljs-attr">uix-loader</span>=<span class="hljs-string">"isLoading"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">thead</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表1<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表2<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表3<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表4<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表5<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">thead</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">tbody</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">tr</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"item in loadingList"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.column1 &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.column2 &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.column3 &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.column4 &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>item.column5 &#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tbody</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'刷新数据'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"reload()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'打开Modal'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"open()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/ng-template"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"modalContent.html"</span>&gt;</span><span class="javascript">
+    &lt;div uix-loader=<span class="hljs-string">"isLoading"</span> loader-height=<span class="hljs-string">"400"</span>&gt;
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"modal-header"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">h3</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"modal-title"</span>&gt;</span>I'm a modal!<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>
+        &lt;div <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"modal-body"</span>&gt;
+            </span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>modalBodyText&#125;&#125;</span><span class="xml"><span class="handlebars"><span class="xml">
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"modal-footer"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-primary"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"ok()"</span>&gt;</span>OK<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"cancel()"</span>&gt;</span>Cancel<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'loaderDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$timeout'</span>, <span class="hljs-string">'$uixModal'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $timeout, $uixModal)</span> </span>{
+    $scope.loadingList = [];
+
+    $scope.isLoading = <span class="hljs-number">0</span>;
+
+    $scope.reload = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.isLoading = <span class="hljs-number">1</span>;
+        $timeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+            <span class="hljs-keyword">var</span> test = {
+                column1: <span class="hljs-string">'column1'</span>,
+                column2: <span class="hljs-string">'column2'</span>,
+                column3: <span class="hljs-string">'column3'</span>,
+                column4: <span class="hljs-string">'column4'</span>,
+                column5: <span class="hljs-string">'column5'</span>
+            };
+            $scope.loadingList.push(test);
+            $scope.isLoading = <span class="hljs-number">0</span>;
+        }, <span class="hljs-number">2000</span>);
+    };
+
+    $scope.items = [<span class="hljs-string">'item1'</span>, <span class="hljs-string">'item2'</span>, <span class="hljs-string">'item3'</span>];
+
+    $scope.open = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+
+        <span class="hljs-keyword">var</span> modalInstance = $uixModal.open({
+            templateUrl: <span class="hljs-string">'modalContent.html'</span>,
+            controller: [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+                $scope.modalBodyText = <span class="hljs-string">'Modal Loader.'</span>;
+                $scope.isLoading = <span class="hljs-number">1</span>;
+                $timeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    $scope.isLoading = <span class="hljs-number">0</span>;
+                }, <span class="hljs-number">2000</span>);
+                $scope.ok = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    $scope.$close(<span class="hljs-string">'close modal by $scope'</span>);
+                };
+                $scope.cancel = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+                    $scope.$dismiss(<span class="hljs-string">'dismiss modal by $scope'</span>);
+                };
+            }]
+        });
+
+        modalInstance.result.then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(result)</span> </span>{
+            $scope.items = result.items;
+            $scope.selected = result.selected;
+        }, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        });
+    };
+
+    $scope.reload();
+}]);
+</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>
