@@ -7,42 +7,7 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
-    /**
-     * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
-     */
-    .factory('$transition', ['$document', function ($document) {
-
-        var $transition = {};
-
-        // Work out the name of the transitionEnd event
-        var transElement = $document[0].createElement('trans');
-        var transitionEndEventNames = {
-            'WebkitTransition': 'webkitTransitionEnd',
-            'MozTransition': 'transitionend',
-            'OTransition': 'oTransitionEnd',
-            'transition': 'transitionend'
-        };
-        var animationEndEventNames = {
-            'WebkitTransition': 'webkitAnimationEnd',
-            'MozTransition': 'animationend',
-            'OTransition': 'oAnimationEnd',
-            'transition': 'animationend'
-        };
-
-        function findEndEventName(endEventNames) {
-            for (var name in endEventNames) {
-                if (angular.isDefined(transElement.style[name])) {
-                    return endEventNames[name];
-                }
-            }
-        }
-
-        $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
-        $transition.animationEndEventName = findEndEventName(animationEndEventNames);
-        return $transition;
-    }])
-
+angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
     /**
      * A helper directive for the $uixModal service. It creates a backdrop element.
      */
@@ -120,7 +85,7 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap'])
         };
     })
 
-    .factory('$uixModalStack', ['$transition', '$timeout', '$document', '$compile', '$rootScope', '$uixStackedMap',
+    .factory('$uixModalStack', ['$uixTransition', '$timeout', '$document', '$compile', '$rootScope', '$uixStackedMap',
         function ($transition, $timeout, $document, $compile, $rootScope, $$stackedMap) {
 
             var OPENED_MODAL_CLASS = 'modal-open';
