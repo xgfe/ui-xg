@@ -5,6 +5,7 @@ describe('ui.xg.modal', function () {
     beforeEach(function () {
         module('ui.xg.modal');
         module('ui.xg.stackedMap');
+        module('ui.xg.transition');
         module('modal/templates/backdrop.html');
         module('modal/templates/window.html');
         module(function (_$controllerProvider_, _$uixModalProvider_) {
@@ -151,8 +152,8 @@ describe('ui.xg.modal', function () {
     }
 
     function waitForBackdropAnimation() {
-        inject(function ($transition) {
-            if ($transition.transitionEndEventName) {
+        inject(function ($uixTransition) {
+            if ($uixTransition.transitionEndEventName) {
                 $timeout.flush();
             }
         });
