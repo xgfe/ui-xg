@@ -12,6 +12,7 @@ angular.module('ui.xg.loader', [])
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
             var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var width = $scope.loaderWidth;
 
             var loadingTpl = $('<div class="loading">' +
                 '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
@@ -28,6 +29,9 @@ angular.module('ui.xg.loader', [])
                     errorTipTpl.hide();
                     $element.hide().after(loadingTpl);
                     loadingTpl.css('height', height);
+                    if(width) {
+                        loadingTpl.css('width', width);
+                    }
                 } else
                 if(newValue === 0) {
                     endTimer = new Date().getTime();
@@ -43,6 +47,9 @@ angular.module('ui.xg.loader', [])
                         $element.after(errorTipTpl);
                         errorTipTpl.show();
                         errorTipTpl.css('height', height);
+                        if(width) {
+                            loadingTpl.css('width', width);
+                        }
                     });
                 }
             });
@@ -61,7 +68,8 @@ angular.module('ui.xg.loader', [])
             restrict: 'A',
             scope: {
                 uixLoader: '=',
-                loaderHeight: '@'
+                loaderHeight: '@',
+                loaderWidth: '@'
             },
             controller: 'uixLoaderCtrl',
             controllerAs: 'loader'

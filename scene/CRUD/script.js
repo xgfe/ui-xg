@@ -39,7 +39,7 @@ angular.module('uixDemo').controller('listDemoCtrl', ['$scope', '$http', '$uixMo
                     $scope.item = {};
                     $scope.ok = function () {
                         $scope.item.date = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm:ss');
-                        
+
                         _scope.dataList.unshift($scope.item);
                         $uixModalInstance.close();
                     };
@@ -58,7 +58,7 @@ angular.module('uixDemo').controller('listDemoCtrl', ['$scope', '$http', '$uixMo
                 function ($scope, $uixModalInstance) {
 
                     $scope.modalBodyText = '编辑数据';
-                    $scope.item = item ? angular.copy(item):{};
+                    $scope.item = item ? angular.copy(item) : {};
                     $scope.ok = function () {
                         item.title = $scope.item.title;
                         item.money = $scope.item.money;
