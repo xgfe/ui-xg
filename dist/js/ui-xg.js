@@ -1,9 +1,9 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-08-02
+ * Version: 1.1.0 - 2016-08-03
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.collapse","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.timepicker"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.collapse","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker"]);
 angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
 /**
  * alert
@@ -2280,6 +2280,7 @@ angular.module('ui.xg.loader', [])
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
             var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var width = $scope.loaderWidth;
 
             var loadingTpl = $('<div class="loading">' +
                 '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
@@ -2296,6 +2297,9 @@ angular.module('ui.xg.loader', [])
                     errorTipTpl.hide();
                     $element.hide().after(loadingTpl);
                     loadingTpl.css('height', height);
+                    if(width) {
+                        loadingTpl.css('width', width);
+                    }
                 } else
                 if(newValue === 0) {
                     endTimer = new Date().getTime();
@@ -2311,6 +2315,9 @@ angular.module('ui.xg.loader', [])
                         $element.after(errorTipTpl);
                         errorTipTpl.show();
                         errorTipTpl.css('height', height);
+                        if(width) {
+                            loadingTpl.css('width', width);
+                        }
                     });
                 }
             });
@@ -2329,7 +2336,8 @@ angular.module('ui.xg.loader', [])
             restrict: 'A',
             scope: {
                 uixLoader: '=',
-                loaderHeight: '@'
+                loaderHeight: '@',
+                loaderWidth: '@'
             },
             controller: 'uixLoaderCtrl',
             controllerAs: 'loader'
@@ -6421,6 +6429,94 @@ angular.module('ui.xg.switch', [])
                 var switchCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                 switchCtrl.init(ngModelCtrl);
             }
+        };
+    });
+
+/**
+ * tableLoader
+ * 表格Loading指令
+ * Author:heqingyang@meituan.com
+ * Date:2016-08-02
+ */
+angular.module('ui.xg.tableLoader', [])
+    .controller('uixTableLoaderCtrl', ['$scope', '$timeout', '$element', '$window',
+        function ($scope, $timeout, $element, $window) {
+
+            var $ = angular.element;
+            var tNode = $($element.children());
+            var thead = $(tNode[0]);
+            var tbody = $(tNode[1]);
+
+            var noThead = $scope.noThead;
+            var windowHeight = $($window).height();
+            var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
+            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+
+            var loadingTpl = $('<tbody><tr><td colspan="100%">' +
+                '<div class="loading" style="height:' + height + 'px">' +
+                '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
+                '</div>' +
+                '</td></tr></tbody>');
+            var errorTipTpl = $('<tbody><tr><td colspan="100%">' +
+                '<div class="error-tip" style="height:' + height + 'px">' +
+                '<span class="error-text">数据加载失败! </span>' +
+                '</div>' +
+                '</td></tr></tbody>');
+            var startTimer, endTimer;
+            $element.addClass('uix-table-loader');
+            $scope.$watch('uixTableLoader', function (newValue) {
+
+                if(newValue === 1) {
+                    startTimer = new Date().getTime();
+                    if(noThead) {
+                        thead.hide();
+                    }
+                    errorTipTpl.remove();
+                    loadingTpl.show();
+                    tbody.hide().before(loadingTpl);
+                } else
+                if(newValue === 0) {
+                    endTimer = new Date().getTime();
+                    timeoutHandle(startTimer, endTimer, function () {
+                        if(noThead) {
+                            thead.show();
+                        }
+                        loadingTpl.remove();
+                        tbody.show();
+                    });
+                } else
+                if(newValue === -1) {
+                    endTimer = new Date().getTime();
+                    timeoutHandle(startTimer, endTimer, function () {
+                        if(noThead) {
+                            thead.show();
+                        }
+                        errorTipTpl.show();
+                        loadingTpl.hide().before(errorTipTpl);
+                        loadingTpl.remove();
+                    });
+                }
+            });
+            function timeoutHandle(startTimer, endTimer, callback) {
+                var timer;
+                if((endTimer - startTimer) < 1000) {
+                    timer = 1000;
+                } else {
+                    timer = 0;
+                }
+                $timeout(callback, timer);
+            }
+        }])
+    .directive('uixTableLoader', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                uixTableLoader: '=',
+                noThead: '=',
+                loaderHeight: '@'
+            },
+            controller: 'uixTableLoaderCtrl',
+            controllerAs: 'tableLoader'
         };
     });
 

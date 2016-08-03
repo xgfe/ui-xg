@@ -1,0 +1,82 @@
+<div ng-controller="tableLoaderDemoCtrl">
+    <h4 class="m-t-xs font-bold panel-heading">含表头的加载</h4>
+    <div class="padder-v">
+        <div class="table-responsive table-scroll">
+            <table class="table uix-table table-stripe" uix-table-loader="isLoading" loader-height="300">
+            <thead>
+            <tr>
+                <th>项目1</th>
+                <th>项目2</th>
+                <th>项目3</th>
+                <th>项目4</th>
+                <th>项目5</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in [1,2,3,4,5]">
+                <td>{{item}}项目1</td>
+                <td>{{item}}项目2</td>
+                <td>{{item}}项目3</td>
+                <td>{{item}}项目4</td>
+                <td>{{item}}项目5</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <uix-button text="'加载表格'" click="loadTable1()"></uix-button>
+    <div class="line b-b"></div>
+    <h4 class="m-t-xs font-bold panel-heading">不含表头的加载</h4>
+    <div class="padder-v">
+        <div class="table-responsive table-scroll">
+            <table class="table uix-table table-stripe" uix-table-loader="isLoading2" loader-height="300" no-thead="noHead">
+                <thead>
+                <tr>
+                    <th>项目1</th>
+                    <th>项目2</th>
+                    <th>项目3</th>
+                    <th>项目4</th>
+                    <th>项目5</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in [1,2,3,4,5]">
+                    <td>{{item}}项目1</td>
+                    <td>{{item}}项目2</td>
+                    <td>{{item}}项目3</td>
+                    <td>{{item}}项目4</td>
+                    <td>{{item}}项目5</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <uix-button text="'加载表格'" click="loadTable2()"></uix-button>
+    <div class="line b-b"></div>
+    <h4 class="m-t-xs font-bold panel-heading">加载失败</h4>
+    <div class="padder-v">
+        <div class="table-responsive table-scroll">
+            <table class="table uix-table table-stripe" uix-table-loader="isLoading3" loader-height="300">
+                    <thead>
+                    <tr>
+                        <th>项目1</th>
+                        <th>项目2</th>
+                        <th>项目3</th>
+                        <th>项目4</th>
+                        <th>项目5</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in [1,2,3,4,5]">
+                        <td>{{item}}项目1</td>
+                        <td>{{item}}项目2</td>
+                        <td>{{item}}项目3</td>
+                        <td>{{item}}项目4</td>
+                        <td>{{item}}项目5</td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    <uix-button text="'加载表格'" click="loadTable3()"></uix-button>
+</div>

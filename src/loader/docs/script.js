@@ -1,9 +1,11 @@
 angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$uixModal',  function ($scope, $timeout, $uixModal) {
     $scope.loadingList = [];
+    $scope.loadingList2 = [];
 
     $scope.isLoading = 0;
+    $scope.isLoading2 = 0;
 
-    $scope.reload = function () {
+    $scope.reload1 = function () {
         $scope.isLoading = 1;
         $timeout(function () {
             var test = {
@@ -15,6 +17,20 @@ angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$
             };
             $scope.loadingList.push(test);
             $scope.isLoading = 0;
+        }, 2000);
+    };
+    $scope.reload2 = function () {
+        $scope.isLoading2 = 1;
+        $timeout(function () {
+            var test = {
+                column1: 'column1',
+                column2: 'column2',
+                column3: 'column3',
+                column4: 'column4',
+                column5: 'column5'
+            };
+            $scope.loadingList2.push(test);
+            $scope.isLoading2 = 0;
         }, 2000);
     };
 
@@ -46,5 +62,6 @@ angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$
         });
     };
 
-    $scope.reload();
+    $scope.reload1();
+    $scope.reload2();
 }]);

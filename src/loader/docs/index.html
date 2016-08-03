@@ -1,32 +1,63 @@
 <div ng-controller="loaderDemoCtrl">
-    <div class="table-responsive">
-        <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading">
-            <thead>
-            <tr>
-                <th>列表1</th>
-                <th>列表2</th>
-                <th>列表3</th>
-                <th>列表4</th>
-                <th>列表5</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in loadingList">
-                <td>{{item.column1 }}</td>
-                <td>{{item.column2 }}</td>
-                <td>{{item.column3 }}</td>
-                <td>{{item.column4 }}</td>
-                <td>{{item.column5 }}</td>
-            </tr>
-            </tbody>
-        </table>
+    <h4 class="m-t-xs font-bold panel-heading">表格加载</h4>
+    <div class="padder-v">
+        <div class="table-responsive">
+            <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading">
+                <thead>
+                <tr>
+                    <th>列表1</th>
+                    <th>列表2</th>
+                    <th>列表3</th>
+                    <th>列表4</th>
+                    <th>列表5</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in loadingList">
+                    <td>{{item.column1 }}</td>
+                    <td>{{item.column2 }}</td>
+                    <td>{{item.column3 }}</td>
+                    <td>{{item.column4 }}</td>
+                    <td>{{item.column5 }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <uix-button text="'刷新数据'" click="reload()"></uix-button>
+    <uix-button text="'刷新数据'" click="reload1()"></uix-button>
+    <br>
+    <h4 class="m-t-xs font-bold panel-heading">固定宽高的加载</h4>
+    <div class="padder-v">
+        <div class="table-responsive">
+            <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading2" loader-height="300" loader-width="300">
+                <thead>
+                <tr>
+                    <th>列表1</th>
+                    <th>列表2</th>
+                    <th>列表3</th>
+                    <th>列表4</th>
+                    <th>列表5</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in loadingList2">
+                    <td>{{item.column1 }}</td>
+                    <td>{{item.column2 }}</td>
+                    <td>{{item.column3 }}</td>
+                    <td>{{item.column4 }}</td>
+                    <td>{{item.column5 }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <uix-button text="'刷新数据'" click="reload2()"></uix-button>
+    <br>
     <uix-button text="'打开Modal'" click="open()"></uix-button>
 </div>
 
 <script type="text/ng-template" id="modalContent.html">
-    <div uix-loader="isLoading" loader-height="400">
+    <div uix-loader="isLoading" loader-height="400" >
         <div class="modal-header">
             <h3 class="modal-title">I'm a modal!</h3>
         </div>
