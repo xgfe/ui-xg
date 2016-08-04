@@ -52,6 +52,8 @@ define([
             
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
             
+                $stateProvider.state('app.api.tableLoader',{url: "/tableLoader",templateUrl: 'partials/api/tableLoader.html'});
+            
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             
         

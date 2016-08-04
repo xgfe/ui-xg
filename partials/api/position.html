@@ -115,40 +115,40 @@ angular<span class="hljs-selector-class">.module</span>(<span class="hljs-string
 <div class="tab-content" id="codeTabPabels">
     
     <div class="tab-pane active" id="index_html">
-<pre><code>&lt;div ng-controller=<span class="hljs-string">"dropdownDemoCtrl"</span>&gt;
-    &lt;h4&gt;$uixPosition service&lt;<span class="hljs-regexp">/h4&gt;
-    &lt;div id="posdemoparent" ng-style="{'overflow': (parentScrollable &amp;&amp; 'scroll'), 'position': (parentRelative &amp;&amp; 'relative')}"&gt;
-        &lt;div class="checkbox"&gt;
-            &lt;label&gt;
-                &lt;input type="checkbox" ng-model="parentScrollable"&gt; Parent scrollable
-            &lt;/label</span>&gt;
-        &lt;<span class="hljs-regexp">/div&gt;
-        &lt;div class="checkbox"&gt;
-            &lt;label&gt;
-                &lt;input type="checkbox" ng-model="parentRelative"&gt; Parent relative
-            &lt;/label</span>&gt;
-        &lt;<span class="hljs-regexp">/div&gt;
-        &lt;button id="posdemobtn" class="btn btn-default" ng-click="getValues()"&gt;Get values&lt;/button</span>&gt;
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"dropdownDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>$uixPosition service<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"posdemoparent"</span> <span class="hljs-attr">ng-style</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{'overflow': (parentScrollable &amp;&amp; 'scroll'), 'position': (parentRelative &amp;&amp; 'relative')}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"checkbox"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"parentScrollable"</span>&gt;</span> Parent scrollable
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"checkbox"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"parentRelative"</span>&gt;</span> Parent relative
+            <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"posdemobtn"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"getValues()"</span>&gt;</span>Get values<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 
-        &lt;div id=<span class="hljs-string">"posdemodiv"</span>&gt;
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"posdemodiv"</span>&gt;</span>
             Demo element
-        &lt;<span class="hljs-regexp">/div&gt;
-    &lt;/div</span>&gt;
-    &lt;br /&gt;
-    <span class="hljs-symbol">offsetParent:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.offsetParent&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">scrollParent:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.scrollParent&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">scrollbarWidth:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>scrollbarWidth&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">position:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.position&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">offset:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.offset&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">viewportOffset:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.viewportOffset&#125;&#125;</span>
-    &lt;br /&gt;
-    <span class="hljs-symbol">positionElements:</span> <span class="hljs-template-variable"><span>&#123;&#123;</span>elemVals.positionElements&#125;&#125;</span>
-&lt;<span class="hljs-regexp">/div&gt;</span></code></pre>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    offsetParent: </span><span class="hljs-template-variable">{{elemVals.offsetParent}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    scrollParent: </span><span class="hljs-template-variable">{{elemVals.scrollParent}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    scrollbarWidth: </span><span class="hljs-template-variable">{{scrollbarWidth}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    position: </span><span class="hljs-template-variable">{{elemVals.position}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    offset: </span><span class="hljs-template-variable">{{elemVals.offset}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    viewportOffset: </span><span class="hljs-template-variable">{{elemVals.viewportOffset}</span><span class="xml">}
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span> /&gt;</span>
+    positionElements: </span><span class="hljs-template-variable">{{elemVals.positionElements}</span><span class="xml">}
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
     </div>
     
     
