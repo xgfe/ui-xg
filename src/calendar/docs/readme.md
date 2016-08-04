@@ -11,6 +11,7 @@
     [ max-date="date" ]
     [ show-time="boolean" ]
     [ starting-day="number" ]
+    [ date-filter="function($date)" ]
     [ exceptions="array">
 </uix-calendar>
 ```
@@ -36,5 +37,7 @@
 - startingDay(optional):每一周的开始天,0-周日,1-周一...以此类推
     - type:`number`
     - default:`0`(周日)
+- dateFilter(optional):时间的过滤器,方法的返回值为false的话表示时间不可选,接受参数$date
+    - type:`function`
 - exceptions(optional):禁用日期内的例外日期,日期对象或者日期对象数组
     - type:`date`|`array`

@@ -226,7 +226,7 @@ describe('ui.xg.calendar', function () {
             createCalendar();
             var button = element.find('.uix-cal-today-btn').eq(0);
             expect(button).toBeDefined();
-            expect(button.text().trim()).toBe('Today');
+            expect(button.text().trim()).toBe('today');
         });
         it('should select day', function () {
             createCalendar();
@@ -844,6 +844,22 @@ describe('ui.xg.calendar', function () {
             expect(scope.time.getDate()).toBe(3);
             selectDay(8);
             expect(scope.time.getDate()).toBe(8);
+        });
+    });
+    // dateFilter 属性
+    describe('dateFilter', function () {
+        it('should disable specific date', function () {
+            var el = '<uix-calendar show-time="false" ng-model="time" date-filter="dateFilter($date)"></uix-calendar>';
+            scope.time = getDate();
+            // 星期一不可选
+            scope.dateFilter = function ($date) {
+                return $date.getDay() !== 1;
+            };
+            createCalendar(el);
+            expect(getDay(7)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(14)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(21)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(28)).toHaveClass('uix-cal-day-disabled');
         });
     });
 });

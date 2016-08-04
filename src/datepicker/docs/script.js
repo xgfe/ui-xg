@@ -11,4 +11,9 @@ angular.module('uixDemo').controller('datepickerDemoCtrl', ['$scope', '$log', fu
     $scope.onChange = function () {
         $log.log('date changed');
     };
+
+    // 星期二不可选
+    $scope.dateFilter = function ($date) {
+        return $date.getDay() !== 2;
+    };
 }]);

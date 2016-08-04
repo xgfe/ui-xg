@@ -63,7 +63,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     '<div class="arrow"></div>' +
                     '<div class="popover-inner">' +
                     '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" ' +
-                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime">' +
+                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime" ' +
+                    'date-filter="dateFilterProp($date)">' +
                     '</uix-calendar>' +
                     '</div></div>';
                 this.init = function (_ngModelCtrl) {
@@ -105,6 +106,12 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
+
+                $scope.dateFilterProp = angular.isDefined($attrs.dateFilter) ? function ($date) {
+                    return $scope.dateFilter({$date: $date});
+                } : function () {
+                    return true;
+                };
 
                 // format
                 var format = uixDatepickerConfig.format;
@@ -192,7 +199,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                 placeholder: '@',
                 size: '@',
                 isDisabled: '=?ngDisabled',
-                onChange: '&?'
+                onChange: '&?',
+                dateFilter: '&?'
             },
             controller: 'uixDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {

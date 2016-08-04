@@ -17,6 +17,7 @@
     [ show-time="boolean" ]
     [ size="{{string}}" ]
     [ on-change="fn()" ]
+    [ date-filter="function($date)" ]
     [ ng-disabled="boolean" ]>
 </uix-datepicker>
 ```
@@ -50,6 +51,8 @@
     - type:`string`
     - default:`'md'`
 - onChange(optional):日期变化之后的回调
+    - type:`function`
+- dateFilter(optional):时间的过滤器,方法的返回值为false的话表示时间不可选,接受参数$date
     - type:`function`
 - ngDisabled(optional): 是否禁用
     - type:`boolean`
