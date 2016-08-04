@@ -740,6 +740,13 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             return {
                 getFormats: function () {
                     FORMATS = angular.extend(angular.copy($locale.DATETIME_FORMATS), FORMATS);
+                    if (!FORMATS.TODAY) {
+                        if ($locale.id === 'en-us') {
+                            FORMATS.TODAY = 'today';
+                        } else if ($locale.id === 'zh-cn') {
+                            FORMATS.TODAY = '今天';
+                        }
+                    }
                     if (!angular.isArray(FORMATS.SHORTMONTH) ||
                         FORMATS.SHORTMONTH.length !== 12 || !angular.isArray(FORMATS.MONTH) ||
                         FORMATS.MONTH.length !== 12 || !angular.isArray(FORMATS.SHORTDAY) ||
@@ -852,6 +859,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
             // 选择今天
             $scope.chooseToday = function () {
+                if ($scope.disableToday) {
+                    return;
+                }
                 var today = splitDate(new Date());
 
                 $scope.selectDate.setFullYear(today.year);
@@ -865,6 +875,22 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 buildDayPanel();
                 fireRender();
             };
+
+            $scope.$watch('minDate', dateRangeChaned);
+            $scope.$watch('maxDate', dateRangeChaned);
+
+            function dateRangeChaned() {
+                $scope.disableToday = todayIsDisabled();
+                buildDayPanel();
+            }
+
+            // 判断今天是否是不可选的
+            function todayIsDisabled() {
+                var date = formatDate(new Date());
+                return date.isDisabled;
+            }
+
+
             var cacheTime;
             // 点击时间进入选择时间面板
             $scope.selectTimePanelHandler = function () {
@@ -940,12 +966,12 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             };
 
             function fireRender() {
+                ngModelCtrl.$setViewValue($scope.selectDate);
+                ngModelCtrl.$render();
                 var fn = $scope.onChange ? $scope.onChange() : angular.noop();
                 if (fn && angular.isFunction(fn)) {
                     fn($scope.selectDate);
                 }
-                ngModelCtrl.$setViewValue($scope.selectDate);
-                ngModelCtrl.$render();
             }
 
             // 根据年,月构建日视图
@@ -1072,6 +1098,10 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 return tempDate1.day < tempDate2.day;
             }
 
+            var dateFilter = angular.isDefined($attrs.dateFilter) ? $scope.dateFilter : function () {
+                return true;
+            };
+
             //对日期进行格式化
             function formatDate(date) {
                 var tempDate = splitDate(date);
@@ -1084,7 +1114,8 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     tempDate.month === selectedDt.month &&
                     tempDate.day === selectedDt.day;
                 var isDisabled = ($scope.minDate && earlierThan(date, $scope.minDate) && !isExceptionDay(date)) ||
-                    ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date));
+                    ($scope.maxDate && earlierThan($scope.maxDate, date) && !isExceptionDay(date)) ||
+                    (!dateFilter({$date: date}) && !isExceptionDay(date));
                 var day = date.getDay();
                 return {
                     date: date,
@@ -1127,7 +1158,8 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             scope: {
                 minDate: '=?',
                 maxDate: '=?',
-                onChange: '&?'
+                onChange: '&?',
+                dateFilter: '&?'
             },
             controller: 'uixCalendarCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -1920,7 +1952,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     '<div class="arrow"></div>' +
                     '<div class="popover-inner">' +
                     '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" ' +
-                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime">' +
+                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime" ' +
+                    'date-filter="dateFilterProp($date)">' +
                     '</uix-calendar>' +
                     '</div></div>';
                 this.init = function (_ngModelCtrl) {
@@ -1962,6 +1995,12 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
+
+                $scope.dateFilterProp = angular.isDefined($attrs.dateFilter) ? function ($date) {
+                    return $scope.dateFilter({$date: $date});
+                } : function () {
+                    return true;
+                };
 
                 // format
                 var format = uixDatepickerConfig.format;
@@ -2049,7 +2088,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
                 placeholder: '@',
                 size: '@',
                 isDisabled: '=?ngDisabled',
-                onChange: '&?'
+                onChange: '&?',
+                dateFilter: '&?'
             },
             controller: 'uixDatepickerCtrl',
             link: function (scope, el, attrs, ctrls) {
@@ -6805,7 +6845,7 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "                <span class=\"glyphicon glyphicon-time\"></span>"+
     "                {{selectDate | date:'shortTime'}}"+
     "            </div>"+
-    "            <div class=\"uix-cal-today-btn\" ng-click=\"chooseToday()\">Today</div>"+
+    "            <div class=\"uix-cal-today-btn\" ng-click=\"chooseToday()\" ng-bind=\"FORMATS.TODAY\" ng-disabled=\"disableToday\"></div>"+
     "        </div>"+
     "    </div>"+
     "    <div class=\"uix-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+

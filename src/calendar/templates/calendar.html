@@ -24,7 +24,7 @@
                 <span class="glyphicon glyphicon-time"></span>
                 {{selectDate | date:'shortTime'}}
             </div>
-            <div class="uix-cal-today-btn" ng-click="chooseToday()">Today</div>
+            <div class="uix-cal-today-btn" ng-click="chooseToday()" ng-bind="FORMATS.TODAY" ng-disabled="disableToday"></div>
         </div>
     </div>
     <div class="uix-cal-panel-time" ng-show="panels.time"> <!--这里要用ng-show,不能用ng-if-->

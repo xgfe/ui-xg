@@ -86,18 +86,24 @@ describe('ui.xg.datepicker', function () {
         return dt;
     }
 
+    function getDay(day, outside) {
+        var selector = '.uix-cal-day';
+        if (outside) {
+            selector += '.uix-cal-outside';
+        } else {
+            selector += ':not(.uix-cal-outside)';
+        }
+        selector += ':contains("' + day + '")';
+        return getCalendarPanel().find(selector);
+    }
+
     /**
      * 点击某一天
      * @param date - 某月的几号
      * @param outside - 是否不是当月,如点击上一月
      */
     function clickDay(date, outside) {
-        var selector = '.uix-cal-day';
-        if (outside) {
-            selector += '.uix-cal-outside';
-        }
-        selector += ':contains("' + date + '")';
-        var day = getCalendarPanel().find(selector);
+        var day = getDay(date, outside);
         if (day.length) {
             day.eq(0).click();
             scope.$digest();
@@ -425,6 +431,23 @@ describe('ui.xg.datepicker', function () {
             expect(input).toHaveClass('input-lg');
             var btn = element.find('.input-group-btn > button');
             expect(btn).toHaveClass('btn-lg');
+        });
+    });
+    // dateFilter 属性
+    describe('dateFilter', function () {
+        it('should disable specific date', function () {
+            var el = '<uix-datepicker ng-model="time" date-filter="dateFilter($date)"></uix-datepicker>';
+            scope.time = getDate();
+            // 星期一不可选
+            scope.dateFilter = function ($date) {
+                return $date.getDay() !== 1;
+            };
+            createDatepicker(el);
+            clickToggleButton();
+            expect(getDay(4)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(11)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(18)).toHaveClass('uix-cal-day-disabled');
+            expect(getDay(25)).toHaveClass('uix-cal-day-disabled');
         });
     });
 });

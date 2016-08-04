@@ -73,12 +73,6 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none; }
-  .uix-calendar .uix-cal-day-today {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    border: 1px solid #3498db;
-    border-radius: 6px; }
   .uix-calendar .uix-cal-weekday {
     color: #3498db;
     font-weight: 700; }
@@ -98,6 +92,14 @@
       border: none;
       color: #bbb;
       background: none; }
+  .uix-calendar .uix-cal-day-today {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 1px solid #3498db;
+    border-radius: 6px; }
+    .uix-calendar .uix-cal-day-today:hover {
+      border: 1px solid #3498db; }
   .uix-calendar .uix-cal-footer {
     text-align: center;
     font-size: 12px;
@@ -110,6 +112,8 @@
     .uix-calendar .uix-cal-time:hover {
       text-decoration: underline;
       color: #3498db; }
+  .uix-calendar .uix-cal-today-btn[disabled] {
+    cursor: not-allowed; }
   .uix-calendar .uix-cal-today-btn {
     padding: 3px 0;
     font-size: 14px;
