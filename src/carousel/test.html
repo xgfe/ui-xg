@@ -22,11 +22,12 @@
     }
 
 </style>
-<uix-carousel active="1" interval="interval" no-loop="noloop" no-pause="noPause" no-transition="nt">
-    <div uix-carousel-item ng-click="test($index)"  ng-repeat="img in imgs" index="$index" active="$index ==0">
+<uix-carousel active="0" interval="interval" no-loop="noloop" no-pause="noPause" no-transition="nt">
+    <div uix-carousel-item ng-click="test($index)"  ng-repeat="img in imgs" index="$index">
         <img ng-src="{{img}}">
     </div>
 </uix-carousel>
+
 
 <button ng-click="change()">修改loop时间</button>
 <button ng-click="cl()">暂停/开启</button>

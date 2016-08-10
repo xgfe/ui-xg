@@ -30,6 +30,7 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
 				// 防止多个item设置active
 				for (var i = 0; i < $scope.itemList.length - 1; i++) {
 					$scope.itemList[i].ele.removeClass('active');
+					$scope.itemList[i].scope.active = false;
 				}
 
 				ele.addClass('active');
@@ -55,6 +56,9 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
 
 			var oldItem = $scope.itemList[oldNum];
 			var newItem = $scope.itemList[newNum];
+
+			oldItem.scope.active = false;
+			newItem.scope.active = true;
 
 			if (!!$scope.noTransition) {
 
