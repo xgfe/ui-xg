@@ -13,7 +13,7 @@ angular.module('uixDemo').controller('tableLoaderDemoCtrl', ['$scope', '$timeout
     $scope.loadTable2 = function () {
         $scope.isLoading2 = 1;
         $timeout(function () {
-            $scope.isLoading2 = 0;
+            $scope.isLoading2 = 2;
         }, 0);
     };
     $scope.loadTable3 = function () {
