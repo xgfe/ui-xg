@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-08-09
+ * Version: 1.1.0 - 2016-08-10
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.collapse","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker"]);
@@ -1283,6 +1283,7 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
 				// 防止多个item设置active
 				for (var i = 0; i < $scope.itemList.length - 1; i++) {
 					$scope.itemList[i].ele.removeClass('active');
+					$scope.itemList[i].scope.active = false;
 				}
 
 				ele.addClass('active');
@@ -1308,6 +1309,9 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
 
 			var oldItem = $scope.itemList[oldNum];
 			var newItem = $scope.itemList[newNum];
+
+			oldItem.scope.active = false;
+			newItem.scope.active = true;
 
 			if (!!$scope.noTransition) {
 
@@ -7133,16 +7137,16 @@ angular.module("carousel/templates/carousel-item.html",[]).run(["$templateCache"
 angular.module("carousel/templates/carousel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/carousel.html",
     "<div class=\"uix-carousel\">"+
-    "    <ol class=\"carousel-indicators\">"+
+    "    <ol class=\"carousel-indicators\" ng-if=\"itemList.length > 1\">"+
     "        <li ng-repeat=\"item in itemList\" data-slide-to=\"{{$index}}\" ng-click=\"change(indexNumber,$index)\" class=\"\" ng-class=\"{active:indexNumber === $index}\"></li>"+
     "    </ol>"+
     "    <div class=\"carousel-inner\" role=\"listbox\" ng-transclude></div>"+
     ""+
-    "    <a class=\"carousel-control left\" role=\"button\" ng-click=\"prev()\">"+
+    "    <a class=\"carousel-control left\" role=\"button\" ng-click=\"prev()\" ng-if=\"itemList.length > 1\">"+
     "        <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-left\"></span>"+
     "        <span class=\"sr-only\">previous</span>"+
     "    </a>"+
-    "    <a class=\"carousel-control right\" role=\"button\" ng-click=\"next()\">"+
+    "    <a class=\"carousel-control right\" role=\"button\" ng-click=\"next()\" ng-if=\"itemList.length > 1\">"+
     "        <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-right\"></span>"+
     "        <span class=\"sr-only\">next</span>"+
     "    </a>"+

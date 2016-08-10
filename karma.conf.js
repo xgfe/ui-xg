@@ -22,7 +22,7 @@ module.exports = function (config) {
             'misc/test-lib/matchers.js',
             'src/*/*.js',
             'src/*/templates/*.js',
-            'src/*/test/*.js'
+            'src/*/test/carousel.spec.js'
         ],
         plugins: [
             'karma-junit-reporter',
