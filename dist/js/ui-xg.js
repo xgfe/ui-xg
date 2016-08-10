@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-08-04
+ * Version: 1.1.0 - 2016-08-10
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.collapse","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker"]);
@@ -6502,6 +6502,11 @@ angular.module('ui.xg.tableLoader', [])
                 '<span class="error-text">数据加载失败! </span>' +
                 '</div>' +
                 '</td></tr></tbody>');
+            var emptyTipTpl = $('<tbody><tr><td colspan="100%">' +
+                '<div class="error-tip" style="height:' + height + 'px">' +
+                '<span class="error-text">数据列表为空! </span>' +
+                '</div>' +
+                '</td></tr></tbody>');
             var startTimer, endTimer;
             $element.addClass('uix-table-loader');
             $scope.$watch('uixTableLoader', function (newValue) {
@@ -6512,6 +6517,7 @@ angular.module('ui.xg.tableLoader', [])
                         thead.hide();
                     }
                     errorTipTpl.remove();
+                    emptyTipTpl.remove();
                     loadingTpl.show();
                     tbody.hide().before(loadingTpl);
                 } else
@@ -6535,12 +6541,23 @@ angular.module('ui.xg.tableLoader', [])
                         loadingTpl.hide().before(errorTipTpl);
                         loadingTpl.remove();
                     });
+                } else
+                if(newValue === 2) {
+                    endTimer = new Date().getTime();
+                    timeoutHandle(startTimer, endTimer, function () {
+                        if(noThead) {
+                            thead.show();
+                        }
+                        emptyTipTpl.show();
+                        loadingTpl.hide().before(emptyTipTpl);
+                        loadingTpl.remove();
+                    });
                 }
             });
             function timeoutHandle(startTimer, endTimer, callback) {
                 var timer;
-                if((endTimer - startTimer) < 1000) {
-                    timer = 1000;
+                if((endTimer - startTimer) < 300) {
+                    timer = 300;
                 } else {
                     timer = 0;
                 }
