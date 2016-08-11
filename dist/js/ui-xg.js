@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.1.0 - 2016-08-10
+ * Version: 1.1.0 - 2016-08-11
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.collapse","ui.xg.position","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.stackedMap","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.tooltip","ui.xg.popover","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker"]);
@@ -6483,9 +6483,8 @@ angular.module('ui.xg.tableLoader', [])
         function ($scope, $timeout, $element, $window) {
 
             var $ = angular.element;
-            var tNode = $($element.children());
-            var thead = $(tNode[0]);
-            var tbody = $(tNode[1]);
+            var thead = $element.children('thead');
+            var tbody = $element.children('tbody');
 
             var noThead = $scope.noThead;
             var windowHeight = $($window).height();

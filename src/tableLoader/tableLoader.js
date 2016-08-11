@@ -9,9 +9,8 @@ angular.module('ui.xg.tableLoader', [])
         function ($scope, $timeout, $element, $window) {
 
             var $ = angular.element;
-            var tNode = $($element.children());
-            var thead = $(tNode[0]);
-            var tbody = $(tNode[1]);
+            var thead = $element.children('thead');
+            var tbody = $element.children('tbody');
 
             var noThead = $scope.noThead;
             var windowHeight = $($window).height();
