@@ -9,22 +9,21 @@ $inpu-height: 30px;
     .uix-datepicker-input {
         cursor: pointer;
         background: transparent;
-        user-select:none;
-        -moz-user-select:none;
-        -webkit-user-select:none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
     }
     .uix-datepicker-input.disabled,
-    .uix-datepicker-input[disabled]{
+    .uix-datepicker-input[disabled] {
         cursor: not-allowed;
     }
     .uix-datepicker-remove {
         border-radius: 0;
         border-left: 0;
     }
-}
-
-.uix-datepicker ~ .uix-datepicker-popover.in {
-    display: block;
+    .popover-content {
+        padding: 0;
+    }
     .uix-calendar {
         border: 0;
     }
