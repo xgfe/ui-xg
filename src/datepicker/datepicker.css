@@ -1,6 +1,5 @@
 .uix-datepicker {
-  position: relative;
-  display: inline-block; }
+  position: relative; }
   .uix-datepicker button:focus {
     outline: 0; }
   .uix-datepicker .uix-datepicker-input {
