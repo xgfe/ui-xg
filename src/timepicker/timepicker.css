@@ -1,6 +1,5 @@
 .uix-timepicker {
-  position: relative;
-  display: inline-block; }
+  position: relative; }
   .uix-timepicker .uix-timepicker-input {
     cursor: pointer;
     background: transparent;
