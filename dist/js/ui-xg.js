@@ -643,9 +643,9 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        minTime = new Date($scope.minTime);
+                        minTime = buildDate($scope.minTime);
                         currentTime[method](value);
-                        result = currentTime < minTime;
+                        result = currentTime <= minTime;
                     }
                 }
                 if (result) {
@@ -658,20 +658,29 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        maxTime = new Date($scope.maxTime);
+                        maxTime = buildDate($scope.maxTime);
                         currentTime[method](value);
-                        result = currentTime > maxTime;
+                        result = currentTime >= maxTime;
                     }
                 }
                 return result;
             }
 
-            // 根据输入框的内容生成时间
-            function buildDate() {
+            // 根据输入框的内容或一个时间生成时间
+            function buildDate(time) {
                 var dt = new Date();
-                dt.setHours($scope.hour);
-                dt.setMinutes($scope.minute);
-                dt.setSeconds($scope.second);
+                var hour = $scope.hour;
+                var minute = $scope.minute;
+                var second = $scope.second;
+                if (time) {
+                    time = new Date(time);
+                    hour = time.getHours();
+                    minute = time.getMinutes();
+                    second = time.getSeconds();
+                }
+                dt.setHours(hour);
+                dt.setMinutes(minute);
+                dt.setSeconds(second);
                 return dt;
             }
 
@@ -876,8 +885,30 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 fireRender();
             };
 
-            $scope.$watch('minDate', dateRangeChaned);
-            $scope.$watch('maxDate', dateRangeChaned);
+            $scope.$watch('minDate', function (newVal) {
+                if (angular.isUndefined(newVal)) {
+                    return;
+                }
+                if (!angular.isDate(new Date(newVal))) {
+                    $log.warn('Calendar directive: "minDate" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
+                    return;
+                }
+                dateRangeChaned();
+            });
+            $scope.$watch('maxDate', function (newVal) {
+                if (angular.isUndefined(newVal)) {
+                    return;
+                }
+                if (!angular.isDate(new Date(newVal))) {
+                    $log.warn('Calendar directive: "maxDate" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
+                    return;
+                }
+                dateRangeChaned();
+            });
 
             function dateRangeChaned() {
                 $scope.disableToday = todayIsDisabled();
@@ -894,8 +925,29 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             var cacheTime;
             // 点击时间进入选择时间面板
             $scope.selectTimePanelHandler = function () {
-                $scope.selectPanel('time');
                 cacheTime = angular.copy($scope.selectDate);
+                var sDay = $scope.selectDate.getDate();
+                var minDate = $scope.minDate;
+                var maxDate = $scope.maxDate;
+
+                if (minDate) {
+                    var minDay = new Date(minDate).getDate();
+                    if (sDay !== minDay) {
+                        $scope.minTime = createTime();
+                    } else {
+                        $scope.minTime = angular.copy(minDate);
+                    }
+                }
+
+                if (maxDate) {
+                    var maxDay = new Date(maxDate).getDate();
+                    if (sDay !== maxDay) {
+                        $scope.maxTime = createTime(23, 59, 59);
+                    } else {
+                        $scope.maxTime = angular.copy(maxDate);
+                    }
+                }
+                $scope.selectPanel('time');
             };
 
             // 时间面板返回
@@ -1078,6 +1130,14 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 date.setFullYear(year);
                 date.setDate(day || 1); // set date before set month
                 date.setMonth(month || 0);
+                return date;
+            }
+
+            function createTime(hour, minute, seconds) {
+                var date = new Date();
+                date.setHours(hour || 0);
+                date.setMinutes(minute || 0);
+                date.setSeconds(seconds || 0);
                 return date;
             }
 
@@ -1898,7 +1958,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format: 'yyyy-MM-dd hh:mm:ss', // 日期格式化
+        format: 'yyyy-MM-dd HH:mm:ss', // 日期格式化
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
@@ -6865,7 +6925,7 @@ angular.module("calendar/templates/calendar.html",[]).run(["$templateCache",func
     "        </div>"+
     "    </div>"+
     "    <div class=\"uix-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->"+
-    "        <uix-timepanel ng-model=\"selectDate\"></uix-timepanel>"+
+    "        <uix-timepanel min-time=\"minTime\" max-time=\"maxTime\" ng-model=\"selectDate\"></uix-timepanel>"+
     "        <div class=\"btn-group clearfix\">"+
     "            <button class=\"btn btn-sm btn-default uix-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>"+
     "            <button class=\"btn btn-sm btn-default uix-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>"+

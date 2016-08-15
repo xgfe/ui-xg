@@ -264,9 +264,9 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        minTime = new Date($scope.minTime);
+                        minTime = buildDate($scope.minTime);
                         currentTime[method](value);
-                        result = currentTime < minTime;
+                        result = currentTime <= minTime;
                     }
                 }
                 if (result) {
@@ -279,20 +279,29 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        maxTime = new Date($scope.maxTime);
+                        maxTime = buildDate($scope.maxTime);
                         currentTime[method](value);
-                        result = currentTime > maxTime;
+                        result = currentTime >= maxTime;
                     }
                 }
                 return result;
             }
 
-            // 根据输入框的内容生成时间
-            function buildDate() {
+            // 根据输入框的内容或一个时间生成时间
+            function buildDate(time) {
                 var dt = new Date();
-                dt.setHours($scope.hour);
-                dt.setMinutes($scope.minute);
-                dt.setSeconds($scope.second);
+                var hour = $scope.hour;
+                var minute = $scope.minute;
+                var second = $scope.second;
+                if (time) {
+                    time = new Date(time);
+                    hour = time.getHours();
+                    minute = time.getMinutes();
+                    second = time.getSeconds();
+                }
+                dt.setHours(hour);
+                dt.setMinutes(minute);
+                dt.setSeconds(second);
                 return dt;
             }
 

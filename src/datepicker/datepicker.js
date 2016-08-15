@@ -9,7 +9,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format: 'yyyy-MM-dd hh:mm:ss', // 日期格式化
+        format: 'yyyy-MM-dd HH:mm:ss', // 日期格式化
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
