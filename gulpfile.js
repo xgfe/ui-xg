@@ -60,11 +60,40 @@ gulp.task('eslint', function () {
 /**
  * karma 执行测试用例，可单独测试某一个模块
  */
+var karmaConfig = {
+    set: function (configuration) {
+        this.configuration = configuration;
+    },
+    LOG_DISABLE: 'OFF',
+    LOG_ERROR: 'ERROR',
+    LOG_WARN: 'WARN',
+    LOG_INFO: 'INFO',
+    LOG_DEBUG: 'DEBUG'
+};
 gulp.task('karma', ['html2js'], function (done) {
-    new KarmaServer({
-        configFile: __dirname + '/karma.conf.js',
+    var module = process.argv.slice(3).map(function (argv) {
+        return argv.slice(1);
+    })[0];
+    var configPath = __dirname + '/karma.conf.js';
+    var configuration = {
+        configFile: configPath,
         singleRun: true
-    }, done).start();
+    };
+    var index;
+    if (module) {
+        require(configPath)(karmaConfig);
+        configuration = karmaConfig.configuration;
+        ['src/*/*.js', 'src/*/templates/*.js', 'src/*/test/*.js'].forEach(function (file) {
+            index = configuration.files.indexOf(file);
+            configuration.files.splice(index, 1);
+        });
+        var deps = [module].concat(dependenciesForModule(module, {}));
+        var globExp = '+(' + deps.join('|') + ')';
+        configuration.files.push('src/' + globExp + '/*.js');
+        configuration.files.push('src/' + globExp + '/templates/*.js');
+        configuration.files.push('src/' + globExp + '/test/*.js');
+    }
+    new KarmaServer(configuration, done).start();
 });
 gulp.task('clean:html2js', function () {
     return gulp.src(config.src + '/**/*.html.js', {read: false})
@@ -111,7 +140,7 @@ function findModule(name) {
         tplFiles: _.matchFile(config.src + '/' + name + '/templates/*.html'),
         tpljsFiles: _.matchFile(config.src + '/' + name + '/templates/*.html.js'),
         tplModules: _.matchFile(config.src + '/' + name + '/templates/*.html').map(getTplModule),
-        dependencies: dependenciesForModule(name),
+        dependencies: dependenciesForModule(name, {}),
         docs: {
             md: '',
             html: '',
@@ -198,7 +227,11 @@ function getDocsFile2(name, filename) {
     var path = config.scene + '/' + name + '/' + filename;
     return _.readFile(path);
 }
-function dependenciesForModule(name) {
+function dependenciesForModule(name, depModuleMapping) {
+    if (depModuleMapping[name]) {
+        return [];
+    }
+    depModuleMapping[name] = true;
     var deps = [];
     _.matchFile(config.src + '/' + name + '/*.js').map(_.readFile).forEach(function (contents) {
         var moduleDeclIndex = contents.indexOf('angular.module(');
@@ -209,9 +242,13 @@ function dependenciesForModule(name) {
         dependencies.split(',').forEach(function (dep) {
             if (dep.indexOf(config.moduleName + '.') > -1) {
                 depName = dep.trim().replace(config.moduleName + '.', '').replace(/['"]/g, '');
-                if (deps.indexOf(depName) < 0) {
+                if (deps.indexOf(depName) === -1 && depName !== name) {
                     deps.push(depName);
-                    deps = deps.concat(dependenciesForModule(depName));
+                    dependenciesForModule(depName, depModuleMapping).forEach(function (value) {
+                        if (deps.indexOf(value) === -1 && value !== name) {
+                            deps.push(value);
+                        }
+                    });
                 }
             }
         });
