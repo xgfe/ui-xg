@@ -4,7 +4,7 @@
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.collapse","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker"]);
-angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker.html"]);
+angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html"]);
 /**
  * alert
  * 警告提示指令
@@ -2800,7 +2800,7 @@ angular.module('ui.xg.popover', ['ui.xg.tooltip'])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position', 'ui.xg.popover'])
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
     .constant('uixDatepickerConfig', {
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
@@ -6611,7 +6611,7 @@ angular.module('ui.xg.tableLoader', [])
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
+angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
     .constant('uixTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
@@ -6653,29 +6653,18 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             openScope.showTimepanel = false;
             openScope.$apply();
         }
-
     }])
-    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log',
-        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$uixPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter, $uixPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter',
+        function ($scope, $element, $attrs, $parse, $log,
+                  uixTimepickerService, timepickerConfig, dateFilter) {
             var ngModelCtrl = {$setViewValue: angular.noop};
-            var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
-                '<div class="arrow"></div>' +
-                '<div class="popover-inner">' +
-                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" ' +
-                'second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" ' +
-                'on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds">' +
-                '</uix-timepanel>' +
-                '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
                 ngModelCtrl.$render = this.render;
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     return modelValue ? new Date(modelValue) : null;
                 });
-                var timepanelDOM = $compile(template)($scope);
-                $element.after(timepanelDOM);
             };
             var _this = this;
             /*
@@ -6715,11 +6704,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
 
             $scope.showTimepanel = false;
             this.toggle = function (open) {
-                var show = arguments.length ? !!open : !$scope.showTimepanel;
-                if (show) {
-                    adjustPosition();
-                }
-                $scope.showTimepanel = show;
+                $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
             };
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
@@ -6753,7 +6738,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                 }
             };
             $scope.getTimepanelElement = function () {
-                return $element.next('.uix-timepicker-popover')[0];
+                return $element[0].querySelector('.uix-timepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');
@@ -6768,20 +6753,6 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             $scope.$on('$locationChangeSuccess', function () {
                 $scope.showTimepanel = false;
             });
-            function adjustPosition() {
-                var popoverEle = $element.next('.popover');
-                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
-                popoverEle.removeClass('top bottom');
-                if (elePosition.placement.indexOf('top') !== -1) {
-                    popoverEle.addClass('top');
-                } else {
-                    popoverEle.addClass('bottom');
-                }
-                popoverEle.css({
-                    top: elePosition.top + 'px',
-                    left: elePosition.left + 'px'
-                });
-            }
         }])
     .directive('uixTimepicker', function () {
         return {
@@ -7033,7 +7004,7 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/datepicker.html",
     "<div class=\"uix-datepicker\">"+
     "    <div class=\"input-group\" popover-class=\"uix-datepicker-popover\" popover-trigger=\"none\" popover-is-open=\"showCalendar\""+
-    "         popover-placement=\"auto bottom bottom-left\" uix-popover-template=\"'templates/datepicker-calendar.html'\">"+
+    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/datepicker-calendar.html'\">"+
     "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
     "               ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\""+
     "               ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\""+
@@ -7217,10 +7188,18 @@ angular.module("switch/templates/switch.html",[]).run(["$templateCache",function
     "    <i></i>"+
     "</label>");
 }]);
+angular.module("timepicker/templates/timepicker-timepanel.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/timepicker-timepanel.html",
+    "<uix-timepanel readonly-input=\"readonlyInput\" hour-step=\"hourStep\" minute-step=\"minuteStep\""+
+    "second-step=\"secondStep\" ng-model=\"selectedTime\""+
+    "on-change=\"changeTime\" min-time=\"minTime\" max-time=\"maxTime\" show-seconds=\"showSeconds\">"+
+    "</uix-timepanel>");
+}]);
 angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepicker.html",
     "<div class=\"uix-timepicker\">"+
-    "    <div class=\"input-group\">"+
+    "    <div class=\"input-group\" popover-class=\"uix-timepicker-popover\" popover-trigger=\"none\" popover-is-open=\"showTimepanel\""+
+    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/timepicker-timepanel.html'\">"+
     "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
     "               class=\"form-control uix-timepicker-input\" ng-click=\"toggleTimepanel($event)\""+
     "               placeholder=\"{{placeholder}}\" ng-model=\"inputValue\" readonly>"+

@@ -4,7 +4,7 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position', 'ui.xg.popover'])
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
     .constant('uixDatepickerConfig', {
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
