@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     marked = require('marked'),
     renderer = new marked.Renderer(),
     highlight = require('highlight.js'),
+    conventionalChangelog = require('gulp-conventional-changelog'),
     ejs = require('ejs');
 
 var config = {
@@ -514,6 +515,15 @@ gulp.task('create', function () {
     newModules.forEach(function (module) {
         _.createModuleFiles(module);
     });
+});
+gulp.task('changelog', function () {
+    return gulp.src('CHANGELOG.md', {
+        buffer: false
+    })
+    .pipe(conventionalChangelog({
+        preset: 'angular'
+    }))
+    .pipe(gulp.dest('./'));
 });
 gulp.task('test', ['clean:html2js', 'html2js', 'karma']);
 gulp.task('build', ['clean', 'eslint', 'concat:css', 'concat:js', 'uglify']);
