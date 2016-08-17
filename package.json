@@ -48,6 +48,7 @@
     "karma-junit-reporter": "^0.3.8",
     "lint-plus": "^0.6.7",
     "marked": "^0.3.5",
+    "run-sequence": "^1.2.2",
     "xg-htmlhint": "0.0.9"
   },
   "config": {
