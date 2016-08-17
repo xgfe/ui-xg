@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    runSequence = require('run-sequence').use(gulp),
     _ = require('./misc/tasks/util'),
     html2js = require('gulp-angular-html2js'),
     eslint = require('gulp-eslint'),
@@ -103,7 +104,7 @@ gulp.task('clean:html2js', function () {
 /**
  * 将angular的模板文件转化为js
  */
-gulp.task('html2js', function () {
+gulp.task('html2js', ['clean:html2js'], function () {
     return gulp.src(config.src + '/*/templates/*.html')
         .pipe(html2js({
             moduleName: function (filename, subpath) {
@@ -259,24 +260,14 @@ function dependenciesForModule(name, depModuleMapping) {
 /**
  * 获取所有模块
  */
-gulp.task('modules', ['html2js'], function () {
-    var argvs = process.argv.slice(2);
-    var pos = argvs.indexOf('-m');
-    var moduleNames = 'all';
-    if (~pos && argvs[pos + 1]) {
-        moduleNames = argvs[pos + 1].split(',').filter(function (match) {
-            return match;
-        });
-    }
-    var modulesPaths;
-    if (moduleNames === 'all' || !moduleNames.length) {
-        modulesPaths = config.src + '/*/';
-    } else {
-        modulesPaths = config.src + '/*(' + moduleNames.join('|') + ')/';
-    }
+gulp.task('modules', function () {
+    var modulesPaths = config.src + '/*/';
+    config.modules = [];
     _.matchFile(modulesPaths).forEach(function (dir) {
         findModule(dir.split('/')[1]);
     });
+    config.srcModules = [];
+    config.tplModules = [];
     config.modules.forEach(function (module) {
         config.srcModules.push(module.moduleName);
         config.tplModules = config.tplModules.concat(module.tplModules);
@@ -290,7 +281,7 @@ gulp.task('sass', function () {
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(config.src));
 });
-gulp.task('concat:css', ['modules', 'sass'], function () {
+gulp.task('concat:css', function () {
     var src = config.modules.map(function (module) {
         return module.name;
     });
@@ -301,7 +292,7 @@ gulp.task('concat:css', ['modules', 'sass'], function () {
             .pipe(gulp.dest('./' + config.dist + '/css/'));
     }
 });
-gulp.task('concat:js', ['modules'], function () {
+gulp.task('concat:js', function () {
     function getFileMapping() {
         var mapping = [];
         config.modules.forEach(function (module) {
@@ -326,7 +317,7 @@ gulp.task('concat:js', ['modules'], function () {
 /**
  * 压缩js和css
  */
-gulp.task('uglify', ['concat:css', 'concat:js'], function () {
+gulp.task('uglify', function () {
     gulp.src([config.dist + '/css/*.css', '!' + config.dist + '/css/*.min.css'])
         .pipe(cleanCss())
         .pipe(rename({suffix: '.min'}))
@@ -351,7 +342,7 @@ gulp.task('clean', function () {
         .pipe(rimraf());
 });
 // 复制静态文件
-gulp.task('copy', ['uglify'], function () {
+gulp.task('copy', function () {
     // copy assets
     gulp.src(['misc/assets/**/*.html', 'misc/index.html'])
         .pipe(gulp.dest(config.dist + '/docs'));
@@ -374,7 +365,7 @@ gulp.task('copy', ['uglify'], function () {
         .pipe(gulp.dest(config.dist + '/docs/css'));
 });
 // 自动构建API网站
-gulp.task('docs', ['copy'], function () {
+gulp.task('docs:api', function () {
     var docPath = config.dist + '/docs/',
         tplPath = 'misc/tpl/';
     if (!_.isExists(docPath + 'partials/api')) {
@@ -516,17 +507,27 @@ gulp.task('create', function () {
         _.createModuleFiles(module);
     });
 });
+//自动生成CHANGELOG.md
 gulp.task('changelog', function () {
-    return gulp.src('CHANGELOG.md', {
-        buffer: false
-    })
-    .pipe(conventionalChangelog({
-        preset: 'angular'
-    }))
-    .pipe(gulp.dest('./'));
+    return gulp.src('CHANGELOG.md', {buffer: false})
+        .pipe(conventionalChangelog({
+            preset: 'angular'
+        }))
+        .pipe(gulp.dest('./'));
 });
-gulp.task('test', ['clean:html2js', 'html2js', 'karma']);
-gulp.task('build', ['clean', 'eslint', 'concat:css', 'concat:js', 'uglify']);
-gulp.task('default', ['test'], function () {
-    gulp.run('build');
+gulp.task('test', ['karma']);
+gulp.task('build', function (done) {
+    runSequence(
+        ['clean', 'clean:html2js'],
+        'eslint',
+        'html2js',
+        ['sass', 'modules'],
+        ['concat:css', 'concat:js'],
+        'uglify',
+        'copy',
+        'docs:api',
+        done);
+});
+gulp.task('default', function (done) {
+    runSequence('test', 'build', done);
 });
