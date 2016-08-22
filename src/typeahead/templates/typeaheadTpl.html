@@ -1,0 +1,8 @@
+<div class="btn-group">
+    <input type="text" ng-model="typeahead.query" class="input-sm form-control">
+    <ul uix-typeahead-popup class="dropdown-menu typeahead-menu" ng-show="isShow">
+        <li ng-repeat="item in matchList track by $index" ng-click="selectItem(item)" ng-class="{active: isActive($index)}">
+            <a ng-bind-html="item.html|html"></a>
+        </li>
+    </ul>
+</div>

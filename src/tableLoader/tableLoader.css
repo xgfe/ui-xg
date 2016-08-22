@@ -13,7 +13,7 @@
     margin-left: -15px; }
   .uix-table-loader .error-tip {
     position: relative;
-    height: 60px; }
+    min-height: 200px; }
   .uix-table-loader .error-text {
     font-size: 30px;
     position: absolute;
