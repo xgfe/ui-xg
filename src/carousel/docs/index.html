@@ -1,0 +1,12 @@
+<div ng-controller="carouselDemoCtrl">
+    <uix-carousel interval="interval" no-loop="noLoop" no-pause="noPause" no-transition="noTransition">
+        <div uix-carousel-item  ng-repeat="img in imgs" index="img.index" active="img.active">
+            <img ng-src="{{img.src}}">
+        </div>
+    </uix-carousel>
+    <button class="btn btn-default" ng-click="changeLoop()">自动切换 暂停/启用</button>
+    <button class="btn btn-default" ng-click="changePause()">鼠标移入停止 取消/启用</button>
+    <button class="btn btn-default" ng-click="changeTransition()">动画效果 取消/启用</button>
+    <input type="text" ng-model="interval">
+    <pre>暂停自动切换:{{noLoop}},鼠标移入不停止:{{noPause}},动画无效果: {{noTransition}},动画切换时间:{{interval}}</pre>
+</div>

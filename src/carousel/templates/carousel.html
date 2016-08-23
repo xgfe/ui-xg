@@ -1,0 +1,15 @@
+<div class="uix-carousel">
+    <ol class="carousel-indicators" ng-if="itemList.length > 1">
+        <li ng-repeat="item in itemList" data-slide-to="{{$index}}" ng-click="change(indexNumber,$index)" class="" ng-class="{active:indexNumber === $index}"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox" ng-transclude></div>
+
+    <a class="carousel-control left" role="button" ng-click="prev()" ng-if="itemList.length > 1">
+        <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+        <span class="sr-only">previous</span>
+    </a>
+    <a class="carousel-control right" role="button" ng-click="next()" ng-if="itemList.length > 1">
+        <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+        <span class="sr-only">next</span>
+    </a>
+</div>
