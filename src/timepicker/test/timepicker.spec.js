@@ -1,17 +1,25 @@
+/* eslint angular/timeout-service:0  */
 describe('ui.xg.timepicker', function () {
     var compile,
         scope,
         date,
         timepickerConfig, //timepicker的常量配置
+        $timeout,
         element;    //指令DOM结点;
 
     beforeEach(function () {
         module('ui.xg.position');
+        module('ui.xg.popover');
+        module('ui.xg.tooltip');
+        module('ui.xg.stackedMap');
         module('ui.xg.timepanel');
         module('timepanel/templates/timepanel.html');
         module('ui.xg.timepicker');
         module('timepicker/templates/timepicker.html');
-        inject(function ($compile, $rootScope, uixTimepickerConfig, dateFilter) {
+        module('timepicker/templates/timepicker-timepanel.html');
+        module('popover/templates/popover-template-popup.html');
+        inject(function (_$timeout_, $compile, $rootScope, uixTimepickerConfig, dateFilter) {
+            $timeout = _$timeout_;
             compile = $compile;
             scope = $rootScope.$new();
             timepickerConfig = uixTimepickerConfig;
@@ -50,7 +58,7 @@ describe('ui.xg.timepicker', function () {
     }
 
     function getTimepanel() {
-        return element.next('.uix-timepicker-popover');
+        return element.find('.uix-timepanel');
     }
 
     function increaseHour() {
@@ -93,15 +101,19 @@ describe('ui.xg.timepicker', function () {
         expect(val).toEqual(date(dt, timepickerConfig.format));
     });
 
-    it('should toggle timepanel when click input and button', function () {
+    it('should toggle timepanel when click input and button', function (done) {
         var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         scope.time = getDate();
         createTimepicker(el);
-        expect(getTimepanel()).not.toHaveClass('in');
+        expect(getTimepanel().length).toBe(0);
         clickInput();
-        expect(getTimepanel()).toHaveClass('in');
+        expect(getTimepanel().length).toBe(1);
         clickButton();
-        expect(getTimepanel()).not.toHaveClass('in');
+        setTimeout(function () {
+            $timeout.flush();
+            expect(getTimepanel().length).toBe(0);
+            done();
+        }, 200);
     });
 
     it('ngModel should be two-way data binding', function () {
@@ -109,6 +121,7 @@ describe('ui.xg.timepicker', function () {
         var dt = getDate();
         scope.time = dt;
         createTimepicker(el);
+        clickInput();
         decreaseHour();
         var hour = scope.time.getHours();
         expect(hour).toEqual(dt.getHours() - timepickerConfig.hourStep);
@@ -121,6 +134,7 @@ describe('ui.xg.timepicker', function () {
         scope.time = dt;
         scope.hourStep = 3;
         createTimepicker(el);
+        clickInput();
         var times = getTimes();
         expect(hour - scope.hourStep).toEqual(parseInt(times.hour_smaller, 10));
         expect(hour).toEqual(parseInt(times.hour, 10));

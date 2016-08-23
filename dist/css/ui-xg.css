@@ -88,81 +88,6 @@
   margin-right: -6px;
   margin-left: 6px; }
 
-.uix-carousel {
-  position: relative; }
-
-.uix-datepicker {
-  position: relative;
-  display: inline-block; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-datepicker .uix-datepicker-input.disabled,
-  .uix-datepicker .uix-datepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-
-.uix-datepicker ~ .uix-datepicker-popover.in {
-  display: block; }
-  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
-    border: 0; }
-
-.dropdown-multi > .dropdown-menu > li {
-  float: left; }
-
-.dropdown-multi > .dropdown-menu > li:not(.divider) {
-  border-right: 1px solid #eaeff0;
-  padding-right: 10px;
-  padding-left: 10px;
-  max-width: 160px; }
-
-.dropdown-multi > .dropdown-menu > li > a {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  padding: 3px 0; }
-
-.dropdown.open .dropdown-menu {
-  display: block; }
-
-@media screen and (max-width: 767px) {
-  .dropdown-multi > .dropdown-menu {
-    width: 250px !important; }
-    .dropdown-multi > .dropdown-menu li:not(.divider) {
-      width: 50% !important; }
-  .dropdown.open {
-    width: 100%; } }
-
-.uix-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-loader .loading {
-    position: relative;
-    background: rgba(96, 96, 96, 0.05);
-    min-height: 200px; }
-  .uix-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-loader .error-tip {
-    position: relative;
-    height: 60px; }
-  .uix-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
-
 .uix-calendar {
   display: inline-block;
   border-radius: 3px;
@@ -313,6 +238,79 @@
     color: #fff; }
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
+
+.uix-carousel {
+  position: relative; }
+
+.uix-datepicker {
+  position: relative; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-datepicker .uix-datepicker-input.disabled,
+  .uix-datepicker .uix-datepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+  .uix-datepicker .popover-content {
+    padding: 0; }
+  .uix-datepicker .uix-calendar {
+    border: 0; }
+
+.dropdown-multi > .dropdown-menu > li {
+  float: left; }
+
+.dropdown-multi > .dropdown-menu > li:not(.divider) {
+  border-right: 1px solid #eaeff0;
+  padding-right: 10px;
+  padding-left: 10px;
+  max-width: 160px; }
+
+.dropdown-multi > .dropdown-menu > li > a {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 0; }
+
+.dropdown.open .dropdown-menu {
+  display: block; }
+
+@media screen and (max-width: 767px) {
+  .dropdown-multi > .dropdown-menu {
+    width: 250px !important; }
+    .dropdown-multi > .dropdown-menu li:not(.divider) {
+      width: 50% !important; }
+  .dropdown.open {
+    width: 100%; } }
+
+.uix-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-loader .loading {
+    position: relative;
+    background: rgba(96, 96, 96, 0.05);
+    min-height: 200px; }
+  .uix-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
 
 /*
  *  uix-notify-container styles
@@ -671,7 +669,7 @@ body > .uix-select.open {
     margin-left: -15px; }
   .uix-table-loader .error-tip {
     position: relative;
-    height: 60px; }
+    min-height: 200px; }
   .uix-table-loader .error-text {
     font-size: 30px;
     position: absolute;
@@ -731,8 +729,7 @@ body > .uix-select.open {
     font-size: 10px; }
 
 .uix-timepicker {
-  position: relative;
-  display: inline-block; }
+  position: relative; }
   .uix-timepicker .uix-timepicker-input {
     cursor: pointer;
     background: transparent;
@@ -744,8 +741,14 @@ body > .uix-select.open {
     cursor: not-allowed; }
   .uix-timepicker button {
     outline: none; }
-
-.uix-timepicker-popover.in {
-  display: block; }
-  .uix-timepicker-popover.in .uix-timepanel {
+  .uix-timepicker .popover-content {
+    padding: 0; }
+  .uix-timepicker .uix-timepanel {
     border: 0; }
+
+[uix-typeahead-popup].dropdown-menu {
+  display: block; }
+
+.typeahead-menu {
+  max-height: 500px;
+  overflow: auto; }

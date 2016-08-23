@@ -38,7 +38,7 @@
     - default:`false`
 - format(optional):日期格式化,与angular自带的[dateFilter](https://docs.angularjs.org/api/ng/filter/date)可选的格式一样。
     - type:`string`
-    - default:`yyyy-MM-dd hh:mm:ss a`
+    - default:`yyyy-MM-dd HH:mm:ss`
 - exceptions(optional):禁用日期内的例外日期,日期对象或者日期对象数组
     - type:`date`|`array`
 - autoClose(optional):选择日期之后是否自动关闭面板

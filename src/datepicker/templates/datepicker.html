@@ -1,5 +1,6 @@
 <div class="uix-datepicker">
-    <div class="input-group">
+    <div class="input-group" popover-class="uix-datepicker-popover" popover-trigger="none" popover-is-open="showCalendar"
+         popover-placement="auto bottom-left" uix-popover-template="'templates/datepicker-calendar.html'">
         <input type="text" ng-class="{'input-sm':size==='sm','input-lg':size==='lg'}"
                ng-disabled="isDisabled" class="form-control uix-datepicker-input"
                ng-click="toggleCalendarHandler($event)" placeholder="{{placeholder}}"

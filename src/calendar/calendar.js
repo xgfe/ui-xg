@@ -162,8 +162,30 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 fireRender();
             };
 
-            $scope.$watch('minDate', dateRangeChaned);
-            $scope.$watch('maxDate', dateRangeChaned);
+            $scope.$watch('minDate', function (newVal) {
+                if (angular.isUndefined(newVal)) {
+                    return;
+                }
+                if (!angular.isDate(new Date(newVal))) {
+                    $log.warn('Calendar directive: "minDate" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
+                    return;
+                }
+                dateRangeChaned();
+            });
+            $scope.$watch('maxDate', function (newVal) {
+                if (angular.isUndefined(newVal)) {
+                    return;
+                }
+                if (!angular.isDate(new Date(newVal))) {
+                    $log.warn('Calendar directive: "maxDate" value must be a Date object, ' +
+                        'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                        'or ISO 8601 date.');
+                    return;
+                }
+                dateRangeChaned();
+            });
 
             function dateRangeChaned() {
                 $scope.disableToday = todayIsDisabled();
@@ -180,8 +202,29 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             var cacheTime;
             // 点击时间进入选择时间面板
             $scope.selectTimePanelHandler = function () {
-                $scope.selectPanel('time');
                 cacheTime = angular.copy($scope.selectDate);
+                var sDay = $scope.selectDate.getDate();
+                var minDate = $scope.minDate;
+                var maxDate = $scope.maxDate;
+
+                if (minDate) {
+                    var minDay = new Date(minDate).getDate();
+                    if (sDay !== minDay) {
+                        $scope.minTime = createTime();
+                    } else {
+                        $scope.minTime = angular.copy(minDate);
+                    }
+                }
+
+                if (maxDate) {
+                    var maxDay = new Date(maxDate).getDate();
+                    if (sDay !== maxDay) {
+                        $scope.maxTime = createTime(23, 59, 59);
+                    } else {
+                        $scope.maxTime = angular.copy(maxDate);
+                    }
+                }
+                $scope.selectPanel('time');
             };
 
             // 时间面板返回
@@ -364,6 +407,14 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 date.setFullYear(year);
                 date.setDate(day || 1); // set date before set month
                 date.setMonth(month || 0);
+                return date;
+            }
+
+            function createTime(hour, minute, seconds) {
+                var date = new Date();
+                date.setHours(hour || 0);
+                date.setMinutes(minute || 0);
+                date.setSeconds(seconds || 0);
                 return date;
             }
 

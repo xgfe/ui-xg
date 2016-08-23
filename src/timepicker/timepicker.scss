@@ -1,27 +1,23 @@
-$arrow-left:9px;
-$arrow-top:6px;
-$panel-height:120px;
-.uix-timepicker{
+.uix-timepicker {
     position: relative;
-    display: inline-block;
-    .uix-timepicker-input{
+    .uix-timepicker-input {
         cursor: pointer;
         background: transparent;
-        user-select:none;
-        -moz-user-select:none;
-        -webkit-user-select:none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
     }
     .uix-timepicker-input.disabled,
-    .uix-timepicker-input[disabled]{
+    .uix-timepicker-input[disabled] {
         cursor: not-allowed;
     }
-    button{
+    button {
         outline: none;
     }
-}
-.uix-timepicker-popover.in{
-    display: block;
-    .uix-timepanel{
-        border:0;
+    .popover-content {
+        padding: 0;
+    }
+    .uix-timepanel {
+        border: 0;
     }
 }
