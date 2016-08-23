@@ -1,6 +1,5 @@
 .uix-datepicker {
-  position: relative;
-  display: inline-block; }
+  position: relative; }
   .uix-datepicker button:focus {
     outline: 0; }
   .uix-datepicker .uix-datepicker-input {
@@ -15,8 +14,7 @@
   .uix-datepicker .uix-datepicker-remove {
     border-radius: 0;
     border-left: 0; }
-
-.uix-datepicker ~ .uix-datepicker-popover.in {
-  display: block; }
-  .uix-datepicker ~ .uix-datepicker-popover.in .uix-calendar {
+  .uix-datepicker .popover-content {
+    padding: 0; }
+  .uix-datepicker .uix-calendar {
     border: 0; }

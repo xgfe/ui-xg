@@ -4,7 +4,7 @@
  * Author: yangjiyuan@meituan.com
  * Date:2016-02-15
  */
-angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
+angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
     .constant('uixTimepickerConfig', {
         hourStep: 1,
         minuteStep: 1,
@@ -46,29 +46,18 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             openScope.showTimepanel = false;
             openScope.$apply();
         }
-
     }])
-    .controller('uixTimepickerCtrl', ['$scope', '$element', '$compile', '$attrs', '$parse', '$log',
-        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$uixPosition',
-        function ($scope, $element, $compile, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter, $uixPosition) {
+    .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter',
+        function ($scope, $element, $attrs, $parse, $log,
+                  uixTimepickerService, timepickerConfig, dateFilter) {
             var ngModelCtrl = {$setViewValue: angular.noop};
-            var template = '<div class="uix-timepicker-popover popover" ng-class="{in:showTimepanel}">' +
-                '<div class="arrow"></div>' +
-                '<div class="popover-inner">' +
-                '<uix-timepanel readonly-input="readonlyInput" hour-step="hourStep" minute-step="minuteStep" ' +
-                'second-step="secondStep"class="uix-timepicker-timepanel-bottom" ng-model="selectedTime" ' +
-                'on-change="changeTime"min-time="minTime" max-time="maxTime" show-seconds="showSeconds">' +
-                '</uix-timepanel>' +
-                '</div></div>';
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
                 ngModelCtrl.$render = this.render;
                 ngModelCtrl.$formatters.unshift(function (modelValue) {
                     return modelValue ? new Date(modelValue) : null;
                 });
-                var timepanelDOM = $compile(template)($scope);
-                $element.after(timepanelDOM);
             };
             var _this = this;
             /*
@@ -108,11 +97,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
 
             $scope.showTimepanel = false;
             this.toggle = function (open) {
-                var show = arguments.length ? !!open : !$scope.showTimepanel;
-                if (show) {
-                    adjustPosition();
-                }
-                $scope.showTimepanel = show;
+                $scope.showTimepanel = arguments.length ? !!open : !$scope.showTimepanel;
             };
             this.showTimepanel = function () {
                 return $scope.showTimepanel;
@@ -146,7 +131,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
                 }
             };
             $scope.getTimepanelElement = function () {
-                return $element.next('.uix-timepicker-popover')[0];
+                return $element[0].querySelector('.uix-timepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');
@@ -161,20 +146,6 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.position'])
             $scope.$on('$locationChangeSuccess', function () {
                 $scope.showTimepanel = false;
             });
-            function adjustPosition() {
-                var popoverEle = $element.next('.popover');
-                var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
-                popoverEle.removeClass('top bottom');
-                if (elePosition.placement.indexOf('top') !== -1) {
-                    popoverEle.addClass('top');
-                } else {
-                    popoverEle.addClass('bottom');
-                }
-                popoverEle.css({
-                    top: elePosition.top + 'px',
-                    left: elePosition.left + 'px'
-                });
-            }
         }])
     .directive('uixTimepicker', function () {
         return {

@@ -4,12 +4,12 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-21
  */
-angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
     .constant('uixDatepickerConfig', {
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format: 'yyyy-MM-dd hh:mm:ss', // 日期格式化
+        format: 'yyyy-MM-dd HH:mm:ss', // 日期格式化
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
@@ -53,55 +53,24 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
 
     }])
     .controller('uixDatepickerCtrl',
-        ['$scope', '$element', '$compile', '$attrs', '$log', 'dateFilter', '$uixPosition',
+        ['$scope', '$element', '$attrs', '$log', 'dateFilter',
             'uixDatepickerService', 'uixDatepickerConfig', '$parse',
-            function ($scope, $element, $compile, $attrs, $log, dateFilter, $uixPosition,
+            function ($scope, $element, $attrs, $log, dateFilter,
                       uixDatepickerService, uixDatepickerConfig, $parse) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
-                var template = '<div class="uix-datepicker-popover popover" ng-class="{in:showCalendar}">' +
-                    '<div class="arrow"></div>' +
-                    '<div class="popover-inner">' +
-                    '<uix-calendar ng-model="selectDate" ng-if="showCalendar" on-change="changeDateHandler" ' +
-                    'exceptions="exceptions" min-date="minDate" max-date="maxDate" show-time="showTime" ' +
-                    'date-filter="dateFilterProp($date)">' +
-                    '</uix-calendar>' +
-                    '</div></div>';
                 this.init = function (_ngModelCtrl) {
                     ngModelCtrl = _ngModelCtrl;
                     ngModelCtrl.$render = this.render;
                     ngModelCtrl.$formatters.unshift(function (modelValue) {
                         return modelValue ? new Date(modelValue) : null;
                     });
-                    var calendarDOM = $compile(template)($scope);
-                    $element.after(calendarDOM);
                 };
                 $scope.showCalendar = false;
                 this.toggle = function (open) {
-                    var show = arguments.length ? !!open : !$scope.showCalendar;
-                    if (show) {
-                        adjustPosition();
-                    }
-                    $scope.showCalendar = show;
+                    $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
-                function adjustPosition() {
-                    var popoverEle = $element.next('.uix-datepicker-popover');
-                    var elePosition = $uixPosition.positionElements($element, popoverEle, 'auto bottom-left');
-                    popoverEle.removeClass('top bottom');
-                    if (elePosition.placement.indexOf('top') !== -1) {
-                        popoverEle.addClass('top');
-                    } else {
-                        popoverEle.addClass('bottom');
-                    }
-                    popoverEle.css({
-                        top: elePosition.top + 'px',
-                        left: elePosition.left + 'px'
-                    });
-                }
 
-                this.showCalendar = function () {
-                    return $scope.showCalendar;
-                };
                 angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
@@ -145,7 +114,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.position'])
 
                 // 获取日历面板和被点击的元素
                 $scope.getCanledarElement = function () {
-                    return $element.next('.uix-datepicker-popover');
+                    return angular.element($element[0].querySelector('.uix-datepicker-popover'));
                 };
                 $scope.getToggleElement = function () {
                     return angular.element($element[0].querySelector('.input-group'));

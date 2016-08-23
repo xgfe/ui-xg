@@ -1,19 +1,27 @@
+/* eslint angular/timeout-service:0  */
 describe('ui.xg.datepicker', function () {
     var compile,
         scope,
         element,
         dateFilter,
-        datepickerConfig;
+        datepickerConfig,
+        $timeout;
 
     beforeEach(function () {
         module('ui.xg.position');
+        module('ui.xg.popover');
+        module('ui.xg.tooltip');
+        module('ui.xg.stackedMap');
         module('ui.xg.timepanel');
         module('ui.xg.calendar');
         module('ui.xg.datepicker');
         module('timepanel/templates/timepanel.html');
         module('calendar/templates/calendar.html');
         module('datepicker/templates/datepicker.html');
-        inject(function ($compile, $rootScope, uixDatepickerConfig, _dateFilter_) {
+        module('datepicker/templates/datepicker-calendar.html');
+        module('popover/templates/popover-template-popup.html');
+        inject(function (_$timeout_, $compile, $rootScope, uixDatepickerConfig, _dateFilter_) {
+            $timeout = _$timeout_;
             compile = $compile;
             scope = $rootScope.$new();
             datepickerConfig = uixDatepickerConfig;
@@ -54,7 +62,7 @@ describe('ui.xg.datepicker', function () {
 
     //获取calendar
     function getCalendarPanel() {
-        return element.next('.uix-datepicker-popover').find('.uix-calendar');
+        return element.find('.uix-calendar');
     }
 
     // 点击输入框
@@ -272,17 +280,28 @@ describe('ui.xg.datepicker', function () {
     });
 
     describe('autoClose attribute', function () {
-        it('should auto close calendar by default when click day in current month', function () {
+        it('should auto close calendar by default when click day in current month', function (done) {
             createDatepicker();
             clickToggleButton();
+            expect(getCalendarPanel().length).toBe(1);
             clickDay(15);
-            expect(getCalendarPanel().length).toBe(0);
+            setTimeout(function () {
+                $timeout.flush();
+                expect(getCalendarPanel().length).toBe(0);
+                done();
+            }, 200);
         });
-        it('should auto close calendar by default when click day in prev month', function () {
+        it('should auto close calendar by default when click day in prev month', function (done) {
             createDatepicker();
             clickToggleButton();
+            expect(getCalendarPanel().length).toBe(1);
             clickDay(29, true);
-            expect(getCalendarPanel().length).toBe(0);
+            // 默认开启动画,所以设置延迟
+            setTimeout(function () {
+                $timeout.flush();
+                expect(getCalendarPanel().length).toBe(0);
+                done();
+            }, 200);
         });
         it('should not close calendar when a day is early then minDate', function () {
             var el = '<uix-datepicker min-date="minDate" ng-model="time"></uix-datepicker>';

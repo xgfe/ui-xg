@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    runSequence = require('run-sequence').use(gulp),
     _ = require('./misc/tasks/util'),
     html2js = require('gulp-angular-html2js'),
     eslint = require('gulp-eslint'),
@@ -13,6 +14,7 @@ var gulp = require('gulp'),
     marked = require('marked'),
     renderer = new marked.Renderer(),
     highlight = require('highlight.js'),
+    conventionalChangelog = require('gulp-conventional-changelog'),
     ejs = require('ejs');
 
 var config = {
@@ -60,11 +62,40 @@ gulp.task('eslint', function () {
 /**
  * karma 执行测试用例，可单独测试某一个模块
  */
+var karmaConfig = {
+    set: function (configuration) {
+        this.configuration = configuration;
+    },
+    LOG_DISABLE: 'OFF',
+    LOG_ERROR: 'ERROR',
+    LOG_WARN: 'WARN',
+    LOG_INFO: 'INFO',
+    LOG_DEBUG: 'DEBUG'
+};
 gulp.task('karma', ['html2js'], function (done) {
-    new KarmaServer({
-        configFile: __dirname + '/karma.conf.js',
+    var module = process.argv.slice(3).map(function (argv) {
+        return argv.slice(1);
+    })[0];
+    var configPath = __dirname + '/karma.conf.js';
+    var configuration = {
+        configFile: configPath,
         singleRun: true
-    }, done).start();
+    };
+    var index;
+    if (module) {
+        require(configPath)(karmaConfig);
+        configuration = karmaConfig.configuration;
+        ['src/*/*.js', 'src/*/templates/*.js', 'src/*/test/*.js'].forEach(function (file) {
+            index = configuration.files.indexOf(file);
+            configuration.files.splice(index, 1);
+        });
+        var deps = [module].concat(dependenciesForModule(module, {}));
+        var globExp = '+(' + deps.join('|') + ')';
+        configuration.files.push('src/' + globExp + '/*.js');
+        configuration.files.push('src/' + globExp + '/templates/*.js');
+        configuration.files.push('src/' + globExp + '/test/*.js');
+    }
+    new KarmaServer(configuration, done).start();
 });
 gulp.task('clean:html2js', function () {
     return gulp.src(config.src + '/**/*.html.js', {read: false})
@@ -73,7 +104,7 @@ gulp.task('clean:html2js', function () {
 /**
  * 将angular的模板文件转化为js
  */
-gulp.task('html2js', function () {
+gulp.task('html2js', ['clean:html2js'], function () {
     return gulp.src(config.src + '/*/templates/*.html')
         .pipe(html2js({
             moduleName: function (filename, subpath) {
@@ -111,7 +142,7 @@ function findModule(name) {
         tplFiles: _.matchFile(config.src + '/' + name + '/templates/*.html'),
         tpljsFiles: _.matchFile(config.src + '/' + name + '/templates/*.html.js'),
         tplModules: _.matchFile(config.src + '/' + name + '/templates/*.html').map(getTplModule),
-        dependencies: dependenciesForModule(name),
+        dependencies: dependenciesForModule(name, {}),
         docs: {
             md: '',
             html: '',
@@ -198,7 +229,11 @@ function getDocsFile2(name, filename) {
     var path = config.scene + '/' + name + '/' + filename;
     return _.readFile(path);
 }
-function dependenciesForModule(name) {
+function dependenciesForModule(name, depModuleMapping) {
+    if (depModuleMapping[name]) {
+        return [];
+    }
+    depModuleMapping[name] = true;
     var deps = [];
     _.matchFile(config.src + '/' + name + '/*.js').map(_.readFile).forEach(function (contents) {
         var moduleDeclIndex = contents.indexOf('angular.module(');
@@ -209,9 +244,13 @@ function dependenciesForModule(name) {
         dependencies.split(',').forEach(function (dep) {
             if (dep.indexOf(config.moduleName + '.') > -1) {
                 depName = dep.trim().replace(config.moduleName + '.', '').replace(/['"]/g, '');
-                if (deps.indexOf(depName) < 0) {
+                if (deps.indexOf(depName) === -1 && depName !== name) {
                     deps.push(depName);
-                    deps = deps.concat(dependenciesForModule(depName));
+                    dependenciesForModule(depName, depModuleMapping).forEach(function (value) {
+                        if (deps.indexOf(value) === -1 && value !== name) {
+                            deps.push(value);
+                        }
+                    });
                 }
             }
         });
@@ -221,24 +260,14 @@ function dependenciesForModule(name) {
 /**
  * 获取所有模块
  */
-gulp.task('modules', ['html2js'], function () {
-    var argvs = process.argv.slice(2);
-    var pos = argvs.indexOf('-m');
-    var moduleNames = 'all';
-    if (~pos && argvs[pos + 1]) {
-        moduleNames = argvs[pos + 1].split(',').filter(function (match) {
-            return match;
-        });
-    }
-    var modulesPaths;
-    if (moduleNames === 'all' || !moduleNames.length) {
-        modulesPaths = config.src + '/*/';
-    } else {
-        modulesPaths = config.src + '/*(' + moduleNames.join('|') + ')/';
-    }
+gulp.task('modules', function () {
+    var modulesPaths = config.src + '/*/';
+    config.modules = [];
     _.matchFile(modulesPaths).forEach(function (dir) {
         findModule(dir.split('/')[1]);
     });
+    config.srcModules = [];
+    config.tplModules = [];
     config.modules.forEach(function (module) {
         config.srcModules.push(module.moduleName);
         config.tplModules = config.tplModules.concat(module.tplModules);
@@ -252,7 +281,7 @@ gulp.task('sass', function () {
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(config.src));
 });
-gulp.task('concat:css', ['modules', 'sass'], function () {
+gulp.task('concat:css', function () {
     var src = config.modules.map(function (module) {
         return module.name;
     });
@@ -263,7 +292,7 @@ gulp.task('concat:css', ['modules', 'sass'], function () {
             .pipe(gulp.dest('./' + config.dist + '/css/'));
     }
 });
-gulp.task('concat:js', ['modules'], function () {
+gulp.task('concat:js', function () {
     function getFileMapping() {
         var mapping = [];
         config.modules.forEach(function (module) {
@@ -288,7 +317,7 @@ gulp.task('concat:js', ['modules'], function () {
 /**
  * 压缩js和css
  */
-gulp.task('uglify', ['concat:css', 'concat:js'], function () {
+gulp.task('uglify', function () {
     gulp.src([config.dist + '/css/*.css', '!' + config.dist + '/css/*.min.css'])
         .pipe(cleanCss())
         .pipe(rename({suffix: '.min'}))
@@ -313,7 +342,7 @@ gulp.task('clean', function () {
         .pipe(rimraf());
 });
 // 复制静态文件
-gulp.task('copy', ['uglify'], function () {
+gulp.task('copy', function () {
     // copy assets
     gulp.src(['misc/assets/**/*.html', 'misc/index.html'])
         .pipe(gulp.dest(config.dist + '/docs'));
@@ -336,7 +365,7 @@ gulp.task('copy', ['uglify'], function () {
         .pipe(gulp.dest(config.dist + '/docs/css'));
 });
 // 自动构建API网站
-gulp.task('docs', ['copy'], function () {
+gulp.task('docs:api', function () {
     var docPath = config.dist + '/docs/',
         tplPath = 'misc/tpl/';
     if (!_.isExists(docPath + 'partials/api')) {
@@ -478,8 +507,27 @@ gulp.task('create', function () {
         _.createModuleFiles(module);
     });
 });
-gulp.task('test', ['clean:html2js', 'html2js', 'karma']);
-gulp.task('build', ['clean', 'eslint', 'concat:css', 'concat:js', 'uglify']);
-gulp.task('default', ['test'], function () {
-    gulp.run('build');
+//自动生成CHANGELOG.md
+gulp.task('changelog', function () {
+    return gulp.src('CHANGELOG.md', {buffer: false})
+        .pipe(conventionalChangelog({
+            preset: 'angular'
+        }))
+        .pipe(gulp.dest('./'));
+});
+gulp.task('test', ['karma']);
+gulp.task('build', function (done) {
+    runSequence(
+        ['clean', 'clean:html2js'],
+        'eslint',
+        'html2js',
+        ['sass', 'modules'],
+        ['concat:css', 'concat:js'],
+        'uglify',
+        'copy',
+        'docs:api',
+        done);
+});
+gulp.task('default', function (done) {
+    runSequence('test', 'build', done);
 });
