@@ -1,3 +1,30 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/xgfe/ui-xg/compare/v1.3.0...v1.4.0) (2016-08-24)
+
+
+### Bug Fixes
+
+* **datepicker:** fix  [#14](https://github.com/xgfe/ui-xg/issues/14) ([1da1cbc](https://github.com/xgfe/ui-xg/commit/1da1cbc))
+* **picker:** fix [#13](https://github.com/xgfe/ui-xg/issues/13) ([5d46506](https://github.com/xgfe/ui-xg/commit/5d46506))
+* **picker:** fix picker style ([80d30cf](https://github.com/xgfe/ui-xg/commit/80d30cf))
+* **picker:** make input readonly ([0fc5f52](https://github.com/xgfe/ui-xg/commit/0fc5f52))
+* **select:** fix select style ([f12af19](https://github.com/xgfe/ui-xg/commit/f12af19))
+* **select:** fix style ([5ee29b7](https://github.com/xgfe/ui-xg/commit/5ee29b7))
+* **tableloader:** fix element query ([924f880](https://github.com/xgfe/ui-xg/commit/924f880))
+* **timepicker:** fix [#15](https://github.com/xgfe/ui-xg/issues/15) ([82b99bf](https://github.com/xgfe/ui-xg/commit/82b99bf))
+
+
+### Features
+
+* **carousel:** add carousel ([182faff](https://github.com/xgfe/ui-xg/commit/182faff))
+* **collapse:** add collapse ([7d92a04](https://github.com/xgfe/ui-xg/commit/7d92a04))
+* **dateFilter:** add dateFilter for calendar and datepicker ([4f5ad7f](https://github.com/xgfe/ui-xg/commit/4f5ad7f))
+* **loader & table-loader:** add test files. ([bba8668](https://github.com/xgfe/ui-xg/commit/bba8668))
+* **table-loader:** add table-loader ([ccb966d](https://github.com/xgfe/ui-xg/commit/ccb966d))
+* **typeahead:** add typeahead. [#11](https://github.com/xgfe/ui-xg/issues/11) ([4a5f62e](https://github.com/xgfe/ui-xg/commit/4a5f62e))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/xgfe/ui-xg/compare/v1.2.0...v1.3.0) (2016-07-28)
 

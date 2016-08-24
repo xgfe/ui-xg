@@ -1,6 +1,6 @@
 {
   "name": "ui-xg",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "UI directives based on angular and bootstrap",
   "main": "dist/js/ui-xg.js",
   "repository": {
