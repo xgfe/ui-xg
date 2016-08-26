@@ -349,6 +349,11 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
                                 windowClass: modalOptions.windowClass,
                                 size: modalOptions.size
                             });
+                            // close all modal when location changed
+                            var locationChanged = $rootScope.$on('$locationChangeSuccess', function () {
+                                $uixModalStack.dismissAll();
+                            });
+                            modalScope.$on('$destroy', locationChanged);
 
                         }, function resolveError(reason) {
                             modalResultDeferred.reject(reason);
