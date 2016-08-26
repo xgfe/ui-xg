@@ -1,7 +1,7 @@
 # 开发者文档
 ## 安装
-1. 克隆仓库 `git clone https://github.com/xgfe/angular-ui-fugu.git`
-2. 安装依赖包 `cd angular-ui-fugu && npm install`
+1. 克隆仓库 `git clone https://github.com/xgfe/ui-xg.git`
+2. 安装依赖包 `cd ui-xg && npm install`
 
 ## 依赖
 1. Node : v0.12.7 或更高（不超过4.0）
@@ -19,9 +19,8 @@
 ├─ docs/              使用文档以及开发者文档等
   ├─ guide.md         开发者文档 
   ├─ start.md         使用文档
-├─ lib/               依赖的框架，包括angular，jquery和bootstrap
-  ├─ angular/
-  ├─ bootstrap/
+├─ scene/             场景示例
+  ├─ .../
 ├─ misc/              和gulp构建相关或文档平台构建相关的文件
 ├─ src/               所有组件的源码
   ├─ foo/             以foo示例
@@ -45,7 +44,7 @@
 
 ## 新增组件
 1. 运行`gulp create -bar`创建组件的基础脚手架，可同时创建多个，如`gulp create -a -b`
-2. 在`src/bar`目录下开发新的组件，组件命名为`ui.fugu.bar`，每一个组件是一个单独的模块，组件的依赖关系通过angular的模块依赖实现。每一个组件的`restrict`选项必须有`E`属性，即组件可以作为标签使用
+2. 在`src/bar`目录下开发新的组件，组件命名为`ui.xg.bar`，每一个组件是一个单独的模块，组件的依赖关系通过angular的模块依赖实现。每一个组件的`restrict`选项必须有`E`属性，即组件可以作为标签使用
 3. 完成组件的基本功能之后在`src/bar/test`目录下生成的测试文件`bar.spec.js`中完成测试
 4. 在`src/bar/docs`目录下生成的文件中完成文档编写，具体编写规范参考<a ui-sref="app.directiveDocs" href="directive-docs.md">组件文档编写规范</a>
 	- `readme.md`：组件说明文件
