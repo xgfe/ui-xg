@@ -12,8 +12,8 @@
     <h1 id="-">开发者文档</h1>
 <h2 id="-">安装</h2>
 <ol>
-<li>克隆仓库 <code>git clone https://github.com/xgfe/angular-ui-fugu.git</code></li>
-<li>安装依赖包 <code>cd angular-ui-fugu &amp;&amp; npm install</code></li>
+<li>克隆仓库 <code>git clone https://github.com/xgfe/ui-xg.git</code></li>
+<li>安装依赖包 <code>cd ui-xg &amp;&amp; npm install</code></li>
 </ol>
 <h2 id="-">依赖</h2>
 <ol>
@@ -30,9 +30,8 @@
 ├─ docs/              使用文档以及开发者文档等
   ├─ guide<span class="hljs-selector-class">.md</span>         开发者文档 
   ├─ start<span class="hljs-selector-class">.md</span>         使用文档
-├─ lib/               依赖的框架，包括angular，jquery和bootstrap
-  ├─ angular/
-  ├─ bootstrap/
+├─ scene/             场景示例
+  ├─ .../
 ├─ misc/              和gulp构建相关或文档平台构建相关的文件
 ├─ src/               所有组件的源码
   ├─ foo/             以foo示例
@@ -55,7 +54,7 @@
 </code></pre><h2 id="-">新增组件</h2>
 <ol>
 <li>运行<code>gulp create -bar</code>创建组件的基础脚手架，可同时创建多个，如<code>gulp create -a -b</code></li>
-<li>在<code>src/bar</code>目录下开发新的组件，组件命名为<code>ui.fugu.bar</code>，每一个组件是一个单独的模块，组件的依赖关系通过angular的模块依赖实现。每一个组件的<code>restrict</code>选项必须有<code>E</code>属性，即组件可以作为标签使用</li>
+<li>在<code>src/bar</code>目录下开发新的组件，组件命名为<code>ui.xg.bar</code>，每一个组件是一个单独的模块，组件的依赖关系通过angular的模块依赖实现。每一个组件的<code>restrict</code>选项必须有<code>E</code>属性，即组件可以作为标签使用</li>
 <li>完成组件的基本功能之后在<code>src/bar/test</code>目录下生成的测试文件<code>bar.spec.js</code>中完成测试</li>
 <li>在<code>src/bar/docs</code>目录下生成的文件中完成文档编写，具体编写规范参考<a ui-sref="app.directiveDocs" href="directive-docs.md">组件文档编写规范</a><ul>
 <li><code>readme.md</code>：组件说明文件</li>

@@ -24,9 +24,15 @@ define([
             
                 $stateProvider.state('app.api.calendar',{url: "/calendar",templateUrl: 'partials/api/calendar.html'});
             
+                $stateProvider.state('app.api.carousel',{url: "/carousel",templateUrl: 'partials/api/carousel.html'});
+            
                 $stateProvider.state('app.api.collapse',{url: "/collapse",templateUrl: 'partials/api/collapse.html'});
             
                 $stateProvider.state('app.api.position',{url: "/position",templateUrl: 'partials/api/position.html'});
+            
+                $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
+            
+                $stateProvider.state('app.api.popover',{url: "/popover",templateUrl: 'partials/api/popover.html'});
             
                 $stateProvider.state('app.api.datepicker',{url: "/datepicker",templateUrl: 'partials/api/datepicker.html'});
             
@@ -40,10 +46,6 @@ define([
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
             
-                $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
-            
-                $stateProvider.state('app.api.popover',{url: "/popover",templateUrl: 'partials/api/popover.html'});
-            
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
                 $stateProvider.state('app.api.select',{url: "/select",templateUrl: 'partials/api/select.html'});
@@ -55,6 +57,8 @@ define([
                 $stateProvider.state('app.api.tableLoader',{url: "/tableLoader",templateUrl: 'partials/api/tableLoader.html'});
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
+            
+                $stateProvider.state('app.api.typeahead',{url: "/typeahead",templateUrl: 'partials/api/typeahead.html'});
             
         
         

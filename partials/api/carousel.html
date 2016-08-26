@@ -1,0 +1,252 @@
+<h1>carousel</h1><h2>Description</h2><p>carousel directive.</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="hljs-section">&lt;uix-carousel&gt;</span>
+    <span class="hljs-section">&lt;uix-carousel-item&gt;</span><span class="hljs-section">&lt;/uix-carousel-item&gt;</span>
+<span class="hljs-section">&lt;/uix-carousel&gt;</span>
+</code></pre>
+<pre><code class="lang-javascript">&lt;uix-carousel
+    [interval=<span class="hljs-string">"number"</span>]
+    [active=<span class="hljs-string">"index"</span>]
+    [no-loop=<span class="hljs-string">"boolean"</span>]
+    [no-pause=<span class="hljs-string">"boolean"</span>]
+    [no-transition=<span class="hljs-string">"boolean"</span>]
+&gt;
+&lt;/uix-carousel&gt;
+
+&lt;uix-carousel-item index=<span class="hljs-string">"index"</span>
+    [active=<span class="hljs-string">"boolean"</span>]
+&gt;&lt;/uix-carousel-item&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><h3>uix-carousel</h3><ul><li>interval(optional):定时轮播时间(ms),如果&lt;=0则定时不生效<ul><li>type: <code>number</code></li>
+</ul></li>
+<li>active(optional):首次加载时第一次显示某个index,值和uix-carousel-item的index相同。会被uix-carousel-item中的active覆盖<ul><li>type: <code>index</code></li>
+<li>default: <code>默认第一个uix-carousel-item</code></li>
+</ul></li>
+<li>no-loop(optional):取消定时轮播<ul><li>type: <code>boolean</code></li>
+<li>default: <code>false</code></li>
+</ul></li>
+<li>no-pause(optional):取消鼠标移入时暂停切换<ul><li>type: <code>boolean</code></li>
+<li>default: <code>false</code></li>
+</ul></li>
+<li>no-transition(optional):取消轮播动画<ul><li>type: <code>boolean</code></li>
+<li>default: <code>false</code></li>
+</ul></li>
+</ul><h3>uix-carousel-item</h3><ul><li>index:标号<ul><li>type: <code>any</code></li>
+</ul></li>
+<li>active(optional):是否作为首次显示,覆盖uix-carousel中的active<ul><li>type: <code>boolean</code></li>
+<li>default: <code>false</code></li>
+</ul></li>
+</ul><hr><h2>Example</h2><style>.uix-carousel {
+    width: 100%;
+}
+
+.uix-carousel img{
+    width: 100%;
+}</style><div class="example"><div ng-controller="carouselDemoCtrl">
+    <uix-carousel interval="interval" no-loop="noLoop" no-pause="noPause" no-transition="noTransition">
+        <div uix-carousel-item  ng-repeat="img in imgs" index="img.index" active="img.active">
+            <img ng-src="{{img.src}}">
+        </div>
+    </uix-carousel>
+    <button class="btn btn-default" ng-click="changeLoop()">自动切换 暂停/启用</button>
+    <button class="btn btn-default" ng-click="changePause()">鼠标移入停止 取消/启用</button>
+    <button class="btn btn-default" ng-click="changeTransition()">动画效果 取消/启用</button>
+    <input type="text" ng-model="interval">
+    <pre>暂停自动切换:{{noLoop}},鼠标移入不停止:{{noPause}},动画无效果: {{noTransition}},动画切换时间:{{interval}}</pre>
+</div></div><script>angular.module('uixDemo').controller('carouselDemoCtrl', ['$scope', function ($scope) {
+    $scope.active = 2;
+    $scope.imgs = [
+        {
+            src: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Inllc' +
+            'yI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0' +
+            'iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYX' +
+            'V0by8jNzc3OiM1NTUvdGV4dDpGaXJzdCBzbGlkZQpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA' +
+            '6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxl' +
+            'IHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE1NjU5OTBmYWZmIHRleHQgeyBmaWxsOiM1NTU7Zm9udC13ZWlnaHQ6Ym9' +
+            'sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6ND' +
+            'VwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTU2NTk5MGZhZmYiPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0i' +
+            'TAwIiBmaWxsPSIjNzc3Ii8+PGc+PHRleHQgeD0iMzA4LjI5Njg3NSIgeT0iMjcwLjEiPkZpcnN0IHNsaWRlPC90ZXh0PjwvZz48L2c+' +
+            'PC9zdmc+',
+            index: 0,
+            active: false
+        },
+        {
+            src: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/' +
+            'PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAw' +
+            'IDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYXV0by8j' +
+            'NjY2OiM0NDQvdGV4dDpTZWNvbmQgc2xpZGUKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8v' +
+            'aG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0' +
+            'eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTY1OTkxMTU0MCB0ZXh0IHsgZmlsbDojNDQ0O2ZvbnQtd2VpZ2h0OmJvbGQ7' +
+            'Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjQ1cHQ' +
+            'gfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1NjU5OTExNTQwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMC' +
+            'IgZmlsbD0iIzY2NiIvPjxnPjx0ZXh0IHg9IjI2NC45NTMxMjUiIHk9IjI3MC4xIj5TZWNvbmQgc2xpZGU8L3RleHQ+PC9nPjwvZz48L' +
+            '3N2Zz4=',
+            index: 1,
+            active: true
+        },
+        {
+            src: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/' +
+            'PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCA' +
+            'wIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYXV0by8' +
+            'jNTU1OiMzMzMvdGV4dDpUaGlyZCBzbGlkZQpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly' +
+            '9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlI' +
+            'HR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE1NjU5OTBlZWE4IHRleHQgeyBmaWxsOiMzMzM7Zm9udC13ZWlnaHQ6Ym9sZ' +
+            'Dtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6NDVwd' +
+            'CB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTU2NTk5MGVlYTgiPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwI' +
+            'iBmaWxsPSIjNTU1Ii8+PGc+PHRleHQgeD0iMjk4LjMyMDMxMjUiIHk9IjI3MC4xIj5UaGlyZCBzbGlkZTwvdGV4dD48L2c+PC9nPjwv' +
+            'c3ZnPg==',
+            index: 2,
+            active: false
+        }
+    ];
+
+
+    $scope.interval = 1000;
+
+
+    $scope.noLoop = false;
+
+    $scope.changeLoop = function () {
+        $scope.noLoop = !$scope.noLoop;
+    };
+
+    $scope.noPause = false;
+
+    $scope.changePause = function () {
+        $scope.noPause = !$scope.noPause;
+    };
+
+    $scope.noTransition = false;
+
+    $scope.changeTransition = function () {
+        $scope.noTransition = !$scope.noTransition;
+    };
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"carouselDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-carousel</span> <span class="hljs-attr">interval</span>=<span class="hljs-string">"interval"</span> <span class="hljs-attr">no-loop</span>=<span class="hljs-string">"noLoop"</span> <span class="hljs-attr">no-pause</span>=<span class="hljs-string">"noPause"</span> <span class="hljs-attr">no-transition</span>=<span class="hljs-string">"noTransition"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">uix-carousel-item</span>  <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"img in imgs"</span> <span class="hljs-attr">index</span>=<span class="hljs-string">"img.index"</span> <span class="hljs-attr">active</span>=<span class="hljs-string">"img.active"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">ng-src</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>img.src&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-carousel</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"changeLoop()"</span>&gt;</span>自动切换 暂停/启用<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"changePause()"</span>&gt;</span>鼠标移入停止 取消/启用<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"changeTransition()"</span>&gt;</span>动画效果 取消/启用<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"interval"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span>暂停自动切换:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>noLoop&#125;&#125;</span><span class="xml">,鼠标移入不停止:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>noPause&#125;&#125;</span><span class="xml">,动画无效果: </span><span class="hljs-template-variable"><span>&#123;&#123;</span>noTransition&#125;&#125;</span><span class="xml">,动画切换时间:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>interval&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'carouselDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.active = <span class="hljs-number">2</span>;
+    $scope.imgs = [
+        {
+            src: <span class="hljs-string">'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Inllc'</span> +
+            <span class="hljs-string">'yI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0'</span> +
+            <span class="hljs-string">'iMCAwIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYX'</span> +
+            <span class="hljs-string">'V0by8jNzc3OiM1NTUvdGV4dDpGaXJzdCBzbGlkZQpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA'</span> +
+            <span class="hljs-string">'6Ly9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxl'</span> +
+            <span class="hljs-string">'IHR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE1NjU5OTBmYWZmIHRleHQgeyBmaWxsOiM1NTU7Zm9udC13ZWlnaHQ6Ym9'</span> +
+            <span class="hljs-string">'sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6ND'</span> +
+            <span class="hljs-string">'VwdCB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTU2NTk5MGZhZmYiPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0i'</span> +
+            <span class="hljs-string">'TAwIiBmaWxsPSIjNzc3Ii8+PGc+PHRleHQgeD0iMzA4LjI5Njg3NSIgeT0iMjcwLjEiPkZpcnN0IHNsaWRlPC90ZXh0PjwvZz48L2c+'</span> +
+            <span class="hljs-string">'PC9zdmc+'</span>,
+            index: <span class="hljs-number">0</span>,
+            active: <span class="hljs-keyword">false</span>
+        },
+        {
+            src: <span class="hljs-string">'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/'</span> +
+            <span class="hljs-string">'PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAw'</span> +
+            <span class="hljs-string">'IDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYXV0by8j'</span> +
+            <span class="hljs-string">'NjY2OiM0NDQvdGV4dDpTZWNvbmQgc2xpZGUKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8v'</span> +
+            <span class="hljs-string">'aG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0'</span> +
+            <span class="hljs-string">'eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTY1OTkxMTU0MCB0ZXh0IHsgZmlsbDojNDQ0O2ZvbnQtd2VpZ2h0OmJvbGQ7'</span> +
+            <span class="hljs-string">'Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjQ1cHQ'</span> +
+            <span class="hljs-string">'gfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1NjU5OTExNTQwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMC'</span> +
+            <span class="hljs-string">'IgZmlsbD0iIzY2NiIvPjxnPjx0ZXh0IHg9IjI2NC45NTMxMjUiIHk9IjI3MC4xIj5TZWNvbmQgc2xpZGU8L3RleHQ+PC9nPjwvZz48L'</span> +
+            <span class="hljs-string">'3N2Zz4='</span>,
+            index: <span class="hljs-number">1</span>,
+            active: <span class="hljs-keyword">true</span>
+        },
+        {
+            src: <span class="hljs-string">'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/'</span> +
+            <span class="hljs-string">'PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCA'</span> +
+            <span class="hljs-string">'wIDkwMCA1MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzkwMHg1MDAvYXV0by8'</span> +
+            <span class="hljs-string">'jNTU1OiMzMzMvdGV4dDpUaGlyZCBzbGlkZQpDcmVhdGVkIHdpdGggSG9sZGVyLmpzIDIuNi4wLgpMZWFybiBtb3JlIGF0IGh0dHA6Ly'</span> +
+            <span class="hljs-string">'9ob2xkZXJqcy5jb20KKGMpIDIwMTItMjAxNSBJdmFuIE1hbG9waW5za3kgLSBodHRwOi8vaW1za3kuY28KLS0+PGRlZnM+PHN0eWxlI'</span> +
+            <span class="hljs-string">'HR5cGU9InRleHQvY3NzIj48IVtDREFUQVsjaG9sZGVyXzE1NjU5OTBlZWE4IHRleHQgeyBmaWxsOiMzMzM7Zm9udC13ZWlnaHQ6Ym9sZ'</span> +
+            <span class="hljs-string">'Dtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6NDVwd'</span> +
+            <span class="hljs-string">'CB9IF1dPjwvc3R5bGU+PC9kZWZzPjxnIGlkPSJob2xkZXJfMTU2NTk5MGVlYTgiPjxyZWN0IHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwI'</span> +
+            <span class="hljs-string">'iBmaWxsPSIjNTU1Ii8+PGc+PHRleHQgeD0iMjk4LjMyMDMxMjUiIHk9IjI3MC4xIj5UaGlyZCBzbGlkZTwvdGV4dD48L2c+PC9nPjwv'</span> +
+            <span class="hljs-string">'c3ZnPg=='</span>,
+            index: <span class="hljs-number">2</span>,
+            active: <span class="hljs-keyword">false</span>
+        }
+    ];
+
+
+    $scope.interval = <span class="hljs-number">1000</span>;
+
+
+    $scope.noLoop = <span class="hljs-keyword">false</span>;
+
+    $scope.changeLoop = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.noLoop = !$scope.noLoop;
+    };
+
+    $scope.noPause = <span class="hljs-keyword">false</span>;
+
+    $scope.changePause = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.noPause = !$scope.noPause;
+    };
+
+    $scope.noTransition = <span class="hljs-keyword">false</span>;
+
+    $scope.changeTransition = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.noTransition = !$scope.noTransition;
+    };
+}]);
+</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-selector-class">.uix-carousel</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}
+
+<span class="hljs-selector-class">.uix-carousel</span> <span class="hljs-selector-tag">img</span>{
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+}</code></pre>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>
