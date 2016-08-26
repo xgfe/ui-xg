@@ -8,28 +8,28 @@
 ## 下载
 组建代码主要有两种形式:压缩(主要使用,存在于构建后的dist目录下)和未压缩(用于开发,存在于src目录下)。以上所有代码都可以[下载]()。
 
-想要了解更多内容,请看[组件](http://xgfe.github.io/angular-ui-fugu/#/app/api/alert)和[开发者文档](http://xgfe.github.io/angular-ui-fugu/#/app/guide)
+想要了解更多内容,请看[组件](http://xgfe.github.io/ui-xg/#/app/api/alert)和[开发者文档](http://xgfe.github.io/ui-xg/#/app/guide)
 
 ## 安装
-- 使用npm安装: `npm install angular-ui-fugu`
+- 使用bower安装: `bower install ui-xg`
 
 ## 使用
 - 文件引入
 	- angular.min.js
 	- bootstrap.css
-	- ui.fugu.min.css
-	- ui.fugu.min.js
+	- ui-xg.min.css
+	- ui-xg.min.js
 
-	**angular和bootstrap文件的引入要在fugu文件引入之前**
+	**angular和bootstrap文件的引入要在ui-xg文件引入之前**
 - 具体使用
 
 ```
 /**
  * js文件
  */
-angular.module('myApp',['ui.fugu']);  // 组件依赖注入
+angular.module('myApp',['ui.xg']);  // 组件依赖注入
 // 以alert使用为例
-angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
+angular.module('uixDemo').controller('alertDemoCtrl',['$scope', function ($scope) {
     $scope.alerts = [
         { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
         { type: 'success', msg: 'Well done! You successfully read this important alert message.' },
@@ -46,7 +46,7 @@ angular.module('fuguDemo').controller('alertDemoCtrl',['$scope', function ($scop
  * html文件
  */
  <div ng-controller="alertDemoCtrl">
-    <fugu-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</fugu-alert>
+    <uix-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</uix-alert>
 </div>
 
 ```

@@ -9,13 +9,13 @@
 用法部分介绍组件的使用规范，主要包括两个部分：组件的名称以及属性。具体格式如下：
 
 ```
-<fugu-name attr1="type"
+<uix-name attr1="type"
 	[attr2="type"]
-</fugu-name>
+</uix-name>
 ```
 其中，必填属性直接写出，所有非必填的属性由中括号`[]`注明。同时标注出每个属性的取值类型。
 
-**组件名称为`fugu-组件名称`，组件属性为驼峰式命名，如`fooBar`而不是`foo-bar`。**
+**组件名称为`uix-组件名称`，组件属性为驼峰式命名，如`fooBar`而不是`foo-bar`。**
 
 ## Restrict
 Restrict部分标识如何定义一个指令作为标签使用。其中包括以下四种取值：
@@ -74,7 +74,7 @@ Restrict部分标识如何定义一个指令作为标签使用。其中包括以
 	## Usage
 	
 	``` javascript
-	<fugu-button text="string"
+	<uix-button text="string"
 	    [ type="string" ]
 	    [ btnClass="string" ]
 	    [ size="string" ]
@@ -84,7 +84,7 @@ Restrict部分标识如何定义一个指令作为标签使用。其中包括以
 	    [ icon="boolean" ]
 	    [ active="boolean" ]
 	    [ click="function" ] >
-	</fugu-button>
+	</uix-button>
 	```
 	## Restrict
 	- 'AE'

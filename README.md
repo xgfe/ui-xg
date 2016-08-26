@@ -9,24 +9,12 @@
 - Angular JS(v1.2.29): 组件库在1.2.29版本下进行测试,适用于1.2.x-1.3.20的AngularJS。
 - Bootstrap(v3.3.6): 支持组件库样式设计。
 
-## 构建
-如果需要所有的组件,直接引用dist目录下的文件即可,如果需要定制化组件,在项目目录下执行下面的命令安装依赖包
-
-```
-npm install
-```
-安装完成之后执行
-
-```
-gulp -m directive1,directive2,directive3
-```
-即可自动在dist下构建需要的directive1,directive2,directive3组件集合
 
 ## 安装
-- 使用npm安装:
+- 使用bower安装:
 
 	```
-	npm install ui-xg
+	bower install ui-xg
 	```
 
 ## 使用
