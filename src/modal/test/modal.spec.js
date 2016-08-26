@@ -1,5 +1,5 @@
 describe('ui.xg.modal', function () {
-    var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q, stackedMap;
+    var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q;
     var $uixModal, $uixModalProvider;
 
     beforeEach(function () {
@@ -13,7 +13,7 @@ describe('ui.xg.modal', function () {
             $uixModalProvider = _$uixModalProvider_;
         });
         inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_,
-                         _$timeout_, _$q_, _$uixModal_, $uixStackedMap) {
+                         _$timeout_, _$q_, _$uixModal_) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;
@@ -21,7 +21,6 @@ describe('ui.xg.modal', function () {
             $timeout = _$timeout_;
             $q = _$q_;
             $uixModal = _$uixModal_;
-            stackedMap = $uixStackedMap.createNew();
         });
     });
     beforeEach(function () {
@@ -696,6 +695,24 @@ describe('ui.xg.modal', function () {
             dismiss(modal2);
             expect(body).not.toHaveClass('modal-open');
         });
+        it('should close modal when trigger location change event', function () {
+            open({template: '<div>Modal</div>'});
+            expect($document).toHaveModalsOpen(1);
+            $rootScope.$broadcast('$locationChangeSuccess');
+            $timeout.flush();
+            $rootScope.$digest();
+            expect($document).toHaveModalsOpen(0);
+        });
+        it('should close all modal when trigger location change event', function () {
+            open({template: '<div>Modal1</div>'});
+            open({template: '<div>Modal2</div>'});
+            open({template: '<div>Modal3</div>'});
+            expect($document).toHaveModalsOpen(3);
+            $rootScope.$broadcast('$locationChangeSuccess');
+            $timeout.flush();
+            $rootScope.$digest();
+            expect($document).toHaveModalsOpen(0);
+        });
     });
 
     describe('modal window', function () {
@@ -715,55 +732,5 @@ describe('ui.xg.modal', function () {
             expect(windowEl).toHaveClass('foo');
         });
 
-    });
-    describe('stacked map', function () {
-
-        it('should add and remove objects by key', function () {
-
-            stackedMap.add('foo', 'foo_value');
-            expect(stackedMap.length()).toEqual(1);
-            expect(stackedMap.get('foo').key).toEqual('foo');
-            expect(stackedMap.get('foo').value).toEqual('foo_value');
-
-            stackedMap.remove('foo');
-            expect(stackedMap.length()).toEqual(0);
-            expect(stackedMap.get('foo')).toBeUndefined();
-        });
-
-        it('should support listing keys', function () {
-            stackedMap.add('foo', 'foo_value');
-            stackedMap.add('bar', 'bar_value');
-
-            expect(stackedMap.keys()).toEqual(['foo', 'bar']);
-        });
-
-        it('should get topmost element', function () {
-
-            stackedMap.add('foo', 'foo_value');
-            stackedMap.add('bar', 'bar_value');
-            expect(stackedMap.length()).toEqual(2);
-
-            expect(stackedMap.top().key).toEqual('bar');
-            expect(stackedMap.length()).toEqual(2);
-        });
-
-        it('should remove topmost element', function () {
-
-            stackedMap.add('foo', 'foo_value');
-            stackedMap.add('bar', 'bar_value');
-
-            expect(stackedMap.removeTop().key).toEqual('bar');
-            expect(stackedMap.removeTop().key).toEqual('foo');
-        });
-
-        it('should preserve semantic of an empty stackedMap', function () {
-
-            expect(stackedMap.length()).toEqual(0);
-            expect(stackedMap.top()).toBeUndefined();
-        });
-
-        it('should ignore removal of non-existing elements', function () {
-            expect(stackedMap.remove('non-existing')).toBeUndefined();
-        });
     });
 });

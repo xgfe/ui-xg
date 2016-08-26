@@ -36,4 +36,4 @@ $uixModal是一个快速创建modal的service,$uixModal只有一个方法-open(o
 
 上述这些方法可以很方便得按照需要关闭modal并根据不同情况执行后续操作
 
-还有其他可用的service，比如`$uixModalStack`，用于关闭窗口，可以调用其`dismissAll(result)`方法关闭所有窗口
+还有其他可用的service，比如`$uixModalStack`，用于关闭窗口，可以调用其`dismissAll(result)`方法关闭所有窗口，默认是当触发`$locationChangeSuccess`事件的时候关闭所有的`modal`窗口。
