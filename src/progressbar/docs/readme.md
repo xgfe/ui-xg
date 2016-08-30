@@ -1,10 +1,11 @@
 # progressbar
 ## Description
-进度条组件，可根据不同参数显示不同样式的进度条
-
-progressbar directive.
+进度条组件，有两种显示方式，一种是将写成`uix-progressbar`指令的形式；另一种是写成`<uix-progress><uix-bar></uix-bar></uix-progress>`
+的形式，该种方式下可以有多个bar。参照的是[ui-bootstrap](https://github.com/angular-ui/bootstrap/tree/master/src/progressbar)指令
 
 ## Usage
+
+### uix-progressbar的写法
 
 ``` html
 <uix-progressbar
@@ -15,21 +16,8 @@ progressbar directive.
     [ title="string" ]>
 </uix-progressbar>
 ```
-## Restrict
-- 'AE'
 
-## Arguments
-
-- `value`: 当前进度条完成值，用于计算进度条的百分比值的分子
-- `type`: 进度条显示的样式，共有5种样式，可选值包括`success`，`info`，`warning`，`danger`，默认值为null
-- `max`: 指定进度条的最大值，用于计算进度条的百分比值的分母，默认值为100
-- `animate`: 显示进度条的过渡状态，默认值为false，表示不显示过渡状态
-- `title`: 进度条的title，默认值为'progressbar'
-
-## Description
-进度条组件，将多个进度条显示在一起
-
-## Usage
+### 将uix-progress与uix-bar分离的写法
 
 ``` html
 <uix-progress
@@ -49,8 +37,23 @@ progressbar directive.
         </uix-bar>
 </uix-progress>
 ```
+
 ## Restrict
 - 'AE'
 
-## Argument
-同上述各项参数的描述
+## Arguments
+
+- value:当前进度条完成值，用于计算进度条的百分比值的分子
+    - type:`number`
+- type:进度条显示的样式，共有5种样式，可选值包括`success`，`info`，`warning`，`danger`，`null`
+    - type:`string`
+    - default:`null`
+- max: 指定进度条的最大值，用于计算进度条的百分比值的分母
+    - type:`number`
+    - default:`100`
+- animate: 是否显示进度条的过渡状态
+    - type:`boolean`
+    - default: `false`
+- title: 进度条的title
+    - type:`string`
+    - default:`progressbar`
