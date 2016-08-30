@@ -1,5 +1,4 @@
-var app = angular.module('demoApp', ['ui.xg.progressbar', 'progressbar/templates/progressbar.html',
-                                     'progressbar/templates/progress.html', 'progressbar/templates/bar.html']);
+var app = angular.module('uixDemo');
 app.controller('progressbarDemoCtrl', ['$scope', function ($scope) {
     $scope.max = 200;
     $scope.maxParam = 100;
