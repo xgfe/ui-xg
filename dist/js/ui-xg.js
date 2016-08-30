@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-08-26
+ * Version: 1.4.0 - 2016-08-30
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.collapse","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.collapse","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 /**
  * alert
  * 警告提示指令
@@ -4562,6 +4562,123 @@ angular.module('ui.xg.pager', [])
     }]);
 
 /**
+ * progressbar
+ * 进度条指令
+ * Author: zhouxiong03@meituan.com
+ * Date:2016-08-05
+ */
+angular.module('ui.xg.progressbar', [])
+
+    .constant('uixProgressConfig', {
+        animate: false,
+        max: 100
+    })
+
+    .controller('UixProgressController', ['$scope', '$attrs', 'uixProgressConfig', function ($scope, $attrs, progressConfig) {
+        var self = this,
+            animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
+        this.bars = [];
+        $scope.max = getMaxOrDefault();
+        this.addBar = function (bar, element, attrs) {
+            if (!animate) {
+                element.css({'transition': 'none'});
+            } else {
+                element.parent().addClass('progress-striped active');
+            }
+            this.bars.push(bar);
+            bar.max = getMaxOrDefault();
+            bar.title = attrs && (angular.isDefined(attrs.title) && attrs.title) ? attrs.title : 'progressbar';
+            bar.$watch('value', function () {
+                bar.recalculatePercentage();
+            });
+
+            bar.recalculatePercentage = function () {
+                var totalPercentage = self.bars.reduce(function (total, bar) {
+                    bar.percent = +(100 * bar.value / bar.max).toFixed(2);
+                    return total + bar.percent;
+                }, 0);
+
+                if (totalPercentage > 100) {
+                    bar.percent -= totalPercentage - 100;
+                }
+            };
+
+            bar.$on('$destroy', function () {
+                element = null;
+                self.removeBar(bar);
+            });
+        };
+
+        this.removeBar = function (bar) {
+            this.bars.splice(this.bars.indexOf(bar), 1);
+            this.bars.forEach(function (bar) {
+                bar.recalculatePercentage();
+            });
+        };
+
+        $scope.$watch('maxParam', function () {
+            self.bars.forEach(function (bar) {
+                bar.max = getMaxOrDefault();
+                bar.recalculatePercentage();
+            });
+        });
+
+        function getMaxOrDefault() {
+            return angular.isDefined($scope.maxParam) ? $scope.maxParam : progressConfig.max;
+        }
+    }])
+
+    .directive('uixProgress', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            require: 'uixProgress',
+            scope: {
+                maxParam: '=?max'
+            },
+            templateUrl: 'templates/progress.html',
+            controller: 'UixProgressController'
+        };
+    })
+
+    .directive('uixBar', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            require: '^uixProgress',
+            scope: {
+                value: '=',
+                type: '@'
+            },
+            templateUrl: 'templates/bar.html',
+            link: function (scope, element, attrs, progressCtrl) {
+                progressCtrl.addBar(scope, element, attrs);
+            }
+        };
+    })
+
+    .directive('uixProgressbar', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            controller: 'UixProgressController',
+            scope: {
+                value: '=',
+                maxParam: '=?max',
+                type: '@'
+            },
+            templateUrl: 'templates/progressbar.html',
+            link: function (scope, element, attrs, progressCtrl) {
+                progressCtrl.addBar(scope, angular.element(element.children()[0]), {title: attrs.title});
+            }
+        };
+    });
+
+
+/**
  * searchBox
  * 搜索框
  * Author:yangjiyuan@meituan.com
@@ -7622,6 +7739,37 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:;\">共{{totalPages}}页/{{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("progressbar/templates/bar.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/bar.html",
+    "<div class=\"progress-bar\""+
+    "     ng-class=\"type && 'progress-bar-' + type\""+
+    "     role=\"progressbar\""+
+    "     aria-valuenow=\"{{value}}\""+
+    "     aria-valuemin=\"0\""+
+    "     aria-valuemax=\"{{max}}\""+
+    "     ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\""+
+    "     aria-valuetext=\"{{percent | number:0}}%\""+
+    "     title=\"{{title}}\" ng-transclude>"+
+    "</div>");
+}]);
+angular.module("progressbar/templates/progress.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/progress.html",
+    "<div class=\"progress\" title=\"{{title}}\" ng-transclude></div>");
+}]);
+angular.module("progressbar/templates/progressbar.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/progressbar.html",
+    "<div class=\"progress\">"+
+    "    <div class=\"progress-bar\""+
+    "         ng-class=\"type && 'progress-bar-' + type\""+
+    "         role=\"progressbar\""+
+    "         aria-valuenow=\"{{value}}\""+
+    "         aria-valuemin=\"0\""+
+    "         aria-valuemax=\"{{max}}\""+
+    "         ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\""+
+    "         aria-valuetext=\"{{percent | number:0}}%\""+
+    "         title=\"{{title}}\" ng-transclude></div>"+
+    "</div>");
 }]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",

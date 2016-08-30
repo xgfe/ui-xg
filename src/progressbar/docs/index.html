@@ -1,0 +1,53 @@
+<div ng-controller="progressbarDemoCtrl">
+    <div class="panel-body">
+        <h3>静态模式</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <label>只有value一个属性值</label>
+                <uix-progressbar value="45"></uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>设置了max参数</label>
+                <uix-progressbar type="info" value="66" max="200">33%</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>设置animate属性</label>
+                <uix-progressbar type="danger" value="90" animate="true">90%</uix-progressbar>
+            </div>
+        </div>
+
+        <h3>
+            动态模式
+            <button class="btn btn-default btn-primary btn-sm" ng-click="random()">随机</button>
+        </h3>
+        <div class="row">
+            <div class="col-md-3">
+                <label>进度条显示数字</label>
+                <uix-progressbar max="max" value="dynamic">{{dynamicMsg}}</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>进度条上显示百分比</label>
+                <uix-progressbar type="success" max="max" value="dynamic">{{percent}}</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>随机显示不同样式的进度条</label>
+                <uix-progressbar animate="true" type="{{type}}" max="max" value="dynamic">{{type}}</uix-progressbar>
+            </div>
+        </div>
+
+        <h3>
+            叠加模式-多进度条
+            <button class="btn btn-default btn-sm btn-primary" ng-click="stackRandom()">随机</button>
+        </h3>
+        <div class="row">
+            <div class="col-md-12">
+                <label>多条进度条展示</label>
+                <uix-progress max="maxParam" animate="true">
+                    <uix-bar ng-repeat="bar in stackBars track by $index" value="bar.value" type="{{bar.type}}" title="{{bar.title}}">
+                        {{bar.value}}%
+                    </uix-bar>
+                </uix-progress>
+            </div>
+        </div>
+    </div>
+</div>
