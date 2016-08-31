@@ -105,9 +105,11 @@ describe('ui.xg.calendar', function () {
     function getDate(opt) {
         opt = opt || {};
         var dt = new Date();
+        dt.setMonth(0);
+        dt.setDate(31); // set date to 1.31 first
         dt.setFullYear(opt.year || 2016);
-        dt.setMonth(angular.isDefined(opt.month) ? opt.month : 2);
         dt.setDate(opt.day || 15);
+        dt.setMonth(angular.isDefined(opt.month) ? opt.month : 2);
         dt.setHours(opt.hour || 12);
         dt.setMinutes(opt.minute || 30);
         dt.setSeconds(opt.second || 30);
