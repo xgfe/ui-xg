@@ -1,32 +1,33 @@
 <div ng-controller="buttonDemoCtrl" class="buttonDemo">
-    <p>不设置任何参数</p>
-    <uix-button></uix-button>
-    <p>text设置按钮显示文本,默认为Button</p>
-    <uix-button text="text"></uix-button>
-    <p>type设置按钮类型:button(按钮)、submit(提交)、reset(重置)。区别:form 表单中,submit会自动提交;reset重置表单内容.默认为button</p>
-    <form ng-submit="submitFn();">
-        <input ng-model="formContent">:{{clickText}}
-        <uix-button ng-repeat="type in typeArr" type="type" text="type"></uix-button>
-    </form>
-    <p>btnClass设置按钮样式:danger | warning | default | success | info ｜ primary | link,默认为default</p>
-    <uix-button ng-repeat="c in classArr" text="c" btnClass="c"></uix-button>
-    <p>size设置按钮大小:x-small | small | default | large,默认为default</p>
-    <uix-button ng-repeat="s in sizeArr" text="s" btnClass="s"></uix-button>
-    <uix-button btnClass="'success'" text="'传递字串设置size'" size="'x-small'"></uix-button>
-    <p>block设置按钮是否全部平铺父元素:true|false,默认为false</p>
-    <uix-button block="block" text="'block'"></uix-button>
-    <p>active设置按钮是否选中状态:true|false,默认为false</p>
-    <uix-button active="activeTrue" text="'active'"></uix-button>
-    <uix-button active="activeFalse" text="'noActive'"></uix-button>
-    <p>disabled设置按钮是否不可用:true|false,默认为false</p>
-    <uix-button disabled="disabledTrue" text="'disabled'"></uix-button>
-    <uix-button disabled="disabledFalse" text="'noDisabled'"></uix-button>
-    <p>loading设置按钮显示加载效果:true|false,默认为false，设置为加载状态，则默认不可用</p>
-    <uix-button loading="loadingTrue" text="'loading'"></uix-button>
-    <uix-button loading="loadingFalse" text="'noLoading'"></uix-button>
-    <p>click事件</p>
-    <uix-button text="'click事件'" click="clickFn()"></uix-button>
-    <uix-button loading="loading" text="'被控制loading效果'"></uix-button>
-    <p>icon设置按钮图标，默认无</p>
-    <uix-button icon="icon" text="'add'" size="'x-small'"></uix-button>
+    <ol>
+        <li>
+            <p>只设置按钮内容,其它都不设置,有三种方式设置内容:插入文本,插入html代码片段,使用双括号</p>
+            <div>
+                <uix-button ng-click="clickFn()">提交</uix-button>
+                <uix-button><i class="glyphicon glyphicon-star"></i></uix-button>
+                <uix-button>{{btnText}}</uix-button>
+            </div>
+        </li>
+        <li>
+            <p>只设置按钮按钮类型,button,reset,submit.submit会触发ng-submit事件,reset会重置表单</p>
+            <form ng-submit="submitFn()">
+                <input type="text" ng-model="btnTypeText"/>
+                <uix-button>Button</uix-button>
+                <uix-button b-type="submit">Submit</uix-button>
+                <uix-button b-type="reset">Reset</uix-button>
+            </form>
+        </li>
+        <li>
+            <p>submit之后设置加载状态</p>
+            <form ng-submit="submitFn()">
+                <uix-button b-type="subsmit" loading="loading" ng-disabled="loading">Loading</uix-button>
+            </form>
+        </li>
+        <li>
+            <p>自定义样式</p>
+            <form ng-submit="submitFn()">
+                <uix-button b-type="subsmit" loading="loading" ng-disabled="loading" class="btn btn-primary">Loading</uix-button>
+            </form>
+        </li>
+    </ol>
 </div>

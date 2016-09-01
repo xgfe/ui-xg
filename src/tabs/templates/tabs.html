@@ -1,0 +1,9 @@
+<div>
+    <!--<ul ng-transclude class="nav nav-{{type}}" ng-class="{'nav-stacked': tabPosition === 'left'}"></ul>-->
+    <ul ng-transclude class="nav nav-{{type}}"></ul>
+    <div class="tab-content">
+        <div ng-repeat="tab in tabsCtrl.tabs" ng-class="{'tab-panel-hidden': tabsCtrl.active !== tab.index}">
+            <uix-tab-panel tab="tab"></uix-tab-panel>
+        </div>
+    </div>
+</div>
