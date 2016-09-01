@@ -1,3 +1,4 @@
-<button class="btn" type="{{type}}" ng-class="{'btn-addon': iconFlag}">
-    <i class="glyphicon" ng-class="icon" ng-show="iconFlag"></i>{{text}}
+<button type="{{type}}">
+    <ng-transclude></ng-transclude>
+    <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-if="loading"></i>
 </button>

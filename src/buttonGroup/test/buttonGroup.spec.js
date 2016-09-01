@@ -1,292 +1,172 @@
 /**
  * uixButtonGroup指令测试文件
  * Author: penglu02@meituan.com
- * Date: 2016-01-25
+ * Date: 2016-08-30
  */
-describe('uix-button-group', function () {
-    var compile, scope;
+describe('ui.xg.buttonGroup', function () {
+    var compile,
+        scope,
+        element;
 
     // 加载模块
-    beforeEach(module('ui.xg.buttonGroup'));
-    beforeEach(module('buttonGroup/templates/buttonGroup.html'));
+    beforeEach(function () {
+        module('ui.xg.button');
+        module('button/templates/button.html');
+        module('ui.xg.buttonGroup');
+        module('buttonGroup/templates/buttonGroup.html');
+        inject(function ($compile, $rootScope) {
+            compile = $compile;
+            scope = $rootScope.$new();
+            scope.male = 'male';
+            scope.female = 'female';
+        });
+    });
 
-    beforeEach(inject(function ($compile, $rootScope) {
-        compile = $compile;
-        scope = $rootScope.$new();
-    }));
 
-    describe('ButtonGroup', function () {
+    function createButtonGroup(el) {
+        element = compile(el)(scope);
+        scope.$digest();
+    }
 
-        // 公共特性测试
-        it('Should throw an error without set ng-model', function () {
-            function errorFunctionWrapper() {
-                compile('<uix-button-group><button>男</button><button>女</button></uix-button-group>')(scope);
-                scope.$apply();
+
+    it('Should throw an error without set ng-model', function () {
+        function errorFunctionWrapper() {
+            createButtonGroup('<uix-button-group><button>男</button><button>女</button></uix-button-group>');
+            scope.$apply();
+        }
+
+        expect(errorFunctionWrapper).toThrow();
+    });
+
+
+    it('Should set an radio type without set type', function () {
+        scope.value = 'female';
+        createButtonGroup('<uix-button-group ng-model="value"><button>男</button><button>女</button></uix-button-group>');
+        expect(element).toHaveAttr('type', 'radio');
+    });
+
+    it('Should set active class based on model', function () {
+        scope.value = 'female';
+        createButtonGroup('<uix-button-group ng-model="value"><button btn-radio-val="male">男</button><button btn-radio-val="female">女</button></uix-button-group>');
+        var ele = element.find('button');
+        for (var i = 0; i < ele.length; i++) {
+            var eItem = ele.eq(i);
+            if (eItem.attr('btn-radio-val') === scope.value) {
+                expect(eItem).toHaveClass('active');
+            } else {
+                expect(eItem).not.toHaveClass('active');
             }
+        }
+    });
 
-            expect(errorFunctionWrapper).toThrow();
-        });
+    it('Should own different functional when set type', function () {
+        scope.value = {'male': true, 'female': true};  // 多选
+        scope.type = 'checkbox';
+        createButtonGroup('<uix-button-group ng-model="value" bg-type="type"><button name="male">男</button><button name="female">女</button></uix-button-group>');
+        var ele = element.find('button');
+        var idx = 0;
+        for (var i in scope.value) {
+            if (scope.value.hasOwnProperty(i)) {
+                if (scope.value[i]) {
+                    expect(ele.eq(idx)).toHaveClass('active');
+                } else {
+                    expect(ele.eq(idx)).not.toHaveClass('active');
+                }
 
-        it('Should set active class based on model', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="radioModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).not.toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
+            }
+        }
+    });
 
-            scope.$apply('radioModel="男"');
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-        });
+    it('Should modify ng-model via click one element to toggle active class', function () {
+        scope.value = {'male': true, 'female': true};  // 多选
+        scope.type = 'checkbox';
+        createButtonGroup('<uix-button-group ng-model="value" bg-type="type"><button name="male">男</button><button name="female">女</button></uix-button-group>');
+        var ele = element.find('button');
+        var ekey = ele.eq(0).attr('name');
+        var oldValue = scope.value[ekey];
+        ele.eq(0).click();
+        expect((!oldValue)).toEqual(scope.value[ekey]);
+    });
 
-        it('Should can\'t click when disabled equals to true', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="radioModel" disabled="true">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply('radioModel="男"');
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
+    it('Should modify ng-model via click different element to toggle active class', function () {
+        scope.value = 'male';  // 多选
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        var ele = element.find('label');
+        for (var i = 0; i < ele.length; i++) {
+            if (ele.eq(i).attr('btn-radio-val') === scope.value) {
+                expect(ele.eq(i)).toHaveClass('active');
+                var newIdx = i + 1;
+                if (newIdx > ele.length) {
+                    newIdx = i - 1;
+                }
+                ele.eq(newIdx).click();
+                expect(ele.eq(i)).not.toHaveClass('active');
+                expect(ele.eq(newIdx)).toHaveClass('active');
+                expect(scope.value).not.toEqual(ele.eq(i).attr('btn-radio-val'));
+                expect(scope.value).toEqual(ele.eq(newIdx).attr('btn-radio-val'));
+                break;
+            }
+        }
+    });
 
-            childElements.eq(1).click();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
+    it('Should doing nothing when click an active radio and type equals to radio', function () {
+        scope.value = 'male';  // 多选
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        var ele = element.find('label');
+        for (var i = 0; i < ele.length; i++) {
+            if (ele.eq(i).attr('btn-radio-val') === scope.value) {
+                expect(ele.eq(i)).toHaveClass('active');
+                ele.eq(i).click();
+                expect(ele.eq(i)).toHaveClass('active');
+                expect(scope.value).toEqual(ele.eq(i).attr('btn-radio-val'));
+                break;
+            }
+        }
+    });
 
-            scope.$apply();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-        });
+    it('Should toggle custom model values when click', function () {
+        scope.value = {'male': true, 'female': true};  // 多选
+        scope.type = 'checkbox';
+        createButtonGroup('<uix-button-group ng-model="value" bg-type="type"><button name="male"  btn-checkbox-true="male" btn-checkbox-false="nomale">男</button><button name="female" btn-checkbox-true="female">女</button></uix-button-group>');
+        var ele = element.find('label');
+        ele.eq(0).click();
+        expect(scope.value[ele.eq(0).attr('name')]).toEqual(ele.eq(0).attr('btn-checkbox-true'));
+        ele.eq(0).click();
+        expect(scope.value[ele.eq(0).attr('name')]).toEqual(ele.eq(0).attr('btn-checkbox-false'));
+    });
 
-        it('Should show different size  style when set size', function () {
-            var newScope = scope.$new(),
-                element = compile(
-                    '<uix-button-group ng-model="radioModel" size="eleSize">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(newScope),
-                childElements = null;
-            scope.radioModel = '男';
-            scope.eleSize = 'large';
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('btn-lg');
-            expect(childElements.eq(1)).toHaveClass('btn-lg');
-        });
+    it('Should can\'t toggle select  click one radio element when not set uncheckable or set uncheckable as false', function () {
+        scope.value = 'female';
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        expect(element).toHaveAttr('type', 'radio');
+        var ele = element.find('label');
+        if (!(ele.eq(0).attr('btn-radio-val') === scope.value)) {
+            expect(ele.eq(0)).not.toHaveClass('active');
+            ele.eq(0).click();
+        }
+        expect(ele.eq(0).attr('btn-radio-val')).toEqual(scope.value);
+        expect(ele.eq(0)).toHaveClass('active');
+        ele.eq(0).click();
+        expect(ele.eq(0)).toHaveClass('active');
+        expect(ele.eq(0).attr('btn-radio-val')).toEqual(scope.value);
+    });
 
-        it('Should show different color when set show-class', function () {
-            var newScope = scope.$new(),
-                element = compile(
-                    '<uix-button-group ng-model="radioModel" show-class="btnClass">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(newScope),
-                childElements = null;
-            scope.radioModel = '男';
-            scope.btnClass = 'primary';
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('btn-primary');
-            expect(childElements.eq(1)).toHaveClass('btn-primary');
-        });
-
-        it('Should own different function when set type', function () {
-            var newScope = scope.$new(),
-                element = compile(
-                    '<uix-button-group ng-model="checkboxModel" type="type">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(newScope),
-                childElements = null;
-            scope.checkboxModel = {'man': true, 'woman': true};
-            scope.type = 'checkbox';
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).toHaveClass('active');
-        });
-
-        it('Should modify ng-model via click element to toggle active class', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply();
-            childElements = element.children();
-
-            // TODO 做完click操作，model不会改变。。。。但是可以获取attribute属性，然后使用$eval()解析得到最新值
-            childElements.eq(0).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual('男');
-
-            childElements.eq(1).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual('女');
-
-        });
-
-        //type为radio的部分属性测试
-        it('Should set radio as default type', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="radioModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.radioModel = '男';
-            scope.$apply();
-            childElements = element.children();
-
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-        });
-
-        it('Should use sub element\'s innerText content as btn-radio\'s value', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply();
-            childElements = element.children();
-
-            childElements.eq(0).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual('男');
-
-            childElements.eq(1).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual('女');
-        });
-
-        it('Should reset active class via click,only the click element has not active class', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="radioModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply('radioModel="男"');
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-
-            childElements.eq(1).click();
-            expect(childElements.eq(1)).toHaveClass('active');
-            expect(childElements.eq(0)).not.toHaveClass('active');
-        });
-
-        it('Should doing nothing when click an active radio and type equals to radio', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="radioModel">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.$apply('radioModel="男"');
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-
-            childElements.eq(0).click();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-        });
-
-
-        // type为checkbox的部分属性测试
-        it('Should use ng-model\'s key as the value of btn-checkbox when without set btn-checkbox', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel" type="checkbox">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.checkboxModel = {'man': true, 'woman': true};
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).toHaveClass('active');
-
-            childElements.eq(1).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual({'man': true, 'woman': false});
-
-            childElements.eq(0).click();
-            expect(scope.$eval(element.attr('ng-model'))).toEqual({'man': false, 'woman': false});
-        });
-
-        it('Should toggle active class when click the element', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel" type="checkbox">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.checkboxModel = {'man': true, 'woman': true};
-            scope.$apply();
-            childElements = element.children();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).toHaveClass('active');
-
-            childElements.eq(1).click();
-            expect(childElements.eq(0)).toHaveClass('active');
-            expect(childElements.eq(1)).not.toHaveClass('active');
-        });
-
-        it('Should monitor model value, when no set, the default value is true | false', function () {
-            var element = compile(
-                '<uix-button-group ng-model="checkboxModel" type="checkbox">' +
-                '<button>男</button><button>女</button>' +
-                '</uix-button-group>'
-            )(scope);
-            scope.checkboxModel = {'man': true, 'woman': true};
-            scope.$apply();
-            expect(scope.$eval(element.attr('ng-model')).man).toEqual(true);
-            expect(scope.$eval(element.attr('ng-model')).woman).toEqual(true);
-        });
-
-        it('Should toggle default model values on click', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel" type="checkbox">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.checkboxModel = {'man': true, 'woman': true};
-            scope.$apply();
-
-            childElements = element.children();
-            childElements.eq(1).click();
-            childElements.eq(0).click();
-
-            expect(scope.$eval(element.attr('ng-model')).man).toEqual(false);
-            expect(scope.$eval(element.attr('ng-model')).woman).toEqual(false);
-        });
-
-        it('Should toggle custom model values on click', function () {
-            var element = compile(
-                    '<uix-button-group ng-model="checkboxModel" type="checkbox" checkbox-true="1" checkbox-false="0">' +
-                    '<button>男</button><button>女</button>' +
-                    '</uix-button-group>'
-                )(scope),
-                childElements = null;
-            scope.checkboxModel = {'man': 0, 'woman': 1};
-            scope.$apply();
-            expect(scope.$eval(element.attr('ng-model')).man).toEqual(0);
-            expect(scope.$eval(element.attr('ng-model')).woman).toEqual(1);
-
-            childElements = element.children();
-            childElements.eq(1).click();
-            childElements.eq(0).click();
-            expect(scope.$eval(element.attr('ng-model')).man).toEqual(1);
-            expect(scope.$eval(element.attr('ng-model')).woman).toEqual(0);
-        });
+    it('Should toggle select  click one radio element when  set uncheckable  as true', function () {
+        scope.value = 'female';
+        scope.uncheckable = true;
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male" uncheckable="uncheckable">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        expect(element).toHaveAttr('type', 'radio');
+        var ele = element.find('label');
+        if (!(ele.eq(0).attr('btn-radio-val') === scope.value)) {
+            expect(ele.eq(0)).not.toHaveClass('active');
+            ele.eq(0).click();
+            expect(ele.eq(0)).toHaveClass('active');
+            expect(ele.eq(0).attr('btn-radio-val')).toEqual(scope.value);
+        } else {
+            expect(ele.eq(0)).toHaveClass('active');
+            ele.eq(0).click();
+            expect(ele.eq(0)).not.toHaveClass('active');
+            expect(ele.eq(0).attr('btn-radio-val')).not.toEqual(scope.value);
+        }
     });
 });

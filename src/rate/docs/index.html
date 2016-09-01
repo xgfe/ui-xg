@@ -1,0 +1,104 @@
+<div ng-controller="rateDemoCtrl">
+    <ol class="rate-demo">
+        <li>
+            <ul>只设置ng-model.其它都不设置.
+                <li>
+                    <p>ng-model=0,评分为0;</p>
+                    <uix-rate ng-model="modeZero"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=6,超出icon数量,评分满分;</p>
+                    <uix-rate ng-model="modeFlow"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=3;正常范围,根据传入值评分</p>
+                    <uix-rate ng-model="modeNormal"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model='zero';不合法输入,评分为0</p>
+                    <uix-rate ng-model="modeIllegal"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=1.3;小数输入,小数位小于0.5,四舍五入,评分为1</p>
+                    <uix-rate ng-model="modeFloatMin"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=1.6,小数输入,小数位大于0.5,四舍五入,评分为2</p>
+                    <uix-rate ng-model="modeFloatMax"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>设置count
+                <li>
+                    <p>ng-model=0,count=10,则最高评分10分</p>
+                    <uix-rate ng-model="modeZero" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>count=0,设置为0,则使用默认值,则最高可选5分;</p>
+                    <uix-rate ng-model="modeZero" count="0"></uix-rate>
+                </li>
+                <li>
+                    <p>count不设置,使用默认值,则最高可选5分</p>
+                    <uix-rate ng-model="modeZero"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>readOnly,默认为false
+                <li>
+                    <p>ng-model=3,默认不设置</p>
+                    <uix-rate ng-model="modeNormal" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=3,read-only设置为true</p>
+                    <uix-rate ng-model="modeNormal" read-only="true"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>rating-icon,设置图标样式,默认为空五角星
+                <li>
+                    <p>默认不设置</p>
+                    <uix-rate ng-model="modeNormal" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>rating-icon设置为glyphicon glyphicon-off</p>
+                    <uix-rate ng-model="modeNormal" rating-icon="'glyphicon glyphicon-off'"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>rating-select-color,设置评分颜色,可以使用如'red','#aeefda','rgb(234,54,33)','rgba(123,112,3,0.5)'中任何一种设置方式
+                <li>
+                    <p>默认不设置</p>
+                    <uix-rate ng-model="modeNormal"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为#aeefda</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'#aeefda'"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为red</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="red"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为rgb(122,54,33)</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'rgb(122,54,33)'"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为rgb(234,54,33)</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'rgba(123,112,3,0.5)'"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>on-change事件,该事件不同于ng-change在于,该事件不同于ng-change在于使用该事件时候可以捕获两个参数.
+                <li>
+                    <p>绑定on-change事件,oldVal:<span class="text-danger">{{oldVal}}</span>;newVal:<span class="text-danger">{{newVal}}</span></p>
+                    <uix-rate ng-model="changeModel" on-change="changeFn($oldVal, $newVal)"></uix-rate>
+                </li>
+            </ul>
+        </li>
+    </ol>
+</div>

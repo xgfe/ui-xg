@@ -1,0 +1,20 @@
+.tab-demo + div{
+    padding-left:5px;
+    padding-top: 10px;
+}
+
+.tab-demo + div + ul {
+    list-style: none;
+    padding-left: 0;
+}
+.tab-demo + div + ul  > ul{
+    list-style: none;
+    padding-left: 50px;
+}
+.tab-demo + div + ul > li {
+    padding-left: 50px;
+}
+.text-danger-info {
+    font-weight: 700;
+    color: red
+}

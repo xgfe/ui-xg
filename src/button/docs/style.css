@@ -1,4 +1,4 @@
-.buttonDemo p{
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.74);
+.buttonDemo > ul > li {
+    list-style: none;
+    padding: 10px;
 }

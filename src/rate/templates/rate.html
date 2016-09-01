@@ -1,0 +1,8 @@
+<ul class="uix-rates" ng-class="{'uix-rates-disabled': readOnly}">
+    <li ng-repeat="rate in rates track by $index" class="uix-rate {{rate.ratingIcon}}"
+        ng-mouseenter="enterLiFn($index, $event)" ng-class="{'half-score': allowHalf, 'full-score': $index < ngModel}"
+        ng-mouseleave="leaveLiFn($index)" ng-click="clickLiFn($index)"  ng-style="{'color': $index < ngModel && ratingSelectColor }">
+        <!--实现half的时候,需要考虑内层div的cursor属性,好像不继承-->
+        <!--<div class="half-modal  {{rate.ratingIcon}}" ng-mouseenter="enterDivFn($index, $event)"></div>-->
+    </li>
+</ul>
