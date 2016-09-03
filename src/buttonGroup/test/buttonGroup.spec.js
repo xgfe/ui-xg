@@ -90,7 +90,8 @@ describe('ui.xg.buttonGroup', function () {
 
     it('Should modify ng-model via click different element to toggle active class', function () {
         scope.value = 'male';  // 多选
-        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" ' +
+            'btn-radio-val="female">女</label></uix-button-group>');
         var ele = element.find('label');
         for (var i = 0; i < ele.length; i++) {
             if (ele.eq(i).attr('btn-radio-val') === scope.value) {
@@ -111,7 +112,8 @@ describe('ui.xg.buttonGroup', function () {
 
     it('Should doing nothing when click an active radio and type equals to radio', function () {
         scope.value = 'male';  // 多选
-        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" ' +
+            'btn-radio-val="female">女</label></uix-button-group>');
         var ele = element.find('label');
         for (var i = 0; i < ele.length; i++) {
             if (ele.eq(i).attr('btn-radio-val') === scope.value) {
@@ -127,7 +129,8 @@ describe('ui.xg.buttonGroup', function () {
     it('Should toggle custom model values when click', function () {
         scope.value = {'male': true, 'female': true};  // 多选
         scope.type = 'checkbox';
-        createButtonGroup('<uix-button-group ng-model="value" bg-type="type"><button name="male"  btn-checkbox-true="male" btn-checkbox-false="nomale">男</button><button name="female" btn-checkbox-true="female">女</button></uix-button-group>');
+        createButtonGroup('<uix-button-group ng-model="value" bg-type="type"><button name="male"  btn-checkbox-true="male" btn-checkbox-false="nomale">男</button>' +
+            '<button name="female" btn-checkbox-true="female">女</button></uix-button-group>');
         var ele = element.find('label');
         ele.eq(0).click();
         expect(scope.value[ele.eq(0).attr('name')]).toEqual(ele.eq(0).attr('btn-checkbox-true'));
@@ -137,7 +140,8 @@ describe('ui.xg.buttonGroup', function () {
 
     it('Should can\'t toggle select  click one radio element when not set uncheckable or set uncheckable as false', function () {
         scope.value = 'female';
-        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male">男</label><label class="btn btn-default" ' +
+            'btn-radio-val="female">女</label></uix-button-group>');
         expect(element).toHaveAttr('type', 'radio');
         var ele = element.find('label');
         if (!(ele.eq(0).attr('btn-radio-val') === scope.value)) {
@@ -154,7 +158,9 @@ describe('ui.xg.buttonGroup', function () {
     it('Should toggle select  click one radio element when  set uncheckable  as true', function () {
         scope.value = 'female';
         scope.uncheckable = true;
-        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male" uncheckable="uncheckable">男</label><label class="btn btn-default" btn-radio-val="female">女</label></uix-button-group>');
+        createButtonGroup('<uix-button-group ng-model="value"><label class="btn btn-default" btn-radio-val="male" ' +
+            'uncheckable="uncheckable">男</label><label class="btn btn-default" btn-radio-val="female">女</label>' +
+            '</uix-button-group>');
         expect(element).toHaveAttr('type', 'radio');
         var ele = element.find('label');
         if (!(ele.eq(0).attr('btn-radio-val') === scope.value)) {

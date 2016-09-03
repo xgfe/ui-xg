@@ -1,5 +1,5 @@
-<div ng-controller="buttonDemoCtrl" class="buttonDemo">
-    <ol>
+<div ng-controller="buttonDemoCtrl">
+    <ol class="buttonDemo">
         <li>
             <p>只设置按钮内容,其它都不设置,有三种方式设置内容:插入文本,插入html代码片段,使用双括号</p>
             <div>
@@ -10,7 +10,7 @@
         </li>
         <li>
             <p>只设置按钮按钮类型,button,reset,submit.submit会触发ng-submit事件,reset会重置表单</p>
-            <form ng-submit="submitFn()">
+            <form ng-submit="submitText()">
                 <input type="text" ng-model="btnTypeText"/>
                 <uix-button>Button</uix-button>
                 <uix-button b-type="submit">Submit</uix-button>

@@ -244,11 +244,11 @@ describe('ui.xg.rate', function () {
         var ele = element.find('li');
         var rand = scope.value;
         ele.eq(rand).mouseenter();
-        expect(ele.eq(rand).scope.timer).toEqual(undefined);
+        expect(typeof ele.eq(rand).scope.timer).toEqual('undefined');
         ele.eq(rand).mouseleave();  // 不会触发
         expect(ele.eq(rand).scope.timer).not.toEqual(null);
         ele.eq(rand + 1).mouseenter();
-        expect(ele.eq(rand).scope.timer).toEqual(undefined);
+        expect(typeof ele.eq(rand).scope.timer).toEqual('undefined');
         ele.eq(rand).mouseenter();  // 会触发
     });
 

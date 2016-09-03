@@ -6,8 +6,7 @@
 describe('ui.xg.tabs', function () {
     var compile,
         scope,
-        element,
-        rootScope;
+        element;
 
     // 加载模块
     beforeEach(function () {
@@ -17,7 +16,6 @@ describe('ui.xg.tabs', function () {
         inject(function ($compile, $rootScope) {
             compile = $compile;
             scope = $rootScope.$new();
-            rootScope = $rootScope;
         });
     });
 
@@ -37,7 +35,7 @@ describe('ui.xg.tabs', function () {
 
 
     it('should set content by three way', function () {
-        rootScope.content = '通过{{}}设置的内容';
+        scope.content = '通过{{}}设置的内容';
         createTabs('<uix-tabs><uix-tab>{{content}}</uix-tab><uix-tab>直接设置内容</uix-tab><uix-tab><i class="glyphicon glyphicon-eye-open"></i></uix-tab></uix-tabs>');
         var ele = element.find('uix-tab-panel');
         expect(ele.length).toEqual(3);
@@ -67,7 +65,8 @@ describe('ui.xg.tabs', function () {
             oldVal = _oldVal;
             newVal = _newVal;
         };
-        createTabs('<uix-tabs active="active" on-change="changeFn($oldVal, $newVal)"><uix-tab>first content is 1</uix-tab><uix-tab>second content is 2</uix-tab><uix-tab>third content is 3</uix-tab></uix-tabs>');
+        createTabs('<uix-tabs active="active" on-change="changeFn($oldVal, $newVal)"><uix-tab>first content is 1</uix-tab><uix-tab>second content is 2</uix-tab>' +
+            '<uix-tab>third content is 3</uix-tab></uix-tabs>');
         var head = element.find('li');
         expect(head.eq(1)).toHaveClass('active');
         expect(scope.active).toEqual(2);

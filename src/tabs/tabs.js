@@ -79,11 +79,13 @@ angular.module('ui.xg.tabs', [])
             scope: {},
             link: function (scope, element, attrs) {
                 var tabScope = scope.$parent.$eval(attrs.tab);
+                // console.log(tabScope.tab);
+                // console.log(element[0]);
                 element.append(tabScope.tab);
             }
         };
     }])
-    .directive('uixTab', ['$sce', function ($sce) {
+    .directive('uixTab', [ '$sce', function ($sce) {
         return {
             restrict: 'E',
             scope: {},
@@ -92,11 +94,11 @@ angular.module('ui.xg.tabs', [])
             replace: true,
             transclude: true,
             link: function (scope, element, attrs, tabsCtrl, transclude) {
-                scope.heading = $sce.trustAsHtml(getRealAttr(scope.$parent.$parent.$parent, attrs.heading, 'Tab'));  // 获取元素标题
-                scope.index = getRealAttr(scope.$parent.$parent.$parent, attrs.index, tabsCtrl.subTabNum);  // 获取元素index
-                scope.disabled = getRealAttr(scope.$parent.$parent.$parent, attrs.disabled, false);
+                scope.heading = $sce.trustAsHtml(getRealAttr(scope.$parent.$parent, attrs.heading, 'Tab'));  // 获取元素标题
+                scope.index = getRealAttr(scope.$parent.$parent, attrs.index, tabsCtrl.subTabNum);  // 获取元素index
+                scope.disabled = getRealAttr(scope.$parent.$parent, attrs.disabled, false);
 
-                transclude(scope.$parent.$parent.$parent, function (clone) {
+                transclude(scope.$parent.$parent, function (clone) {
                     angular.forEach(clone, function (ele) {
                         if (angular.isDefined(ele.outerHTML)) {
                             scope.tab = ele;
@@ -111,6 +113,21 @@ angular.module('ui.xg.tabs', [])
                     }
                     tabsCtrl.select(tabsCtrl.findTabIndex(scope.index));
                 };
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
 
             }
         };
@@ -153,19 +170,4 @@ angular.module('ui.xg.tabs', [])
             }
         };
     });
-
-/**
- * 在父作用scope解析属性值
- * @param {object} scope 变量所在scope域
- * @param {string} val 从标签上获取的属性值
- * @param {string} defaultVal 属性默认值
- * @returns {*}
- */
-function getRealAttr(scope, val, defaultVal) {
-    if (angular.isDefined(val)) {
-        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
-    } else {
-        return defaultVal;
-    }
-}
 
