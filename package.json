@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "start": "http-server -a localhost -p 8001 -c-1 ./logs"
   },
   "keywords": [
     "UI",

@@ -3,8 +3,8 @@
  * Version: 1.4.0 - 2016-09-03
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.collapse","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.datepicker","ui.xg.dropdown","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.collapse","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 /**
  * alert
  * 警告提示指令
@@ -123,7 +123,7 @@ angular.module('ui.xg.button', [])
     }]);
 
 /**
- * button
+ * buttonGroup
  * 按钮组指令
  * Author:penglu02@meituan.com
  * Date:2016-01-23
@@ -287,7 +287,6 @@ angular.module('ui.xg.buttonGroup', [])
             }
         };
     }]);
-
 
 /**
  * timepanel
@@ -1529,88 +1528,6 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             }
         };
     });
-
-/**
- * collapse
- * collapse directive
- * Author: yjy972080142@gmail.com
- * Date:2016-08-01
- */
-angular.module('ui.xg.collapse', ['ui.xg.transition'])
-    .directive('uixCollapse', ['$uixTransition', function ($uixTransition) {
-        return {
-            restrict: 'AE',
-            link: function (scope, element, attrs) {
-                var initialAnimSkip = true;
-                var currentTransition;
-
-                function doTransition(change) {
-                    var newTransition = $uixTransition(element, change);
-                    if (currentTransition) {
-                        currentTransition.cancel();
-                    }
-                    currentTransition = newTransition;
-                    newTransition.then(newTransitionDone, newTransitionDone);
-                    return newTransition;
-
-                    function newTransitionDone() {
-                        // Make sure it's this transition, otherwise, leave it alone.
-                        if (currentTransition === newTransition) {
-                            currentTransition = null;
-                        }
-                    }
-                }
-
-                // 展开
-                function expand() {
-                    if (initialAnimSkip) {
-                        initialAnimSkip = false;
-                        expandDone();
-                    } else {
-                        element.removeClass('collapse').addClass('collapsing');
-                        doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
-                    }
-                }
-
-                function expandDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse in');
-                    element.css({
-                        width: 'inherit',
-                        height: 'auto'
-                    });
-                }
-
-                // 收起
-                function collapse() {
-                    if (initialAnimSkip) {
-                        initialAnimSkip = false;
-                        collapseDone();
-                        element.css({height: 0});
-                    } else {
-                        //trigger reflow so a browser realizes that height was updated from auto to a specific value
-                        element.removeClass('collapse in').addClass('collapsing');
-                        // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
-                        element.css({height: element[0].scrollHeight + 'px'});
-                        doTransition({height: '0'}).then(collapseDone);
-                    }
-                }
-
-                function collapseDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse');
-                }
-
-                scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
-                    if (shouldCollapse) {
-                        collapse();
-                    } else {
-                        expand();
-                    }
-                });
-            }
-        };
-    }]);
 
 /**
  * position
@@ -3014,188 +2931,6 @@ angular.module('ui.xg.popover', ['ui.xg.tooltip'])
     }]);
 
 /**
- * datepicker
- * datepicker directive
- * Author: yjy972080142@gmail.com
- * Date:2016-03-21
- */
-angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
-    .constant('uixDatepickerConfig', {
-        minDate: null, // 最小可选日期
-        maxDate: null, // 最大可选日期
-        exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
-        format: 'yyyy-MM-dd HH:mm:ss', // 日期格式化
-        autoClose: true, // 是否自动关闭面板,
-        clearBtn: false,
-        showTime: true,
-        size: 'md'
-    })
-    .service('uixDatepickerService', ['$document', function ($document) {
-        var openScope = null;
-        this.open = function (datepickerScope) {
-            if (!openScope) {
-                $document.on('click', closeDatepicker);
-            }
-            if (openScope && openScope !== datepickerScope) {
-                openScope.showCalendar = false;
-            }
-            openScope = datepickerScope;
-        };
-
-        this.close = function (datepickerScope) {
-            if (openScope === datepickerScope) {
-                openScope = null;
-                $document.off('click', closeDatepicker);
-            }
-        };
-
-        function closeDatepicker(evt) {
-            if (!openScope) {
-                return;
-            }
-            var panelElement = openScope.getCanledarElement();
-            var toggleElement = openScope.getToggleElement();
-            if (panelElement && panelElement[0].contains(evt.target) ||
-                toggleElement && toggleElement[0].contains(evt.target) ||
-                angular.element(evt.target).hasClass('uix-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
-                angular.element(evt.target).hasClass('uix-cal-day')
-            ) {
-                return;
-            }
-            openScope.showCalendar = false;
-            openScope.$apply();
-        }
-
-    }])
-    .controller('uixDatepickerCtrl',
-        ['$scope', '$element', '$attrs', '$log', 'dateFilter',
-            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
-            function ($scope, $element, $attrs, $log, dateFilter,
-                      uixDatepickerService, uixDatepickerConfig, $parse) {
-                var ngModelCtrl = {$setViewValue: angular.noop};
-                var self = this;
-                this.init = function (_ngModelCtrl) {
-                    ngModelCtrl = _ngModelCtrl;
-                    ngModelCtrl.$render = this.render;
-                    ngModelCtrl.$formatters.unshift(function (modelValue) {
-                        return modelValue ? new Date(modelValue) : null;
-                    });
-                };
-                $scope.showCalendar = false;
-                this.toggle = function (open) {
-                    $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
-                };
-
-                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
-                    $scope[key] = angular.isDefined($attrs[key])
-                        ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
-                });
-
-                $scope.dateFilterProp = angular.isDefined($attrs.dateFilter) ? function ($date) {
-                    return $scope.dateFilter({$date: $date});
-                } : function () {
-                    return true;
-                };
-
-                // format
-                var format = uixDatepickerConfig.format;
-                if ($attrs.format) {
-                    $scope.$parent.$watch($parse($attrs.format), function (value) {
-                        format = value;
-                        $scope.inputValue = dateFilter($scope.selectDate, format);
-                    });
-                }
-
-                this.render = function () {
-                    var date = ngModelCtrl.$modelValue;
-                    if (isNaN(date)) {
-                        $log.warn('Datepicker directive: "ng-model" value must be a Date object, ' +
-                            'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
-                            'or ISO 8601 date.');
-                    }
-                    $scope.selectDate = date;
-                    $scope.inputValue = dateFilter(date, format);
-                };
-                // 显示隐藏日历
-                $scope.toggleCalendarHandler = function (evt) {
-                    $element.find('input')[0].blur();
-                    if (evt) {
-                        evt.preventDefault();
-                    }
-                    if (!$scope.isDisabled) {
-                        self.toggle();
-                    }
-                };
-
-                // 获取日历面板和被点击的元素
-                $scope.getCanledarElement = function () {
-                    return angular.element($element[0].querySelector('.uix-datepicker-popover'));
-                };
-                $scope.getToggleElement = function () {
-                    return angular.element($element[0].querySelector('.input-group'));
-                };
-                // 清除日期
-                $scope.clearDateHandler = function () {
-                    $scope.inputValue = null;
-                    $scope.selectDate = null;
-                    ngModelCtrl.$setViewValue(null);
-                    ngModelCtrl.$render();
-                };
-                $scope.$watch('showCalendar', function (showCalendar) {
-                    if (showCalendar) {
-                        uixDatepickerService.open($scope);
-                    } else {
-                        uixDatepickerService.close($scope);
-                    }
-                });
-
-                var autoClose = angular.isDefined($attrs.autoClose)
-                    ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
-                // 选择日期
-                $scope.changeDateHandler = function (date) {
-                    $scope.inputValue = dateFilter(date, format);
-                    $scope.selectDate = date;
-                    if (autoClose) {
-                        self.toggle();
-                    }
-                    ngModelCtrl.$setViewValue(date);
-                    ngModelCtrl.$render();
-
-                    var fn = $scope.onChange ? $scope.onChange() : angular.noop();
-                    if (angular.isDefined(fn)) {
-                        fn();
-                    }
-                };
-                $scope.$on('$locationChangeSuccess', function () {
-                    $scope.showCalendar = false;
-                });
-
-            }])
-    .directive('uixDatepicker', function () {
-        return {
-            restrict: 'AE',
-            templateUrl: 'templates/datepicker.html',
-            replace: true,
-            require: ['uixDatepicker', 'ngModel'],
-            scope: {
-                minDate: '=?',
-                maxDate: '=?',
-                placeholder: '@',
-                size: '@',
-                isDisabled: '=?ngDisabled',
-                onChange: '&?',
-                dateFilter: '&?'
-            },
-            controller: 'uixDatepickerCtrl',
-            link: function (scope, el, attrs, ctrls) {
-                var datepickerCtrl = ctrls[0],
-                    ngModelCtrl = ctrls[1];
-                datepickerCtrl.init(ngModelCtrl);
-            }
-        };
-    });
-
-/**
  * dropdown
  * 多列下拉按钮组指令
  * Author:yangjiyuan@meituan.com
@@ -3397,6 +3132,732 @@ angular.module('ui.xg.dropdown', [])
                 scope.$on('$destroy', function () {
                     element.unbind('click', toggleDropdown);
                 });
+            }
+        };
+    });
+
+/**
+ * cityselect
+ * cityselect directive
+ * Author: your_email@gmail.com
+ * Date:2016-08-02
+ */
+var cityselectModule = angular.module('ui.xg.cityselect', ['ui.xg.popover', 'ui.xg.dropdown']);
+
+/**
+ * 组件默认值
+ * @param {string} placement [城市选择浮层出现位置]
+ * @param {string} class [css修改]
+ * @param {initPage} number [tab页的初始状态]
+ * @param {isShowHot} bool [是否现实热门城市]
+ * @param {isShowSelected} bool [是否显示已选城市]
+ * @param {supportChoseAll} bool [是否支持全选]
+ * @param {supportChoseReverse} bool [是否支持反选]
+ * @param {supportSearch} bool [是否支持搜索]
+ * @param {animation} bool [城市选择浮层出现动画]
+ * @param {requestGetData} bool [是否通过后台请求获得数据]
+ * @param {request_url} string [后台请求路径]
+ * @param {request_data} string [后台请求参数]
+ * @param {chosedCityDisable} bool [是否支持初始选择值不被修改]
+ * @param {[supportGroup} bool [是否支持城市分组，此值不同则传进来的allCity的数据结构不同]
+ *
+ * 除上面外允许传入的参数
+ * @param {hotCity} [{cityId: xx, cityName: xx}}] [当isShowHot为true时需传入此参数]
+ * @param {chosedCity} [{cityId: xx, cityName: xx}}] [初始选中的城市]
+ * @param {allCity} [{cityId: xx, cityName: xx}}] [所有的城市，当supportGroup为false时]
+ *                  {'AA': [{name: xx, data: [{cityId: xx, cityName: xx}}]}]} [所有的城市，当supportGroup为true时]
+ * @type {String}
+ */
+cityselectModule.constant('uixCityselectConfig', {
+    placement: 'bottom',
+    class: '',
+    initPage: 0,
+    isShowHot: true,
+    isShowSelected: false,
+    supportChoseAll: true,
+    supportChoseReverse: true,
+    supportChoseClear: true,
+    supportSearch: true,
+    animation: true,
+    requestGetData: false,
+    request_url: '',
+    request_data: '',
+    chosedCityDisable: false,
+    supportGroup: true
+});
+
+cityselectModule.controller('uixCityselectCtrl', uixCityselectCtrl);
+
+uixCityselectCtrl.$inject = ['$scope', '$http', 'uixCityselectConfig'];
+
+/**
+ * 组件本身
+ * @param  {[type]} $parse        [description]
+ * @param  {[type]} transclude:   true                [description]
+ * @param  {[type]} controller:   'uixCityselectCtrl' [description]
+ * @param  {[type]} controllerAs: 'vm'                [description]
+ * @param  {[type]} link:         function            (scope,       el, attrs, ctrls, transclude) {                                 var   controller [description]
+ * @param  {[type]} true          [description]
+ * @return {[type]}               [description]
+ */
+cityselectModule.directive('uixCityselect', ['$compile', function ($compile) {
+    return {
+        restrict: 'A',
+        require: ['uixCityselect', 'ngModel'],
+        scope: {
+        },
+        transclude: true,
+        controller: 'uixCityselectCtrl',
+        controllerAs: 'vm',
+        link: function (scope, el, attrs, ctrls, transclude) {
+            var controller = ctrls[0];
+            var ngModelController = ctrls[1];
+            var initialValue;
+            controller.setNgModelController(ngModelController);
+            ngModelController.$render = function () {
+                initialValue = ngModelController.$modelValue;
+                if (initialValue) {
+                    controller.dom = angular.element(el[0].outerHTML);
+                    var temp = controller.valueInit(initialValue);
+                    transclude(scope, function (clone) {
+                        temp.append(clone);
+                    });
+                    el.replaceWith($compile(temp)(scope));
+                }
+            };
+            scope.$watch('vm.cityInfo.allCity', function () {
+                if (scope.vm.initFlag) {
+                    controller.init();
+                }
+            }, true);
+            scope.$watch('vm.cityInfo.initPage', function () {
+                if (scope.vm.initFlag) {
+                    controller.init();
+                }
+            }, true);
+        }
+    };
+}]);
+
+/**
+ * 组件controller
+ * @param  {[type]} $scope              [description]
+ * @param  {[type]} uixCityselectConfig [description]
+ * @return {[type]}                     [description]
+ */
+function uixCityselectCtrl($scope, $http, uixCityselectConfig) {
+    var vm = this;
+    vm.$http = $http;
+    vm.$scope = $scope;
+    vm.uixCityselectConfig = uixCityselectConfig;
+    vm.ngModelController = null;
+}
+
+/**
+ * dom值初始化
+ * @param  {[type]} initialValue [description]
+ * @return {[type]}              [description]
+ */
+uixCityselectCtrl.prototype.valueInit = function (initialValue) {
+    var vm = this;
+    vm.initFlag = false;
+    vm.cityInfo = angular.extend({}, vm.uixCityselectConfig, initialValue);
+    if (!vm.cityInfo.chosedCity) {vm.cityInfo.chosedCity = [];}
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+    vm.dom.removeAttr('uix-cityselect');
+    vm.dom.attr({'uix-popover-template': '"templates/citypanel.html"',
+              'popover-placement': vm.cityInfo.placement,
+              'popover-class': vm.cityInfo.class,
+              'popover-trigger': 'click',
+              'popover-animation': vm.cityInfo.animation,
+              'ng-click': 'vm.init()'});
+    return vm.dom;
+};
+
+/**
+ * 如果启用内部url获取数据
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.getUrlData = function () {
+    var vm = this;
+    return vm.$http({
+        method: 'GET',
+        url: vm.cityInfo.request_url,
+        params: vm.cityInfo.request_data
+    });
+};
+
+/**
+ * cityPanel值初始化
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.init = function () {
+    var vm = this;
+    vm.initFlag = true;
+    if (vm.cityInfo.isShowSelected) {
+        vm.initSee = true;
+    } else {
+        vm.initSee = false;
+    }
+    if (vm.cityInfo.requestGetData) {
+        vm.cityInfo.allCity = vm.getUrlData();
+    }
+    for (var i = 0; i < vm.cityInfo.chosedCity.length; i++) {
+        if (vm.cityInfo.chosedCityDisable) {
+            vm.cityInfo.chosedCity[i].initChose = true;
+        } else {
+            vm.cityInfo.chosedCity[i].initChose = false;
+        }
+    }
+    vm.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
+    vm.checkAllCityType();
+    vm.searchList = angular.copy(vm.cityMap);
+};
+
+/**
+ * 初始化判断支不支持城市分组
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.checkAllCityType = function () {
+    var vm = this;
+    var allCity = angular.copy(vm.cityInfo.allCity);
+    vm.cityMap = [];
+    vm.tabName = [];
+    if (vm.cityInfo.supportGroup) {
+        // for (var category in allCity) {
+        //     for (var city of allCity[category]){
+        //       for (var cityInfo of city.data) {
+        //         vm.cityMap.push(cityInfo);
+        //       }
+        //     }
+        // };
+        for (var category in allCity) {
+            for (var i = 0; i < allCity[category].length; i++) {
+                for (var j = 0; j < allCity[category][i].data.length; j++) {
+                    vm.cityMap.push(allCity[category][i].data[j]);
+                }
+            }
+        }
+        vm.tabName = Object.keys(vm.cityInfo.allCity);
+        if (vm.tabName.length <= vm.cityInfo.initPage) {
+            vm.cityInfo.initPage = 0;
+        }
+    } else {
+        vm.cityMap = angular.copy(allCity);
+    }
+};
+
+/**
+ * 看已选城市
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.showSelected = function () {
+    var vm = this;
+    vm.initSee = true;
+    vm.cityInfo.isShowSelected = !vm.cityInfo.isShowSelected;
+    if (!vm.cityInfo.isShowSelected) {
+        vm.searchedCity = '';
+    }
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * 设定ngModel的controller
+ * @param {[type]} newNgmodelController [description]
+ */
+uixCityselectCtrl.prototype.setNgModelController = function (newNgmodelController) {
+    var vm = this;
+    vm.ngModelController = newNgmodelController;
+};
+
+/**
+ * 看是非已选
+ * @param  {[type]} city [description]
+ * @return {[type]}      [description]
+ */
+uixCityselectCtrl.prototype.checkChosed = function (city) {
+    var vm = this;
+    var chosedCity = angular.copy(vm.cityInfo.chosedCity);
+    var chosedCityId = [];
+    chosedCity.map(function (item) {
+        chosedCityId.push(item.cityId);
+    });
+    if (chosedCityId.indexOf(city.cityId) > -1) {
+        return true;
+    }
+    return false;
+};
+
+/**
+ * 选择城市
+ * @param  {[type]} city [description]
+ * @return {[type]}      [description]
+ */
+uixCityselectCtrl.prototype.toggleChose = function (city) {
+    var vm = this;
+    // for (var [index, item] of vm.cityInfo.chosedCity.entries()) {
+    //     if (city.cityId === item.cityId) {
+    //         if (vm.cityInfo.chosedCityDisable) {
+    //             if (item.initChose) {
+    //                 return;
+    //             }
+    //         }
+    //         vm.cityInfo.chosedCity.splice(index, 1);
+    //         return;
+    //     }
+    // }
+    for (var i = 0; i < vm.cityInfo.chosedCity.length; i++) {
+        if (city.cityId === vm.cityInfo.chosedCity[i].cityId) {
+            if (vm.cityInfo.chosedCityDisable) {
+                if (vm.cityInfo.chosedCity[i].initChose) {
+                    return;
+                }
+            }
+            vm.cityInfo.chosedCity.splice(i, 1);
+            return;
+        }
+    }
+    vm.cityInfo.chosedCity.push(city);
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * 全选功能
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.choseAll = function () {
+    var vm = this;
+    if (vm.cityInfo.chosedCityDisable) {
+        var temp = [];
+        var cityMap = angular.copy(vm.cityMap);
+        for (var i = 0; i < cityMap.length; i++) {
+            for (var j = 0; j < vm.initChosedCity.length; j++) {
+                if (cityMap[i].cityId === vm.initChosedCity[j].cityId) {
+                    temp.push(i);
+                }
+            }
+        }
+        temp.sort(vm.sortNumber).reverse();
+        for (var x = 0; x < temp.length; x++) {
+            cityMap.splice(temp[x], 1);
+        }
+        cityMap = vm.initChosedCity.concat(cityMap);
+        vm.cityInfo.chosedCity = cityMap;
+    } else {
+        vm.cityInfo.chosedCity = angular.copy(vm.cityMap);
+    }
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * 清空功能
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.resetAll = function () {
+    var vm = this;
+    if (vm.cityInfo.chosedCityDisable) {
+        vm.cityInfo.chosedCity = angular.copy(vm.initChosedCity);
+    } else {
+        vm.cityInfo.chosedCity = [];
+    }
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * 排序
+ * @param  {[type]} a [description]
+ * @param  {[type]} b [description]
+ * @return {[type]}   [description]
+ */
+uixCityselectCtrl.prototype.sortNumber = function (aa, bb) {
+    return aa - bb;
+};
+
+/**
+ * 反选操作
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.reverseAll = function () {
+    var vm = this;
+    var deleteIndex = [];
+    // for (var [index, item] of vm.cityMap.entries()) {
+    //     for (var [index1, item1] of vm.cityInfo.chosedCity.entries()) {
+    //         if (item.cityId === item1.cityId) {
+    //             deleteIndex.push(index);
+    //             break;
+    //         }
+    //     }
+    // }
+    for (var i = 0; i < vm.cityMap.length; i++) {
+        for (var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
+            if (vm.cityMap[i].cityId === vm.cityInfo.chosedCity[j].cityId) {
+                deleteIndex.push(i);
+                break;
+            }
+        }
+    }
+    deleteIndex.sort(vm.sortNumber).reverse();
+    var newChosedCity = angular.copy(vm.cityMap);
+    // for (var delectCity of deleteIndex) {
+    //     newChosedCity.splice(delectCity, 1);
+    // }
+    for (var x = 0; x < deleteIndex.length; x++) {
+        newChosedCity.splice(deleteIndex[x], 1);
+    }
+    if (vm.cityInfo.chosedCityDisable) {
+        newChosedCity = vm.initChosedCity.concat(newChosedCity);
+    }
+    vm.cityInfo.chosedCity = newChosedCity;
+    //console.log(vm.cityInfo.chosedCity.length);
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * tab页切换
+ * @param  {[type]} index [description]
+ * @return {[type]}       [description]
+ */
+uixCityselectCtrl.prototype.changeTab = function (index) {
+    var vm = this;
+    vm.cityInfo.initPage = index;
+    // if (vm.cityInfo.isShowSelected) {
+    //     vm.cityInfo.isShowSelected = !vm.cityInfo.isShowSelected;
+    // }
+    vm.ngModelController.$setViewValue(vm.cityInfo);
+};
+
+/**
+ * 看初始值的hotCity和chosedCity是否输入allCity
+ * @param  {[type]} city [description]
+ * @return {[type]}      [description]
+ */
+uixCityselectCtrl.prototype.checkCityBelong = function (city) {
+    var vm = this;
+    for(var i = 0; i < vm.cityMap.length; i++) {
+        if (vm.cityMap[i].cityId === city.cityId) {
+            return true;
+        }
+    }
+    for(var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
+        if (vm.cityInfo.chosedCity[j].cityId === city.cityId) {
+            vm.cityInfo.chosedCity.splice(j, 1);
+            vm.ngModelController.$setViewValue(vm.cityInfo);
+        }
+    }
+    return false;
+};
+
+/**
+ * 城市搜索的搜索功能
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.changeSearchCity = function () {
+    var vm = this;
+    var tempCity = vm.searchedCity;
+    var newSearchList = [];
+    for (var i = 0; i < vm.cityMap.length; i++) {
+        var tempSearchWords = vm.cityMap[i].cityName;
+        if (tempSearchWords.indexOf(tempCity) > -1) {
+            newSearchList.push(vm.cityMap[i]);
+        }
+    }
+    vm.searchList = angular.copy(newSearchList);
+};
+
+/**
+ * 城市搜索功能的列表重置
+ * @param {[type]} open [description]
+ */
+uixCityselectCtrl.prototype.setCityList = function (open) {
+    var vm = this;
+    if (open && !vm.searchedCity) {
+        vm.searchList = angular.copy(vm.cityMap);
+        return;
+    }
+    if (open && vm.searchedCity) {
+        this.changeSearchCity();
+    }
+};
+
+/**
+ * 城市搜索列表点击具体搜索结果
+ * @param  {[type]} city [description]
+ * @return {[type]}      [description]
+ */
+uixCityselectCtrl.prototype.searchCityChose = function (city) {
+    var vm = this;
+    vm.searchedCity = city.cityName;
+    if (!vm.checkChosed(city)) {
+        vm.cityInfo.chosedCity.push(city);
+        vm.ngModelController.$setViewValue(vm.cityInfo);
+    }
+};
+
+
+
+
+
+
+/**
+ * collapse
+ * collapse directive
+ * Author: yjy972080142@gmail.com
+ * Date:2016-08-01
+ */
+angular.module('ui.xg.collapse', ['ui.xg.transition'])
+    .directive('uixCollapse', ['$uixTransition', function ($uixTransition) {
+        return {
+            restrict: 'AE',
+            link: function (scope, element, attrs) {
+                var initialAnimSkip = true;
+                var currentTransition;
+
+                function doTransition(change) {
+                    var newTransition = $uixTransition(element, change);
+                    if (currentTransition) {
+                        currentTransition.cancel();
+                    }
+                    currentTransition = newTransition;
+                    newTransition.then(newTransitionDone, newTransitionDone);
+                    return newTransition;
+
+                    function newTransitionDone() {
+                        // Make sure it's this transition, otherwise, leave it alone.
+                        if (currentTransition === newTransition) {
+                            currentTransition = null;
+                        }
+                    }
+                }
+
+                // 展开
+                function expand() {
+                    if (initialAnimSkip) {
+                        initialAnimSkip = false;
+                        expandDone();
+                    } else {
+                        element.removeClass('collapse').addClass('collapsing');
+                        doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
+                    }
+                }
+
+                function expandDone() {
+                    element.removeClass('collapsing');
+                    element.addClass('collapse in');
+                    element.css({
+                        width: 'inherit',
+                        height: 'auto'
+                    });
+                }
+
+                // 收起
+                function collapse() {
+                    if (initialAnimSkip) {
+                        initialAnimSkip = false;
+                        collapseDone();
+                        element.css({height: 0});
+                    } else {
+                        //trigger reflow so a browser realizes that height was updated from auto to a specific value
+                        element.removeClass('collapse in').addClass('collapsing');
+                        // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
+                        element.css({height: element[0].scrollHeight + 'px'});
+                        doTransition({height: '0'}).then(collapseDone);
+                    }
+                }
+
+                function collapseDone() {
+                    element.removeClass('collapsing');
+                    element.addClass('collapse');
+                }
+
+                scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
+                    if (shouldCollapse) {
+                        collapse();
+                    } else {
+                        expand();
+                    }
+                });
+            }
+        };
+    }]);
+
+/**
+ * datepicker
+ * datepicker directive
+ * Author: yjy972080142@gmail.com
+ * Date:2016-03-21
+ */
+angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
+    .constant('uixDatepickerConfig', {
+        minDate: null, // 最小可选日期
+        maxDate: null, // 最大可选日期
+        exceptions: [],  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
+        format: 'yyyy-MM-dd HH:mm:ss', // 日期格式化
+        autoClose: true, // 是否自动关闭面板,
+        clearBtn: false,
+        showTime: true,
+        size: 'md'
+    })
+    .service('uixDatepickerService', ['$document', function ($document) {
+        var openScope = null;
+        this.open = function (datepickerScope) {
+            if (!openScope) {
+                $document.on('click', closeDatepicker);
+            }
+            if (openScope && openScope !== datepickerScope) {
+                openScope.showCalendar = false;
+            }
+            openScope = datepickerScope;
+        };
+
+        this.close = function (datepickerScope) {
+            if (openScope === datepickerScope) {
+                openScope = null;
+                $document.off('click', closeDatepicker);
+            }
+        };
+
+        function closeDatepicker(evt) {
+            if (!openScope) {
+                return;
+            }
+            var panelElement = openScope.getCanledarElement();
+            var toggleElement = openScope.getToggleElement();
+            if (panelElement && panelElement[0].contains(evt.target) ||
+                toggleElement && toggleElement[0].contains(evt.target) ||
+                angular.element(evt.target).hasClass('uix-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
+                angular.element(evt.target).hasClass('uix-cal-day')
+            ) {
+                return;
+            }
+            openScope.showCalendar = false;
+            openScope.$apply();
+        }
+
+    }])
+    .controller('uixDatepickerCtrl',
+        ['$scope', '$element', '$attrs', '$log', 'dateFilter',
+            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
+            function ($scope, $element, $attrs, $log, dateFilter,
+                      uixDatepickerService, uixDatepickerConfig, $parse) {
+                var ngModelCtrl = {$setViewValue: angular.noop};
+                var self = this;
+                this.init = function (_ngModelCtrl) {
+                    ngModelCtrl = _ngModelCtrl;
+                    ngModelCtrl.$render = this.render;
+                    ngModelCtrl.$formatters.unshift(function (modelValue) {
+                        return modelValue ? new Date(modelValue) : null;
+                    });
+                };
+                $scope.showCalendar = false;
+                this.toggle = function (open) {
+                    $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
+                };
+
+                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
+                    $scope[key] = angular.isDefined($attrs[key])
+                        ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
+                });
+
+                $scope.dateFilterProp = angular.isDefined($attrs.dateFilter) ? function ($date) {
+                    return $scope.dateFilter({$date: $date});
+                } : function () {
+                    return true;
+                };
+
+                // format
+                var format = uixDatepickerConfig.format;
+                if ($attrs.format) {
+                    $scope.$parent.$watch($parse($attrs.format), function (value) {
+                        format = value;
+                        $scope.inputValue = dateFilter($scope.selectDate, format);
+                    });
+                }
+
+                this.render = function () {
+                    var date = ngModelCtrl.$modelValue;
+                    if (isNaN(date)) {
+                        $log.warn('Datepicker directive: "ng-model" value must be a Date object, ' +
+                            'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' +
+                            'or ISO 8601 date.');
+                    }
+                    $scope.selectDate = date;
+                    $scope.inputValue = dateFilter(date, format);
+                };
+                // 显示隐藏日历
+                $scope.toggleCalendarHandler = function (evt) {
+                    $element.find('input')[0].blur();
+                    if (evt) {
+                        evt.preventDefault();
+                    }
+                    if (!$scope.isDisabled) {
+                        self.toggle();
+                    }
+                };
+
+                // 获取日历面板和被点击的元素
+                $scope.getCanledarElement = function () {
+                    return angular.element($element[0].querySelector('.uix-datepicker-popover'));
+                };
+                $scope.getToggleElement = function () {
+                    return angular.element($element[0].querySelector('.input-group'));
+                };
+                // 清除日期
+                $scope.clearDateHandler = function () {
+                    $scope.inputValue = null;
+                    $scope.selectDate = null;
+                    ngModelCtrl.$setViewValue(null);
+                    ngModelCtrl.$render();
+                };
+                $scope.$watch('showCalendar', function (showCalendar) {
+                    if (showCalendar) {
+                        uixDatepickerService.open($scope);
+                    } else {
+                        uixDatepickerService.close($scope);
+                    }
+                });
+
+                var autoClose = angular.isDefined($attrs.autoClose)
+                    ? $scope.$parent.$eval($attrs.autoClose) : uixDatepickerConfig.autoClose;
+                // 选择日期
+                $scope.changeDateHandler = function (date) {
+                    $scope.inputValue = dateFilter(date, format);
+                    $scope.selectDate = date;
+                    if (autoClose) {
+                        self.toggle();
+                    }
+                    ngModelCtrl.$setViewValue(date);
+                    ngModelCtrl.$render();
+
+                    var fn = $scope.onChange ? $scope.onChange() : angular.noop();
+                    if (angular.isDefined(fn)) {
+                        fn();
+                    }
+                };
+                $scope.$on('$locationChangeSuccess', function () {
+                    $scope.showCalendar = false;
+                });
+
+            }])
+    .directive('uixDatepicker', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/datepicker.html',
+            replace: true,
+            require: ['uixDatepicker', 'ngModel'],
+            scope: {
+                minDate: '=?',
+                maxDate: '=?',
+                placeholder: '@',
+                size: '@',
+                isDisabled: '=?ngDisabled',
+                onChange: '&?',
+                dateFilter: '&?'
+            },
+            controller: 'uixDatepickerCtrl',
+            link: function (scope, el, attrs, ctrls) {
+                var datepickerCtrl = ctrls[0],
+                    ngModelCtrl = ctrls[1];
+                datepickerCtrl.init(ngModelCtrl);
             }
         };
     });
@@ -4472,6 +4933,123 @@ angular.module('ui.xg.pager', [])
             }
         };
     }]);
+
+/**
+ * progressbar
+ * 进度条指令
+ * Author: zhouxiong03@meituan.com
+ * Date:2016-08-05
+ */
+angular.module('ui.xg.progressbar', [])
+
+    .constant('uixProgressConfig', {
+        animate: false,
+        max: 100
+    })
+
+    .controller('UixProgressController', ['$scope', '$attrs', 'uixProgressConfig', function ($scope, $attrs, progressConfig) {
+        var self = this,
+            animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
+        this.bars = [];
+        $scope.max = getMaxOrDefault();
+        this.addBar = function (bar, element, attrs) {
+            if (!animate) {
+                element.css({'transition': 'none'});
+            } else {
+                element.parent().addClass('progress-striped active');
+            }
+            this.bars.push(bar);
+            bar.max = getMaxOrDefault();
+            bar.title = attrs && (angular.isDefined(attrs.title) && attrs.title) ? attrs.title : 'progressbar';
+            bar.$watch('value', function () {
+                bar.recalculatePercentage();
+            });
+
+            bar.recalculatePercentage = function () {
+                var totalPercentage = self.bars.reduce(function (total, bar) {
+                    bar.percent = +(100 * bar.value / bar.max).toFixed(2);
+                    return total + bar.percent;
+                }, 0);
+
+                if (totalPercentage > 100) {
+                    bar.percent -= totalPercentage - 100;
+                }
+            };
+
+            bar.$on('$destroy', function () {
+                element = null;
+                self.removeBar(bar);
+            });
+        };
+
+        this.removeBar = function (bar) {
+            this.bars.splice(this.bars.indexOf(bar), 1);
+            this.bars.forEach(function (bar) {
+                bar.recalculatePercentage();
+            });
+        };
+
+        $scope.$watch('maxParam', function () {
+            self.bars.forEach(function (bar) {
+                bar.max = getMaxOrDefault();
+                bar.recalculatePercentage();
+            });
+        });
+
+        function getMaxOrDefault() {
+            return angular.isDefined($scope.maxParam) ? $scope.maxParam : progressConfig.max;
+        }
+    }])
+
+    .directive('uixProgress', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            require: 'uixProgress',
+            scope: {
+                maxParam: '=?max'
+            },
+            templateUrl: 'templates/progress.html',
+            controller: 'UixProgressController'
+        };
+    })
+
+    .directive('uixBar', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            require: '^uixProgress',
+            scope: {
+                value: '=',
+                type: '@'
+            },
+            templateUrl: 'templates/bar.html',
+            link: function (scope, element, attrs, progressCtrl) {
+                progressCtrl.addBar(scope, element, attrs);
+            }
+        };
+    })
+
+    .directive('uixProgressbar', function () {
+        return {
+            restrict: 'AE',
+            replace: true,
+            transclude: true,
+            controller: 'UixProgressController',
+            scope: {
+                value: '=',
+                maxParam: '=?max',
+                type: '@'
+            },
+            templateUrl: 'templates/progressbar.html',
+            link: function (scope, element, attrs, progressCtrl) {
+                progressCtrl.addBar(scope, angular.element(element.children()[0]), {title: attrs.title});
+            }
+        };
+    });
+
 
 angular.module('ui.xg.rate', [])
     .directive('uixRate', ['$timeout', function ($timeout) {
@@ -7771,6 +8349,75 @@ angular.module("popover/templates/popover-template-popup.html",[]).run(["$templa
     "</div>"+
     "");
 }]);
+angular.module("cityselect/templates/citypanel.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/citypanel.html",
+    "<div >"+
+    "  <div class=\"b-a wrapper-xs bg-white\">"+
+    "    <div class=>"+
+    "      <div class=\"modal-header wrapper-xs\">"+
+    "        <h5 class=\"modal-title\">已选中{{vm.cityInfo.chosedCity.length}}个城市<span class=\"modal-title pull-right seeChosedCity\" ng-click=\"vm.showSelected()\">{{vm.cityInfo.isShowSelected?\"收起 \":\"查看已选城市\"}}<i class=\"glyphicon\" ng-class=\"{'glyphicon-chevron-down':(!vm.cityInfo.isShowSelected), 'glyphicon-chevron-up':(vm.cityInfo.isShowSelected&&vm.initSee)}\"></i></span></h5>"+
+    "      </div>"+
+    "      <div class=\"modal-body initheight haveChosed\"  ng-class=\"{cityBarOpen: (vm.cityInfo.isShowSelected&&vm.initSee), cityBarClose: (!vm.cityInfo.isShowSelected&&vm.initSee)}\">"+
+    "        <div class=\"col-sm-8\">"+
+    "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-all\" ng-click=\"vm.choseAll()\" ng-if=\"vm.cityInfo.supportChoseAll\">全选</button>"+
+    "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-clean\" ng-click=\"vm.resetAll()\" ng-if=\"vm.cityInfo.supportChoseClear\">清空</button>"+
+    "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-reverse\" ng-click=\"vm.reverseAll()\" ng-if=\"vm.cityInfo.supportChoseReverse\">反选</button>"+
+    "        </div>"+
+    "        <div class=\"input-group  col-sm-4\">"+
+    "          <form action=\"#\" class=\"m-b-md ng-pristine ng-valid\" ng-if=\"vm.cityInfo.supportSearch\">"+
+    "            <div class=\"input-group\" uix-dropdown cols-num=\"1\" on-toggle=\"vm.setCityList(open)\">"+
+    "              <input type=\"text\" class=\"form-control input-sm city-search\" uix-dropdown-toggle placeholder=\"城市搜索\" ng-model=\"vm.searchedCity\" ng-change=\"vm.changeSearchCity()\">"+
+    "              <span class=\"input-group-btn\"><button class=\"btn btn-sm btn-default bootstrap-touchspin-up\" type=\"button\"><i class=\"glyphicon glyphicon-search\"></i></button></span>"+
+    "              <ul class=\"dropdown-menu\" role=\"menu\" class=\"searchList\">"+
+    "                <li ng-repeat=\"item in vm.searchList\" ng-click=\"vm.searchCityChose(item)\" ng-class=\"{'chosecity': vm.checkChosed(item)}\"><a title=\"{{item.cityName}}\">{{item.cityName}}</a></li>"+
+    "              </ul>"+
+    "            </div>"+
+    "          </form>"+
+    "        </div>"+
+    "        <div class=\"col-sm-12 cityContainer\">"+
+    "          <ul>"+
+    "            <li class=\"cityselected\" ng-repeat=\"city in vm.cityInfo.chosedCity track by $index\" ng-if=\"vm.checkCityBelong(city)\">{{city.cityName}} <i class=\"glyphicon glyphicon-remove\" ng-click=\"vm.toggleChose(city)\" ng-if=\"!city.initChose\"></i></li>"+
+    "          </ul>"+
+    "        </div>"+
+    "      </div>"+
+    "    </div>"+
+    "    <div>"+
+    "      <div class=\"modal-header wrapper-xs\" ng-if=\"vm.cityInfo.isShowHot\">"+
+    "        <h5 class=\"modal-title\">热门城市</h5>"+
+    "      </div>"+
+    "      <div  ng-if=\"vm.cityInfo.isShowHot\" class=\"modal-body\">"+
+    "        <div class=\"showHot\">"+
+    "          <button class=\"btn m-b-xs btn-sm  btn-addon hot-city\" style=\" \" ng-repeat=\"city in vm.cityInfo.hotCity track by $index\" ng-class=\"{'btn-success': vm.checkChosed(city), 'btn-default': !(vm.checkChosed(city))}\" ng-click=\"vm.toggleChose(city)\" ng-if=\"vm.checkCityBelong(city)\"><i class=\" pull-right glyphicon\"  ng-class=\"{'glyphicon-minus': vm.checkChosed(city), 'glyphicon-plus': !(vm.checkChosed(city))}\"></i>{{city.cityName}}</button>"+
+    "        </div>"+
+    "      </div>"+
+    "      <div class=\"tab-container ng-isolate-scope\" ng-if=\"vm.cityInfo.supportGroup\">"+
+    "        <ul class=\"nav nav-tabs\">"+
+    "          <li class=\"city-tab\" role=\"presentation\" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.initPage}\" ng-click=\"vm.changeTab($index)\"><a>{{item}}</a></li>"+
+    "        </ul>"+
+    "        <div class=\"tab-content\">"+
+    "          <div class=\"tab-pane col-sm-12 \" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.initPage}\">"+
+    "            <div ng-repeat=\"word in vm.cityInfo.allCity[item] track by $index\">"+
+    "              <h4>{{word.name}}</h4>"+
+    "              <div>"+
+    "                <button class=\"btn btn-sm m-b-xs w-xs btn-default cityButton\" ng-repeat=\"city in word.data track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
+    "              </div>"+
+    "            </div>"+
+    "          </div>"+
+    "        </div>"+
+    "      </div>"+
+    "      <div ng-if=\"!vm.cityInfo.supportGroup\">"+
+    "        <div class=\"modal-header wrapper-xs\" >"+
+    "          <h5 class=\"modal-title\">全部城市</h5>"+
+    "        </div>"+
+    "        <div class=\"modal-body\">"+
+    "          <button class=\"btn btn-sm m-b-xs w-xs btn-default cityButton\" ng-repeat=\"city in vm.cityInfo.allCity track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
+    "        </div>"+
+    "      </div>"+
+    "    </div>"+
+    "  </div>"+
+    "</div>"+
+    "");
+}]);
 angular.module("datepicker/templates/datepicker-calendar.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/datepicker-calendar.html",
     "<uix-calendar ng-model=\"selectDate\" on-change=\"changeDateHandler\" exceptions=\"exceptions\" min-date=\"minDate\" max-date=\"maxDate\" show-time=\"showTime\" date-filter=\"dateFilterProp($date)\">");
@@ -7852,6 +8499,37 @@ angular.module("pager/templates/pager.html",[]).run(["$templateCache",function($
     "        <a href=\"javascript:;\">共{{totalPages}}页/{{totalItems}}条</a>"+
     "    </li>"+
     "</ul>");
+}]);
+angular.module("progressbar/templates/bar.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/bar.html",
+    "<div class=\"progress-bar\""+
+    "     ng-class=\"type && 'progress-bar-' + type\""+
+    "     role=\"progressbar\""+
+    "     aria-valuenow=\"{{value}}\""+
+    "     aria-valuemin=\"0\""+
+    "     aria-valuemax=\"{{max}}\""+
+    "     ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\""+
+    "     aria-valuetext=\"{{percent | number:0}}%\""+
+    "     title=\"{{title}}\" ng-transclude>"+
+    "</div>");
+}]);
+angular.module("progressbar/templates/progress.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/progress.html",
+    "<div class=\"progress\" title=\"{{title}}\" ng-transclude></div>");
+}]);
+angular.module("progressbar/templates/progressbar.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/progressbar.html",
+    "<div class=\"progress\">"+
+    "    <div class=\"progress-bar\""+
+    "         ng-class=\"type && 'progress-bar-' + type\""+
+    "         role=\"progressbar\""+
+    "         aria-valuenow=\"{{value}}\""+
+    "         aria-valuemin=\"0\""+
+    "         aria-valuemax=\"{{max}}\""+
+    "         ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\""+
+    "         aria-valuetext=\"{{percent | number:0}}%\""+
+    "         title=\"{{title}}\" ng-transclude></div>"+
+    "</div>");
 }]);
 angular.module("rate/templates/rate.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/rate.html",
