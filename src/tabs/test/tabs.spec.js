@@ -39,7 +39,7 @@ describe('ui.xg.tabs', function () {
         createTabs('<uix-tabs><uix-tab>{{content}}</uix-tab><uix-tab>直接设置内容</uix-tab><uix-tab><i class="glyphicon glyphicon-eye-open"></i></uix-tab></uix-tabs>');
         var ele = element.find('uix-tab-panel');
         expect(ele.length).toEqual(3);
-        expect(ele.eq(0).text()).toEqual('{{content}}');
+        expect(ele.eq(0).text()).toEqual(scope.content);
         expect(ele.eq(1).text()).toEqual('直接设置内容');
         expect(ele.eq(2).html()).toEqual('<i class="glyphicon glyphicon-eye-open ng-scope"></i>');
     });
