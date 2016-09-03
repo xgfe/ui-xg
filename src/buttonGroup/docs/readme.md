@@ -32,7 +32,7 @@
     - default:`true`
 - name(optional):`设置在子元素button上`,主要用来标志每个子checkbox元素,设置ngModel的时候,通过name对应.
     - type:`string`
-- btnRadioVal(optional):`设置在子元素button上`,主要用来根据ngModel的值判断是否选中,同时选中之后重新设置ngModel的值.
+- btnRadioVal(optional):`设置在子元素button上`,主要用来根据ngModel的值判断是否选中,同时选中之后重新设置ngModel的值.如果设置`type=radio`,则必须设置
     - type:`string`
 - uncheckable(optional):指定radio类型按钮组是否可取消选择,默认为false
      - type:`boolean`

@@ -6,5 +6,8 @@ angular.module('uixDemo').controller('tabsDemoCtrl', ['$scope', function ($scope
     };
     $scope.heading = '我是{{}}设置的heading';
     $scope.headingIcon = '<i class="glyphicon glyphicon-eye-open"></i>';
+    $scope.activeNum = 4;
+    $scope.activeNum_new = 4;
+    $scope.activeNum_one = 4;
 }]);
 

@@ -1,14 +1,6 @@
 <div ng-controller="buttonGroupDemoCtrl">
     <ol>
         <li>
-            <p>只设置ngModel,默认为radio类型,因为没有设置btnRadioVal,则没有任何一个radio选中</p>
-            <uix-button-group ng-model="interst">
-                <label class="btn btn-default">跑步</label>
-                <label class="btn btn-default">游泳</label>
-                <label class="btn btn-default">骑行</label>
-            </uix-button-group>
-        </li>
-        <li>
             <p>设置ngModel,默认为radio类型,分别设置子元素btnRadioVal</p>
             <uix-button-group ng-model="interst">
                 <label class="btn btn-default" btn-radio-val="'running'">跑步</label>
@@ -16,14 +8,6 @@
                 <label class="btn btn-default" btn-radio-val="'cycling'">骑行</label>
             </uix-button-group>
             <p> interst:{{interst}}</p>
-        </li>
-        <li>
-            <p>设置ngModel,类型设置为checkbox类型</p>
-            <uix-button-group ng-model="interstObj">
-                <label class="btn btn-default">跑步</label>
-                <label class="btn btn-default">游泳</label>
-                <label class="btn btn-default">骑行</label>
-            </uix-button-group>
         </li>
         <li>
             <p>设置ngModel,类型设置为checkbox类型,分别设置子元素name</p>

@@ -1,17 +1,9 @@
-.tab-demo + div{
+.tab-demo {
     padding-left:5px;
-    padding-top: 10px;
+    padding-top: 30px;
 }
-
-.tab-demo + div + ul {
+.tab-demo  > ul{
     list-style: none;
-    padding-left: 0;
-}
-.tab-demo + div + ul  > ul{
-    list-style: none;
-    padding-left: 50px;
-}
-.tab-demo + div + ul > li {
     padding-left: 50px;
 }
 .text-danger-info {

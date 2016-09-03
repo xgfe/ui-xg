@@ -1,10 +1,10 @@
 /**
- * button
+ * buttonGroup
  * 按钮组指令
  * Author:penglu02@meituan.com
  * Date:2016-01-23
  */
-angular.module('ui.xg.buttonGroup', ['ui.xg.button'])
+angular.module('ui.xg.buttonGroup', [])
     .constant('buttonGroupConfig', {
         activeClass: 'active',
         toggleEvent: 'click'
@@ -48,10 +48,28 @@ angular.module('ui.xg.buttonGroup', ['ui.xg.button'])
                     var isActive = element.hasClass(btnRadioCtrl.activeClass);  //获取当前radio激活状态
                     if (!isActive || scope.uncheckable) {  // 非激活状态
                         scope.ngModelCtrl.$setViewValue(isActive ? null : scope.btnRadioVal);
-                        scope.ngModelCtrl.$render();
-                        scope.$digest();
+                        scope.$apply(
+                            function () {
+                                scope.ngModelCtrl.$render();
+                            }
+                        );
                     }
                 });
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
             }
         };
     }])
@@ -80,9 +98,27 @@ angular.module('ui.xg.buttonGroup', ['ui.xg.button'])
                     var isActive = element.hasClass(btnCheckboxCtrl.activeClass);  //获取当前radio激活状态
                     scope.ngModel[ attrs.name ] = isActive ? scope.btnCheckboxFalse : scope.btnCheckboxTrue;
                     scope.ngModelCtrl.$setViewValue(scope.ngModel);
-                    scope.ngModelCtrl.$render();
-                    scope.$digest();
+                    scope.$apply(
+                        function () {
+                            scope.ngModelCtrl.$render();
+                        }
+                    );
                 });
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
 
             }
         };
@@ -104,26 +140,26 @@ angular.module('ui.xg.buttonGroup', ['ui.xg.button'])
 
                 angular.forEach(transclude(), function (ele) {
                     if (angular.isDefined((ele.outerHTML))) {
-                        ele = angular.element($interpolate(ele.outerHTML)(scope.$parent).replace('"{', "'{").replace('}"', "}'")).attr('uix-button-' + scope.type, '');
+                        ele = angular.element($interpolate(ele.outerHTML)(scope.$parent).replace('"{', '"{').replace('}"', '"}"')).attr('uix-button-' + scope.type, '');
                         ele.addClass('btn-item');  // 添加一个公共类
                         element.append($compile(ele)(scope));
                     }
                 });
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
             }
         };
     }]);
-
-/**
- * 在父作用scope解析属性值
- * @param {object} scope 变量所在scope域
- * @param {string} val 从标签上获取的属性值
- * @param {string} defaultVal 属性默认值
- * @returns {*}
- */
-function getRealAttr(scope, val, defaultVal) {
-    if (angular.isDefined(val)) {
-        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
-    } else {
-        return defaultVal;
-    }
-}

@@ -15,7 +15,6 @@ angular.module('ui.xg.button', [])
             transclude: true,
             templateUrl: 'templates/button.html',
             link: function (scope, element, attrs) {
-                var self = scope;
 
                 // 默认值处理
                 if (angular.isUndefined(attrs.loading)) {
@@ -23,12 +22,6 @@ angular.module('ui.xg.button', [])
                 }
 
                 scope.type = getRealAttr(scope.$parent, attrs.bType, 'button');
-
-                // 处理click事件,实际点击是<button>元素
-                element.bind('click', function () {
-                    self.click();  // 调用外部方法
-                    self.$parent.$digest();  // 实际调用函数层scope更新
-                });
 
                 /**
                  * 在父作用scope解析属性值
