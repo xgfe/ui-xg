@@ -39,10 +39,10 @@
       </div>
       <div class="tab-container ng-isolate-scope" ng-if="vm.cityInfo.supportGroup">
         <ul class="nav nav-tabs">
-          <li class="city-tab" role="presentation" ng-repeat="item in vm.tabName track by $index" ng-class="{active: $index===vm.cityInfo.initPage}" ng-click="vm.changeTab($index)"><a>{{item}}</a></li>
+          <li class="city-tab" role="presentation" ng-repeat="item in vm.tabName track by $index" ng-class="{active: $index===vm.cityInfo.innerTab}" ng-click="vm.changeTab($index)"><a>{{item}}</a></li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane col-sm-12 " ng-repeat="item in vm.tabName track by $index" ng-class="{active: $index===vm.cityInfo.initPage}">
+          <div class="tab-pane col-sm-12 " ng-repeat="item in vm.tabName track by $index" ng-class="{active: $index===vm.cityInfo.innerTab}">
             <div ng-repeat="word in vm.cityInfo.allCity[item] track by $index">
               <h4>{{word.name}}</h4>
               <div>

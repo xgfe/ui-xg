@@ -1,14 +1,26 @@
-.uix-alert {
-  word-wrap: break-word; }
-  .uix-alert .alert-icon {
-    float: left; }
-  .uix-alert .alert-icon-span {
-    position: relative;
-    top: 2px; }
-  .uix-alert .cancel-text {
-    font-size: 20px; }
-  .uix-alert .show-icon {
-    padding-left: 20px; }
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -ms-animation: spin .7s infinite linear;
+  -webkit-animation: spinw .7s infinite linear;
+  -moz-animation: spinm .7s infinite linear; }
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg); }
+  to {
+    transform: scale(1) rotate(360deg); } }
+
+@-webkit-keyframes spinw {
+  from {
+    -webkit-transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes spinm {
+  from {
+    -moz-transform: rotate(0deg); }
+  to {
+    -moz-transform: rotate(360deg); } }
 
 .btn-group {
     font-size: 0;
@@ -28,6 +40,18 @@
     border-top-left-radius: 0;
     padding-left: 8px;
 }
+
+.uix-alert {
+  word-wrap: break-word; }
+  .uix-alert .alert-icon {
+    float: left; }
+  .uix-alert .alert-icon-span {
+    position: relative;
+    top: 2px; }
+  .uix-alert .cancel-text {
+    font-size: 20px; }
+  .uix-alert .show-icon {
+    padding-left: 20px; }
 
 .uix-calendar {
   display: inline-block;
@@ -180,30 +204,6 @@
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
 
-.glyphicon-refresh-animate {
-  -animation: spin .7s infinite linear;
-  -ms-animation: spin .7s infinite linear;
-  -webkit-animation: spinw .7s infinite linear;
-  -moz-animation: spinm .7s infinite linear; }
-
-@keyframes spin {
-  from {
-    transform: scale(1) rotate(0deg); }
-  to {
-    transform: scale(1) rotate(360deg); } }
-
-@-webkit-keyframes spinw {
-  from {
-    -webkit-transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg); } }
-
-@-moz-keyframes spinm {
-  from {
-    -moz-transform: rotate(0deg); }
-  to {
-    -moz-transform: rotate(360deg); } }
-
 .uix-carousel {
   position: relative; }
 
@@ -353,30 +353,6 @@
   .uix-datepicker .uix-calendar {
     border: 0; }
 
-.uix-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-loader .loading {
-    position: relative;
-    background: rgba(96, 96, 96, 0.05);
-    min-height: 200px; }
-  .uix-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
-
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
 
@@ -401,6 +377,30 @@
       width: 50% !important; }
   .dropdown.open {
     width: 100%; } }
+
+.uix-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-loader .loading {
+    position: relative;
+    background: rgba(96, 96, 96, 0.05);
+    min-height: 200px; }
+  .uix-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
 
 /*
  *  uix-notify-container styles
