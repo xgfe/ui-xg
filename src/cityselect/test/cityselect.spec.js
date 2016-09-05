@@ -31,7 +31,7 @@ describe('ui.xg.cityselect', function () {
                     {cityId: 15, cityName: '北京'},
                     {cityId: 24, cityName: '上海'}
             ],
-            chosedCity: [
+            initChosedCity: [
                         {cityId: 1, cityName: '安阳'},
                         {cityId: 8, cityName: '安阳1'},
                         {cityId: 9, cityName: '鞍山1'},
