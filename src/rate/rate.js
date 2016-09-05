@@ -1,5 +1,5 @@
 angular.module('ui.xg.rate', [])
-    .directive('uixRate', ['$timeout', function ($timeout) {
+    .directive('uixRate', function () {
         return {
             restrict: 'E',
             require: '?ngModel',
@@ -11,8 +11,6 @@ angular.module('ui.xg.rate', [])
             transclude: true,
             replace: true,
             link: function (scope, element, attrs, ngModelCtrl) {
-                var timer = null; //定时器,防抖动
-                var oldIdx;
                 scope.rates = [];
                 // 初始化icon个数.默认5个
                 scope.count = getRealAttr(scope.$parent, attrs.count, 5);
@@ -63,9 +61,6 @@ angular.module('ui.xg.rate', [])
                         return;
                     }
                     scope.changeFlag = false;
-                    if (timer) {
-                        $timeout.cancel(timer);
-                    }
                     var i;
                     var ele = element.find('li');
                     // 选中所有
@@ -78,33 +73,38 @@ angular.module('ui.xg.rate', [])
                         ele.eq(i).css('color', '#e9e9e9');
                     }
                     element.find('li').eq(idx).addClass('max-icon');
-                    if (oldIdx !== idx) {
-                        ele.eq(oldIdx).removeClass('max-icon');
+                };
+
+                scope.leaveFn = function () {
+                    if (scope.readOnly) {
+                        return;
+                    }
+                    if (scope.changeFlag) {  // 选择过
+                        return; //不做任何操作
+                    }
+                    var i;
+                    var ele = element.find('li');
+                    for (i = 0; i < scope.ngModel; i++) {
+                        ele.eq(i).addClass('full-score');
+                        ele.eq(i).css('color', scope.ratingSelectColor);
+                    }
+                    for (i = scope.ngModel; i < scope.count; i++) {
+                        ele.eq(i).removeClass('full-score');
+                        ele.eq(i).css('color', '#e9e9e9');
                     }
                 };
 
+
+                /**
+                 * 鼠标离开,移除放大效果
+                 * @param idx
+                 */
                 scope.leaveLiFn = function (idx) {
                     if (scope.readOnly) {
                         return;
                     }
-                    oldIdx = idx;
-                    // 防抖动
-                    timer = $timeout(function () {
-                        if (scope.changeFlag) {  // 选择过
-                            return; //不做任何操作
-                        }
-                        var i;
-                        var ele = element.find('li');
-                        for (i = 0; i < scope.ngModel; i++) {
-                            ele.eq(i).addClass('full-score');
-                            ele.eq(i).css('color', scope.ratingSelectColor);
-                        }
-                        for (i = scope.ngModel; i < scope.count; i++) {
-                            ele.eq(i).removeClass('full-score');
-                            ele.eq(i).css('color', '#e9e9e9');
-                        }
-                        ele.eq(idx).removeClass('max-icon');
-                    }, 100);
+                    var ele = element.find('li');
+                    ele.eq(idx).removeClass('max-icon');
                 };
 
                 scope.clickLiFn = function (idx) {
@@ -137,8 +137,7 @@ angular.module('ui.xg.rate', [])
                     }
                     return Math.round(val);
                 }
-
             }
         };
-    }]);
+    });
 
