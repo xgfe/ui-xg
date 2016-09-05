@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-04
+ * Version: 1.4.0 - 2016-09-05
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 /**
  * transition
  * transition directive
@@ -338,290 +338,201 @@ angular.module('ui.xg.alert', [])
 angular.module('ui.xg.button', [])
     .directive('uixButton', [function () {
         return {
-            restrict: 'AE',
+            restrict: 'E',
             scope: {
-                disabled: '=?',   // 对于不是必须传递需要使用?
-                loading: '=?',
-                onClick: '&?click'
+                loading: '=?'
             },
-            replace: false,
+            replace: true,
+            transclude: true,
             templateUrl: 'templates/button.html',
-            controller: 'buttonController',
             link: function (scope, element, attrs) {
-                element = angular.element(element.children()[0]);
-                var btnClass = getAttrValue(attrs.btnclass, 'default'), // 样式:primary|info等,默认default
-                    size = getAttrValue(attrs.size, 'default'), // 大小:x-small,small等,默认为default
-                    block = getAttrValue(attrs.block, false), //是否按100%的width填充父标签,默认为false
-                    active = getAttrValue(attrs.active, false), // 激活状态,默认为false
-                    type = getAttrValue(attrs.type, 'button'), // 按钮类型:button|submit|reset,默认为button
-                    text = getAttrValue(attrs.text, 'button'), //按钮显示文本,默认为Button
-                    icon = getAttrValue(attrs.icon, ''); //按钮图标,默认没有
-                scope.text = scope.initText = text;
-                scope.type = type;
-                scope.icon = 'glyphicon-' + icon;
-                scope.iconFlag = icon !== '';
-                // 是否不可用,默认为false
-                scope.disabled = scope.initDisabled = angular.isDefined(scope.disabled) ? scope.disabled : false;
-                scope.loading = angular.isDefined(scope.loading) ? scope.loading : false; // 是否有加载效果,默认为false
+
+                // 默认值处理
+                if (angular.isUndefined(attrs.loading)) {
+                    scope.loading = false;
+                }
+
+                scope.type = getRealAttr(scope.$parent, attrs.bType, 'button');
+
                 /**
-                 * 获取属性值:数据绑定(通过变量设置|定义常量)|默认值
-                 * @param {string} attributeValue 标签绑定数据(可解析|定值)
-                 * @param {string | boolean} defaultValue 默认值
-                 * @returns {*} 最终值
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
                  */
-                function getAttrValue(attributeValue, defaultValue) {
-                    var val = scope.$parent.$eval(attributeValue);   //变量解析
-                    return angular.isDefined(val) ? val : attributeValue ? attributeValue : defaultValue;
-                }
-
-                element.addClass('btn-' + btnClass); //设置按钮样式
-
-                // 设置按钮大小
-                switch (size) {
-                    case 'large':
-                        size = 'lg';
-                        break;
-                    case 'small':
-                        size = 'sm';
-                        break;
-                    case 'x-small':
-                        size = 'xs';
-                        break;
-                    default:
-                        size = 'default';
-                        break;
-                }
-
-                element.addClass('btn-' + size); //设置按钮大小
-
-                // 设置block
-                if (block) {
-                    element.addClass('btn-block');
-                }
-
-                // 设置active状态
-                if (active) {
-                    element.addClass('active');
-                }
-
-                scope.$watch('disabled', function (val) {
-                    if (val) {
-                        element.attr('disabled', 'disabled');
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
                     } else {
-                        element.removeAttr('disabled');
+                        return defaultVal;
                     }
-                });
-
-                // button绑定click事件
-                element.bind('click', function () {
-                    if (scope.onClick) {
-                        scope.onClick();
-                        scope.$parent.$apply();
-                    }
-                });
-                scope.$watch('loading', function (val) {
-                    var spanEle = element.children('span.glyphicon-refresh-animate'),
-                        ele = null;
-                    if (val) {
-                        scope.disabled = val;
-                        if (spanEle.length > 0) {
-                            spanEle.removeClass('hidden');
-                        } else {
-                            scope.text = 'isLoading...';
-                            ele = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>';
-                            element.prepend(ele);
-                        }
-                    } else {
-                        scope.disabled = scope.initDisabled;
-                        scope.text = scope.initText;
-                        if (spanEle.length > 0) {
-                            spanEle.addClass('hidden');
-                        }
-                    }
-                });
+                }
             }
         };
-    }])
-    .controller('buttonController', ['$scope', function ($scope) {
-        $scope.btnClassArr = ['default', 'primary', 'success', 'info', 'warning', 'danger', 'link'];  // 所有可设置样式
-        $scope.sizeArr = ['large', 'small', 'x-small', 'default'];  // 所有可设置大小
-        $scope.typeArr = ['button', 'reset', 'submit'];  // 所有可设置类型
     }]);
 
 /**
- * button
+ * buttonGroup
  * 按钮组指令
  * Author:penglu02@meituan.com
  * Date:2016-01-23
  */
 angular.module('ui.xg.buttonGroup', [])
     .constant('buttonGroupConfig', {
-        size: 'default',   // 按钮组大小:x-small,small,default,larger
-        type: 'radio',  // 按钮组类型:radio 或者 checkbox类型
-        showClass: 'default', //按钮组样式:danger | warning | default | success | info ｜ primary
-        checkboxTrue: true, // 按钮选中对应ngModel的值
-        checkboxFalse: false, //按钮不选对应ngModel的值
-        disabled: false  // 按钮组不可用状态
+        activeClass: 'active',
+        toggleEvent: 'click'
     })
-    .controller('buttonGroupController', ['$transclude', '$scope', '$attrs', 'buttonGroupConfig',
-        function ($transclude, $scope, $attrs, buttonGroupConfig) {
-            var transcludeEles = $transclude(), // 获取嵌入元素 TODO:1.2.25版本不需要传入$scope，否则会报错
-                i = 0,
-                tagName,
-                childElements = [],
-                btnObj = {};
+    .controller('buttonGroupController', ['buttonGroupConfig', function (buttonGroupConfig) {
+        this.activeClass = buttonGroupConfig.activeClass || 'active';
+        this.toggleEvent = buttonGroupConfig.toggleEvent || 'click';
+    }])
+    .directive('uixButtonRadio', [function () {
+        return {
+            controller: 'buttonGroupController',
+            require: 'uixButtonRadio',
+            scope: true,  // 继承父scope的新scope
+            link: function (scope, element, attrs, btnRadioCtrl) {
+                var uncheckable;
+                scope.btnRadioVal = getRealAttr(scope.$parent.$parent, attrs.btnRadioVal, false);
 
-            // 根据插入按钮，生成嵌入元素数据对象
-            for (; i < transcludeEles.length; i++) {
-                tagName = transcludeEles[i].tagName;
-                if (tagName && tagName.toLocaleLowerCase() === 'button') {
-                    btnObj = {};
-                    btnObj.value = transcludeEles[i].innerText;   // 获取button显示内容
-                    //获取btn-radio属性对应值:控制选中状态
-                    btnObj.btnRadio = getAttrValue(angular.element(transcludeEles[i]).attr('btn-radio'), '');
-                    //获取btn-checkbox属性对应值:控制勾选状态
-                    btnObj.btnCheckbox = getAttrValue(angular.element(transcludeEles[i]).attr('btn-checkbox'), '');
-                    childElements.push(btnObj);
+                // 默认值为false
+                scope.uncheckable = getRealAttr(scope.$parent.$parent, attrs.uncheckable, false);
+
+                // 控制双向数据绑定
+                if (angular.isDefined(attrs.uncheckable)) {
+                    uncheckable = attrs.uncheckable;
+                    scope.$parent.$parent.$watch(uncheckable, function (val) {
+                        scope.uncheckable = val;
+                    });
+                }
+                var render = scope.ngModelCtrl.$render;
+                // 重写render方法
+                scope.ngModelCtrl.$render = function () {
+                    // 第二个参数确定是否添加样式
+                    element.toggleClass(btnRadioCtrl.activeClass, angular.equals(scope.ngModelCtrl.$modelValue, scope.btnRadioVal)); // 添加类样式
+                    render();
+                };
+
+                // 外部触发事件,修改ng-model的值
+                element.on(btnRadioCtrl.toggleEvent, function () {
+                    if (angular.isDefined(attrs.disabled) || attrs.ngDisabled) {
+                        return;
+                    }
+                    var isActive = element.hasClass(btnRadioCtrl.activeClass);  //获取当前radio激活状态
+                    if (!isActive || scope.uncheckable) {  // 非激活状态
+                        scope.ngModelCtrl.$setViewValue(isActive ? null : scope.btnRadioVal);
+                        scope.$apply(
+                            function () {
+                                scope.ngModelCtrl.$render();
+                            }
+                        );
+                    }
+                });
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
                 }
             }
-
-            $scope.buttonGroup = {};
-            $scope.buttons = childElements;
-            $scope.type = getAttrValue($attrs.type, buttonGroupConfig.type);  //按钮组类型:radio | checkbox
-            $scope.size = getAttrValue($attrs.size, buttonGroupConfig.size);  // 按钮组大小
-            $scope.showClass = getAttrValue($attrs.showClass, buttonGroupConfig.showClass); //按钮组样式
-            //checkbox选中对应model值
-            $scope.checkboxTrue = getAttrValue($attrs.checkboxTrue, buttonGroupConfig.checkboxTrue);
-            //checkbox不选对应model值
-            $scope.checkboxFalse = getAttrValue($attrs.checkboxFalse, buttonGroupConfig.checkboxFalse);
-            $scope.disabled = getAttrValue($attrs.disabled, buttonGroupConfig.disabled);
-
-            // 设置按钮大小,转变成class
-            switch ($scope.size) {
-                case 'large':
-                    $scope.size = 'btn-lg';
-                    break;
-                case 'small':
-                    $scope.size = 'btn-sm';
-                    break;
-                case 'x-small':
-                    $scope.size = 'btn-xs';
-                    break;
-                default:
-                    $scope.size = 'btn-default';
-                    break;
-            }
-
-            // 设置按钮样式类型,转变成class
-            $scope.showClass = 'btn-' + $scope.showClass;
-
-            // 设置不可用
-            if ($scope.disabled) {
-                $scope.disabled = 'disabled';
-            }
-            /**
-             * 获取属性值:数据绑定(通过变量设置|定义常量)|默认值
-             * @param {string} attributeValue 标签绑定数据(可解析|定值)
-             * @param {string | boolean} defaultValue 默认值
-             * @returns {*} 最终值
-             */
-            function getAttrValue(attributeValue, defaultValue) {
-                var val = $scope.$parent.$eval(attributeValue);   //变量解析
-                return angular.isDefined(val) ? val : attributeValue ? attributeValue : defaultValue;
-            }
-        }])
-    .directive('uixButtonGroup', [function () {
+        };
+    }])
+    .directive('uixButtonCheckbox', function () {
         return {
-            restrict: 'AE',
-            replace: true,
-            scope: {
-                ngModel: '@'
-            },
-            require: '^ngModel',
-            templateUrl: 'templates/buttonGroup.html',
-            transclude: true,
+            require: 'uixButtonCheckbox',
             controller: 'buttonGroupController',
-            link: function (scope, element, attrs, ngModelCtrl) {
-                var _scope = scope;
-                if (scope.type === 'radio') {   //radio类型
+            scope: true,
+            link: function (scope, element, attrs, btnCheckboxCtrl) {
+                scope.btnCheckboxFalse = getRealAttr(scope.$parent.$parent, attrs.btnCheckboxFalse, false);
+                scope.btnCheckboxTrue = getRealAttr(scope.$parent.$parent, attrs.btnCheckboxTrue, true);
 
-                    // model的render事件:model->ui
-                    ngModelCtrl.$render = function () {   // 重写render方法
-                        if (ngModelCtrl.$viewValue) {
-                            scope.modelObj = ngModelCtrl.$viewValue;  // 获取元素的model
+                scope.ngModel[attrs.name] = angular.isDefined(scope.ngModel[attrs.name]) ? scope.ngModel[attrs.name] : scope.btnCheckboxFalse; // 初始化model值
+                var render = scope.ngModelCtrl.$render;
+                scope.ngModelCtrl.$render = function () {
+                    var ele = scope.ngModelCtrl.$modelValue ? scope.ngModelCtrl.$modelValue[attrs.name] : null;
+                    element.toggleClass(btnCheckboxCtrl.activeClass, angular.equals(ele, scope.btnCheckboxTrue)); // 添加类样式
+                    render();
+                };
+
+                // 外部触发事件,修改ng-model的值
+                element.on(btnCheckboxCtrl.toggleEvent, function () {
+                    if (angular.isDefined(attrs.disabled) || attrs.ngDisabled) {
+                        return;
+                    }
+                    var isActive = element.hasClass(btnCheckboxCtrl.activeClass);  //获取当前radio激活状态
+                    scope.ngModel[ attrs.name ] = isActive ? scope.btnCheckboxFalse : scope.btnCheckboxTrue;
+                    scope.ngModelCtrl.$setViewValue(scope.ngModel);
+                    scope.$apply(
+                        function () {
+                            scope.ngModelCtrl.$render();
                         }
-                        angular.forEach(scope.buttons, function (val) {
-                            if (!val.btnRadio) {  // 没有设置btn-radio,使用元素的text作为默认值
-                                val.btnRadio = val.value;
-                            }
+                    );
+                });
 
-                            // 判断按钮组是否选中:btn-radio设置model值
-                            if (angular.equals(ngModelCtrl.$viewValue, val.btnRadio)) {
-                                val.active = 'active';
-                            } else {
-                                val.active = '';
-                            }
-                        });
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
 
-                    };
+            }
+        };
+    })
+    .directive('uixButtonGroup', ['$compile', '$interpolate', '$parse', function ($compile, $interpolate, $parse) {
+        return {
+            require: 'ngModel',
+            restrict: 'AE',
+            scope: {},
+            templateUrl: 'templates/buttonGroup.html',
+            replace: true,
+            transclude: true,
+            link: function (scope, element, attrs, ngModelCtrl, transclude) {
+                scope.ngModelCtrl = ngModelCtrl;
+                scope.ngModel = $parse(attrs.ngModel)(scope.$parent);
 
-                    // 按钮点击事件:修改model,实现ui->model
-                    scope.clickFn = function (btn, event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        if (_scope.disabled) {
-                            return;
-                        }
-                        ngModelCtrl.$setViewValue(btn.btnRadio); // 修改选中对应model值
-                        ngModelCtrl.$render();
-                    };
-                } else {    // checkbox类型
-                    // model的render事件:model->ui
-                    ngModelCtrl.$render = function () {   // 重写render方法
-                        if (ngModelCtrl.$viewValue) {
-                            scope.modelObj = ngModelCtrl.$viewValue;   // 获取元素的model
-                        }
-                        var obj, index;
-                        angular.forEach(scope.buttons, function (val, idx) {
-                            index = 0;
-                            if (!val.btnCheckbox) {  // 没有设置值,则使用对应ng-model的key作为默认值
-                                for (obj in scope.modelObj) {
-                                    if (index === idx) {
-                                        val.btnCheckbox = obj;
-                                        break;
-                                    } else {
-                                        index++;
-                                    }
-                                }
-                            }
+                scope.type = getRealAttr(scope.$parent, attrs.bgType, 'radio');
 
-                            // 判断给定当前checkbox状态是否选中model的值(btn-checkbox对应model中的值是否为true)
-                            // btn-checkbox值的设置为ng-model对应对象的key
-                            if (angular.equals(scope.modelObj[val.btnCheckbox], scope.checkboxTrue)) {
-                                val.active = 'active';
-                            } else {
-                                val.active = '';
-                                val.active = '';
-                            }
-                        });
-                    };
 
-                    // 按钮点击事件:修改model,实现ui->model
-                    scope.clickFn = function (btn, event) {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        if (_scope.disabled) {
-                            return;
-                        }
+                angular.forEach(transclude(), function (ele) {
+                    if (angular.isDefined((ele.outerHTML))) {
+                        ele = angular.element($interpolate(ele.outerHTML)(scope.$parent).replace('"{', '"{').replace('}"', '"}"')).attr('uix-button-' + scope.type, '');
+                        ele.addClass('btn-item');  // 添加一个公共类
+                        element.append($compile(ele)(scope));
+                    }
+                });
 
-                        if (btn.active) {
-                            scope.modelObj[btn.btnCheckbox] = _scope.checkboxFalse; // 修改选中状态:选中->不选,对应model值
-                        } else {
-                            scope.modelObj[btn.btnCheckbox] = _scope.checkboxTrue; //修改选中状态:不选->选中,对应model值
-                        }
-                        ngModelCtrl.$setViewValue(scope.modelObj);  // 修改model
-                        ngModelCtrl.$render();
-                    };
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
                 }
             }
         };
@@ -5227,6 +5138,150 @@ angular.module('ui.xg.progressbar', [])
     });
 
 
+angular.module('ui.xg.rate', [])
+    .directive('uixRate', function () {
+        return {
+            restrict: 'E',
+            require: '?ngModel',
+            scope: {
+                readOnly: '=?',
+                onChange: '&?'
+            },
+            templateUrl: 'templates/rate.html',
+            transclude: true,
+            replace: true,
+            link: function (scope, element, attrs, ngModelCtrl) {
+                scope.rates = [];
+                // 初始化icon个数.默认5个
+                scope.count = getRealAttr(scope.$parent, attrs.count, 5);
+                scope.count = scope.count <= 0 ? 5 : scope.count;  // 不能为0个
+                scope.ngModel = formatVal(getRealAttr(scope.$parent, attrs.ngModel));  // 获取绑定model
+                scope.ngModel = scope.ngModel > scope.count ? scope.count : scope.ngModel; //如果超出指定值,则取最大值
+                scope.ngModel = scope.ngModel < 0 ? 0 : scope.ngModel; //如果低于指定值,则取最小值
+
+                scope.$watch('ngModel', function (val) {
+                    ngModelCtrl.$setViewValue(val);
+                    ngModelCtrl.$render();
+                });
+
+                // 设置icon样式,可以理解为'fa fa-icon'即class='fa fa-icon'等
+                scope.ratingIcon = getRealAttr(scope.$parent, attrs.ratingIcon, 'glyphicon glyphicon-star');
+
+                // 暂时只考虑遮盖色
+                scope.ratingSelectColor = getRealAttr(scope.$parent, attrs.ratingSelectColor, '#f5a623');
+
+                // 点击选中是否可取消,默认不行
+                scope.enableReaset = getRealAttr(scope.$parent, attrs.enableReaset, false); // 默认
+
+
+                // 是否只读,双向数据绑定,默认为false
+                scope.readOnly = angular.isDefined(scope.readOnly) ? scope.readOnly : false;
+
+                scope.$watch('ngModel', function (newVal, oldVal) {
+                    if (newVal !== oldVal) {  // 评分发生改变
+                        scope.onChange({
+                            $oldVal: oldVal,
+                            $newVal: newVal
+                        });
+                    }
+                });
+
+                // 动态生成icon数组对象
+                for (var i = 0; i < scope.count; i++) {
+                    var rate = {};
+                    rate.ratingIcon = scope.ratingIcon;  // 图标
+                    rate.clickNum = 0;   // icon点击次数,默认0次
+                    rate.selectFlag = 0;  // 默认不选中,控制是否选中
+                    scope.rates.push(rate);
+                }
+
+
+                scope.enterLiFn = function (idx) {
+                    if (scope.readOnly) {
+                        return;
+                    }
+                    scope.changeFlag = false;
+                    var i;
+                    var ele = element.find('li');
+                    // 选中所有
+                    for (i = 0; i <= idx; i++) {
+                        ele.eq(i).css('color', scope.ratingSelectColor);
+                        ele.eq(i).addClass('full-score');
+                    }
+                    for (i = idx + 1; i < scope.count; i++) {
+                        ele.eq(i).removeClass('full-score');
+                        ele.eq(i).css('color', '#e9e9e9');
+                    }
+                    element.find('li').eq(idx).addClass('max-icon');
+                };
+
+                scope.leaveFn = function () {
+                    if (scope.readOnly) {
+                        return;
+                    }
+                    if (scope.changeFlag) {  // 选择过
+                        return; //不做任何操作
+                    }
+                    var i;
+                    var ele = element.find('li');
+                    for (i = 0; i < scope.ngModel; i++) {
+                        ele.eq(i).addClass('full-score');
+                        ele.eq(i).css('color', scope.ratingSelectColor);
+                    }
+                    for (i = scope.ngModel; i < scope.count; i++) {
+                        ele.eq(i).removeClass('full-score');
+                        ele.eq(i).css('color', '#e9e9e9');
+                    }
+                };
+
+
+                /**
+                 * 鼠标离开,移除放大效果
+                 * @param idx
+                 */
+                scope.leaveLiFn = function (idx) {
+                    if (scope.readOnly) {
+                        return;
+                    }
+                    var ele = element.find('li');
+                    ele.eq(idx).removeClass('max-icon');
+                };
+
+                scope.clickLiFn = function (idx) {
+                    if (scope.readOnly) {
+                        return;
+                    }
+                    scope.changeFlag = true; // 改变选择
+                    scope.ngModel = idx + 1; //重新赋值
+                };
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
+
+                // 所有格式都转换为整数,如果为字符串,则转换为0,小于0的值会转换为0
+                function formatVal(val) {
+                    if (!angular.isNumber(val)) {
+                        val = isNaN(parseFloat(val)) ? 0 : parseFloat(val);
+                    }
+                    return Math.round(val);
+                }
+            }
+        };
+    });
+
+
 /**
  * searchBox
  * 搜索框
@@ -7583,6 +7638,180 @@ angular.module('ui.xg.tableLoader', [])
         };
     });
 
+angular.module('ui.xg.tabs', [])
+    .controller('tabsController', ['$scope', function ($scope) {
+        var ctrl = this;
+        var oldIndex;
+        ctrl.subTabNum = 1;   //tabs子tab的个数
+        ctrl.tabs = [];
+        ctrl.onChange = null;
+        ctrl.active = $scope.active;
+        ctrl.select = function (index) {
+            var prevIndex = ctrl.findTabIndex(oldIndex);
+            var prevSelected = ctrl.tabs[prevIndex];
+            if (prevSelected) {  // 取消之前选中
+                prevSelected.active = false;  // scope域上的active属性
+            }
+            var oldVal = oldIndex;
+            var newVal = oldIndex;
+            var selected = ctrl.tabs[index];   // 当前选中tab(scope)
+            if (selected) {
+                selected.active = true;   // 选中
+                ctrl.active = selected.index;  // 设置当前选择index
+                oldIndex = selected.index;
+                newVal = selected.index;
+                if ($scope.active !== selected.index) {
+                    $scope.active = selected.index;
+                    if (angular.isDefined($scope.onChange && oldVal)) {
+                        $scope.onChange({
+                            $oldVal: oldVal,
+                            $newVal: newVal
+                        });
+                    }
+                }
+            }
+        };
+
+        ctrl.addTab = function (tab) {
+            ctrl.subTabNum++;
+            // tab加入
+            ctrl.tabs.push(tab);  // 插入整个scope域
+            // 设置新增标签为激活标签或者新增标签为第一个,默认选中第一个
+            if (tab.index === ctrl.active || angular.isUndefined(ctrl.active) && ctrl.tabs.length === 1) {
+                var newActiveIndex = ctrl.findTabIndex(tab.index);
+                ctrl.select(newActiveIndex);
+            }
+        };
+
+//
+//         ctrl.removeTab = function (tab) {
+//             var index = ctrl.findTabIndex(tab);
+//             // TODO 如果删除的是当前激活状态的tab
+// //                if(ctrl.tabs[index].index === ctrl.active){
+// //                    var newActiveTabIndex = index === ctrl.tas
+// //                }
+//             ctrl.tabs.splice(index, 1); //删除tab
+//         };
+
+
+        ctrl.findTabIndex = function (index) {
+            for (var i = 0; i < ctrl.tabs.length; i++) {
+                if (ctrl.tabs[i].index === index) {
+                    return i;
+                }
+            }
+        };
+
+        $scope.$watch('active', function (val) {
+            if (val && val !== oldIndex) {  // 重新选择
+                var newActiveIndex = ctrl.findTabIndex(val);
+                if (angular.isUndefined(newActiveIndex)) {
+                    newActiveIndex = 0;  // 如果设置的值找不到,则默认选中第一个
+                }
+                ctrl.select(newActiveIndex); // tab切换
+            }
+        });
+    }])
+    .directive('uixTabPanel', ['$interpolate', function () {
+        return {
+            restrict: 'E',
+            require: '^uixTabs',
+            scope: {},
+            link: function (scope, element, attrs) {
+                var tabScope = scope.$parent.$eval(attrs.tab);
+                // console.log(tabScope.tab);
+                // console.log(element[0]);
+                element.append(tabScope.tab);
+            }
+        };
+    }])
+    .directive('uixTab', [ '$sce', function ($sce) {
+        return {
+            restrict: 'E',
+            scope: {},
+            require: '^uixTabs',
+            templateUrl: 'templates/tab.html',
+            replace: true,
+            transclude: true,
+            link: function (scope, element, attrs, tabsCtrl, transclude) {
+                scope.heading = $sce.trustAsHtml(getRealAttr(scope.$parent.$parent, attrs.heading, 'Tab'));  // 获取元素标题
+                scope.index = getRealAttr(scope.$parent.$parent, attrs.index, tabsCtrl.subTabNum);  // 获取元素index
+                scope.disabled = getRealAttr(scope.$parent.$parent, attrs.disabled, false);
+
+                transclude(scope.$parent.$parent, function (clone) {
+                    angular.forEach(clone, function (ele) {
+                        if (angular.isDefined(ele.outerHTML)) {
+                            scope.tab = ele;
+                            tabsCtrl.addTab(scope);
+                        }
+                    });
+                });
+
+                scope.changeTab = function () {
+                    if (scope.disabled) {
+                        return;
+                    }
+                    tabsCtrl.select(tabsCtrl.findTabIndex(scope.index));
+                };
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @param {string} defaultVal 属性默认值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val, defaultVal) {
+                    if (angular.isDefined(val)) {
+                        return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                    } else {
+                        return defaultVal;
+                    }
+                }
+
+            }
+        };
+    }])
+    .directive('uixTabs', function () {
+        return {
+            restrict: 'E',
+            scope: {
+                active: '=?',
+                onChange: '&?'
+            },
+            templateUrl: 'templates/tabs.html',
+            transclude: true,
+            replace: true,
+            controller: 'tabsController',
+            controllerAs: 'tabsCtrl',
+            link: function (scope, element, attrs, tabCtrl) {
+                tabCtrl.index = scope.active;
+                if (angular.isDefined(attrs.type)) {
+                    scope.type = getRealAttr(scope.$parent, attrs.type);
+                } else {
+                    scope.type = 'tabs'; //默认类型
+                }
+
+//                    if(angular.isDefined(attrs.tabPosition)){
+//                        scope.tabPosition = getRealAttr(scope.$parent, attrs.tabPosition);
+//                    } else {
+//                        scope.tabPosition = 'top'; //默认位置
+//                    }
+
+                /**
+                 * 在父作用scope解析属性值
+                 * @param {object} scope 变量所在scope域
+                 * @param {string} val 从标签上获取的属性值
+                 * @returns {*}
+                 */
+                function getRealAttr(scope, val) {
+                    return angular.isDefined(scope.$eval(val)) ? scope.$eval(val) : val;
+                }
+            }
+        };
+    });
+
+
 /**
  * timepicker
  * timepicker directive
@@ -8004,15 +8233,14 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
 }]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
-    "<button class=\"btn\" type=\"{{type}}\" ng-class=\"{'btn-addon': iconFlag}\">"+
-    "    <i class=\"glyphicon\" ng-class=\"icon\" ng-show=\"iconFlag\"></i>{{text}}"+
+    "<button type=\"{{type}}\">"+
+    "    <div ng-transclude></div>"+
+    "    <i class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\" ng-if=\"loading\"></i>"+
     "</button>");
 }]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/buttonGroup.html",
-    "<div class=\"btn-group\">"+
-    "    <label class=\"btn btn-default\"  ng-class=\"[showClass, size, disabled, btn.active]\" ng-repeat=\"btn in buttons\" ng-click=\"clickFn(btn, $event)\">{{btn.value}}</label>"+
-    "</div>");
+    "<div class=\"btn-group\" type=\"{{type}}\"></div>");
 }]);
 angular.module("timepanel/templates/timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepanel.html",
@@ -8411,6 +8639,17 @@ angular.module("progressbar/templates/progressbar.html",[]).run(["$templateCache
     "         title=\"{{title}}\" ng-transclude></div>"+
     "</div>");
 }]);
+angular.module("rate/templates/rate.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/rate.html",
+    "<ul class=\"uix-rates\" ng-class=\"{'uix-rates-disabled': readOnly}\" ng-mouseleave=\"leaveFn()\">"+
+    "    <li ng-repeat=\"rate in rates track by $index\" class=\"uix-rate {{rate.ratingIcon}}\""+
+    "        ng-mouseenter=\"enterLiFn($index, $event)\" ng-class=\"{'half-score': allowHalf, 'full-score': $index < ngModel}\""+
+    "        ng-mouseleave=\"leaveLiFn($index)\" ng-click=\"clickLiFn($index)\"  ng-style=\"{'color': $index < ngModel && ratingSelectColor }\">"+
+    "        <!--实现half的时候,需要考虑内层div的cursor属性,好像不继承-->"+
+    "        <!--<div class=\"half-modal  {{rate.ratingIcon}}\" ng-mouseenter=\"enterDivFn($index, $event)\"></div>-->"+
+    "    </li>"+
+    "</ul>");
+}]);
 angular.module("searchBox/templates/searchBox.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/searchBox.html",
     "<div ng-class=\"{'input-group':showBtn}\">"+
@@ -8520,6 +8759,24 @@ angular.module("switch/templates/switch.html",[]).run(["$templateCache",function
     "    <input type=\"checkbox\" ng-change=\"changeSwitchHandler()\" ng-disabled=\"switchObj.isDisabled\" ng-model=\"switchObj.query\"/>"+
     "    <i></i>"+
     "</label>");
+}]);
+angular.module("tabs/templates/tab.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/tab.html",
+    "<li ng-class=\"{'active': active, 'disabled': disabled}\" ng-click=\"changeTab()\">"+
+    "    <a href ng-bind-html=\"heading\"></a>"+
+    "</li>");
+}]);
+angular.module("tabs/templates/tabs.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/tabs.html",
+    "<div>"+
+    "    <!--<ul ng-transclude class=\"nav nav-{{type}}\" ng-class=\"{'nav-stacked': tabPosition === 'left'}\"></ul>-->"+
+    "    <ul ng-transclude class=\"nav nav-{{type}}\"></ul>"+
+    "    <div class=\"tab-content\">"+
+    "        <div ng-repeat=\"tab in tabsCtrl.tabs\" ng-class=\"{'tab-panel-hidden': tabsCtrl.active !== tab.index}\">"+
+    "            <uix-tab-panel tab=\"tab\"></uix-tab-panel>"+
+    "        </div>"+
+    "    </div>"+
+    "</div>");
 }]);
 angular.module("timepicker/templates/timepicker-timepanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/timepicker-timepanel.html",
