@@ -5,16 +5,8 @@
 ## Usage
 
 ``` javascript
-<uix-button text="string"
+<uix-button [ loading="boolean" ]
     [ type="string" ]
-    [ btnClass="string" ]
-    [ size="string" ]
-    [ block="boolean" ]
-    [ loading="boolean" ]
-    [ disabled="boolean" ]
-    [ icon="boolean" ]
-    [ active="boolean" ]
-    [ click="function" ] >
 </uix-button>
 ```
 ## Restrict
@@ -22,31 +14,9 @@
 
 ## Arguments
 
-- text(optional):指定按钮显示文本,默认显示`button`
-    - type:`string`
-    - default:`Button`
-- type(optional):指定按钮样式,可取值`button`、`reset`、`submit`,默认为`button`
+- loading(optional):指定是否提交加载,默认显示false
+    - type:`boolean`
+    - default:`false`
+- b-type(optional):指定按钮类型,可取值`button`、`reset`、`submit`,默认为`button`
     - type:`string`
     - default:`button`
-- btnClass(optional):设置按钮样式,可取值`danger`、`warning`、`default`、`success`、`info`、`primary`,默认显示`default`
-    - type:`string`
-    - default:`default`
-- size(optional):设置按钮大小,可取值`x-small`、`small`、`default`、`large`,默认`default`
-    - type:`string`
-    - default:`default`
-- block(optional):设置按钮是否全部填充父元素,默认为否
-    - type:`boolean`
-    - default:`false`
-- loading(optional):设置是否显示按钮加载效果,默认不显示
-    - type:`boolean`
-    - default:`false`
-- disabled(optional):设置按钮是否不可用,默认可用
-    - type:`boolean`
-    - default:`false`
-- icon(optional):设置按钮图标(参考bootstrap),默认不显示
-    - type:`string`
-- active(optional):设置按钮是否为激活(选中)状态,默认为非激活状态
-    - type:`boolean`
-    - default:`false`
-- click(optional):点击按钮时触发的事件
-    - type:`function`

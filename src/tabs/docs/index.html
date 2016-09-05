@@ -1,0 +1,95 @@
+<div ng-controller="tabsDemoCtrl" class="tab-demo">
+    <div class="tab-demo">
+        <div>1. 只设置内容,其它都使用默认值
+            <div>
+                <ul>uix-tab
+                    <li>heading默认为'Tab';</li>
+                    <li>index的默认值依次为1,2,4...</li>
+                    <li>包裹在uix-tab中的内容即标签页内容,可以是文本,也可以是变量,还可以是html片段<span class="text-danger-info">但是必须只含有一个跟元素</span></li>
+                </ul>
+            </div>
+            <div>
+                <ul>uix-tabs
+                    <li>active默认为第一个uix-tab的index</li>
+                    <li>type默认为'tabs'</li>
+                    <li>tab-position默认为'top'</li>
+                </ul>
+            </div>
+        </div>
+        <uix-tabs>
+            <uix-tab>111</uix-tab>
+            <uix-tab>
+                <p>
+                    <span class="label bg-primary">Primary</span>
+                    <span class="label bg-success">Success</span>
+                    <span class="label bg-info">Info</span>
+                    <span class="label bg-dark">dark</span>
+                    <span class="label bg-warning">Warning</span>
+                    <span class="label bg-danger">Danger</span>
+                    <span class="label bg-light dk">Light</span>
+                </p>
+            </uix-tab>
+            <uix-tab>
+                <div>
+                    <span><i class="glyphicon glyphicon-heart"></i></span>
+                    <span>自我介绍:{{content}}</span>
+                </div>
+            </uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>2. 设置active</p>
+        <p>如果active的值不能与uix-tab的index值匹配,则默认激活第一组tab框</p>
+        <uix-tabs active="activeNum_one" class="m-l-50">
+            <uix-tab>Tab1</uix-tab>
+            <uix-tab>Tab2</uix-tab>
+            <uix-tab>Tab3</uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>3. type取值:'tabs'和'pills'</p>
+        <uix-tabs type="tabs" class="m-l-50">
+            <uix-tab>Tab1</uix-tab>
+            <uix-tab>Tab2</uix-tab>
+            <uix-tab>Tab3</uix-tab>
+        </uix-tabs>
+        <p>如果active的值不能与uix-tab的index值匹配,则默认激活第一组tab框</p>
+        <uix-tabs type="pills" class="m-l-50">
+            <uix-tab>Tab1</uix-tab>
+            <uix-tab>Tab2</uix-tab>
+            <uix-tab>Tab3</uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>4. on-change事件:切换tab时触发的事件,同时会暴露两个参数:$oldVal和$newVal,分别表示切换前tab对应的index和切换后tab对应的index,首次加载选中tab不会触发</p>
+        <uix-tabs type="tabs" on-change="changeFn($oldVal, $newVal);" class="m-l-50">
+            <uix-tab>Tab1</uix-tab>
+            <uix-tab>Tab2</uix-tab>
+            <uix-tab>Tab3</uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>5. heading: 设置在uix-tab上,设置tab的标题,可以是文本也可以是html片段</p>
+        <uix-tabs type="tabs">
+            <uix-tab heading="'heading'">Tab1</uix-tab>
+            <uix-tab heading="heading">Tab2</uix-tab>
+            <uix-tab heading="headingIcon">Tab3</uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>6. index: 设置每个uix-tab的唯一标示, 此时依次设置为4,6,10.此时设置active=6</p>
+        <uix-tabs type="tabs" active="activeNum" class="m-l-50">
+            <uix-tab index="4">Tab1-index:4</uix-tab>
+            <uix-tab index="6">Tab2-index:6</uix-tab>
+            <uix-tab index="10">Tab3-index:10</uix-tab>
+        </uix-tabs>
+    </div>
+    <div class="tab-demo">
+        <p>7. disabled: 设置uix-tab是否可用,可设置某个tab不可用</p>
+        <uix-tabs type="tabs" class="m-l-50" active="activeNum_new">
+            <uix-tab disabled="true">Tab1</uix-tab>
+            <uix-tab>Tab2</uix-tab>
+            <uix-tab>Tab3</uix-tab>
+        </uix-tabs>
+    </div>
+</div>
