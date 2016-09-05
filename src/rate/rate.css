@@ -1,5 +1,5 @@
 @charset "UTF-8";
-.half-modal {
+.uix-rates .half-modal {
   position: absolute;
   left: 0;
   top: 0;
@@ -7,7 +7,7 @@
   height: 100%;
   overflow: hidden; }
 
-.uix-rate {
+.uix-rates .uix-rate {
   position: relative;
   margin: 0;
   padding: 0;
@@ -17,7 +17,7 @@
   transition: all .3s ease;
   color: #e9e9e9; }
 
-.uix-rates {
+.uix-rates .uix-rates {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -27,29 +27,29 @@
   font-weight: 400;
   font-style: normal; }
 
-.half-modal:before {
+.uix-rates .half-modal:before {
   color: transparent;
   cursor: pointer;
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   display: block; }
 
-li.un-score {
+.uix-rates li.un-score {
   color: #e9e9e9; }
 
-li.full-score {
+.uix-rates li.full-score {
   color: #f5a623; }
 
-li.full-score > div {
+.uix-rates li.full-score > div {
   color: transparent; }
 
-li.half-score {
+.uix-rates li.half-score {
   color: #e9e9e9; }
 
-li.half-score.half-score-active > div {
+.uix-rates li.half-score.half-score-active > div {
   color: #f5a623; }
 
-.max-icon {
+.uix-rates .max-icon {
   transform: scale(1.2, 1.2);
   -ms-transform: scale(1.2, 1.2);
   /* IE 9 */

@@ -1,4 +1,4 @@
-<ul class="uix-rates" ng-class="{'uix-rates-disabled': readOnly}">
+<ul class="uix-rates" ng-class="{'uix-rates-disabled': readOnly}" ng-mouseleave="leaveFn()">
     <li ng-repeat="rate in rates track by $index" class="uix-rate {{rate.ratingIcon}}"
         ng-mouseenter="enterLiFn($index, $event)" ng-class="{'half-score': allowHalf, 'full-score': $index < ngModel}"
         ng-mouseleave="leaveLiFn($index)" ng-click="clickLiFn($index)"  ng-style="{'color': $index < ngModel && ratingSelectColor }">
