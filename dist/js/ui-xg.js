@@ -1585,6 +1585,7 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             if (!!$scope.noLoop || $scope.pause || $scope.interval === 0) {
                 return true;
             }
+
             // 先kill一次,防止多个定时器出现
             $scope.killLoop();
             timer = $timeout(function () {
@@ -1623,6 +1624,13 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
 
             $scope.change(oldNum, newNum);
         };
+
+        $scope.$on('$destroy', function () {
+            $scope.killLoop();
+
+            // 动画效果结束后会手动调用一次loop,置为空函数
+            $scope.loop = function () {};
+        });
 
     }])
     .directive('uixCarousel', function () {
