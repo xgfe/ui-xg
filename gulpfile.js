@@ -380,9 +380,13 @@ gulp.task('docs:api', function () {
     var moduleNames = [], template, code;
     var moduleNames2 = ['list', 'CRUD'];
 
+    var firstModule = '';
     config.modules.forEach(function (module) {
         if (!module.hasDoc) {
             return;
+        }
+        if (!firstModule) {
+            firstModule = module.name;
         }
         // 构建组件文档页面
         createPartial(module, docPath);
@@ -412,7 +416,6 @@ gulp.task('docs:api', function () {
 
     // 构建导航栏组件跳转链接
     template = _.readFile(tplPath + 'app.html.tpl');
-    var firstModule = config.modules.length ? config.modules[0].name : '';
     code = ejs.render(template, {module: firstModule, module2: moduleNames2[0]});
     _.writeFile(docPath + 'partials/app.html', code);
 
