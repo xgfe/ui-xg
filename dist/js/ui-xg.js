@@ -1,10 +1,260 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-03
+ * Version: 1.4.0 - 2016-09-05
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.transition","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.collapse","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+/**
+ * transition
+ * transition directive
+ * Author: yjy972080142@gmail.com
+ * Date:2016-08-01
+ */
+angular.module('ui.xg.transition', [])
+    .factory('$uixTransition', ['$q', '$timeout', '$rootScope', '$document', function ($q, $timeout, $rootScope, $document) {
+        var doc = $document[0];
+        function $transition(element, trigger, options) {
+            options = options || {};
+            var deferred = $q.defer();
+            var endEventName = $transition[options.animation ? 'animationEndEventName' : 'transitionEndEventName'];
+
+            function transitionEndHandler() {
+                $rootScope.$apply(function () {
+                    element.unbind(endEventName, transitionEndHandler);
+                    deferred.resolve(element);
+                });
+            }
+
+            if (endEventName) {
+                element.bind(endEventName, transitionEndHandler);
+            }
+
+            // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
+            $timeout(function () {
+                if (angular.isString(trigger)) {
+                    element.addClass(trigger);
+                } else if (angular.isFunction(trigger)) {
+                    trigger(element);
+                } else if (angular.isObject(trigger)) {
+                    element.css(trigger);
+                }
+                //If browser does not support transitions, instantly resolve
+                if (!endEventName) {
+                    deferred.resolve(element);
+                }
+            });
+
+            // Add our custom cancel function to the promise that is returned
+            // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
+            // i.e. it will therefore never raise a transitionEnd event for that transition
+            deferred.promise.cancel = function () {
+                if (endEventName) {
+                    element.unbind(endEventName, transitionEndHandler);
+                }
+                deferred.reject('Transition cancelled');
+            };
+
+            return deferred.promise;
+        }
+
+        // Work out the name of the transitionEnd event
+        var transElement = doc.createElement('trans');
+        var transitionEndEventNames = {
+            'WebkitTransition': 'webkitTransitionEnd',
+            'MozTransition': 'transitionend',
+            'OTransition': 'oTransitionEnd',
+            'transition': 'transitionend'
+        };
+        var animationEndEventNames = {
+            'WebkitTransition': 'webkitAnimationEnd',
+            'MozTransition': 'animationend',
+            'OTransition': 'oAnimationEnd',
+            'transition': 'animationend'
+        };
+
+        function findEndEventName(endEventNames) {
+            for (var name in endEventNames) {
+                if (angular.isDefined(transElement.style[name])) {
+                    return endEventNames[name];
+                }
+            }
+        }
+
+        $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
+        $transition.animationEndEventName = findEndEventName(animationEndEventNames);
+        return $transition;
+    }]);
+
+/**
+ * collapse
+ * collapse directive
+ * Author: yjy972080142@gmail.com
+ * Date:2016-08-01
+ */
+angular.module('ui.xg.collapse', ['ui.xg.transition'])
+    .directive('uixCollapse', ['$uixTransition', function ($uixTransition) {
+        return {
+            restrict: 'AE',
+            link: function (scope, element, attrs) {
+                var initialAnimSkip = true;
+                var currentTransition;
+
+                function doTransition(change) {
+                    var newTransition = $uixTransition(element, change);
+                    if (currentTransition) {
+                        currentTransition.cancel();
+                    }
+                    currentTransition = newTransition;
+                    newTransition.then(newTransitionDone, newTransitionDone);
+                    return newTransition;
+
+                    function newTransitionDone() {
+                        // Make sure it's this transition, otherwise, leave it alone.
+                        if (currentTransition === newTransition) {
+                            currentTransition = null;
+                        }
+                    }
+                }
+
+                // 展开
+                function expand() {
+                    if (initialAnimSkip) {
+                        initialAnimSkip = false;
+                        expandDone();
+                    } else {
+                        element.removeClass('collapse').addClass('collapsing');
+                        doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
+                    }
+                }
+
+                function expandDone() {
+                    element.removeClass('collapsing');
+                    element.addClass('collapse in');
+                    element.css({
+                        width: 'inherit',
+                        height: 'auto'
+                    });
+                }
+
+                // 收起
+                function collapse() {
+                    if (initialAnimSkip) {
+                        initialAnimSkip = false;
+                        collapseDone();
+                        element.css({height: 0});
+                    } else {
+                        //trigger reflow so a browser realizes that height was updated from auto to a specific value
+                        element.removeClass('collapse in').addClass('collapsing');
+                        // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
+                        element.css({height: element[0].scrollHeight + 'px'});
+                        doTransition({height: '0'}).then(collapseDone);
+                    }
+                }
+
+                function collapseDone() {
+                    element.removeClass('collapsing');
+                    element.addClass('collapse');
+                }
+
+                scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
+                    if (shouldCollapse) {
+                        collapse();
+                    } else {
+                        expand();
+                    }
+                });
+            }
+        };
+    }]);
+
+/**
+ * accordion
+ * accordion directive
+ * Author: chenwubai.cx@gmail.com
+ * Date:2016-08-05
+ */
+angular.module('ui.xg.accordion', ['ui.xg.collapse'])
+    .constant('uixAccordionConfig', {
+        closeOthers: true
+    })
+    .controller('uixAccordionCtrl', ['$scope', '$attrs', 'uixAccordionConfig', function ($scope, $attrs, uixAccordionConfig) {
+        this.groupList = [];
+        var _this = this;
+        if(angular.isUndefined($attrs.closeOthers)) {
+            $scope.closeOthers = uixAccordionConfig.closeOthers;
+        }
+        // console.log($attrs.closeOthers, $scope.closeOthers);
+
+        this.addGroupScope = function (groupScope) {
+            _this.groupList.push(groupScope);
+            groupScope.$on('$destroy', function () {
+                _this.removeGroupScope(groupScope);
+            });
+        };
+
+        this.removeGroupScope = function (groupScope) {
+            var index = _this.groupList.indexOf(groupScope);
+            if(index > -1) {
+                _this.groupList.splice(index, 1);
+            }
+        };
+
+        this.closeOthers = function (groupScope) {
+            // console.log($scope.closeOthers);
+            if($scope.closeOthers) {
+                angular.forEach(_this.groupList, function (itemScope) {
+                    if(itemScope !== groupScope) {
+                        itemScope.isOpen = false;
+                    }
+                });
+            }
+        };
+    }])
+    .directive('uixAccordion', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/accordion.html',
+            transclude: true,
+            require: ['uixAccordion'],
+            scope: {
+                closeOthers: '=?'
+            },
+            controller: 'uixAccordionCtrl'
+        };
+    })
+    .directive('uixAccordionGroup', function () {
+        return {
+            restrict: 'A',
+            templateUrl: 'templates/group.html',
+            require: '^uixAccordion',
+            replace: true,
+            transclude: true,
+            scope: {
+                heading: '@',
+                isDisabled: '=?',
+                isOpen: '=?'
+            },
+            controller: function () {
+
+            },
+            link: function (scope, el, attrs, uixAccordionCtrl) {
+                if(angular.isUndefined(attrs.isOpen)) {
+                    scope.isOpen = true;
+                }
+                if(angular.isUndefined(scope.isDisabled)) {
+                    scope.isDisabled = false;
+                }
+                uixAccordionCtrl.addGroupScope(scope);
+                scope.$watch('isOpen', function (value) {
+                    if(value) {
+                        uixAccordionCtrl.closeOthers(scope);
+                    }
+                });
+            }
+        };
+    });
+
 /**
  * alert
  * 警告提示指令
@@ -1140,87 +1390,6 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             }
         };
     });
-
-/**
- * transition
- * transition directive
- * Author: yjy972080142@gmail.com
- * Date:2016-08-01
- */
-angular.module('ui.xg.transition', [])
-    .factory('$uixTransition', ['$q', '$timeout', '$rootScope', '$document', function ($q, $timeout, $rootScope, $document) {
-        var doc = $document[0];
-        function $transition(element, trigger, options) {
-            options = options || {};
-            var deferred = $q.defer();
-            var endEventName = $transition[options.animation ? 'animationEndEventName' : 'transitionEndEventName'];
-
-            function transitionEndHandler() {
-                $rootScope.$apply(function () {
-                    element.unbind(endEventName, transitionEndHandler);
-                    deferred.resolve(element);
-                });
-            }
-
-            if (endEventName) {
-                element.bind(endEventName, transitionEndHandler);
-            }
-
-            // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
-            $timeout(function () {
-                if (angular.isString(trigger)) {
-                    element.addClass(trigger);
-                } else if (angular.isFunction(trigger)) {
-                    trigger(element);
-                } else if (angular.isObject(trigger)) {
-                    element.css(trigger);
-                }
-                //If browser does not support transitions, instantly resolve
-                if (!endEventName) {
-                    deferred.resolve(element);
-                }
-            });
-
-            // Add our custom cancel function to the promise that is returned
-            // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
-            // i.e. it will therefore never raise a transitionEnd event for that transition
-            deferred.promise.cancel = function () {
-                if (endEventName) {
-                    element.unbind(endEventName, transitionEndHandler);
-                }
-                deferred.reject('Transition cancelled');
-            };
-
-            return deferred.promise;
-        }
-
-        // Work out the name of the transitionEnd event
-        var transElement = doc.createElement('trans');
-        var transitionEndEventNames = {
-            'WebkitTransition': 'webkitTransitionEnd',
-            'MozTransition': 'transitionend',
-            'OTransition': 'oTransitionEnd',
-            'transition': 'transitionend'
-        };
-        var animationEndEventNames = {
-            'WebkitTransition': 'webkitAnimationEnd',
-            'MozTransition': 'animationend',
-            'OTransition': 'oAnimationEnd',
-            'transition': 'animationend'
-        };
-
-        function findEndEventName(endEventNames) {
-            for (var name in endEventNames) {
-                if (angular.isDefined(transElement.style[name])) {
-                    return endEventNames[name];
-                }
-            }
-        }
-
-        $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
-        $transition.animationEndEventName = findEndEventName(animationEndEventNames);
-        return $transition;
-    }]);
 
 /**
  * carousel
@@ -3597,88 +3766,6 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
 
 
-
-/**
- * collapse
- * collapse directive
- * Author: yjy972080142@gmail.com
- * Date:2016-08-01
- */
-angular.module('ui.xg.collapse', ['ui.xg.transition'])
-    .directive('uixCollapse', ['$uixTransition', function ($uixTransition) {
-        return {
-            restrict: 'AE',
-            link: function (scope, element, attrs) {
-                var initialAnimSkip = true;
-                var currentTransition;
-
-                function doTransition(change) {
-                    var newTransition = $uixTransition(element, change);
-                    if (currentTransition) {
-                        currentTransition.cancel();
-                    }
-                    currentTransition = newTransition;
-                    newTransition.then(newTransitionDone, newTransitionDone);
-                    return newTransition;
-
-                    function newTransitionDone() {
-                        // Make sure it's this transition, otherwise, leave it alone.
-                        if (currentTransition === newTransition) {
-                            currentTransition = null;
-                        }
-                    }
-                }
-
-                // 展开
-                function expand() {
-                    if (initialAnimSkip) {
-                        initialAnimSkip = false;
-                        expandDone();
-                    } else {
-                        element.removeClass('collapse').addClass('collapsing');
-                        doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
-                    }
-                }
-
-                function expandDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse in');
-                    element.css({
-                        width: 'inherit',
-                        height: 'auto'
-                    });
-                }
-
-                // 收起
-                function collapse() {
-                    if (initialAnimSkip) {
-                        initialAnimSkip = false;
-                        collapseDone();
-                        element.css({height: 0});
-                    } else {
-                        //trigger reflow so a browser realizes that height was updated from auto to a specific value
-                        element.removeClass('collapse in').addClass('collapsing');
-                        // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
-                        element.css({height: element[0].scrollHeight + 'px'});
-                        doTransition({height: '0'}).then(collapseDone);
-                    }
-                }
-
-                function collapseDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse');
-                }
-
-                scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
-                    if (shouldCollapse) {
-                        collapse();
-                    } else {
-                        expand();
-                    }
-                });
-            }
-        };
-    }]);
 
 /**
  * datepicker
@@ -8108,6 +8195,28 @@ angular.module('ui.xg.typeahead', [])
         };
     });
 
+angular.module("accordion/templates/accordion.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/accordion.html",
+    "<div class=\"panel-group\" ng-transclude></div>");
+}]);
+angular.module("accordion/templates/group.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/group.html",
+    "<div class=\"panel panel-default\">"+
+    "    <div class=\"panel-heading\">"+
+    "        <h4 class=\"panel-title\">"+
+    "            <a href ng-click=\"isOpen = !isOpen\">"+
+    "                <span ng-class=\"{'text-muted': isDisabled}\">"+
+    "                    {{heading}}"+
+    "                </span>"+
+    "            </a>"+
+    "        </h4>"+
+    "    </div>"+
+    "    <div class=\"panel-collapse collapse\" uix-collapse=\"!isOpen\">"+
+    "        <div class=\"panel-body\" ng-transclude></div>"+
+    "    </div>"+
+    "</div>"+
+    "");
+}]);
 angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/alert.html",
     "<div ng-show=\"!defaultclose\" class=\"alert uix-alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">"+
