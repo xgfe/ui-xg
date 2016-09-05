@@ -1,4 +1,11 @@
 angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function ($scope) {
+    $scope.test = function (chosedCity) {
+        var tt = '';
+        chosedCity.map(function (item) {
+            tt = tt + ' ' + item.cityName;
+        });
+        alert(tt);
+    };
     $scope.config = {
         size: 'md',
         initPage: 4,
@@ -11,7 +18,7 @@ angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function (
                 {cityId: 15, cityName: '北京'},
                 {cityId: 24, cityName: '上海'}
         ],
-        chosedCity: [
+        initChosedCity: [
                     {cityId: 1, cityName: '安阳'},
                     {cityId: 8, cityName: '安阳1'},
                     {cityId: 9, cityName: '鞍山1'},
@@ -124,7 +131,7 @@ angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function (
                 {cityId: 15, cityName: '北京'},
                 {cityId: 24, cityName: '上海'}
         ],
-        chosedCity: [
+        initChosedCity: [
                     {cityId: 1, cityName: '安阳'},
                     {cityId: 8, cityName: '安阳1'},
                     {cityId: 9, cityName: '鞍山1'},
@@ -157,7 +164,7 @@ angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function (
                 {cityId: 15, cityName: '北京'},
                 {cityId: 24, cityName: '上海'}
         ],
-        chosedCity: [
+        initChosedCity: [
                     {cityId: 1, cityName: '安阳'},
                     {cityId: 8, cityName: '安阳1'},
                     {cityId: 9, cityName: '鞍山1'},
@@ -193,7 +200,7 @@ angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function (
                 {cityId: 15, cityName: '北京'},
                 {cityId: 24, cityName: '上海'}
         ],
-        chosedCity: [
+        initChosedCity: [
                     {cityId: 1, cityName: '安阳'},
                     {cityId: 8, cityName: '安阳1'},
                     {cityId: 9, cityName: '鞍山1'},
@@ -224,6 +231,38 @@ angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function (
         supportChoseAll: false,
         supportSearch: false,
         supportChoseClear: false,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        isShowHot: false,
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+    $scope.config5 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: false,
+        placement: 'bottom',
+        animation: false,
+        supportGroup: false,
+        supportChoseAll: false,
+        supportSearch: false,
+        supportChoseClear: false,
+        callBack: $scope.test,
         hotCity: [
                 {cityId: 7, cityName: '广州'},
                 {cityId: 15, cityName: '北京'},

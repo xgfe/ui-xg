@@ -58,12 +58,14 @@ cityselect组件，可以根据传入的数据进行城市的初始化并提供�
   - default: `true`
 - hotCity:当isShowHot为true时需传入此参数
   - type: `[{cityId: xx, cityName: xx}]`
-- chosedCity:初始选中的城市
+- initChosedCity:初始选中的城市
   - type: `[{cityId: xx, cityName: xx}]`
 - allCity:所有的城市，当supportGroup为false时
   - type: `[{cityId: xx, cityName: xx}]`
 - allCity:所有的城市，当supportGroup为true时
   - type: `{'AA': [{name: xx, data: [{cityId: xx, cityName: xx}]}]}`
+- callBack:回调函数，将选中的城市列表传递出去，如果用户不配置这个参数，则关闭时选中的城市自动初始化为下次打开时的初始选中城市
+  - type: `function`
 
 ## Attention
 

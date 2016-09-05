@@ -97,6 +97,11 @@ cityselectModule.directive('uixCityselect', ['$compile', function ($compile) {
                     controller.init();
                 }
             }, true);
+            scope.$watch('vm.cityInfo.initChosedCity', function () {
+                if (scope.vm.initFlag) {
+                    controller.init();
+                }
+            }, true);
         }
     };
 }]);
@@ -132,8 +137,27 @@ uixCityselectCtrl.prototype.valueInit = function (initialValue) {
               'popover-class': vm.cityInfo.class,
               'popover-trigger': 'click',
               'popover-animation': vm.cityInfo.animation,
-              'ng-click': 'vm.init()'});
+              'ng-click': 'vm.exportCallback()'});
     return vm.dom;
+};
+
+/**
+ * 暴露的方法
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.exportCallback = function () {
+    var vm = this;
+    if (!vm.initFlag) {
+        vm.init();
+        return;
+    }
+    if (angular.isFunction(vm.cityInfo.callBack)) {
+        vm.initFlag = !vm.initFlag;
+        vm.cityInfo.callBack(vm.cityInfo.chosedCity);
+    } else {
+        vm.initFlag = !vm.initFlag;
+        vm.cityInfo.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
+    }
 };
 
 /**
@@ -155,7 +179,7 @@ uixCityselectCtrl.prototype.getUrlData = function () {
  */
 uixCityselectCtrl.prototype.init = function () {
     var vm = this;
-    vm.initFlag = true;
+    vm.cityInfo.chosedCity = angular.copy(vm.cityInfo.initChosedCity) || [];
     if (vm.cityInfo.isShowSelected) {
         vm.initSee = true;
     } else {
@@ -174,6 +198,7 @@ uixCityselectCtrl.prototype.init = function () {
     vm.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
     vm.checkAllCityType();
     vm.searchList = angular.copy(vm.cityMap);
+    vm.initFlag = true;
 };
 
 /**
@@ -204,6 +229,7 @@ uixCityselectCtrl.prototype.checkAllCityType = function () {
         if (vm.tabName.length <= vm.cityInfo.initPage) {
             vm.cityInfo.initPage = 0;
         }
+        vm.cityInfo.innerTab = vm.cityInfo.initPage;
     } else {
         vm.cityMap = angular.copy(allCity);
     }
@@ -381,7 +407,7 @@ uixCityselectCtrl.prototype.reverseAll = function () {
  */
 uixCityselectCtrl.prototype.changeTab = function (index) {
     var vm = this;
-    vm.cityInfo.initPage = index;
+    vm.cityInfo.innerTab = index;
     // if (vm.cityInfo.isShowSelected) {
     //     vm.cityInfo.isShowSelected = !vm.cityInfo.isShowSelected;
     // }
