@@ -10,7 +10,7 @@
         </ul>
     </div>
 </header>
-<div class="app-main fade-in-up table-display" ui-view></div>
+<div class="app-main fade-in-up table-display app-overflow-hidden" ui-view></div>
 <footer class="app-footer">
     <div class="footer-right">
         &copy;2016 xgfe.Licensed under ISC license.
