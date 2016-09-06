@@ -268,3 +268,10 @@ aside.app-aside:before{
     color: #F928F5;
     text-decoration: none;
 }
+.app-overflow-hidden {
+    overflow: hidden;
+}
+.content-equal-height {
+    margin-bottom: -3000px;
+    padding-bottom: 3000px;
+}
