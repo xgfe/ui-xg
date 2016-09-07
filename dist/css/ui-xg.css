@@ -34,6 +34,9 @@
   to {
     -moz-transform: rotate(360deg); } }
 
+.uix-carousel {
+  position: relative; }
+
 .btn-group {
   font-size: 0; }
   .btn-group .btn-item {
@@ -200,134 +203,6 @@
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
 
-.uix-carousel {
-  position: relative; }
-
-.cityContainer {
-  max-height: 280px;
-  overflow-y: scroll;
-}
-.cityContainer ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.popover{
-	max-width: 581px;
-}
-.test {
-	width: 581px!important;
-}
-.cityselected {
-  float: left;
-  padding: 0 4px;
-  font-size: 12px;
-  background: #fafafa;
-  border: 1px solid #d2d2d2;
-  height: 24px;
-  line-height: 24px;
-  margin: 5px 8px 5px 0;
-  cursor: pointer;
-}
-.seeChosedCity{
-  color: #3498db;
-  cursor: pointer;
-}
-.cityselected:hover{
-  background-color: #3498db;
-  color: white;
-}
-.initheight{
-  height: 0px;
-  overflow-y: hidden;
-}
-.chosecity{
-  background-color: rgba(52, 152, 219, 0.4);
-}
-.chosecity a{
-  color: rgb(255, 255, 255)!important;
-}
-.searchList{
-  max-width:170px;
-  max-height:270px;
-  overflow-y: scroll;
-}
-.showHot{
-  margin-top:10px;
-  margin-bottom: 10px;
-}
-.showHot button {
-  margin-right: 5px;
-  overflow-y:hidden;
-}
-.showHot i {
-  border-right-width:0px;
-}
-.cityButton {
-  margin-right: 5px;
-  margin-top: 5px;
-}
-.haveChosed {
-  padding-bottom:0px;
-}
-@-webkit-keyframes cityBarIn {
-  0% {
-    height: 0px;
-  }
-  100% {
-    height: 340px;
-  }
-}
-
-@-webkit-keyframes cityBarOut {
-  0% {
-    height: 340px;
-  }
-  100% {
-    height: 0px;
-  }
-}
-.cityBarOpen {
-  -webkit-animation: cityBarIn 0.75s forwards;
-  -moz-animation: cityBarIn 0.75s forwards;
-  animation: cityBarIn 0.75s forwards;
-  overflow-y: hidden;
-}
-.cityBarClose {
-  -webkit-animation: cityBarOut 0.75s forwards;
-  -moz-animation: cityBarOut 0.75s forwards;
-  animation: cityBarOut 0.75s forwards;
-  overflow-y: hidden;
-}
-.tab-container .tab-content {
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #dee5e7;
-  border-top-width: 0;
-  border-radius: 0 0 2px 2px;
-  height: 300px;
-  overflow-y: scroll;
-}
-.wrapper-xs {
-  padding: 5px;
-}
-.b-a {
-  border: 1px solid #dee5e7;
-}
-.dropdown-menu{
-  max-height: 280px;
-  overflow-y: scroll;
-
-
-}
-.dropdown-menu li a{
-  max-width: 170px;
-  overflow-x:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-  cursor: pointer;
-}
-
 .uix-datepicker {
   position: relative; }
   .uix-datepicker button:focus {
@@ -348,6 +223,137 @@
     padding: 0; }
   .uix-datepicker .uix-calendar {
     border: 0; }
+
+.uix-cityselect-container {
+  max-height: 280px;
+  overflow-y: scroll; }
+  .uix-cityselect-container ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+    .uix-cityselect-container ul .uix-cityselect-cityselected {
+      float: left;
+      padding: 0 4px;
+      font-size: 12px;
+      background: #fafafa;
+      border: 1px solid #d2d2d2;
+      height: 24px;
+      line-height: 24px;
+      margin: 5px 8px 5px 0;
+      cursor: pointer; }
+      .uix-cityselect-container ul .uix-cityselect-cityselected :hover {
+        background-color: #3498db;
+        color: white; }
+
+.uix-cityselect-popoverwidth {
+  max-width: 581px; }
+
+.uix-cityselect-seeChosedCity {
+  color: #3498db;
+  cursor: pointer; }
+
+.uix-cityselect-initheight {
+  height: 0px;
+  overflow-y: hidden; }
+
+.uix-cityselect-chosecity {
+  background-color: rgba(52, 152, 219, 0.4); }
+  .uix-cityselect-chosecity a {
+    color: white !important; }
+
+.uix-cityselect-searchList {
+  max-width: 170px;
+  max-height: 270px;
+  overflow-y: scroll; }
+
+.uix-cityselect-showHot {
+  margin-top: 10px;
+  margin-bottom: 10px; }
+  .uix-cityselect-showHot button {
+    margin-right: 5px;
+    overflow-y: hidden; }
+    .uix-cityselect-showHot button i {
+      border-right-width: 0px; }
+
+.uix-cityselect-cityButton {
+  margin-right: 5px;
+  margin-top: 5px; }
+
+.uix-cityselect-haveChosed {
+  padding-bottom: 0px; }
+
+@-webkit-keyframes uixCityselectBarIn {
+  0% {
+    height: 0px; }
+  100% {
+    height: 340px; } }
+
+@-webkit-keyframes uixCityselectBarOut {
+  0% {
+    height: 340px; }
+  100% {
+    height: 0px; } }
+
+.uixCityselectCityBarOpen {
+  -webkit-animation: uixCityselectBarIn 0.75s forwards;
+  -moz-animation: uixCityselectBarIn 0.75s forwards;
+  animation: uixCityselectBarIn 0.75s forwards;
+  overflow-y: hidden; }
+
+.uixCityselectCityBarClose {
+  -webkit-animation: uixCityselectBarOut 0.75s forwards;
+  -moz-animation: uixCityselectBarOut 0.75s forwards;
+  animation: uixCityselectBarOut 0.75s forwards;
+  overflow-y: hidden; }
+
+.uix-cityselect-tab-container .uix-cityselect-tab-content {
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #dee5e7;
+  border-top-width: 0;
+  border-radius: 0 0 2px 2px;
+  height: 300px;
+  overflow-y: scroll; }
+
+.uix-cityselect-padding5 {
+  padding: 5px; }
+
+.uix-cityselect-border1 {
+  border: 1px solid #dee5e7; }
+
+.uix-cityselect-dropdown-menu {
+  max-height: 280px;
+  overflow-y: scroll; }
+  .uix-cityselect-dropdown-menu li a {
+    max-width: 170px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer; }
+
+.uix-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-loader .loading {
+    position: relative;
+    background: rgba(96, 96, 96, 0.05);
+    min-height: 200px; }
+  .uix-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
@@ -373,30 +379,6 @@
       width: 50% !important; }
   .dropdown.open {
     width: 100%; } }
-
-.uix-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-loader .loading {
-    position: relative;
-    background: rgba(96, 96, 96, 0.05);
-    min-height: 200px; }
-  .uix-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
 
 /*
  *  uix-notify-container styles
