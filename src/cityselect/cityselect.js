@@ -134,7 +134,7 @@ uixCityselectCtrl.prototype.valueInit = function (initialValue) {
     vm.dom.removeAttr('uix-cityselect');
     vm.dom.attr({'uix-popover-template': '"templates/citypanel.html"',
               'popover-placement': vm.cityInfo.placement,
-              'popover-class': vm.cityInfo.class,
+              'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
               'popover-trigger': 'click',
               'popover-animation': vm.cityInfo.animation,
               'ng-click': 'vm.exportCallback()'});
