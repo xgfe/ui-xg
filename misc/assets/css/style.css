@@ -275,3 +275,15 @@ aside.app-aside:before{
     margin-bottom: -3000px;
     padding-bottom: 3000px;
 }
+/*首页展示组件图片*/
+.component-image{
+    margin-bottom: 20px;
+}
+.component-image img{
+    height: 180px;
+    width: 100%;
+}
+.component-image > div{
+    text-align:center;
+    font-size: 24px;
+}
