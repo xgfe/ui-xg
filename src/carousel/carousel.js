@@ -39,7 +39,7 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             }
 
             // 如果用户没传值,则默认第一个为初始显示
-            if ($scope.index === angular.isUndefined) {
+            if (angular.isUndefined($scope.index)) {
                 $scope.index = scope.index;
             }
 
@@ -236,7 +236,8 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             $scope.killLoop();
 
             // 动画效果结束后会手动调用一次loop,置为空函数
-            $scope.loop = function () {};
+            $scope.loop = function () {
+            };
         });
 
     }])
