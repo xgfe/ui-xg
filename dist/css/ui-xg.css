@@ -34,9 +34,6 @@
   to {
     -moz-transform: rotate(360deg); } }
 
-.uix-carousel {
-  position: relative; }
-
 .btn-group {
   font-size: 0; }
   .btn-group .btn-item {
@@ -203,26 +200,8 @@
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
 
-.uix-datepicker {
+.uix-carousel {
   position: relative; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-datepicker .uix-datepicker-input.disabled,
-  .uix-datepicker .uix-datepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-  .uix-datepicker .popover-content {
-    padding: 0; }
-  .uix-datepicker .uix-calendar {
-    border: 0; }
 
 .uix-cityselect-container {
   max-height: 280px;
@@ -331,29 +310,26 @@
     text-overflow: ellipsis;
     cursor: pointer; }
 
-.uix-loader {
-  word-wrap: break-word;
+.uix-datepicker {
   position: relative; }
-  .uix-loader .loading {
-    position: relative;
-    background: rgba(96, 96, 96, 0.05);
-    min-height: 200px; }
-  .uix-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-datepicker .uix-datepicker-input.disabled,
+  .uix-datepicker .uix-datepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+  .uix-datepicker .popover-content {
+    padding: 0; }
+  .uix-datepicker .uix-calendar {
+    border: 0; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
@@ -379,6 +355,30 @@
       width: 50% !important; }
   .dropdown.open {
     width: 100%; } }
+
+.uix-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-loader .loading {
+    position: relative;
+    background: rgba(96, 96, 96, 0.05);
+    min-height: 200px; }
+  .uix-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
 
 /*
  *  uix-notify-container styles

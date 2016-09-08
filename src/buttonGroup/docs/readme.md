@@ -4,11 +4,11 @@
 
 ## Usage
 
-``` javascript
+``` html
 <uix-button-group ng-model="string|object"
-    [ type="string" ]
+    [ bg-type="string" ]
     <button [btn-checkbox-true="string"]
-        btn-radio-val="string"
+        [btn-radio-val="string"]
         [btn-checkbox-false="string"]
         [name="string"]
         ></button>
@@ -21,7 +21,7 @@
 
 - ngModel:设置按钮组绑定选中(`radio:string|checkbox:object`)数据对象,如果type为`radio`,则该取值对应设置的`btnRadioVal`,与ngModel值相同的btnRadioVal被选中,按钮间切换选择同时修改ngModel绑定数据;如果type为`checkbox`,则ngModel是一个对象,其键(key)是所有对应的子button的`name`值,而值(value)则是`btnCheckboxFalse|btnCheckboxTrue`(boolean类型)对应的值,`btnCheckboxTrue`表示key对应button被选中,`btnCheckboxFalse`则表示不选.如果不设置程序会报错.
     - type:`string`|`object`
-- bg-type(optional):指定按钮组类型,取值`radio(单选)`或者`checkbox(多选)`,默认为`radio`
+- bgType(optional):指定按钮组类型,取值`radio(单选)`或者`checkbox(多选)`,默认为`radio`
     - type:`string`
     - default:`radio`
 - btnCheckboxFalse(optional):`checkbox`类型,设置子button不选时ngModel设置对象,对应的value值,默认为`false`
