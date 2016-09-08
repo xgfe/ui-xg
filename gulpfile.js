@@ -350,6 +350,8 @@ gulp.task('copy', function () {
     gulp.src(['misc/assets/js/*.js'])
         .pipe(gulp.dest(config.dist + '/docs/js'));
 
+    gulp.src(['misc/assets/images/*'])
+        .pipe(gulp.dest(config.dist + '/docs/images'));
 
     gulp.src([config.dist + '/js/' + config.filename + '.min.js'])
         .pipe(gulp.dest(config.dist + '/docs/js/lib'));
@@ -378,9 +380,12 @@ gulp.task('docs:api', function () {
         _.mkdir(docPath + 'api');
     }
     var moduleNames = [], template, code;
-    var moduleNames2 = ['list', 'CRUD'];
+    var sceneModules = ['list', 'CRUD'];
 
     var firstModule = '';
+    var imagesDir = 'misc/assets/images';
+    var imagePath;
+    var suffixObj = {};
     config.modules.forEach(function (module) {
         if (!module.hasDoc) {
             return;
@@ -391,17 +396,29 @@ gulp.task('docs:api', function () {
         // 构建组件文档页面
         createPartial(module, docPath);
         moduleNames.push(module.name);
+        // 查找图片,并记录图片的后缀名,用于在首页展示
+        imagePath = _.matchFile(imagesDir + '/' + module.name + '.*')[0];
+        suffixObj[module.name] = imagePath ? imagePath.split('.').reverse()[0] : 'png';
     });
 
     // 构建scene目录
-    moduleNames2.forEach(function (module) {
+    sceneModules.forEach(function (module) {
         // 构建组件文档页面
         createScenePartial(module, docPath);
     });
 
+    // 构建首页
+    template = _.readFile(tplPath + 'home.html.tpl');
+    code = ejs.render(template, {
+        modules: moduleNames,
+        suffixObj: suffixObj,
+        rowNum: Math.floor(moduleNames.length / 4)
+    });
+    _.writeFile(docPath + 'partials/home.html', code);
+
     // 构建aside-scene
     template = _.readFile(tplPath + 'aside.html.tpl');
-    code = ejs.render(template, {modules: moduleNames2, type: 'scene'});
+    code = ejs.render(template, {modules: sceneModules, type: 'scene'});
     _.writeFile(docPath + 'partials/aside-scene.html', code);
 
     // 构建aside
@@ -411,12 +428,12 @@ gulp.task('docs:api', function () {
 
     // 构建路由控制js文件
     template = _.readFile(tplPath + 'routers.js.tpl');
-    code = ejs.render(template, {modules: moduleNames, modules2: moduleNames2});
+    code = ejs.render(template, {modules: moduleNames, modules2: sceneModules});
     _.writeFile(docPath + 'js/routers.js', code);
 
     // 构建导航栏组件跳转链接
     template = _.readFile(tplPath + 'app.html.tpl');
-    code = ejs.render(template, {module: firstModule, module2: moduleNames2[0]});
+    code = ejs.render(template, {module: firstModule, module2: sceneModules[0]});
     _.writeFile(docPath + 'partials/app.html', code);
 
     // 没有docs目录的话，生成

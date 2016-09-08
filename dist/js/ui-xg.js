@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-05
+ * Version: 1.4.0 - 2016-09-07
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3412,6 +3412,11 @@ cityselectModule.directive('uixCityselect', ['$compile', function ($compile) {
                     controller.init();
                 }
             }, true);
+            scope.$watch('vm.cityInfo.initChosedCity', function () {
+                if (scope.vm.initFlag) {
+                    controller.init();
+                }
+            }, true);
         }
     };
 }]);
@@ -3444,11 +3449,30 @@ uixCityselectCtrl.prototype.valueInit = function (initialValue) {
     vm.dom.removeAttr('uix-cityselect');
     vm.dom.attr({'uix-popover-template': '"templates/citypanel.html"',
               'popover-placement': vm.cityInfo.placement,
-              'popover-class': vm.cityInfo.class,
+              'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
               'popover-trigger': 'click',
               'popover-animation': vm.cityInfo.animation,
-              'ng-click': 'vm.init()'});
+              'ng-click': 'vm.exportCallback()'});
     return vm.dom;
+};
+
+/**
+ * 暴露的方法
+ * @return {[type]} [description]
+ */
+uixCityselectCtrl.prototype.exportCallback = function () {
+    var vm = this;
+    if (!vm.initFlag) {
+        vm.init();
+        return;
+    }
+    if (angular.isFunction(vm.cityInfo.callBack)) {
+        vm.initFlag = !vm.initFlag;
+        vm.cityInfo.callBack(vm.cityInfo.chosedCity);
+    } else {
+        vm.initFlag = !vm.initFlag;
+        vm.cityInfo.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
+    }
 };
 
 /**
@@ -3470,7 +3494,7 @@ uixCityselectCtrl.prototype.getUrlData = function () {
  */
 uixCityselectCtrl.prototype.init = function () {
     var vm = this;
-    vm.initFlag = true;
+    vm.cityInfo.chosedCity = angular.copy(vm.cityInfo.initChosedCity) || [];
     if (vm.cityInfo.isShowSelected) {
         vm.initSee = true;
     } else {
@@ -3489,6 +3513,7 @@ uixCityselectCtrl.prototype.init = function () {
     vm.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
     vm.checkAllCityType();
     vm.searchList = angular.copy(vm.cityMap);
+    vm.initFlag = true;
 };
 
 /**
@@ -3519,6 +3544,7 @@ uixCityselectCtrl.prototype.checkAllCityType = function () {
         if (vm.tabName.length <= vm.cityInfo.initPage) {
             vm.cityInfo.initPage = 0;
         }
+        vm.cityInfo.innerTab = vm.cityInfo.initPage;
     } else {
         vm.cityMap = angular.copy(allCity);
     }
@@ -3696,7 +3722,7 @@ uixCityselectCtrl.prototype.reverseAll = function () {
  */
 uixCityselectCtrl.prototype.changeTab = function (index) {
     var vm = this;
-    vm.cityInfo.initPage = index;
+    vm.cityInfo.innerTab = index;
     // if (vm.cityInfo.isShowSelected) {
     //     vm.cityInfo.isShowSelected = !vm.cityInfo.isShowSelected;
     // }
@@ -8468,12 +8494,12 @@ angular.module("popover/templates/popover-template-popup.html",[]).run(["$templa
 angular.module("cityselect/templates/citypanel.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/citypanel.html",
     "<div >"+
-    "  <div class=\"b-a wrapper-xs bg-white\">"+
+    "  <div class=\"uix-cityselect-border1 uix-cityselect-padding5 bg-white\">"+
     "    <div class=>"+
-    "      <div class=\"modal-header wrapper-xs\">"+
-    "        <h5 class=\"modal-title\">已选中{{vm.cityInfo.chosedCity.length}}个城市<span class=\"modal-title pull-right seeChosedCity\" ng-click=\"vm.showSelected()\">{{vm.cityInfo.isShowSelected?\"收起 \":\"查看已选城市\"}}<i class=\"glyphicon\" ng-class=\"{'glyphicon-chevron-down':(!vm.cityInfo.isShowSelected), 'glyphicon-chevron-up':(vm.cityInfo.isShowSelected&&vm.initSee)}\"></i></span></h5>"+
+    "      <div class=\"modal-header uix-cityselect-padding5\">"+
+    "        <h5 class=\"modal-title\">已选中{{vm.cityInfo.chosedCity.length}}个城市<span class=\"modal-title pull-right uix-cityselect-seeChosedCity\" ng-click=\"vm.showSelected()\">{{vm.cityInfo.isShowSelected?\"收起 \":\"查看已选城市\"}}<i class=\"glyphicon\" ng-class=\"{'glyphicon-chevron-down':(!vm.cityInfo.isShowSelected), 'glyphicon-chevron-up':(vm.cityInfo.isShowSelected&&vm.initSee)}\"></i></span></h5>"+
     "      </div>"+
-    "      <div class=\"modal-body initheight haveChosed\"  ng-class=\"{cityBarOpen: (vm.cityInfo.isShowSelected&&vm.initSee), cityBarClose: (!vm.cityInfo.isShowSelected&&vm.initSee)}\">"+
+    "      <div class=\"modal-body uix-cityselect-initheight uix-cityselect-haveChosed\"  ng-class=\"{uixCityselectCityBarOpen: (vm.cityInfo.isShowSelected&&vm.initSee), uixCityselectCityBarClose: (!vm.cityInfo.isShowSelected&&vm.initSee)}\">"+
     "        <div class=\"col-sm-8\">"+
     "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-all\" ng-click=\"vm.choseAll()\" ng-if=\"vm.cityInfo.supportChoseAll\">全选</button>"+
     "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-clean\" ng-click=\"vm.resetAll()\" ng-if=\"vm.cityInfo.supportChoseClear\">清空</button>"+
@@ -8484,49 +8510,49 @@ angular.module("cityselect/templates/citypanel.html",[]).run(["$templateCache",f
     "            <div class=\"input-group\" uix-dropdown cols-num=\"1\" on-toggle=\"vm.setCityList(open)\">"+
     "              <input type=\"text\" class=\"form-control input-sm city-search\" uix-dropdown-toggle placeholder=\"城市搜索\" ng-model=\"vm.searchedCity\" ng-change=\"vm.changeSearchCity()\">"+
     "              <span class=\"input-group-btn\"><button class=\"btn btn-sm btn-default bootstrap-touchspin-up\" type=\"button\"><i class=\"glyphicon glyphicon-search\"></i></button></span>"+
-    "              <ul class=\"dropdown-menu\" role=\"menu\" class=\"searchList\">"+
-    "                <li ng-repeat=\"item in vm.searchList\" ng-click=\"vm.searchCityChose(item)\" ng-class=\"{'chosecity': vm.checkChosed(item)}\"><a title=\"{{item.cityName}}\">{{item.cityName}}</a></li>"+
+    "              <ul class=\"dropdown-menu uix-cityselect-dropdown-menu\" role=\"menu\" class=\"uix-cityselect-searchList\">"+
+    "                <li ng-repeat=\"item in vm.searchList\" ng-click=\"vm.searchCityChose(item)\" ng-class=\"{'uix-cityselect-chosecity': vm.checkChosed(item)}\"><a title=\"{{item.cityName}}\">{{item.cityName}}</a></li>"+
     "              </ul>"+
     "            </div>"+
     "          </form>"+
     "        </div>"+
-    "        <div class=\"col-sm-12 cityContainer\">"+
+    "        <div class=\"col-sm-12 uix-cityselect-container\">"+
     "          <ul>"+
-    "            <li class=\"cityselected\" ng-repeat=\"city in vm.cityInfo.chosedCity track by $index\" ng-if=\"vm.checkCityBelong(city)\">{{city.cityName}} <i class=\"glyphicon glyphicon-remove\" ng-click=\"vm.toggleChose(city)\" ng-if=\"!city.initChose\"></i></li>"+
+    "            <li class=\"uix-cityselect-cityselected\" ng-repeat=\"city in vm.cityInfo.chosedCity track by $index\" ng-if=\"vm.checkCityBelong(city)\">{{city.cityName}} <i class=\"glyphicon glyphicon-remove\" ng-click=\"vm.toggleChose(city)\" ng-if=\"!city.initChose\"></i></li>"+
     "          </ul>"+
     "        </div>"+
     "      </div>"+
     "    </div>"+
     "    <div>"+
-    "      <div class=\"modal-header wrapper-xs\" ng-if=\"vm.cityInfo.isShowHot\">"+
+    "      <div class=\"modal-header uix-cityselect-padding5\" ng-if=\"vm.cityInfo.isShowHot\">"+
     "        <h5 class=\"modal-title\">热门城市</h5>"+
     "      </div>"+
     "      <div  ng-if=\"vm.cityInfo.isShowHot\" class=\"modal-body\">"+
-    "        <div class=\"showHot\">"+
+    "        <div class=\"uix-cityselect-showHot\">"+
     "          <button class=\"btn m-b-xs btn-sm  btn-addon hot-city\" style=\" \" ng-repeat=\"city in vm.cityInfo.hotCity track by $index\" ng-class=\"{'btn-success': vm.checkChosed(city), 'btn-default': !(vm.checkChosed(city))}\" ng-click=\"vm.toggleChose(city)\" ng-if=\"vm.checkCityBelong(city)\"><i class=\" pull-right glyphicon\"  ng-class=\"{'glyphicon-minus': vm.checkChosed(city), 'glyphicon-plus': !(vm.checkChosed(city))}\"></i>{{city.cityName}}</button>"+
     "        </div>"+
     "      </div>"+
-    "      <div class=\"tab-container ng-isolate-scope\" ng-if=\"vm.cityInfo.supportGroup\">"+
+    "      <div class=\"uix-cityselect-tab-container ng-isolate-scope\" ng-if=\"vm.cityInfo.supportGroup\">"+
     "        <ul class=\"nav nav-tabs\">"+
-    "          <li class=\"city-tab\" role=\"presentation\" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.initPage}\" ng-click=\"vm.changeTab($index)\"><a>{{item}}</a></li>"+
+    "          <li class=\"city-tab\" role=\"presentation\" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.innerTab}\" ng-click=\"vm.changeTab($index)\"><a>{{item}}</a></li>"+
     "        </ul>"+
-    "        <div class=\"tab-content\">"+
-    "          <div class=\"tab-pane col-sm-12 \" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.initPage}\">"+
+    "        <div class=\"uix-cityselect-tab-content\">"+
+    "          <div class=\"tab-pane col-sm-12 \" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.innerTab}\">"+
     "            <div ng-repeat=\"word in vm.cityInfo.allCity[item] track by $index\">"+
     "              <h4>{{word.name}}</h4>"+
     "              <div>"+
-    "                <button class=\"btn btn-sm m-b-xs w-xs btn-default cityButton\" ng-repeat=\"city in word.data track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
+    "                <button class=\"btn btn-sm m-b-xs w-xs btn-default uix-cityselect-cityButton\" ng-repeat=\"city in word.data track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
     "              </div>"+
     "            </div>"+
     "          </div>"+
     "        </div>"+
     "      </div>"+
     "      <div ng-if=\"!vm.cityInfo.supportGroup\">"+
-    "        <div class=\"modal-header wrapper-xs\" >"+
+    "        <div class=\"modal-header uix-cityselect-padding5\" >"+
     "          <h5 class=\"modal-title\">全部城市</h5>"+
     "        </div>"+
     "        <div class=\"modal-body\">"+
-    "          <button class=\"btn btn-sm m-b-xs w-xs btn-default cityButton\" ng-repeat=\"city in vm.cityInfo.allCity track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
+    "          <button class=\"btn btn-sm m-b-xs w-xs btn-default uix-cityselect-cityButton\" ng-repeat=\"city in vm.cityInfo.allCity track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>"+
     "        </div>"+
     "      </div>"+
     "    </div>"+

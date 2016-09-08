@@ -31,7 +31,7 @@ describe('ui.xg.cityselect', function () {
                     {cityId: 15, cityName: '北京'},
                     {cityId: 24, cityName: '上海'}
             ],
-            chosedCity: [
+            initChosedCity: [
                         {cityId: 1, cityName: '安阳'},
                         {cityId: 8, cityName: '安阳1'},
                         {cityId: 9, cityName: '鞍山1'},
@@ -169,11 +169,11 @@ describe('ui.xg.cityselect', function () {
         element.find('.cityselect-test').trigger('click');
         scope.$digest();
         var temp = controllerVar.cityInfo.isShowSelected;
-        element.find('.seeChosedCity').click();
+        element.find('.uix-cityselect-seeChosedCity').click();
         scope.$digest();
         var newTemp = controllerVar.cityInfo.isShowSelected;
         expect(newTemp).toBe(!temp);
-        element.find('.seeChosedCity').click();
+        element.find('.uix-cityselect-seeChosedCity').click();
         scope.$digest();
         expect(controllerVar.searchedCity).toBe('');
     });
@@ -268,7 +268,7 @@ describe('ui.xg.cityselect', function () {
         scope.$digest();
         var newTempReverse = controllerVar.cityInfo.chosedCity.length;
         expect(newTempReverse).toBe(initAll);
-        element.find('.cityButton')[0].click();
+        element.find('.uix-cityselect-cityButton')[0].click();
         var realNewTemp = controllerVar.cityInfo.chosedCity.length;
         expect(realNewTemp).toBe(newTempReverse);
     });
