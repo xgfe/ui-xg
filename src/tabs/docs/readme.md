@@ -6,12 +6,12 @@
 
 ## Usage
 
-```
-<uix-tabs [ active="number" ] 
-    [ type="string" ] 
-    [ on-change="fn($oldVal, $newVal)" ]>
-    <uix-tab [ heading="string" ] [ index="number" ] [disabled="boolean"]>content</uix-tab>
-    <uix-tab [ heading="string" ] [ index="number" ]>content</uix-tab>
+``` html
+<uix-tabs [active="number"]
+    [type="string"]
+    [on-change="fn($oldVal, $newVal)"]>
+    <uix-tab [heading="string"] [index="number"] [disabled="boolean"]>content</uix-tab>
+    <uix-tab [heading="string"] [index="number"]>content</uix-tab>
 </uix-tabs>
 ```
 
@@ -35,8 +35,10 @@
 - type(optional): 指定标签页组件样式,默认为`tabs`,可设置值为`tabs,pills`
     - type:`string`
     - default:`tabs`
-- on-change(optional): tab页切换的时的回调函数,同时传递出去两个参数`$oldVal`和`$newVal`,其中$oldVal表示切换前tab对应的index,$newVal表示最新切换的tab对应的index,首次加载选中tab不会触发
-- uix-tab的content: 指定tab对应的内容,可以是文本,也可以使用{{content}}动态插入内容,还可以直接使用html,**注意:必须使用一个根目录对内容进行包裹**
+- onChange(optional): tab页切换的时的回调函数,同时传递出去两个参数`$oldVal`和`$newVal`,其中$oldVal表示切换前tab对应的index,$newVal表示最新切换的tab对应的index,首次加载选中tab不会触发
+    - type: `function`
+- uixTab的content: 指定tab对应的内容,可以是文本,也可以使用`{{content}}`动态插入内容,还可以直接使用html,`注意:必须使用一个根目录对内容进行包裹`
+    - type: `html`|`string`
 
 
 

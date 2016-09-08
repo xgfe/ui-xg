@@ -4,9 +4,9 @@
 
 ## Usage
 
-``` javascript
-<uix-button [ loading="boolean" ]
-    [ type="string" ]
+``` html
+<uix-button [loading="boolean"]
+    [b-type="string"]
 </uix-button>
 ```
 ## Restrict
@@ -17,6 +17,6 @@
 - loading(optional):指定是否提交加载,默认显示false
     - type:`boolean`
     - default:`false`
-- b-type(optional):指定按钮类型,可取值`button`、`reset`、`submit`,默认为`button`
+- bType(optional):指定按钮类型,可取值`button`、`reset`、`submit`,默认为`button`
     - type:`string`
     - default:`button`

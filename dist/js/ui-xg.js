@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-07
+ * Version: 1.4.0 - 2016-09-08
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -1432,7 +1432,7 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             }
 
             // 如果用户没传值,则默认第一个为初始显示
-            if ($scope.index === angular.isUndefined) {
+            if (angular.isUndefined($scope.index)) {
                 $scope.index = scope.index;
             }
 
@@ -1629,7 +1629,8 @@ angular.module('ui.xg.carousel', ['ui.xg.transition'])
             $scope.killLoop();
 
             // 动画效果结束后会手动调用一次loop,置为空函数
-            $scope.loop = function () {};
+            $scope.loop = function () {
+            };
         });
 
     }])
