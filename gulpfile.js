@@ -174,18 +174,18 @@ function getDocsReadme(name) {
             argumentBlock = true;
             return '<h2>' + text + '</h2>';
         }
-        if (argumentBlock) {
+        if (argumentBlock && level === 2) {
             argumentBlock = false;
         }
         return '<h' + level + '>' + text + '</h' + level + '>';
     };
-    var table = '<table class="table table-striped table-bordered">',
-        thead = '<tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr>',
-        tbody = '';
-    table += thead + tbody;
     renderer.list = function (body, ordered) {
+        var table = '<table class="table table-striped table-bordered">',
+            thead = '<tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr>',
+            tbody = '';
+        table += thead + tbody;
         var code = body.split('\n').join(''), ulMatch, liMatch,
-            ulReg = /<li>([\w\(\)]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
+            ulReg = /<li>([\w\-\(\)]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
             liReg = /<li>(\w+)[:：](.+?)<\/li>/g,
             tr = '', cols;
         if (argumentBlock && body.match('<ul>')) {
