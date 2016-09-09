@@ -73,3 +73,6 @@ Temporary Items
 dist/docs
 # 代码覆盖率
 coverage/
+
+# 编辑器配置文件
+.vscode
