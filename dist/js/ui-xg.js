@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-08
+ * Version: 1.4.0 - 2016-09-09
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3334,8 +3334,8 @@ var cityselectModule = angular.module('ui.xg.cityselect', ['ui.xg.popover', 'ui.
  * @param {supportSearch} bool [是否支持搜索]
  * @param {animation} bool [城市选择浮层出现动画]
  * @param {requestGetData} bool [是否通过后台请求获得数据]
- * @param {request_url} string [后台请求路径]
- * @param {request_data} string [后台请求参数]
+ * @param {requestUrl} string [后台请求路径]
+ * @param {requestData} string [后台请求参数]
  * @param {chosedCityDisable} bool [是否支持初始选择值不被修改]
  * @param {[supportGroup} bool [是否支持城市分组，此值不同则传进来的allCity的数据结构不同]
  *
@@ -3358,8 +3358,8 @@ cityselectModule.constant('uixCityselectConfig', {
     supportSearch: true,
     animation: true,
     requestGetData: false,
-    request_url: '',
-    request_data: '',
+    requestUrl: '',
+    requestData: '',
     chosedCityDisable: false,
     supportGroup: true
 });
@@ -3467,12 +3467,12 @@ uixCityselectCtrl.prototype.exportCallback = function () {
         vm.init();
         return;
     }
+    vm.initFlag = !vm.initFlag;
     if (angular.isFunction(vm.cityInfo.callBack)) {
-        vm.initFlag = !vm.initFlag;
         vm.cityInfo.callBack(vm.cityInfo.chosedCity);
     } else {
-        vm.initFlag = !vm.initFlag;
         vm.cityInfo.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
+        vm.init();
     }
 };
 
@@ -3484,8 +3484,8 @@ uixCityselectCtrl.prototype.getUrlData = function () {
     var vm = this;
     return vm.$http({
         method: 'GET',
-        url: vm.cityInfo.request_url,
-        params: vm.cityInfo.request_data
+        url: vm.cityInfo.requestUrl,
+        params: vm.cityInfo.requestData
     });
 };
 
@@ -3496,20 +3496,12 @@ uixCityselectCtrl.prototype.getUrlData = function () {
 uixCityselectCtrl.prototype.init = function () {
     var vm = this;
     vm.cityInfo.chosedCity = angular.copy(vm.cityInfo.initChosedCity) || [];
-    if (vm.cityInfo.isShowSelected) {
-        vm.initSee = true;
-    } else {
-        vm.initSee = false;
-    }
+    vm.initSee = vm.cityInfo.isShowSelected;
     if (vm.cityInfo.requestGetData) {
         vm.cityInfo.allCity = vm.getUrlData();
     }
     for (var i = 0; i < vm.cityInfo.chosedCity.length; i++) {
-        if (vm.cityInfo.chosedCityDisable) {
-            vm.cityInfo.chosedCity[i].initChose = true;
-        } else {
-            vm.cityInfo.chosedCity[i].initChose = false;
-        }
+        vm.cityInfo.chosedCity[i].initChose = vm.cityInfo.chosedCityDisable;
     }
     vm.initChosedCity = angular.copy(vm.cityInfo.chosedCity);
     vm.checkAllCityType();
@@ -3523,7 +3515,7 @@ uixCityselectCtrl.prototype.init = function () {
  */
 uixCityselectCtrl.prototype.checkAllCityType = function () {
     var vm = this;
-    var allCity = angular.copy(vm.cityInfo.allCity);
+    var allCity = vm.cityInfo.allCity;
     vm.cityMap = [];
     vm.tabName = [];
     if (vm.cityInfo.supportGroup) {
@@ -3547,7 +3539,7 @@ uixCityselectCtrl.prototype.checkAllCityType = function () {
         }
         vm.cityInfo.innerTab = vm.cityInfo.initPage;
     } else {
-        vm.cityMap = angular.copy(allCity);
+        vm.cityMap = allCity;
     }
 };
 
@@ -3581,15 +3573,12 @@ uixCityselectCtrl.prototype.setNgModelController = function (newNgmodelControlle
  */
 uixCityselectCtrl.prototype.checkChosed = function (city) {
     var vm = this;
-    var chosedCity = angular.copy(vm.cityInfo.chosedCity);
+    var chosedCity = vm.cityInfo.chosedCity;
     var chosedCityId = [];
     chosedCity.map(function (item) {
         chosedCityId.push(item.cityId);
     });
-    if (chosedCityId.indexOf(city.cityId) > -1) {
-        return true;
-    }
-    return false;
+    return chosedCityId.indexOf(city.cityId) > -1;
 };
 
 /**
@@ -3712,7 +3701,6 @@ uixCityselectCtrl.prototype.reverseAll = function () {
         newChosedCity = vm.initChosedCity.concat(newChosedCity);
     }
     vm.cityInfo.chosedCity = newChosedCity;
-    //console.log(vm.cityInfo.chosedCity.length);
     vm.ngModelController.$setViewValue(vm.cityInfo);
 };
 
@@ -3731,7 +3719,7 @@ uixCityselectCtrl.prototype.changeTab = function (index) {
 };
 
 /**
- * 看初始值的hotCity和chosedCity是否输入allCity
+ * 看初始值的hotCity和chosedCity是否属于allCity
  * @param  {[type]} city [description]
  * @return {[type]}      [description]
  */
@@ -3746,6 +3734,7 @@ uixCityselectCtrl.prototype.checkCityBelong = function (city) {
         if (vm.cityInfo.chosedCity[j].cityId === city.cityId) {
             vm.cityInfo.chosedCity.splice(j, 1);
             vm.ngModelController.$setViewValue(vm.cityInfo);
+            break;
         }
     }
     return false;
@@ -3765,7 +3754,7 @@ uixCityselectCtrl.prototype.changeSearchCity = function () {
             newSearchList.push(vm.cityMap[i]);
         }
     }
-    vm.searchList = angular.copy(newSearchList);
+    vm.searchList = newSearchList;
 };
 
 /**
