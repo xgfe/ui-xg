@@ -46,9 +46,9 @@ cityselect组件，可以根据传入的数据进行城市的初始化并提供�
 - requestGetData:是否通过后台请求获得数据
   - type: `bool`
   - default: `false`
-- request_url:后台请求路径
+- requestUrl:后台请求路径
   - type: `string`
-- request_data:后台请求参数
+- requestData:后台请求参数
   - type: `object`
 - chosedCityDisable:是否支持初始选择值不被修改
   - type: `bool`
