@@ -14,6 +14,10 @@ define([
     function configure($stateProvider) {
         
             
+                $stateProvider.state('app.api.collapse',{url: "/collapse",templateUrl: 'partials/api/collapse.html'});
+            
+                $stateProvider.state('app.api.accordion',{url: "/accordion",templateUrl: 'partials/api/accordion.html'});
+            
                 $stateProvider.state('app.api.alert',{url: "/alert",templateUrl: 'partials/api/alert.html'});
             
                 $stateProvider.state('app.api.button',{url: "/button",templateUrl: 'partials/api/button.html'});
@@ -26,17 +30,17 @@ define([
             
                 $stateProvider.state('app.api.carousel',{url: "/carousel",templateUrl: 'partials/api/carousel.html'});
             
-                $stateProvider.state('app.api.collapse',{url: "/collapse",templateUrl: 'partials/api/collapse.html'});
-            
                 $stateProvider.state('app.api.position',{url: "/position",templateUrl: 'partials/api/position.html'});
             
                 $stateProvider.state('app.api.tooltip',{url: "/tooltip",templateUrl: 'partials/api/tooltip.html'});
             
                 $stateProvider.state('app.api.popover',{url: "/popover",templateUrl: 'partials/api/popover.html'});
             
-                $stateProvider.state('app.api.datepicker',{url: "/datepicker",templateUrl: 'partials/api/datepicker.html'});
-            
                 $stateProvider.state('app.api.dropdown',{url: "/dropdown",templateUrl: 'partials/api/dropdown.html'});
+            
+                $stateProvider.state('app.api.cityselect',{url: "/cityselect",templateUrl: 'partials/api/cityselect.html'});
+            
+                $stateProvider.state('app.api.datepicker',{url: "/datepicker",templateUrl: 'partials/api/datepicker.html'});
             
                 $stateProvider.state('app.api.loader',{url: "/loader",templateUrl: 'partials/api/loader.html'});
             
@@ -45,6 +49,10 @@ define([
                 $stateProvider.state('app.api.notify',{url: "/notify",templateUrl: 'partials/api/notify.html'});
             
                 $stateProvider.state('app.api.pager',{url: "/pager",templateUrl: 'partials/api/pager.html'});
+            
+                $stateProvider.state('app.api.progressbar',{url: "/progressbar",templateUrl: 'partials/api/progressbar.html'});
+            
+                $stateProvider.state('app.api.rate',{url: "/rate",templateUrl: 'partials/api/rate.html'});
             
                 $stateProvider.state('app.api.searchBox',{url: "/searchBox",templateUrl: 'partials/api/searchBox.html'});
             
@@ -55,6 +63,8 @@ define([
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
             
                 $stateProvider.state('app.api.tableLoader',{url: "/tableLoader",templateUrl: 'partials/api/tableLoader.html'});
+            
+                $stateProvider.state('app.api.tabs',{url: "/tabs",templateUrl: 'partials/api/tabs.html'});
             
                 $stateProvider.state('app.api.timepicker',{url: "/timepicker",templateUrl: 'partials/api/timepicker.html'});
             

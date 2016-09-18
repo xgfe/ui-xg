@@ -1,0 +1,242 @@
+<h1>progressbar</h1><h2>Description</h2><p>进度条组件，有两种显示方式，一种是将写成<code>uix-progressbar</code>指令的形式；另一种是写成<code>&lt;uix-progress&gt;&lt;uix-bar&gt;&lt;/uix-bar&gt;&lt;/uix-progress&gt;</code>
+的形式，该种方式下可以有多个bar。参照的是<a href="https://github.com/angular-ui/bootstrap/tree/master/src/progressbar">ui-bootstrap</a>指令</p>
+<h2>Usage</h2><h3>uix-progressbar的写法</h3><pre><code class="lang-html">&lt;uix-progressbar
+    [ value=<span class="hljs-string">"number"</span> ]
+    [ type=<span class="hljs-string">"string"</span> ]
+    [ max=<span class="hljs-string">"number"</span>]
+    [ animate=<span class="hljs-string">"boolean"</span> ]
+    [ title=<span class="hljs-string">"string"</span> ]&gt;
+&lt;/uix-progressbar&gt;
+</code></pre>
+<h3>将uix-progress与uix-bar分离的写法</h3><pre><code class="lang-html">&lt;uix-progress
+    [max=<span class="hljs-string">"number"</span>]
+    [animate=<span class="hljs-string">"boolean"</span>]&gt;
+        &lt;uix-bar
+            [value=<span class="hljs-string">"number"</span>]
+            [type=<span class="hljs-string">"string"</span>]
+            [animate=<span class="hljs-string">"boolean"</span>]
+            [title=<span class="hljs-string">"string"</span>]&gt;
+        &lt;/uix-bar&gt;
+        &lt;uix-bar
+            [value=<span class="hljs-string">"number"</span>]
+            [type=<span class="hljs-string">"string"</span>]
+            [animate=<span class="hljs-string">"boolean"</span>]
+            [title=<span class="hljs-string">"string"</span>]&gt;
+        &lt;/uix-bar&gt;
+&lt;/uix-progress&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>value</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td></td><td>当前进度条完成值，用于计算进度条的百分比值的分子</td></tr><tr><td>type</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>进度条显示的样式，共有5种样式，可选值包括<code>success</code>，<code>info</code>，<code>warning</code>，<code>danger</code>，<code>null</code></td></tr><tr><td>max</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>100</code></td><td> 指定进度条的最大值，用于计算进度条的百分比值的分母</td></tr><tr><td>animate</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td> <code>false</code></td><td> 是否显示进度条的过渡状态</td></tr><tr><td>title</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>progressbar</code></td><td> 进度条的title</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="progressbarDemoCtrl">
+    <div class="panel-body">
+        <h3>静态模式</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <label>只有value一个属性值</label>
+                <uix-progressbar value="45"></uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>设置了max参数</label>
+                <uix-progressbar type="info" value="66" max="200">33%</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>设置animate属性</label>
+                <uix-progressbar type="danger" value="90" animate="true">90%</uix-progressbar>
+            </div>
+        </div>
+
+        <h3>
+            动态模式
+            <button class="btn btn-default btn-primary btn-sm" ng-click="random()">随机</button>
+        </h3>
+        <div class="row">
+            <div class="col-md-3">
+                <label>进度条显示数字</label>
+                <uix-progressbar max="max" value="dynamic">{{dynamicMsg}}</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>进度条上显示百分比</label>
+                <uix-progressbar type="success" max="max" value="dynamic">{{percent}}</uix-progressbar>
+            </div>
+            <div class="col-md-3">
+                <label>随机显示不同样式的进度条</label>
+                <uix-progressbar animate="true" type="{{type}}" max="max" value="dynamic">{{type}}</uix-progressbar>
+            </div>
+        </div>
+
+        <h3>
+            叠加模式-多进度条
+            <button class="btn btn-default btn-sm btn-primary" ng-click="stackRandom()">随机</button>
+        </h3>
+        <div class="row">
+            <div class="col-md-12">
+                <label>多条进度条展示</label>
+                <uix-progress max="maxParam" animate="true">
+                    <uix-bar ng-repeat="bar in stackBars track by $index" value="bar.value" type="{{bar.type}}" title="{{bar.title}}">
+                        {{bar.value}}%
+                    </uix-bar>
+                </uix-progress>
+            </div>
+        </div>
+    </div>
+</div></div><script>var app = angular.module('uixDemo');
+app.controller('progressbarDemoCtrl', ['$scope', function ($scope) {
+    $scope.max = 200;
+    $scope.maxParam = 100;
+    $scope.random = function () {
+        var value = Math.ceil(Math.random() * 200);
+        $scope.percent = (100 * value / $scope.max).toFixed(1) + '%';
+        if (value < 50) {
+            $scope.type = 'success';
+        } else if (value < 100) {
+            $scope.type = 'info';
+        } else if (value < 150) {
+            $scope.type = 'warning';
+        } else {
+            $scope.type = 'danger';
+        }
+
+        $scope.dynamic = value;
+        $scope.dynamicMsg = $scope.dynamic + ' / ' + $scope.max;
+    };
+    $scope.random();
+
+    $scope.stackRandom = function () {
+        $scope.stackBars = [];
+        var types = ['success', 'info', 'warning', 'danger'];
+        for(var i = 0; i < 4; i++) {
+            var index = Math.floor(Math.random() * 4);
+            var value = Math.floor(Math.random() * 25);
+            $scope.stackBars.push({
+                type: types[index],
+                value: value,
+                title: value
+            });
+        }
+    };
+    $scope.stackRandom();
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"progressbarDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"panel-body"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>静态模式<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>只有value一个属性值<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"45"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>设置了max参数<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"info"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"66"</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"200"</span>&gt;</span>33%<span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>设置animate属性<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"danger"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"90"</span> <span class="hljs-attr">animate</span>=<span class="hljs-string">"true"</span>&gt;</span>90%<span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>
+            动态模式
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default btn-primary btn-sm"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"random()"</span>&gt;</span>随机<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>进度条显示数字<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"max"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"dynamic"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>dynamicMsg&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>进度条上显示百分比<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"success"</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"max"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"dynamic"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>percent&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-3"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>随机显示不同样式的进度条<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progressbar</span> <span class="hljs-attr">animate</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>type&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"max"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"dynamic"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>type&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">uix-progressbar</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>
+            叠加模式-多进度条
+            <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default btn-sm btn-primary"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"stackRandom()"</span>&gt;</span>随机<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"row"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"col-md-12"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>多条进度条展示<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">uix-progress</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"maxParam"</span> <span class="hljs-attr">animate</span>=<span class="hljs-string">"true"</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-bar</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"bar in stackBars track by $index"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"bar.value"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>bar.type&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>bar.title&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+                        </span><span class="hljs-template-variable"><span>&#123;&#123;</span>bar.value&#125;&#125;</span><span class="xml">%
+                    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-bar</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">uix-progress</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code><span class="hljs-keyword">var</span> app = angular.module(<span class="hljs-string">'uixDemo'</span>);
+app.controller(<span class="hljs-string">'progressbarDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.max = <span class="hljs-number">200</span>;
+    $scope.maxParam = <span class="hljs-number">100</span>;
+    $scope.random = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        <span class="hljs-keyword">var</span> value = Math.ceil(Math.random() * <span class="hljs-number">200</span>);
+        $scope.percent = (<span class="hljs-number">100</span> * value / $scope.max).toFixed(<span class="hljs-number">1</span>) + <span class="hljs-string">'%'</span>;
+        <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">50</span>) {
+            $scope.type = <span class="hljs-string">'success'</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">100</span>) {
+            $scope.type = <span class="hljs-string">'info'</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (value &lt; <span class="hljs-number">150</span>) {
+            $scope.type = <span class="hljs-string">'warning'</span>;
+        } <span class="hljs-keyword">else</span> {
+            $scope.type = <span class="hljs-string">'danger'</span>;
+        }
+
+        $scope.dynamic = value;
+        $scope.dynamicMsg = $scope.dynamic + <span class="hljs-string">' / '</span> + $scope.max;
+    };
+    $scope.random();
+
+    $scope.stackRandom = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.stackBars = [];
+        <span class="hljs-keyword">var</span> types = [<span class="hljs-string">'success'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'warning'</span>, <span class="hljs-string">'danger'</span>];
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-keyword">var</span> index = Math.floor(Math.random() * <span class="hljs-number">4</span>);
+            <span class="hljs-keyword">var</span> value = Math.floor(Math.random() * <span class="hljs-number">25</span>);
+            $scope.stackBars.push({
+                type: types[index],
+                value: value,
+                title: value
+            });
+        }
+    };
+    $scope.stackRandom();
+}]);
+</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>

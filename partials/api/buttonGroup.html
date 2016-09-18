@@ -1,17 +1,15 @@
 <h1>buttonGroup</h1><h2>Description</h2><p>按钮组组件,可用于展示一组数据,实现类radio或checkbox效果。</p>
-<h2>Usage</h2><pre><code class="lang-javascript">&lt;uix-button-group ng-model=<span class="hljs-string">"string|object"</span>
-    [ type=<span class="hljs-string">"string"</span> ]
-    [ size=<span class="hljs-string">"string"</span> ]
-    [ disabled=<span class="hljs-string">"boolean"</span> ]
-    [ show-class=<span class="hljs-string">"string"</span> ]
-    [ checkbox-true=<span class="hljs-string">"boolean"</span> ]
-    [ checkbox-false=<span class="hljs-string">"boolean"</span> ] &gt;
-    &lt;button [btn-checkbox=<span class="hljs-string">"string"</span>]
-        [btn-radio=<span class="hljs-string">"string"</span>]&gt;&lt;/button&gt;
+<h2>Usage</h2><pre><code class="lang-html">&lt;uix-button-group ng-model=<span class="hljs-string">"string|object"</span>
+    [ bg-<span class="hljs-class"><span class="hljs-keyword">type</span></span>=<span class="hljs-string">"string"</span> ]
+    &lt;button [btn-checkbox-<span class="hljs-keyword">true</span>=<span class="hljs-string">"string"</span>]
+        [btn-radio-<span class="hljs-keyword">val</span>=<span class="hljs-string">"string"</span>]
+        [btn-checkbox-<span class="hljs-keyword">false</span>=<span class="hljs-string">"string"</span>]
+        [name=<span class="hljs-string">"string"</span>]
+        &gt;&lt;/button&gt;
 &lt;/uix-button-group&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-string">string</label>&nbsp;<label class="label label-default label-object">object</label>&nbsp;</td><td></td><td>设置按钮组绑定选中(<code>radio:string|checkbox:object</code>)数据对象,如果type为<code>radio</code>,则该取值对应设置的<code>btnRadio</code>,与ngModel值相同的btnRadio被选中,按钮间切换选择同事修改ngModel绑定数据;如果type为<code>checkbox</code>,则ngModel是一个对象,其键(key)是所有对应的子button的<code>btnCheckbox</code>值,而值(value)则是<code>checkboxFalse|checkboxTrue</code>(boolean类型)对应的值,<code>checkboxTrue</code>表示key对应button被选中,<code>checkboxTrue</code>则表示不选.如果不设置程序会报错.</td></tr><tr><td>type(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>radio</code></td><td>指定按钮组类型,取值<code>radio(单选)</code>或者<code>checkbox(多选)</code>,默认为<code>radio</code></td></tr><tr><td>size(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮组显示大小,取值<code>x-small</code>、<code>small</code>、<code>default</code>、<code>large</code>,默认为<code>default</code></td></tr><tr><td>disabled(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>设置按钮组是否不可用,取值<code>true</code>、<code>false</code>,默认可用</td></tr><tr><td>showClass(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>default</code></td><td>设置按钮组显示样式,取值<code>danger</code>、<code>warning</code>、<code>default</code>、<code>success</code>、<code>info</code>、<code>primary</code>,默认显示<code>default</code></td></tr><tr><td>checkboxFalse(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>false</code></td><td><code>checkbox</code>类型,设置子button不选时ngModel设置对象,对应的value值,默认为<code>false</code></td></tr><tr><td>checkboxTrue(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>true</code></td><td><code>checkbox</code>类型,设置子button选中时ngModel设置对象,对应的value值,默认为<code>true</code></td></tr><tr><td>btnCheckbox(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td><code>设置在子元素button上</code>,主要用来选中|不选,设置对应ngModel的key值.如果不设置,则取button显示文本作为默认值.</td></tr><tr><td>btnRadio(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td><code>设置在子元素button上</code>,主要用来根据ngModel的值判断是否选中,同时选中之后重新设置ngModel的值,则取button显示文本作为默认值.</td></tr></table><hr><h2>Example</h2><style>.buttonGroup li {
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-string">string</label>&nbsp;<label class="label label-default label-object">object</label>&nbsp;</td><td></td><td>设置按钮组绑定选中(<code>radio:string|checkbox:object</code>)数据对象,如果type为<code>radio</code>,则该取值对应设置的<code>btnRadioVal</code>,与ngModel值相同的btnRadioVal被选中,按钮间切换选择同时修改ngModel绑定数据;如果type为<code>checkbox</code>,则ngModel是一个对象,其键(key)是所有对应的子button的<code>name</code>值,而值(value)则是<code>btnCheckboxFalse|btnCheckboxTrue</code>(boolean类型)对应的值,<code>btnCheckboxTrue</code>表示key对应button被选中,<code>btnCheckboxFalse</code>则表示不选.如果不设置程序会报错.</td></tr><tr><td>bgType(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>radio</code></td><td>指定按钮组类型,取值<code>radio(单选)</code>或者<code>checkbox(多选)</code>,默认为<code>radio</code></td></tr><tr><td>btnCheckboxFalse(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>false</code></td><td><code>checkbox</code>类型,设置子button不选时ngModel设置对象,对应的value值,默认为<code>false</code></td></tr><tr><td>btnCheckboxTrue(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>true</code></td><td><code>checkbox</code>类型,设置子button选中时ngModel设置对象,对应的value值,默认为<code>true</code></td></tr><tr><td>name(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td><code>设置在子元素button上</code>,主要用来标志每个子checkbox元素,设置ngModel的时候,通过name对应.</td></tr><tr><td>btnRadioVal(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td><code>设置在子元素button上</code>,主要用来根据ngModel的值判断是否选中,同时选中之后重新设置ngModel的值.如果设置<code>type=radio</code>,则必须设置</td></tr><tr><td>uncheckable(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>指定radio类型按钮组是否可取消选择,默认为false</td></tr></table><hr><h2>Example</h2><style>.buttonGroup li {
     padding-bottom: 15px;
     list-style-type: none;
 }
@@ -25,110 +23,47 @@
     display: block;
     font-size: 12px;
 }</style><div class="example"><div ng-controller="buttonGroupDemoCtrl">
-    <ol class="buttonGroup">
+    <ol>
         <li>
-            <p>只置ng-model(必需)不设置其他任何参数:纯展示</p>
-            <uix-button-group ng-model="viewModel">
-                <button>按钮1</button>
-                <button>按钮2</button>
-                <button>按钮3</button>
+            <p>设置ngModel,默认为radio类型,分别设置子元素btnRadioVal</p>
+            <uix-button-group ng-model="interst">
+                <label class="btn btn-default" btn-radio-val="'running'">跑步</label>
+                <label class="btn btn-default" btn-radio-val="'swim'">游泳</label>
+                <label class="btn btn-default" btn-radio-val="'cycling'">骑行</label>
             </uix-button-group>
+            <p> interst:{{interst}}</p>
         </li>
         <li>
-            <p>设置ng-model(必需),默认类型(radio),则每个子元素&lt;button&gt;必须设置btn-radio属性</p>
-            <span>ng-model:{{radioModel}}</span>
-            <uix-button-group ng-model="radioModel">
-                <button>男</button>
-                <button btn-radio="'woman'">女</button>
+            <p>设置ngModel,类型设置为checkbox类型,分别设置子元素name</p>
+            <uix-button-group ng-model="interstObj" bg-type="checkbox">
+                <label class="btn btn-default" name="firstHobby">跑步</label>
+                <label class="btn btn-default" name="secondHobby">游泳</label>
+                <label class="btn btn-default" name="thirdHobby">骑行</label>
             </uix-button-group>
+            <p> interstObj:{{interstObj}}</p>
         </li>
         <li>
-            <p>设置ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key</p>
-            <span>ng-model:{{checkModel}}</span>
-            <uix-button-group ng-model="checkModel" type="type">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
+            <p>设置ngModel,类型设置为checkbox类型,分别设置子元素name和btn-checkbox-true,btn-checkbox-false</p>
+            <uix-button-group ng-model="setInterstObj" bg-type="checkbox">
+                <label class="btn btn-default" name="firstHobby" btn-checkbox-true="'running'">跑步</label>
+                <label class="btn btn-default" name="secondHobby" btn-checkbox-false="'noSwiming'">游泳</label>
+                <label class="btn btn-default" name="thirdHobby">骑行</label>
             </uix-button-group>
-        </li>
-        <li>
-            <div>设置ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>size设置为larger|default|small|x-small</p></div>
-            <uix-button-group ng-model="checkModel" type="type" size="sizeArr[3]">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-            <uix-button-group ng-model="checkModel" type="type">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-            <uix-button-group ng-model="checkModel" type="checkbox" size="sizeArr[1]">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-            <uix-button-group ng-model="checkModel" type="checkbox" size="sizeArr[0]">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-        </li>
-        <li>
-            <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>show-class设置为danger | warning | default | success | info ｜ primary</p></div>
-            <uix-button-group ng-repeat="showClass in showClassArr" ng-model="checkModel" type="type" show-class="showClass">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-        </li>
-        <li>
-            <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>disabled设置为true | false,默认为false</p></div>
-            <uix-button-group ng-model="checkModel" type="type" disabled="disabled">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-            <uix-button-group ng-model="checkModel" type="type">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-        </li>
-        <li>
-            <div>ng-model(必需),类型设置为checkbox,则每个子元素&lt;button&gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<p>checkboxTrue和checkboxFalse设置选中(不选)状态对应ng-model的值。默认为true｜false</p></div>
-            <span>原始值ng-model对应值:{{checkModel}}</span>
-            <uix-button-group ng-model="checkModel" type="type">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
-            <span>设置checkboxTrue和checkboxFalse后ng-model对应值:{{checkModelVal}}</span>
-            <uix-button-group ng-model="checkModelVal" type="type" checkbox-true="'1'" checkbox-false="'0'">
-                <button btn-checkbox="checkModelArr[0]">音乐</button>
-                <button btn-checkbox="checkModelArr[1]">跑步</button>
-                <button btn-checkbox="checkModelArr[2]">足球</button>
-            </uix-button-group>
+            <p> setInterstObj:{{setInterstObj}}</p>
         </li>
     </ol>
 </div></div><script>angular.module('uixDemo').controller('buttonGroupDemoCtrl', ['$scope', function ($scope) {
-    $scope.radioModel = 'man';
-    $scope.checkModel = {
-        music: true,
-        running: true,
-        football: false
+    $scope.interst = 'running';
+    $scope.interstObj = {
+        firstHobby: true,
+        secondHobby: false,
+        thirdHobby: true
     };
-    $scope.type = 'checkbox';
-    $scope.checkModelArr = ['music', 'running', 'football'];
-    $scope.sizeArr = ['x-small', 'small', 'default', 'large'];
-    $scope.showClassArr = ['danger', 'warning', 'default', 'success', 'info', 'primary'];
-    $scope.checkModelVal = {
-        music: 1,
-        running: 0,
-        football: 0
+    $scope.setInterstObj = {
+        firstHobby: 'running',
+        secondHobby: false,
+        thirdHobby: true
     };
-    $scope.disabled = true;
-    $scope.viewModel = '按钮1';
 }]);
 </script><div><ul class="nav nav-tabs" id="codeTabs">
     
@@ -145,90 +80,33 @@
     
     <div class="tab-pane active" id="index_html">
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"buttonGroupDemoCtrl"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">ol</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"buttonGroup"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ol</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>只置ng-model(必需)不设置其他任何参数:纯展示<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"viewModel"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>按钮1<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>按钮2<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>按钮3<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置ngModel,默认为radio类型,分别设置子元素btnRadioVal<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"interst"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">btn-radio-val</span>=<span class="hljs-string">"'running'"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">btn-radio-val</span>=<span class="hljs-string">"'swim'"</span>&gt;</span>游泳<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">btn-radio-val</span>=<span class="hljs-string">"'cycling'"</span>&gt;</span>骑行<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
             <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span> interst:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>interst&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置ng-model(必需),默认类型(radio),则每个子元素&amp;lt;button&amp;gt;必须设置btn-radio属性<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>ng-model:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>radioModel&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"radioModel"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>男<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-radio</span>=<span class="hljs-string">"'woman'"</span>&gt;</span>女<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置ngModel,类型设置为checkbox类型,分别设置子元素name<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"interstObj"</span> <span class="hljs-attr">bg-type</span>=<span class="hljs-string">"checkbox"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"firstHobby"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"secondHobby"</span>&gt;</span>游泳<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"thirdHobby"</span>&gt;</span>骑行<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
             <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span> interstObj:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>interstObj&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置ng-model(必需),类型设置为checkbox,则每个子元素&amp;lt;button&amp;gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>ng-model:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>checkModel&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置ngModel,类型设置为checkbox类型,分别设置子元素name和btn-checkbox-true,btn-checkbox-false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"setInterstObj"</span> <span class="hljs-attr">bg-type</span>=<span class="hljs-string">"checkbox"</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"firstHobby"</span> <span class="hljs-attr">btn-checkbox-true</span>=<span class="hljs-string">"'running'"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"secondHobby"</span> <span class="hljs-attr">btn-checkbox-false</span>=<span class="hljs-string">"'noSwiming'"</span>&gt;</span>游泳<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"thirdHobby"</span>&gt;</span>骑行<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>
             <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>设置ng-model(必需),类型设置为checkbox,则每个子元素&amp;lt;button&amp;gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>size设置为larger|default|small|x-small<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"sizeArr[3]"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"sizeArr[1]"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">size</span>=<span class="hljs-string">"sizeArr[0]"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>ng-model(必需),类型设置为checkbox,则每个子元素&amp;lt;button&amp;gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>show-class设置为danger | warning | default | success | info ｜ primary<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"showClass in showClassArr"</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">show-class</span>=<span class="hljs-string">"showClass"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>ng-model(必需),类型设置为checkbox,则每个子元素&amp;lt;button&amp;gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>disabled设置为true | false,默认为false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">disabled</span>=<span class="hljs-string">"disabled"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>ng-model(必需),类型设置为checkbox,则每个子元素&amp;lt;button&amp;gt;必须设置btn-checkbox属性,并且btn-checkbox对应值应该为ng-model的key,<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>checkboxTrue和checkboxFalse设置选中(不选)状态对应ng-model的值。默认为true｜false<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>原始值ng-model对应值:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>checkModel&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModel"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>设置checkboxTrue和checkboxFalse后ng-model对应值:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>checkModelVal&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">uix-button-group</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"checkModelVal"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"type"</span> <span class="hljs-attr">checkbox-true</span>=<span class="hljs-string">"'1'"</span> <span class="hljs-attr">checkbox-false</span>=<span class="hljs-string">"'0'"</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[0]"</span>&gt;</span>音乐<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[1]"</span>&gt;</span>跑步<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-                <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">btn-checkbox</span>=<span class="hljs-string">"checkModelArr[2]"</span>&gt;</span>足球<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-            <span class="hljs-tag">&lt;/<span class="hljs-name">uix-button-group</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span> setInterstObj:</span><span class="hljs-template-variable"><span>&#123;&#123;</span>setInterstObj&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
@@ -237,23 +115,17 @@
     
     <div class="tab-pane " id="script_js">
 <pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'buttonGroupDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
-    $scope.radioModel = <span class="hljs-string">'man'</span>;
-    $scope.checkModel = {
-        music: <span class="hljs-keyword">true</span>,
-        running: <span class="hljs-keyword">true</span>,
-        football: <span class="hljs-keyword">false</span>
+    $scope.interst = <span class="hljs-string">'running'</span>;
+    $scope.interstObj = {
+        firstHobby: <span class="hljs-keyword">true</span>,
+        secondHobby: <span class="hljs-keyword">false</span>,
+        thirdHobby: <span class="hljs-keyword">true</span>
     };
-    $scope.type = <span class="hljs-string">'checkbox'</span>;
-    $scope.checkModelArr = [<span class="hljs-string">'music'</span>, <span class="hljs-string">'running'</span>, <span class="hljs-string">'football'</span>];
-    $scope.sizeArr = [<span class="hljs-string">'x-small'</span>, <span class="hljs-string">'small'</span>, <span class="hljs-string">'default'</span>, <span class="hljs-string">'large'</span>];
-    $scope.showClassArr = [<span class="hljs-string">'danger'</span>, <span class="hljs-string">'warning'</span>, <span class="hljs-string">'default'</span>, <span class="hljs-string">'success'</span>, <span class="hljs-string">'info'</span>, <span class="hljs-string">'primary'</span>];
-    $scope.checkModelVal = {
-        music: <span class="hljs-number">1</span>,
-        running: <span class="hljs-number">0</span>,
-        football: <span class="hljs-number">0</span>
+    $scope.setInterstObj = {
+        firstHobby: <span class="hljs-string">'running'</span>,
+        secondHobby: <span class="hljs-keyword">false</span>,
+        thirdHobby: <span class="hljs-keyword">true</span>
     };
-    $scope.disabled = <span class="hljs-keyword">true</span>;
-    $scope.viewModel = <span class="hljs-string">'按钮1'</span>;
 }]);
 </code></pre>
     </div>

@@ -1,0 +1,660 @@
+<h1>cityselect</h1><h2>Description</h2><p>cityselect组件，可以根据传入的数据进行城市的初始化并提供各种操作，整个组件使用ng-model作为唯一的数据接口，ng-model允许传入一个对象，里面可以进行参数设置。</p>
+<h2>Usage</h2><pre><code class="lang-html">&lt;<span class="hljs-keyword">div</span> <span class="hljs-built_in">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> uix-cityselect ng-model=<span class="hljs-string">"config"</span>&gt;城市选择&lt;/<span class="hljs-keyword">div</span>&gt;
+    &lt;/<span class="hljs-keyword">div</span>&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>placement</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td> <code>bottom</code></td><td>城市选择浮层出现位置,可选</td></tr><tr><td>class</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>css修改</td></tr><tr><td>initPage</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td> <code>0</code></td><td>tab页的初始状态</td></tr><tr><td>isShowHot</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否现实热门城市</td></tr><tr><td>isShowSelected</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>false</code></td><td>是否初始化显示已选城市</td></tr><tr><td>supportChoseAll</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否支持全选</td></tr><tr><td>supportChoseReverse</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否支持反选</td></tr><tr><td>supportSearch</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否支持搜索</td></tr><tr><td>supportChoseClear</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否支持清空</td></tr><tr><td>animation</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>城市选择浮层出现动画</td></tr><tr><td>requestGetData</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>false</code></td><td>是否通过后台请求获得数据</td></tr><tr><td>requestUrl</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>后台请求路径</td></tr><tr><td>requestData</td><td><label class="label label-default label-object">object</label>&nbsp;</td><td></td><td>后台请求参数</td></tr><tr><td>chosedCityDisable</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>false</code></td><td>是否支持初始选择值不被修改</td></tr><tr><td>supportGroup</td><td><label class="label label-default label-bool">bool</label>&nbsp;</td><td> <code>true</code></td><td>是否支持城市分组，此值不同则传进来的allCity的数据结构不同</td></tr><tr><td>hotCity</td><td><label class="label label-default label-<code>[{cityid: xx, cityname: xx}]</code>"><code>[{cityid: xx, cityname: xx}]</code></label>&nbsp;</td><td></td><td>当isShowHot为true时需传入此参数</td></tr><tr><td>initChosedCity</td><td><label class="label label-default label-<code>[{cityid: xx, cityname: xx}]</code>"><code>[{cityid: xx, cityname: xx}]</code></label>&nbsp;</td><td></td><td>初始选中的城市</td></tr><tr><td>allCity</td><td><label class="label label-default label-<code>[{cityid: xx, cityname: xx}]</code>"><code>[{cityid: xx, cityname: xx}]</code></label>&nbsp;</td><td></td><td>所有的城市，当supportGroup为false时</td></tr><tr><td>allCity</td><td><label class="label label-default label-<code>{&#39;aa&#39;: [{name: xx, data: [{cityid: xx, cityname: xx}]}]}</code>"><code>{&#39;aa&#39;: [{name: xx, data: [{cityid: xx, cityname: xx}]}]}</code></label>&nbsp;</td><td></td><td>所有的城市，当supportGroup为true时</td></tr><tr><td>callBack</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td>回调函数，将选中的城市列表传递出去，如果用户不配置这个参数，则关闭时选中的城市自动初始化为下次打开时的初始选中城市</td></tr></table><h2>Attention</h2><ul><li>整个组件通过cityId进行判断</li>
+<li>热门城市，已选城市应该属于全部城市</li>
+<li>allCity是必填项，且必须按照规定的数据格式来，具体格式看例子和参数详情</li>
+<li>不传hotCity也会显示热门城市的标题，如果不想显示需操作isShowHot参数</li>
+<li>placement, class, animation不支持动态修改，需初始化时设定</li>
+</ul><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="cityselectDemoCtrl">
+  <h4>城市选择</h4>
+  <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config"  style="margin-left:100px;" >城市选择</div>
+  <h4>城市选择，不进行城市分组</h4>
+  <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config1"  style="margin-left:100px;" >城市选择</div>
+  <h4>城市选择，初始选择城市不disable</h4>
+  <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config2"  style="margin-left:100px;" >城市选择</div>
+   <h4>城市选择，不提供全选，清空，反选，搜索等功能</h4>
+   <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config3"  style="margin-left:100px;" >城市选择</div>
+    <h4>城市选择，无初始化选择城市和热门城市</h4>
+    <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config4"  style="margin-left:100px;" >城市选择</div>
+     <h4>城市选择，包含回调函数</h4>
+    <hr>
+    <div class="btn btn-default cityselect-test" uix-cityselect ng-model="config5"  style="margin-left:100px;" >城市选择</div>
+</div>
+</div><script>angular.module('uixDemo').controller('cityselectDemoCtrl', ['$scope', function ($scope) {
+    $scope.test = function (chosedCity) {
+        var tt = '';
+        chosedCity.map(function (item) {
+            tt = tt + ' ' + item.cityName;
+        });
+        alert(tt);
+    };
+    $scope.config = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: true,
+        placement: 'bottom',
+        animation: false,
+        chosedCityDisable: true,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        initChosedCity: [
+                    {cityId: 1, cityName: '安阳'},
+                    {cityId: 8, cityName: '安阳1'},
+                    {cityId: 9, cityName: '鞍山1'},
+                    {cityId: 22, cityName: '安阳3'}],
+        allCity: {
+            'A-D':
+                [{
+                    name: 'A',
+                    data: [
+                          {cityId: 1, cityName: '安阳'},
+                          {cityId: 2, cityName: '鞍山'},
+                          {cityId: 3, cityName: '阿里山'},
+                          {cityId: 4, cityName: '安康'},
+                          {cityId: 5, cityName: '安泰平和'},
+                          {cityId: 6, cityName: '澳门'},
+                          {cityId: 7, cityName: '广州'}
+                    ]
+                }, {
+                    name: 'B',
+                    data: [
+                          {cityId: 8, cityName: '安阳1'},
+                          {cityId: 9, cityName: '鞍山1'},
+                          {cityId: 10, cityName: '阿里山1'},
+                          {cityId: 11, cityName: '安康1'},
+                          {cityId: 12, cityName: '安全'},
+                          {cityId: 13, cityName: '澳门1'},
+                          {cityId: 14, cityName: '安化县1'}
+                    ]
+                }, {
+                    name: 'C',
+                    data: [
+                          {cityId: 15, cityName: '北京'},
+                          {cityId: 16, cityName: '鞍山2'},
+                          {cityId: 17, cityName: '阿里山2'},
+                          {cityId: 18, cityName: '安康2'},
+                          {cityId: 19, cityName: '按风霜2'},
+                          {cityId: 20, cityName: '澳门2'},
+                          {cityId: 21, cityName: '安化县2'}
+                    ]
+                }, {
+                    name: 'D',
+                    data: [
+                          {cityId: 22, cityName: '安阳3'},
+                          {cityId: 23, cityName: '鞍山3'},
+                          {cityId: 24, cityName: '上海'},
+                          {cityId: 25, cityName: '安康3'},
+                          {cityId: 26, cityName: '按钮月3'},
+                          {cityId: 27, cityName: '澳门3'},
+                          {cityId: 28, cityName: '安化县3'}
+                    ]
+                }],
+            'E-H':
+                [{
+                    name: 'E',
+                    data: [
+                          {cityId: 29, cityName: '安阳4'},
+                          {cityId: 30, cityName: '鞍山4'},
+                          {cityId: 31, cityName: '阿里山4'},
+                          {cityId: 32, cityName: '安康4'},
+                          {cityId: 33, cityName: '阿克苏常擦好难吃噶好难过地区4'},
+                          {cityId: 34, cityName: '澳门4'},
+                          {cityId: 35, cityName: '安化县4'}
+                    ]
+                }, {
+                    name: 'F',
+                    data: [
+                          {cityId: 36, cityName: '安阳5'},
+                          {cityId: 37, cityName: '鞍山5'},
+                          {cityId: 38, cityName: '阿里山5'},
+                          {cityId: 39, cityName: '安康5'},
+                          {cityId: 40, cityName: '阿克苏常擦好难吃噶好难过地区5'},
+                          {cityId: 42, cityName: '澳门5'},
+                          {cityId: 43, cityName: '安化县5'}
+                    ]
+                }, {
+                    name: 'G',
+                    data: [
+                          {cityId: 44, cityName: '安阳6'},
+                          {cityId: 45, cityName: '鞍山6'},
+                          {cityId: 46, cityName: '阿里山6'},
+                          {cityId: 47, cityName: '安康6'},
+                          {cityId: 48, cityName: '阿克苏常擦好难吃噶好难过地区6'},
+                          {cityId: 49, cityName: '澳门6'},
+                          {cityId: 50, cityName: '安化县6'}
+                    ]
+                }, {
+                    name: 'H',
+                    data: [
+                          {cityId: 51, cityName: '安阳7'},
+                          {cityId: 52, cityName: '鞍山7'},
+                          {cityId: 53, cityName: '阿里山7'},
+                          {cityId: 54, cityName: '安康7'},
+                          {cityId: 55, cityName: '阿克苏常擦好难吃噶好难过地区7'},
+                          {cityId: 56, cityName: '澳门7'},
+                          {cityId: 57, cityName: '安化县7'}
+                    ]
+                }]
+        }
+    };
+    $scope.config1 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: true,
+        placement: 'bottom',
+        animation: false,
+        chosedCityDisable: true,
+        supportGroup: false,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        initChosedCity: [
+                    {cityId: 1, cityName: '安阳'},
+                    {cityId: 8, cityName: '安阳1'},
+                    {cityId: 9, cityName: '鞍山1'},
+                    {cityId: 22, cityName: '安阳3'}
+        ],
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+    $scope.config2 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: true,
+        placement: 'bottom',
+        animation: false,
+        supportGroup: false,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        initChosedCity: [
+                    {cityId: 1, cityName: '安阳'},
+                    {cityId: 8, cityName: '安阳1'},
+                    {cityId: 9, cityName: '鞍山1'},
+                    {cityId: 22, cityName: '安阳3'}
+        ],
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+    $scope.config3 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: false,
+        placement: 'bottom',
+        animation: false,
+        supportGroup: false,
+        supportChoseAll: false,
+        supportSearch: false,
+        supportChoseClear: false,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        initChosedCity: [
+                    {cityId: 1, cityName: '安阳'},
+                    {cityId: 8, cityName: '安阳1'},
+                    {cityId: 9, cityName: '鞍山1'},
+                    {cityId: 22, cityName: '安阳3'}
+        ],
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+    $scope.config4 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: false,
+        placement: 'bottom',
+        animation: false,
+        supportGroup: false,
+        supportChoseAll: false,
+        supportSearch: false,
+        supportChoseClear: false,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        isShowHot: false,
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+    $scope.config5 = {
+        size: 'md',
+        initPage: 4,
+        supportChoseReverse: false,
+        placement: 'bottom',
+        animation: false,
+        supportGroup: false,
+        supportChoseAll: false,
+        supportSearch: false,
+        supportChoseClear: false,
+        callBack: $scope.test,
+        hotCity: [
+                {cityId: 7, cityName: '广州'},
+                {cityId: 15, cityName: '北京'},
+                {cityId: 24, cityName: '上海'}
+        ],
+        isShowHot: false,
+        allCity: [
+            {cityId: 1, cityName: '安阳'},
+            {cityId: 8, cityName: '安阳1'},
+            {cityId: 9, cityName: '鞍山1'},
+            {cityId: 22, cityName: '安阳3'},
+            {cityId: 123, cityName: '太阳'},
+            {cityId: 111, cityName: '广安'},
+            {cityId: 11, cityName: '天津'},
+            {cityId: 132, cityName: '崇顺'},
+            {cityId: 112, cityName: '俺的'},
+            {cityId: 7, cityName: '广州'},
+            {cityId: 15, cityName: '北京'},
+            {cityId: 24, cityName: '上海'}
+        ]
+    };
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"cityselectDemoCtrl"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择，不进行城市分组<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config1"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择，初始选择城市不disable<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config2"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择，不提供全选，清空，反选，搜索等功能<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config3"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择，无初始化选择城市和热门城市<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config4"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+     <span class="hljs-tag">&lt;<span class="hljs-name">h4</span>&gt;</span>城市选择，包含回调函数<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default cityselect-test"</span> <span class="hljs-attr">uix-cityselect</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"config5"</span>  <span class="hljs-attr">style</span>=<span class="hljs-string">"margin-left:100px;"</span> &gt;</span>城市选择<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'cityselectDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, function ($scope) {
+    $scope.test = function (chosedCity) {
+        var tt = <span class="hljs-string">''</span>;
+        chosedCity.map(function (item) {
+            tt = tt + <span class="hljs-string">' '</span> + item.cityName;
+        });
+        alert(tt);
+    };
+    $scope.config = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">true</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        chosedCityDisable:</span> <span class="hljs-literal">true</span>,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        initChosedCity:</span> [
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>}],
+<span class="hljs-symbol">        allCity:</span> {
+            <span class="hljs-string">'A-D'</span>:
+                [{
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'A'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">2</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">3</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">4</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">5</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安泰平和'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">6</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'B'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">10</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山1'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康1'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">12</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安全'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">13</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门1'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">14</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县1'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'C'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">16</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山2'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">17</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山2'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">18</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康2'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">19</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'按风霜2'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">20</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门2'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">21</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县2'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'D'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">23</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山3'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">25</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康3'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">26</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'按钮月3'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">27</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门3'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">28</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县3'</span>}
+                    ]
+                }],
+            <span class="hljs-string">'E-H'</span>:
+                [{
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'E'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">29</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">30</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">31</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">32</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">33</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿克苏常擦好难吃噶好难过地区4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">34</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门4'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">35</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县4'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'F'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">36</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">37</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">38</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">39</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">40</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿克苏常擦好难吃噶好难过地区5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">42</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门5'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">43</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县5'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'G'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">44</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">45</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">46</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">47</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">48</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿克苏常擦好难吃噶好难过地区6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">49</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门6'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">50</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县6'</span>}
+                    ]
+                }, {
+<span class="hljs-symbol">                    name:</span> <span class="hljs-string">'H'</span>,
+<span class="hljs-symbol">                    data:</span> [
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">51</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">52</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">53</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿里山7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">54</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安康7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">55</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'阿克苏常擦好难吃噶好难过地区7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">56</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'澳门7'</span>},
+                          {<span class="hljs-string">cityId:</span> <span class="hljs-number">57</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安化县7'</span>}
+                    ]
+                }]
+        }
+    };
+    $scope.config1 = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">true</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        chosedCityDisable:</span> <span class="hljs-literal">true</span>,
+<span class="hljs-symbol">        supportGroup:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        initChosedCity:</span> [
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>}
+        ],
+<span class="hljs-symbol">        allCity:</span> [
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">123</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'太阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">111</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广安'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'天津'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">132</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'崇顺'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">112</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'俺的'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ]
+    };
+    $scope.config2 = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">true</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportGroup:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        initChosedCity:</span> [
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>}
+        ],
+<span class="hljs-symbol">        allCity:</span> [
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">123</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'太阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">111</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广安'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'天津'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">132</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'崇顺'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">112</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'俺的'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ]
+    };
+    $scope.config3 = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportGroup:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseAll:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportSearch:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseClear:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        initChosedCity:</span> [
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+                    {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>}
+        ],
+<span class="hljs-symbol">        allCity:</span> [
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">123</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'太阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">111</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广安'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'天津'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">132</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'崇顺'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">112</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'俺的'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ]
+    };
+    $scope.config4 = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportGroup:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseAll:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportSearch:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseClear:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        isShowHot:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        allCity:</span> [
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">123</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'太阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">111</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广安'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'天津'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">132</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'崇顺'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">112</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'俺的'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ]
+    };
+    $scope.config5 = {
+<span class="hljs-symbol">        size:</span> <span class="hljs-string">'md'</span>,
+<span class="hljs-symbol">        initPage:</span> <span class="hljs-number">4</span>,
+<span class="hljs-symbol">        supportChoseReverse:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        placement:</span> <span class="hljs-string">'bottom'</span>,
+<span class="hljs-symbol">        animation:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportGroup:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseAll:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportSearch:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        supportChoseClear:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        callBack:</span> $scope.test,
+<span class="hljs-symbol">        hotCity:</span> [
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+                {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ],
+<span class="hljs-symbol">        isShowHot:</span> <span class="hljs-literal">false</span>,
+<span class="hljs-symbol">        allCity:</span> [
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">1</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">8</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">9</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'鞍山1'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">22</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'安阳3'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">123</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'太阳'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">111</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广安'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">11</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'天津'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">132</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'崇顺'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">112</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'俺的'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">7</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'广州'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">15</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'北京'</span>},
+            {<span class="hljs-string">cityId:</span> <span class="hljs-number">24</span>, <span class="hljs-string">cityName:</span> <span class="hljs-string">'上海'</span>}
+        ]
+    };
+}]);
+</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>

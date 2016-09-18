@@ -1,0 +1,296 @@
+<h1>rate</h1><h2>Description</h2><p> 评分组件.</p>
+<h2>Usage</h2><pre><code class="lang-html">&lt;uix-rate ng-model=<span class="hljs-string">"number"</span>
+    [count=<span class="hljs-string">"number"</span>]
+    [rating-icon=<span class="hljs-string">"string"</span>]
+    [read-only=<span class="hljs-string">"boolean"</span>]
+    [rating-select-color=<span class="hljs-string">"string"</span>]
+    [on-change=<span class="hljs-string">"fn($oldVal, $newVal)"</span>]&gt;
+&lt;/uix-rate&gt;
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td></td><td> 指定评分计数,number类型,实现双向数据绑定.范围为0~count-1,如果设置为0,则评分0(具体表现就是全为灰色,一个都不选);如果设置的值超过count-1,则设置为count-1,即全部选择.如果传入的值不合法,则充值为0,如果传入小数则四舍五入为整数.</td></tr><tr><td>count(optional)</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>5</code></td><td> 一个评分组件中icon的数量,如果不设置或设置为0,则默认为<code>5</code></td></tr><tr><td>readOnly</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td> 当前评分组件只读,默认为<code>false</code></td></tr><tr><td>ratingIcon</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&#39;glyphicon glyphicon-star&#39;</code></td><td> 设置评分图标,默认为空五角星.可设置自定义图标样式如<code>rating-icon=&quot;&#39;fa  fa-icon&#39;&quot;</code>,也可设置为bootstrap中定义的icon样式,如<code>rating-icon=&quot;&#39;glyphicon glyphicon-ban-circle&#39;&quot;</code></td></tr><tr><td>ratingSelectColor</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>&#39;#f5a623&#39;</code></td><td> 指定打分之后颜色,默认为<code>&#39;#f5a623&#39;</code>,橙色.可使用style中设置颜色样式的所有方式进行设置,例如&#39;red&#39;,&#39;#ff000&#39;,&#39;rgb(234,54,33)&#39;,&#39;rgba(123,112,3,0.5)&#39;</td></tr><tr><td>onChange</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td></td><td> 点击图标实现评分操作(修改ng-model)的值,评分计数发生改变时的回调函数,同时传递出去两个参数$oldVal和$newVal,其中$oldVal表示原评分计数的值,$newVal表示新评分计数的值.首次加载不会触发该事件.该事件不同于ng-change在于,使用该事件时候可以捕获两个参数.</td></tr></table><hr><h2>Example</h2><style>.rate-demo > ul > li{
+    list-style: none;
+    padding-left: 0;
+}</style><div class="example"><div ng-controller="rateDemoCtrl">
+    <ol class="rate-demo">
+        <li>
+            <ul>只设置ng-model.其它都不设置.
+                <li>
+                    <p>ng-model=0,评分为0;ng-model随点击变化:<span class="text-danger"> {{modeZero}} </span></p>
+                    <uix-rate ng-model="modeZero"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=6,超出icon数量,评分满分;</p>
+                    <uix-rate ng-model="modeFlow"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=3;正常范围,根据传入值评分</p>
+                    <uix-rate ng-model="modeNormal"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model='zero';不合法输入,评分为0</p>
+                    <uix-rate ng-model="modeIllegal"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=1.3;小数输入,小数位小于0.5,四舍五入,评分为1</p>
+                    <uix-rate ng-model="modeFloatMin"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=1.6,小数输入,小数位大于0.5,四舍五入,评分为2</p>
+                    <uix-rate ng-model="modeFloatMax"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>设置count
+                <li>
+                    <p>ng-model=0,count=10,则最高评分10分</p>
+                    <uix-rate ng-model="modeZero" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>count=0,设置为0,则使用默认值,则最高可选5分;</p>
+                    <uix-rate ng-model="modeZero" count="0"></uix-rate>
+                </li>
+                <li>
+                    <p>count不设置,使用默认值,则最高可选5分</p>
+                    <uix-rate ng-model="modeZero"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>readOnly,默认为false
+                <li>
+                    <p>ng-model=3,默认不设置</p>
+                    <uix-rate ng-model="modeNormal" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>ng-model=3,read-only设置为true</p>
+                    <uix-rate ng-model="modeNormal" read-only="true"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>rating-icon,设置图标样式,默认为空五角星
+                <li>
+                    <p>默认不设置</p>
+                    <uix-rate ng-model="modeNormal" count="10"></uix-rate>
+                </li>
+                <li>
+                    <p>rating-icon设置为glyphicon glyphicon-off</p>
+                    <uix-rate ng-model="modeNormal" rating-icon="'glyphicon glyphicon-off'"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>rating-select-color,设置评分颜色,可以使用如'red','#aeefda','rgb(234,54,33)','rgba(123,112,3,0.5)'中任何一种设置方式
+                <li>
+                    <p>默认不设置</p>
+                    <uix-rate ng-model="modeNormal"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为#aeefda</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'#aeefda'"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为red</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="red"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为rgb(122,54,33)</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'rgb(122,54,33)'"></uix-rate>
+                </li>
+                <li>
+                    <p>设置为rgb(234,54,33)</p>
+                    <uix-rate ng-model="modeNormal" rating-select-color="'rgba(123,112,3,0.5)'"></uix-rate>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <ul>on-change事件,该事件不同于ng-change在于,该事件不同于ng-change在于使用该事件时候可以捕获两个参数.
+                <li>
+                    <p>绑定on-change事件,oldVal:<span class="text-danger">{{oldVal}}</span>;newVal:<span class="text-danger">{{newVal}}</span></p>
+                    <uix-rate ng-model="changeModel" on-change="changeFn($oldVal, $newVal)"></uix-rate>
+                </li>
+            </ul>
+        </li>
+    </ol>
+</div></div><script>angular.module('uixDemo').controller('rateDemoCtrl', ['$scope', function ($scope) {
+    $scope.modeZero = 0;
+    $scope.modeFlow = 6;
+    $scope.modeNormal = 3;
+    $scope.modeIllegal = 'zero';
+    $scope.modeFloatMin = 1.3;
+    $scope.modeFloatMax = 1.6;
+    $scope.changeModel = 1;
+    $scope.oldVal = '';
+    $scope.newVal = '';
+    $scope.changeFn = function (oldVal, newVal) {
+        $scope.oldVal = oldVal;
+        $scope.newVal = newVal;
+    };
+}]);
+
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"rateDemoCtrl"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ol</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"rate-demo"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>只设置ng-model.其它都不设置.
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=0,评分为0;ng-model随点击变化:<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-danger"</span>&gt;</span> </span><span class="hljs-template-variable"><span>&#123;&#123;</span>modeZero&#125;&#125;</span><span class="xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeZero"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=6,超出icon数量,评分满分;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeFlow"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=3;正常范围,根据传入值评分<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model='zero';不合法输入,评分为0<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeIllegal"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=1.3;小数输入,小数位小于0.5,四舍五入,评分为1<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeFloatMin"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=1.6,小数输入,小数位大于0.5,四舍五入,评分为2<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeFloatMax"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>设置count
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=0,count=10,则最高评分10分<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeZero"</span> <span class="hljs-attr">count</span>=<span class="hljs-string">"10"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>count=0,设置为0,则使用默认值,则最高可选5分;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeZero"</span> <span class="hljs-attr">count</span>=<span class="hljs-string">"0"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>count不设置,使用默认值,则最高可选5分<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeZero"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>readOnly,默认为false
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=3,默认不设置<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">count</span>=<span class="hljs-string">"10"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>ng-model=3,read-only设置为true<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">read-only</span>=<span class="hljs-string">"true"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>rating-icon,设置图标样式,默认为空五角星
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>默认不设置<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">count</span>=<span class="hljs-string">"10"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>rating-icon设置为glyphicon glyphicon-off<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">rating-icon</span>=<span class="hljs-string">"'glyphicon glyphicon-off'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>rating-select-color,设置评分颜色,可以使用如'red','#aeefda','rgb(234,54,33)','rgba(123,112,3,0.5)'中任何一种设置方式
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>默认不设置<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置为#aeefda<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">rating-select-color</span>=<span class="hljs-string">"'#aeefda'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置为red<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">rating-select-color</span>=<span class="hljs-string">"red"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置为rgb(122,54,33)<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">rating-select-color</span>=<span class="hljs-string">"'rgb(122,54,33)'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置为rgb(234,54,33)<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"modeNormal"</span> <span class="hljs-attr">rating-select-color</span>=<span class="hljs-string">"'rgba(123,112,3,0.5)'"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>on-change事件,该事件不同于ng-change在于,该事件不同于ng-change在于使用该事件时候可以捕获两个参数.
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>绑定on-change事件,oldVal:<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-danger"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>oldVal&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>;newVal:<span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-danger"</span>&gt;</span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>newVal&#125;&#125;</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">uix-rate</span> <span class="hljs-attr">ng-model</span>=<span class="hljs-string">"changeModel"</span> <span class="hljs-attr">on-change</span>=<span class="hljs-string">"changeFn($oldVal, $newVal)"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-rate</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ol</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'rateDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    $scope.modeZero = <span class="hljs-number">0</span>;
+    $scope.modeFlow = <span class="hljs-number">6</span>;
+    $scope.modeNormal = <span class="hljs-number">3</span>;
+    $scope.modeIllegal = <span class="hljs-string">'zero'</span>;
+    $scope.modeFloatMin = <span class="hljs-number">1.3</span>;
+    $scope.modeFloatMax = <span class="hljs-number">1.6</span>;
+    $scope.changeModel = <span class="hljs-number">1</span>;
+    $scope.oldVal = <span class="hljs-string">''</span>;
+    $scope.newVal = <span class="hljs-string">''</span>;
+    $scope.changeFn = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(oldVal, newVal)</span> </span>{
+        $scope.oldVal = oldVal;
+        $scope.newVal = newVal;
+    };
+}]);
+
+</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-selector-class">.rate-demo</span> &gt; <span class="hljs-selector-tag">ul</span> &gt; <span class="hljs-selector-tag">li</span>{
+    <span class="hljs-attribute">list-style</span>: none;
+    <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">0</span>;
+}</code></pre>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>

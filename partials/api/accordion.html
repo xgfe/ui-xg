@@ -1,0 +1,97 @@
+<h1>accordion</h1><h2>Description</h2><p>手风琴组件.</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">uix-accordion</span>
+    [<span class="hljs-attr">close-others</span>=<span class="hljs-string">"boolean"</span>]&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">uix-accordion-group</span>
+        [<span class="hljs-attr">heading</span>=<span class="hljs-string">"string"</span>]
+        [<span class="hljs-attr">is-open</span>=<span class="hljs-string">"boolean"</span>]&gt;</span>
+        <span class="hljs-comment">&lt;!-- some content or template here --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">uix-accordion</span>&gt;</span>
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;E&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>closeOthers</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td> <code>true</code></td><td>是否只允许同一时间展开一个group，值为<code>true</code>表示只允许展开一个，反之可同时展开多个</td></tr><tr><td>heading</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>group标题文本</td></tr><tr><td>isOpen</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td> <code>true</code></td><td>是否展开,值为<code>true</code>表示展开,反之收起</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="accordionDemoCtrl">
+    <button class="btn btn-default" ng-click="change()">change</button>
+    <input type="checkbox" ng-model="closeOthers"> Open only one at a time
+    <uix-accordion close-others="closeOthers">
+        <div uix-accordion-group style="margin-bottom: 30px;" heading="{{str.heading}}" is-open="openStatus">
+            this is body
+        </div>
+        <div uix-accordion-group heading="hhhhhhhh" is-open="openStatus1">
+            <div style="float: right; color: red;">this is body</div>
+        </div>
+        <div uix-accordion-group heading="xxxxxxx" is-open="openStatus2">
+        </div>
+    </uix-accordion>
+</div></div><script>angular.module('uixDemo').controller('accordionDemoCtrl', ['$scope', function ($scope) {
+    // your js code here
+    $scope.str = {
+        heading: 'this is head'
+    };
+    $scope.closeOthers = false;
+    $scope.openStatus = false;
+    $scope.openStatus1 = true;
+    $scope.change = function () {
+        $scope.str.heading = 'xxx';
+    };
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code>&lt;<span class="hljs-selector-tag">div</span> ng-controller=<span class="hljs-string">"accordionDemoCtrl"</span>&gt;
+    &lt;<span class="hljs-selector-tag">button</span> class=<span class="hljs-string">"btn btn-default"</span> ng-click=<span class="hljs-string">"change()"</span>&gt;change&lt;/button&gt;
+    &lt;<span class="hljs-selector-tag">input</span> type=<span class="hljs-string">"checkbox"</span> ng-model=<span class="hljs-string">"closeOthers"</span>&gt; Open only one at <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">time</span>
+    &lt;uix-accordion close-others=<span class="hljs-string">"closeOthers"</span>&gt;
+        &lt;<span class="hljs-selector-tag">div</span> uix-accordion-group style=<span class="hljs-string">"margin-bottom: 30px;"</span> heading=<span class="hljs-string">"<span>&#123;&#123;</span>str.heading&#125;&#125;"</span> is-open=<span class="hljs-string">"openStatus"</span>&gt;
+            this is <span class="hljs-selector-tag">body</span>
+        &lt;/div&gt;
+        &lt;<span class="hljs-selector-tag">div</span> uix-accordion-group heading=<span class="hljs-string">"hhhhhhhh"</span> is-open=<span class="hljs-string">"openStatus1"</span>&gt;
+            &lt;<span class="hljs-selector-tag">div</span> style=<span class="hljs-string">"float: right; color: red;"</span>&gt;this is body&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;<span class="hljs-selector-tag">div</span> uix-accordion-group heading=<span class="hljs-string">"xxxxxxx"</span> is-open=<span class="hljs-string">"openStatus2"</span>&gt;
+        &lt;/div&gt;
+    &lt;/uix-accordion&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'accordionDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope)</span> </span>{
+    <span class="hljs-comment">// your js code here</span>
+    $scope.str = {
+        heading: <span class="hljs-string">'this is head'</span>
+    };
+    $scope.closeOthers = <span class="hljs-keyword">false</span>;
+    $scope.openStatus = <span class="hljs-keyword">false</span>;
+    $scope.openStatus1 = <span class="hljs-keyword">true</span>;
+    $scope.change = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+        $scope.str.heading = <span class="hljs-string">'xxx'</span>;
+    };
+}]);
+</code></pre>
+    </div>
+    
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>
