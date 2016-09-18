@@ -1,3 +1,26 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/xgfe/ui-xg/compare/v1.4.0...v2.0.0) (2016-09-18)
+
+
+### Bug Fixes
+
+* **carousel:** angular.isUndefined is function not object ([fcabe79](https://github.com/xgfe/ui-xg/commit/fcabe79))
+* **carousel:** change page not occur undefined error ([0753951](https://github.com/xgfe/ui-xg/commit/0753951)), closes [#23](https://github.com/xgfe/ui-xg/issues/23)
+* **cityselect:** fix the cityselect tab change bug ([8d7492d](https://github.com/xgfe/ui-xg/commit/8d7492d))
+* **doc:** carousel demo img error ([3388ced](https://github.com/xgfe/ui-xg/commit/3388ced))
+* **progressbar:** modify progressbar readme.md ([55145a0](https://github.com/xgfe/ui-xg/commit/55145a0))
+
+
+### Features
+
+* **accordion:** add accordion component ([aa4fb3b](https://github.com/xgfe/ui-xg/commit/aa4fb3b))
+* **cityselect:** add cityselect ([c990dc7](https://github.com/xgfe/ui-xg/commit/c990dc7))
+* **modal:** add auto close ([bb4b9ef](https://github.com/xgfe/ui-xg/commit/bb4b9ef))
+* **progressbar:** add progressbar component ([bb786b2](https://github.com/xgfe/ui-xg/commit/bb786b2))
+* **tabs,button,buttonGroup,rate:** refator button and buttonGroup,new tab and rate ([bf4e4db](https://github.com/xgfe/ui-xg/commit/bf4e4db))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/xgfe/ui-xg/compare/v1.3.0...v1.4.0) (2016-08-24)
 
