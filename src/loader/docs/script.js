@@ -1,3 +1,6 @@
+angular.module('uixDemo').config('uixLoaderProvider', function (uixLoaderProvider) {
+    uixLoaderProvider.setLoadingTime(3000);
+});
 angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$uixModal',  function ($scope, $timeout, $uixModal) {
     $scope.loadingList = [];
     $scope.loadingList2 = [];
@@ -17,7 +20,7 @@ angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$
             };
             $scope.loadingList.push(test);
             $scope.isLoading = 0;
-        }, 2000);
+        }, 0);
     };
     $scope.reload2 = function () {
         $scope.isLoading2 = 1;
@@ -31,7 +34,7 @@ angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$
             };
             $scope.loadingList2.push(test);
             $scope.isLoading2 = 0;
-        }, 2000);
+        }, 0);
     };
 
     $scope.items = ['item1', 'item2', 'item3'];
@@ -45,7 +48,7 @@ angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$
                 $scope.isLoading = 1;
                 $timeout(function () {
                     $scope.isLoading = 0;
-                }, 2000);
+                }, 0);
                 $scope.ok = function () {
                     $scope.$close('close modal by $scope');
                 };

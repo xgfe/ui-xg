@@ -7,7 +7,7 @@
 ``` javascript
 基本用法
 <uix-typeahead ng-model="string"
-    [ query-list="list" ]
+    [ query-list="array" ]
     [ placeholder="string" ]
     [ get-async-func="function" ]
     [ typeahead-loading="boolean" ]
@@ -22,7 +22,7 @@
 - ngModel:typeahead的输入文字,改变后更新绑定的变量。
     - type:`string`
 - queryList(optional):指定typeahead的筛选列表，传入一个字符串数组作为本地列表。
-    - type:`list`
+    - type:`array`
 - placeholder(optional):指定typeahead中input的提示文字。
     - type:`string`
 - getAsyncFunc(optional):如果需要显示异步数据时,getAsyncFunc指定数据提供function。

@@ -1,3 +1,7 @@
+angular.module('uixDemo').config(['uixTableLoaderProvider', function (uixTableLoaderProvider) {
+    uixTableLoaderProvider.setLoadingTime(300);
+}]);
+
 angular.module('uixDemo').controller('tableLoaderDemoCtrl', ['$scope', '$timeout',  function ($scope, $timeout) {
     $scope.isLoading = 0;
     $scope.isLoading2 = 0;

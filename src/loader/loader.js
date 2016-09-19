@@ -5,14 +5,30 @@
  * Date:2016-07-29
  */
 angular.module('ui.xg.loader', [])
-    .controller('uixLoaderCtrl', ['$scope', '$timeout', '$element', '$window',
-        function ($scope, $timeout, $element, $window) {
+
+    .provider('uixLoader', function () {
+        var loadingTime = 300;
+        this.setLoadingTime = function (num) {
+            loadingTime = angular.isNumber(num) ? num : 300;
+        };
+        this.$get = function () {
+            return {
+                getLoadingTime: function () {
+                    return loadingTime;
+                }
+            };
+        };
+    })
+
+    .controller('uixLoaderCtrl', ['$scope', '$timeout', '$element', '$window', 'uixLoader',
+        function ($scope, $timeout, $element, $window, uixLoader) {
 
             var $ = angular.element;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
             var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
             var width = $scope.loaderWidth;
+            var loadingTime = parseInt($scope.loadingTime, 10) || uixLoader.getLoadingTime();
 
             var loadingTpl = $('<div class="loading">' +
                 '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
@@ -55,8 +71,8 @@ angular.module('ui.xg.loader', [])
             });
             function timeoutHandle(startTimer, endTimer, callback) {
                 var timer;
-                if((endTimer - startTimer) < 1000) {
-                    timer = 1000;
+                if((endTimer - startTimer) < loadingTime) {
+                    timer = loadingTime;
                 } else {
                     timer = 0;
                 }
@@ -69,7 +85,8 @@ angular.module('ui.xg.loader', [])
             scope: {
                 uixLoader: '=',
                 loaderHeight: '@',
-                loaderWidth: '@'
+                loaderWidth: '@',
+                loadingTime: '@'
             },
             controller: 'uixLoaderCtrl',
             controllerAs: 'loader'

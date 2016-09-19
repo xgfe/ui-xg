@@ -18,8 +18,7 @@ angular.module('ui.xg.typeahead', [])
     .controller('uixTypeaheadCtrl', ['$scope', '$attrs', '$element', '$document', '$q', '$log',
         function ($scope, $attrs, $element, $document, $q, $log) {
 
-            var $ = angular.element;
-            var listElm = $('[uix-typeahead-popup]');
+            var listElm = $document.find('[uix-typeahead-popup]');
             var ngModelCtrl = {$setViewValue: angular.noop};
             var placeholder = angular.isDefined($scope.placeholder) ? $scope.placeholder : '';
             var asyncFunc = $scope.$parent.$eval($attrs.getAsyncFunc);

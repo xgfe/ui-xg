@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 1.4.0 - 2016-09-09
+ * Version: 1.4.0 - 2016-09-19
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3980,14 +3980,30 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
  * Date:2016-07-29
  */
 angular.module('ui.xg.loader', [])
-    .controller('uixLoaderCtrl', ['$scope', '$timeout', '$element', '$window',
-        function ($scope, $timeout, $element, $window) {
+
+    .provider('uixLoader', function () {
+        var loadingTime = 300;
+        this.setLoadingTime = function (num) {
+            loadingTime = angular.isNumber(num) ? num : 300;
+        };
+        this.$get = function () {
+            return {
+                getLoadingTime: function () {
+                    return loadingTime;
+                }
+            };
+        };
+    })
+
+    .controller('uixLoaderCtrl', ['$scope', '$timeout', '$element', '$window', 'uixLoader',
+        function ($scope, $timeout, $element, $window, uixLoader) {
 
             var $ = angular.element;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
             var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
             var width = $scope.loaderWidth;
+            var loadingTime = parseInt($scope.loadingTime, 10) || uixLoader.getLoadingTime();
 
             var loadingTpl = $('<div class="loading">' +
                 '<i class="fa fa-spin fa-spinner loading-icon"></i>' +
@@ -4030,8 +4046,8 @@ angular.module('ui.xg.loader', [])
             });
             function timeoutHandle(startTimer, endTimer, callback) {
                 var timer;
-                if((endTimer - startTimer) < 1000) {
-                    timer = 1000;
+                if((endTimer - startTimer) < loadingTime) {
+                    timer = loadingTime;
                 } else {
                     timer = 0;
                 }
@@ -4044,7 +4060,8 @@ angular.module('ui.xg.loader', [])
             scope: {
                 uixLoader: '=',
                 loaderHeight: '@',
-                loaderWidth: '@'
+                loaderWidth: '@',
+                loadingTime: '@'
             },
             controller: 'uixLoaderCtrl',
             controllerAs: 'loader'
@@ -7565,13 +7582,29 @@ angular.module('ui.xg.switch', [])
  * Date:2016-08-02
  */
 angular.module('ui.xg.tableLoader', [])
-    .controller('uixTableLoaderCtrl', ['$scope', '$timeout', '$element', '$window',
-        function ($scope, $timeout, $element, $window) {
+
+    .provider('uixTableLoader', function () {
+        var loadingTime = 300;
+        this.setLoadingTime = function (num) {
+            loadingTime = angular.isNumber(num) ? num : 300;
+        };
+        this.$get = function () {
+            return {
+                getLoadingTime: function () {
+                    return loadingTime;
+                }
+            };
+        };
+    })
+
+    .controller('uixTableLoaderCtrl', ['$scope', '$timeout', '$element', '$window', 'uixTableLoader',
+        function ($scope, $timeout, $element, $window, uixTableLoader) {
 
             var $ = angular.element;
             var thead = $element.children('thead');
             var tbody = $element.children('tbody');
 
+            var loadingTime = parseInt($scope.loadingTime, 10) || uixTableLoader.getLoadingTime();
             var noThead = $scope.noThead;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
@@ -7641,8 +7674,8 @@ angular.module('ui.xg.tableLoader', [])
             });
             function timeoutHandle(startTimer, endTimer, callback) {
                 var timer;
-                if((endTimer - startTimer) < 300) {
-                    timer = 300;
+                if((endTimer - startTimer) < loadingTime) {
+                    timer = loadingTime;
                 } else {
                     timer = 0;
                 }
@@ -7655,7 +7688,8 @@ angular.module('ui.xg.tableLoader', [])
             scope: {
                 uixTableLoader: '=',
                 noThead: '=',
-                loaderHeight: '@'
+                loaderHeight: '@',
+                loadingTime: '@'
             },
             controller: 'uixTableLoaderCtrl',
             controllerAs: 'tableLoader'
@@ -8027,8 +8061,7 @@ angular.module('ui.xg.typeahead', [])
     .controller('uixTypeaheadCtrl', ['$scope', '$attrs', '$element', '$document', '$q', '$log',
         function ($scope, $attrs, $element, $document, $q, $log) {
 
-            var $ = angular.element;
-            var listElm = $('[uix-typeahead-popup]');
+            var listElm = $document.find('[uix-typeahead-popup]');
             var ngModelCtrl = {$setViewValue: angular.noop};
             var placeholder = angular.isDefined($scope.placeholder) ? $scope.placeholder : '';
             var asyncFunc = $scope.$parent.$eval($attrs.getAsyncFunc);
