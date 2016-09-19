@@ -13,6 +13,11 @@
 ## Restrict
 - 'A'
 
+## Provider
+- uixTableLoaderProvider：全局配置tableLoader相关的设置。
+- methods
+	- setLoadingTime(num)：设置loading的时间。
+
 ## Arguments
 
 - uixTableLoader:指定当前loading效果的状态。
@@ -27,6 +32,7 @@
 - loaderHeight:设置loader的默认高度。
     - type:`number`
     - default:`auto`
-- noThead:设置loading时不显示<thead>。
+- noThead:设置loading时不显示`<thead>`。
     - type:`boolean`
     - default:`false`
+- loadingTime:设置loading时间，属性的配置会覆盖全局provider的配置，全局的配置会覆盖默认的配置。
