@@ -1,3 +1,13 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/xgfe/ui-xg/compare/v2.0.0...v2.0.1) (2016-09-20)
+
+
+### Bug Fixes
+
+* **select:** fix dropdown position ([7f83467](https://github.com/xgfe/ui-xg/commit/7f83467))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/xgfe/ui-xg/compare/v1.4.0...v2.0.0) (2016-09-18)
 
