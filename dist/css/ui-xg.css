@@ -1,3 +1,15 @@
+.uix-alert {
+  word-wrap: break-word; }
+  .uix-alert .alert-icon {
+    float: left; }
+  .uix-alert .alert-icon-span {
+    position: relative;
+    top: 2px; }
+  .uix-alert .cancel-text {
+    font-size: 20px; }
+  .uix-alert .show-icon {
+    padding-left: 20px; }
+
 .btn-group {
   font-size: 0; }
   .btn-group .btn-item {
@@ -12,18 +24,6 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     padding-left: 8px; }
-
-.uix-alert {
-  word-wrap: break-word; }
-  .uix-alert .alert-icon {
-    float: left; }
-  .uix-alert .alert-icon-span {
-    position: relative;
-    top: 2px; }
-  .uix-alert .cancel-text {
-    font-size: 20px; }
-  .uix-alert .show-icon {
-    padding-left: 20px; }
 
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
@@ -200,9 +200,6 @@
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
 
-.uix-carousel {
-  position: relative; }
-
 .uix-cityselect-container {
   max-height: 280px;
   overflow-y: scroll; }
@@ -310,26 +307,8 @@
     text-overflow: ellipsis;
     cursor: pointer; }
 
-.uix-datepicker {
+.uix-carousel {
   position: relative; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-datepicker .uix-datepicker-input.disabled,
-  .uix-datepicker .uix-datepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-  .uix-datepicker .popover-content {
-    padding: 0; }
-  .uix-datepicker .uix-calendar {
-    border: 0; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }
@@ -355,6 +334,27 @@
       width: 50% !important; }
   .dropdown.open {
     width: 100%; } }
+
+.uix-datepicker {
+  position: relative; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-datepicker .uix-datepicker-input.disabled,
+  .uix-datepicker .uix-datepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+  .uix-datepicker .popover-content {
+    padding: 0; }
+  .uix-datepicker .uix-calendar {
+    border: 0; }
 
 .uix-loader {
   word-wrap: break-word;
@@ -561,94 +561,6 @@
   cursor: not-allowed;
   color: #bbb; }
 
-.uix-switch {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 25px;
-  border-radius: 1000px;
-  background-color: #777;
-  margin: 0; }
-  .uix-switch input {
-    position: absolute;
-    opacity: 0;
-    filter: alpha(opacity=0); }
-  .uix-switch input:checked + i:before {
-    top: 50%;
-    bottom: 50%;
-    left: 50%;
-    right: 5px;
-    border-width: 0; }
-  .uix-switch i:before {
-    content: "";
-    position: absolute;
-    background-color: #fff;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    border: 1px solid #f0f0f0;
-    border-radius: 1000px;
-    -webkit-transition: all 0.2s;
-    -moz-transition: all 0.2s;
-    transition: all 0.2s; }
-  .uix-switch input:checked + i:after {
-    margin-left: 16px; }
-  .uix-switch i:after {
-    content: "";
-    position: absolute;
-    background-color: #fff;
-    width: 23px;
-    top: 1px;
-    bottom: 1px;
-    border-radius: 50%;
-    -webkit-transition: margin-left 0.3s;
-    -moz-transition: margin-left 0.3s;
-    transition: margin-left 0.3s;
-    -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25); }
-
-.uix-switch-default {
-  background-color: #777; }
-
-.uix-switch-primary {
-  background-color: #428bca; }
-
-.uix-switch-success {
-  background-color: #5cb85c; }
-
-.uix-switch-info {
-  background-color: #5bc0de; }
-
-.uix-switch-error {
-  background-color: #d9534f; }
-
-.uix-switch-sm {
-  width: 35px;
-  height: 20px; }
-  .uix-switch-sm input:checked + i:after {
-    margin-left: 16px; }
-  .uix-switch-sm i:after {
-    width: 18px; }
-
-.uix-switch-md {
-  width: 40px;
-  height: 25px; }
-  .uix-switch-md input:checked + i:after {
-    margin-left: 16px; }
-  .uix-switch-md i:after {
-    width: 23px; }
-
-.uix-switch-lg {
-  width: 50px;
-  height: 30px; }
-  .uix-switch-lg input:checked + i:after {
-    margin-left: 21px; }
-  .uix-switch-lg i:after {
-    width: 28px; }
-
 /* Fix Bootstrap dropdown position when inside a input-group */
 .input-group > .uix-select.dropdown {
   /* Instead of relative */
@@ -813,6 +725,115 @@ body > .uix-select.open {
     margin-left: -90px;
     margin-top: -30px; }
 
+.tab-panel-hidden {
+  display: none; }
+
+.uix-switch {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 25px;
+  border-radius: 1000px;
+  background-color: #777;
+  margin: 0; }
+  .uix-switch input {
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity=0); }
+  .uix-switch input:checked + i:before {
+    top: 50%;
+    bottom: 50%;
+    left: 50%;
+    right: 5px;
+    border-width: 0; }
+  .uix-switch i:before {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    border: 1px solid #f0f0f0;
+    border-radius: 1000px;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s; }
+  .uix-switch input:checked + i:after {
+    margin-left: 16px; }
+  .uix-switch i:after {
+    content: "";
+    position: absolute;
+    background-color: #fff;
+    width: 23px;
+    top: 1px;
+    bottom: 1px;
+    border-radius: 50%;
+    -webkit-transition: margin-left 0.3s;
+    -moz-transition: margin-left 0.3s;
+    transition: margin-left 0.3s;
+    -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25); }
+
+.uix-switch-default {
+  background-color: #777; }
+
+.uix-switch-primary {
+  background-color: #428bca; }
+
+.uix-switch-success {
+  background-color: #5cb85c; }
+
+.uix-switch-info {
+  background-color: #5bc0de; }
+
+.uix-switch-error {
+  background-color: #d9534f; }
+
+.uix-switch-sm {
+  width: 35px;
+  height: 20px; }
+  .uix-switch-sm input:checked + i:after {
+    margin-left: 16px; }
+  .uix-switch-sm i:after {
+    width: 18px; }
+
+.uix-switch-md {
+  width: 40px;
+  height: 25px; }
+  .uix-switch-md input:checked + i:after {
+    margin-left: 16px; }
+  .uix-switch-md i:after {
+    width: 23px; }
+
+.uix-switch-lg {
+  width: 50px;
+  height: 30px; }
+  .uix-switch-lg input:checked + i:after {
+    margin-left: 21px; }
+  .uix-switch-lg i:after {
+    width: 28px; }
+
+.uix-timepicker {
+  position: relative; }
+  .uix-timepicker .uix-timepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-timepicker .uix-timepicker-input.disabled,
+  .uix-timepicker .uix-timepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-timepicker button {
+    outline: none; }
+  .uix-timepicker .popover-content {
+    padding: 0; }
+  .uix-timepicker .uix-timepanel {
+    border: 0; }
+
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -862,27 +883,6 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
-
-.uix-timepicker {
-  position: relative; }
-  .uix-timepicker .uix-timepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-timepicker .uix-timepicker-input.disabled,
-  .uix-timepicker .uix-timepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-timepicker button {
-    outline: none; }
-  .uix-timepicker .popover-content {
-    padding: 0; }
-  .uix-timepicker .uix-timepanel {
-    border: 0; }
-
-.tab-panel-hidden {
-  display: none; }
 
 [uix-typeahead-popup].dropdown-menu {
   display: block; }

@@ -347,6 +347,7 @@ angular.module('ui.xg.select', [])
                 ctrl.itemProperty = ctrl.parserResult.itemName;
 
                 ctrl.refreshItems = function (data) {
+                    $scope.calculateDropdownPos();
                     data = data || ctrl.parserResult.source($scope);
                     var selectedItems = ctrl.selected;
                     //TODO should implement for single mode removeSelected
@@ -503,7 +504,7 @@ angular.module('ui.xg.select', [])
                                 var len = ctrl.selected.filter(function (selection) {
                                     return angular.equals(selection, item);
                                 }).length;
-                                if(len > 0) {
+                                if (len > 0) {
                                     ctrl.close(skipFocusser);
                                     return;
                                 }
@@ -1026,8 +1027,12 @@ angular.module('ui.xg.select', [])
                             directionUpClassName = 'direction-up';
 
                         // Support changing the direction of the dropdown if there isn't enough space to render it.
-                        scope.$watch('$select.open', function (isOpen) {
-                            if (isOpen) {
+                        scope.$watch('$select.open', function () {
+                            scope.calculateDropdownPos();
+                        });
+
+                        scope.calculateDropdownPos = function () {
+                            if ($select.open) {
                                 dropdown = angular.element(element[0].querySelectorAll('.uix-select-dropdown'));
                                 if (dropdown === null) {
                                     return;
@@ -1038,14 +1043,20 @@ angular.module('ui.xg.select', [])
 
                                 // Delay positioning the dropdown until all choices have been added so its height is correct.
                                 $timeout(function () {
+                                    element.removeClass(directionUpClassName);
                                     var offset = uixSelectOffset(element);
                                     var offsetDropdown = uixSelectOffset(dropdown);
 
+                                    var scrollTop = $document[0].documentElement.scrollTop || $document[0].body.scrollTop;
                                     // Determine if the direction of the dropdown needs to be changed.
-                                    if (offset.top + offset.height + offsetDropdown.height > $document[0].documentElement.scrollTop + $document[0].documentElement.clientHeight) {
+                                    if (offset.top + offset.height + offsetDropdown.height > scrollTop + $document[0].documentElement.clientHeight) {
                                         dropdown[0].style.position = 'absolute';
                                         dropdown[0].style.top = (offsetDropdown.height * -1) + 'px';
                                         element.addClass(directionUpClassName);
+                                    } else {
+                                        //Go DOWN
+                                        dropdown[0].style.position = '';
+                                        dropdown[0].style.top = '';
                                     }
 
                                     // Display the dropdown once it has been positioned.
@@ -1061,7 +1072,7 @@ angular.module('ui.xg.select', [])
                                 dropdown[0].style.top = '';
                                 element.removeClass(directionUpClassName);
                             }
-                        });
+                        };
                     };
                 }
             };

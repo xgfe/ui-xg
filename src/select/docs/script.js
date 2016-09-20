@@ -7,6 +7,33 @@ angular.module('uixDemo').controller('selectDemoCtrl', ['$scope', function ($sco
         brandName: '5678765',
         brandId: 2
     }, {
+        brandName: '56787651',
+        brandId: 2
+    }, {
+        brandName: '56787651',
+        brandId: 2
+    }, {
+        brandName: '56787651',
+        brandId: 2
+    }, {
+        brandName: '56787651',
+        brandId: 2
+    }, {
+        brandName: '56787652',
+        brandId: 2
+    }, {
+        brandName: '56787652',
+        brandId: 2
+    }, {
+        brandName: '56787652',
+        brandId: 2
+    }, {
+        brandName: '56787652',
+        brandId: 2
+    }, {
+        brandName: '56787652',
+        brandId: 2
+    }, {
         brandName: 'foooasd',
         brandId: 3
     }, {
