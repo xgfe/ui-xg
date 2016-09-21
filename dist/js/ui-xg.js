@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.1 - 2016-09-21
+ * Version: 2.0.0 - 2016-09-20
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -123,21 +123,18 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                         initialAnimSkip = false;
                         expandDone();
                     } else {
-                        element.removeClass('collapse').addClass('collapsing').css({
-                            paddingTop: 0,
-                            paddingBottom: 0
-                        });
+                        element.removeClass('collapse').addClass('collapsing');
                         doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
                     }
                 }
 
                 function expandDone() {
-                    element.removeClass('collapsing')
-                        .addClass('collapse in')
-                        .css({
-                            width: 'inherit',
-                            height: 'auto'
-                        });
+                    element.removeClass('collapsing');
+                    element.addClass('collapse in');
+                    element.css({
+                        width: 'inherit',
+                        height: 'auto'
+                    });
                 }
 
                 // 收起
@@ -148,10 +145,7 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                         element.css({height: 0});
                     } else {
                         //trigger reflow so a browser realizes that height was updated from auto to a specific value
-                        element.removeClass('collapse in').addClass('collapsing').css({
-                            paddingTop: 0,
-                            paddingBottom: 0
-                        });
+                        element.removeClass('collapse in').addClass('collapsing');
                         // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
                         element.css({height: element[0].scrollHeight + 'px'});
                         doTransition({height: '0'}).then(collapseDone);
@@ -159,8 +153,8 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                 }
 
                 function collapseDone() {
-                    element.removeClass('collapsing')
-                        .addClass('collapse');
+                    element.removeClass('collapsing');
+                    element.addClass('collapse');
                 }
 
                 scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
