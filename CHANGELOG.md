@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/xgfe/ui-xg/compare/v2.0.1...v2.0.2) (2016-09-21)
+
+
+### Bug Fixes
+
+* **collapse:** fix padding ([eeea023](https://github.com/xgfe/ui-xg/commit/eeea023))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/xgfe/ui-xg/compare/v2.0.0...v2.0.1) (2016-09-20)
 
