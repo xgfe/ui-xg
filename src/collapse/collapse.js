@@ -35,18 +35,21 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                         initialAnimSkip = false;
                         expandDone();
                     } else {
-                        element.removeClass('collapse').addClass('collapsing');
+                        element.removeClass('collapse').addClass('collapsing').css({
+                            paddingTop: 0,
+                            paddingBottom: 0
+                        });
                         doTransition({height: element[0].scrollHeight + 'px'}).then(expandDone);
                     }
                 }
 
                 function expandDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse in');
-                    element.css({
-                        width: 'inherit',
-                        height: 'auto'
-                    });
+                    element.removeClass('collapsing')
+                        .addClass('collapse in')
+                        .css({
+                            width: 'inherit',
+                            height: 'auto'
+                        });
                 }
 
                 // 收起
@@ -57,7 +60,10 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                         element.css({height: 0});
                     } else {
                         //trigger reflow so a browser realizes that height was updated from auto to a specific value
-                        element.removeClass('collapse in').addClass('collapsing');
+                        element.removeClass('collapse in').addClass('collapsing').css({
+                            paddingTop: 0,
+                            paddingBottom: 0
+                        });
                         // CSS transitions don't work with height: auto, so we have to manually change the height to a specific value
                         element.css({height: element[0].scrollHeight + 'px'});
                         doTransition({height: '0'}).then(collapseDone);
@@ -65,8 +71,8 @@ angular.module('ui.xg.collapse', ['ui.xg.transition'])
                 }
 
                 function collapseDone() {
-                    element.removeClass('collapsing');
-                    element.addClass('collapse');
+                    element.removeClass('collapsing')
+                        .addClass('collapse');
                 }
 
                 scope.$watch(attrs.uixCollapse, function (shouldCollapse) {
