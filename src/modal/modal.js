@@ -7,7 +7,7 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
+angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.button'])
     /**
      * A helper directive for the $uixModal service. It creates a backdrop element.
      */
@@ -369,5 +369,70 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
                     }
                 };
             }];
-    });
+    })
+    .factory('$uixConfirm', ['$uixModal', '$q', function ($uixModal, $q) {
+        return function (opt) {
+            opt = opt || {};
+            return $uixModal.open({
+                templateUrl: 'templates/confirm.html',
+                size: 'sm',
+                controller: ['$scope', '$uixModalInstance', function ($scope, $uixModalInstance) {
+                    $scope.modalBodyText = opt.content || '';
+                    var okCallback = opt.confirm ||
+                        function () {
+                            return true;
+                        };
+                    $scope.ok = function () {
+                        var handler = okCallback();
+                        $scope.loading = true;
+                        $q.when(handler).then(function (success) {
+                            $scope.loading = false;
+                            if (success) {
+                                $uixModalInstance.close();
+                            }
+                        }, function () {
+                            $scope.loading = false;
+                        });
+                    };
+                    $scope.cancel = opt.cancel ||
+                        function () {
+                            $uixModalInstance.dismiss();
+                        };
+                }]
+            });
+        };
+    }])
+    .directive('uixConfirm', ['$uixConfirm', function ($uixConfirm) {
+        return {
+            restrict: 'EA',
+            scope: {
+                content: '@uixConfirm',
+                confirm: '&',
+                cancel: '&'
+            },
+            replace: true,
+            link: function (scope, element, attrs) {
+                var content = scope.content || '';
+                element.on('click', function () {
+                    var modalInstance = $uixConfirm({
+                        content: content,
+                        confirm: function () {
+                            return attrs.confirm ? scope.confirm({
+                                $modal: modalInstance
+                            }) : true;
+                        },
+                        cancel: function () {
+                            if (attrs.cancel) {
+                                scope.cancel({
+                                    $modal: modalInstance
+                                });
+                            } else {
+                                modalInstance.dismiss('cancel');
+                            }
+                        }
+                    });
+                });
+            }
+        };
+    }]);
 
