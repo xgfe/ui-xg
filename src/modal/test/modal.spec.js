@@ -1,19 +1,23 @@
+/* eslint angular/timeout-service:0 */
 describe('ui.xg.modal', function () {
     var $controllerProvider, $rootScope, $document, $compile, $templateCache, $timeout, $q;
-    var $uixModal, $uixModalProvider;
+    var $uixModal, $uixConfirm, $uixModalProvider;
 
     beforeEach(function () {
         module('ui.xg.modal');
         module('ui.xg.stackedMap');
+        module('ui.xg.button');
         module('ui.xg.transition');
+        module('button/templates/button.html');
         module('modal/templates/backdrop.html');
         module('modal/templates/window.html');
+        module('modal/templates/confirm.html');
         module(function (_$controllerProvider_, _$uixModalProvider_) {
             $controllerProvider = _$controllerProvider_;
             $uixModalProvider = _$uixModalProvider_;
         });
         inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_,
-                         _$timeout_, _$q_, _$uixModal_) {
+                         _$timeout_, _$q_, _$uixModal_, _$uixConfirm_) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;
@@ -21,6 +25,7 @@ describe('ui.xg.modal', function () {
             $timeout = _$timeout_;
             $q = _$q_;
             $uixModal = _$uixModal_;
+            $uixConfirm = _$uixConfirm_;
         });
     });
     beforeEach(function () {
@@ -162,6 +167,26 @@ describe('ui.xg.modal', function () {
         var modal = $uixModal.open(modalOptions);
         $rootScope.$digest();
         return modal;
+    }
+
+    function confirm(confirmOptions) {
+        var modal = $uixConfirm(confirmOptions);
+        $rootScope.$digest();
+        return modal;
+    }
+
+    function triggerConfirm() {
+        var buttons = $document.find('div.modal-dialog button');
+        buttons.eq(0).click();
+        $timeout.flush();
+        $rootScope.$digest();
+    }
+
+    function triggerCancel() {
+        var buttons = $document.find('div.modal-dialog button');
+        buttons.eq(1).click();
+        $timeout.flush();
+        $rootScope.$digest();
     }
 
     function close(modal, result) {
@@ -732,5 +757,128 @@ describe('ui.xg.modal', function () {
             expect(windowEl).toHaveClass('foo');
         });
 
+    });
+
+    describe('confirm modal', function () {
+        describe('confirm by factory', function () {
+            it('should show a confirm modal', function () {
+                var text = '确定取消吗?';
+                confirm({
+                    content: text,
+                    confirm: function () {
+                        return true;
+                    }
+                });
+                expect($document.find('div.modal-dialog .modal-body').text()).toEqual(text);
+            });
+            it('confirm modal should be small size', function () {
+                var text = '确定取消吗?';
+                confirm({
+                    content: text,
+                    confirm: function () {
+                        return true;
+                    }
+                });
+                expect($document.find('div.modal-dialog')).toHaveClass('modal-sm');
+            });
+            it('confirm modal should be small size', function () {
+                var text = '确定取消吗?';
+                confirm({
+                    content: text,
+                    confirm: function () {
+                        return true;
+                    }
+                });
+                expect($document.find('div.modal-dialog')).toHaveClass('modal-sm');
+            });
+            it('should close when no confirm and cancel options', function () {
+                confirm({
+                    content: '确定取消吗?'
+                });
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerConfirm();
+                expect($document.find('div.modal-dialog').length).toBe(0);
+                confirm({
+                    content: '确定取消吗?'
+                });
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerCancel();
+                expect($document.find('div.modal-dialog').length).toBe(0);
+            });
+            it('should not close after 100ms', function () {
+                confirm({
+                    content: '确定取消吗?',
+                    confirm: function () {
+                        return $timeout(function () {
+                            return false;
+                        }, 100);
+                    }
+                });
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerConfirm();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+            });
+        });
+        describe('confirm directive', function () {
+            it('should show confirm modal', function () {
+                var text = '确定取消吗?';
+                var modalEle = $compile('<div id="confirmModal" uix-confirm="' + text + '"></div>')($rootScope);
+                $rootScope.$digest();
+                modalEle.click();
+                $rootScope.$digest();
+
+                expect($document.find('div.modal-dialog .modal-body').text()).toEqual(text);
+            });
+            it('should auto close', function () {
+                var text = '确定取消吗?';
+                var modalEle = $compile('<div id="confirmModal" uix-confirm="' + text + '"></div>')($rootScope);
+                $rootScope.$digest();
+                modalEle.click();
+                $rootScope.$digest();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerConfirm();
+                expect($document.find('div.modal-dialog').length).toBe(0);
+                modalEle.click();
+                $rootScope.$digest();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerCancel();
+                expect($document.find('div.modal-dialog').length).toBe(0);
+            });
+            it('confirm attribute', function () {
+                var text = '确定取消吗?';
+                $rootScope.onConfirm = function () {
+                    return $timeout(function () {
+                        return false;
+                    }, 100);
+                };
+                var modalEle = $compile('<div id="confirmModal" confirm="onConfirm()" uix-confirm="' + text + '"></div>')($rootScope);
+                $rootScope.$digest();
+                modalEle.click();
+                $rootScope.$digest();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerConfirm();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+            });
+            it('cancel attribute', function (done) {
+                var text = '确定取消吗?';
+                $rootScope.onCancel = function (modalInstance) {
+                    $timeout(function () {
+                        modalInstance.close();
+                    }, 200);
+                };
+                var modalEle = $compile('<div id="confirmModal" cancel="onCancel($modal)" uix-confirm="' + text + '"></div>')($rootScope);
+                $rootScope.$digest();
+                modalEle.click();
+                $rootScope.$digest();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                triggerCancel();
+                expect($document.find('div.modal-dialog').length).toBe(1);
+                setTimeout(function () {
+                    $timeout.flush();
+                    expect($document.find('div.modal-dialog').length).toBe(0);
+                    done();
+                }, 300);
+            });
+        });
     });
 });

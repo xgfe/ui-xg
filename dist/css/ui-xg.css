@@ -10,21 +10,6 @@
   .uix-alert .show-icon {
     padding-left: 20px; }
 
-.btn-group {
-  font-size: 0; }
-  .btn-group .btn-item {
-    font-size: 14px; }
-  .btn-group .btn-item:first-child:not(:last-child) {
-    border-radius: 6px;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    padding-right: 8px; }
-  .btn-group .btn-item:last-child:not(:first-child) {
-    border-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    padding-left: 8px; }
-
 .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
@@ -48,6 +33,24 @@
     -moz-transform: rotate(0deg); }
   to {
     -moz-transform: rotate(360deg); } }
+
+.btn-group {
+  font-size: 0; }
+  .btn-group .btn-item {
+    font-size: 14px; }
+  .btn-group .btn-item:first-child:not(:last-child) {
+    border-radius: 6px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-right: 8px; }
+  .btn-group .btn-item:last-child:not(:first-child) {
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-left: 8px; }
+
+.uix-carousel {
+  position: relative; }
 
 .uix-calendar {
   display: inline-block;
@@ -307,34 +310,6 @@
     text-overflow: ellipsis;
     cursor: pointer; }
 
-.uix-carousel {
-  position: relative; }
-
-.dropdown-multi > .dropdown-menu > li {
-  float: left; }
-
-.dropdown-multi > .dropdown-menu > li:not(.divider) {
-  border-right: 1px solid #eaeff0;
-  padding-right: 10px;
-  padding-left: 10px;
-  max-width: 160px; }
-
-.dropdown-multi > .dropdown-menu > li > a {
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  padding: 3px 0; }
-
-.dropdown.open .dropdown-menu {
-  display: block; }
-
-@media screen and (max-width: 767px) {
-  .dropdown-multi > .dropdown-menu {
-    width: 250px !important; }
-    .dropdown-multi > .dropdown-menu li:not(.divider) {
-      width: 50% !important; }
-  .dropdown.open {
-    width: 100%; } }
-
 .uix-datepicker {
   position: relative; }
   .uix-datepicker button:focus {
@@ -379,6 +354,31 @@
     top: 50%;
     margin-left: -90px;
     margin-top: -30px; }
+
+.dropdown-multi > .dropdown-menu > li {
+  float: left; }
+
+.dropdown-multi > .dropdown-menu > li:not(.divider) {
+  border-right: 1px solid #eaeff0;
+  padding-right: 10px;
+  padding-left: 10px;
+  max-width: 160px; }
+
+.dropdown-multi > .dropdown-menu > li > a {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 0; }
+
+.dropdown.open .dropdown-menu {
+  display: block; }
+
+@media screen and (max-width: 767px) {
+  .dropdown-multi > .dropdown-menu {
+    width: 250px !important; }
+    .dropdown-multi > .dropdown-menu li:not(.divider) {
+      width: 50% !important; }
+  .dropdown.open {
+    width: 100%; } }
 
 /*
  *  uix-notify-container styles
@@ -701,33 +701,6 @@ body > .uix-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
-.uix-table-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-table-loader .loading {
-    position: relative;
-    width: 100%;
-    min-height: 200px; }
-  .uix-table-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-table-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-table-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
-
-.tab-panel-hidden {
-  display: none; }
-
 .uix-switch {
   cursor: pointer;
   position: relative;
@@ -816,23 +789,32 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
-.uix-timepicker {
+.uix-table-loader {
+  word-wrap: break-word;
   position: relative; }
-  .uix-timepicker .uix-timepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-timepicker .uix-timepicker-input.disabled,
-  .uix-timepicker .uix-timepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-timepicker button {
-    outline: none; }
-  .uix-timepicker .popover-content {
-    padding: 0; }
-  .uix-timepicker .uix-timepanel {
-    border: 0; }
+  .uix-table-loader .loading {
+    position: relative;
+    width: 100%;
+    min-height: 200px; }
+  .uix-table-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-table-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-table-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
+
+.tab-panel-hidden {
+  display: none; }
 
 .uix-timepanel {
   display: inline-block;
@@ -883,6 +865,24 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.uix-timepicker {
+  position: relative; }
+  .uix-timepicker .uix-timepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-timepicker .uix-timepicker-input.disabled,
+  .uix-timepicker .uix-timepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-timepicker button {
+    outline: none; }
+  .uix-timepicker .popover-content {
+    padding: 0; }
+  .uix-timepicker .uix-timepanel {
+    border: 0; }
 
 [uix-typeahead-popup].dropdown-menu {
   display: block; }

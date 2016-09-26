@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 2.0.0 - 2016-09-20
+ * Version: 2.0.2 - 2016-09-26
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 /**
  * transition
  * transition directive
@@ -4077,7 +4077,7 @@ angular.module('ui.xg.loader', [])
  * Author: yjy972080142@gmail.com
  * Date:2016-03-23
  */
-angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
+angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.button'])
     /**
      * A helper directive for the $uixModal service. It creates a backdrop element.
      */
@@ -4439,7 +4439,72 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition'])
                     }
                 };
             }];
-    });
+    })
+    .factory('$uixConfirm', ['$uixModal', '$q', function ($uixModal, $q) {
+        return function (opt) {
+            opt = opt || {};
+            return $uixModal.open({
+                templateUrl: 'templates/confirm.html',
+                size: 'sm',
+                controller: ['$scope', '$uixModalInstance', function ($scope, $uixModalInstance) {
+                    $scope.modalBodyText = opt.content || '';
+                    var okCallback = opt.confirm ||
+                        function () {
+                            return true;
+                        };
+                    $scope.ok = function () {
+                        var handler = okCallback();
+                        $scope.loading = true;
+                        $q.when(handler).then(function (success) {
+                            $scope.loading = false;
+                            if (success) {
+                                $uixModalInstance.close();
+                            }
+                        }, function () {
+                            $scope.loading = false;
+                        });
+                    };
+                    $scope.cancel = opt.cancel ||
+                        function () {
+                            $uixModalInstance.dismiss();
+                        };
+                }]
+            });
+        };
+    }])
+    .directive('uixConfirm', ['$uixConfirm', function ($uixConfirm) {
+        return {
+            restrict: 'EA',
+            scope: {
+                content: '@uixConfirm',
+                confirm: '&',
+                cancel: '&'
+            },
+            replace: true,
+            link: function (scope, element, attrs) {
+                var content = scope.content || '';
+                element.on('click', function () {
+                    var modalInstance = $uixConfirm({
+                        content: content,
+                        confirm: function () {
+                            return attrs.confirm ? scope.confirm({
+                                $modal: modalInstance
+                            }) : true;
+                        },
+                        cancel: function () {
+                            if (attrs.cancel) {
+                                scope.cancel({
+                                    $modal: modalInstance
+                                });
+                            } else {
+                                modalInstance.dismiss('cancel');
+                            }
+                        }
+                    });
+                });
+            }
+        };
+    }]);
 
 
 /**
@@ -8627,6 +8692,16 @@ angular.module("modal/templates/backdrop.html",[]).run(["$templateCache",functio
     "     ng-class=\"{in: animate}\""+
     "     ng-style=\"{'z-index': 1040 + (index && 1 || 0) + index*10}\""+
     "></div>"+
+    "");
+}]);
+angular.module("modal/templates/confirm.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/confirm.html",
+    "<!-- 公共的confirmModal -->"+
+    "<div class=\"modal-body\" ng-bind=\"modalBodyText\"></div>"+
+    "<div class=\"modal-footer\">"+
+    "    <uix-button class=\"btn btn-primary btn-sm\" b-type=\"button\" ng-click=\"ok()\" loading=\"loading\" ng-disabled=\"loading\">确定</uix-button>"+
+    "    <button class=\"btn btn-default btn-sm\" ng-click=\"cancel()\">取消</button>"+
+    "</div>"+
     "");
 }]);
 angular.module("modal/templates/window.html",[]).run(["$templateCache",function($templateCache){
