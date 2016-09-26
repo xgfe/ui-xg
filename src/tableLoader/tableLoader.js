@@ -64,35 +64,41 @@ angular.module('ui.xg.tableLoader', [])
                 } else
                 if(newValue === 0) {
                     endTimer = new Date().getTime();
-                    timeoutHandle(startTimer, endTimer, function () {
-                        if(noThead) {
-                            thead.show();
-                        }
-                        loadingTpl.remove();
-                        tbody.show();
-                    });
+                    if(startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            if(noThead) {
+                                thead.show();
+                            }
+                            loadingTpl.remove();
+                            tbody.show();
+                        });
+                    }
                 } else
                 if(newValue === -1) {
                     endTimer = new Date().getTime();
-                    timeoutHandle(startTimer, endTimer, function () {
-                        if(noThead) {
-                            thead.show();
-                        }
-                        errorTipTpl.show();
-                        loadingTpl.hide().before(errorTipTpl);
-                        loadingTpl.remove();
-                    });
+                    if(startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            if(noThead) {
+                                thead.show();
+                            }
+                            errorTipTpl.show();
+                            loadingTpl.hide().before(errorTipTpl);
+                            loadingTpl.remove();
+                        });
+                    }
                 } else
                 if(newValue === 2) {
                     endTimer = new Date().getTime();
-                    timeoutHandle(startTimer, endTimer, function () {
-                        if(noThead) {
-                            thead.show();
-                        }
-                        emptyTipTpl.show();
-                        loadingTpl.hide().before(emptyTipTpl);
-                        loadingTpl.remove();
-                    });
+                    if(startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            if(noThead) {
+                                thead.show();
+                            }
+                            emptyTipTpl.show();
+                            loadingTpl.hide().before(emptyTipTpl);
+                            loadingTpl.remove();
+                        });
+                    }
                 }
             });
             function timeoutHandle(startTimer, endTimer, callback) {

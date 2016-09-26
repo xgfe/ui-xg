@@ -51,22 +51,26 @@ angular.module('ui.xg.loader', [])
                 } else
                 if(newValue === 0) {
                     endTimer = new Date().getTime();
-                    timeoutHandle(startTimer, endTimer, function () {
-                        loadingTpl.remove();
-                        $element.show();
-                    });
+                    if(startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            loadingTpl.remove();
+                            $element.show();
+                        });
+                    }
                 } else
                 if(newValue === -1) {
                     endTimer = new Date().getTime();
-                    timeoutHandle(startTimer, endTimer, function () {
-                        loadingTpl.remove();
-                        $element.after(errorTipTpl);
-                        errorTipTpl.show();
-                        errorTipTpl.css('height', height);
-                        if(width) {
-                            loadingTpl.css('width', width);
-                        }
-                    });
+                    if(startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            loadingTpl.remove();
+                            $element.after(errorTipTpl);
+                            errorTipTpl.show();
+                            errorTipTpl.css('height', height);
+                            if(width) {
+                                loadingTpl.css('width', width);
+                            }
+                        });
+                    }
                 }
             });
             function timeoutHandle(startTimer, endTimer, callback) {
