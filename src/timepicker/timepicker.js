@@ -24,6 +24,9 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
                 openScope.showTimepanel = false;
             }
             openScope = timepickerScope;
+            openScope.$on('$destroy', function () {
+                $document.off('click', closeTimepicker);
+            });
         };
 
         this.close = function (timepickerScope) {
