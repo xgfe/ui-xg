@@ -25,6 +25,10 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                 openScope.showCalendar = false;
             }
             openScope = datepickerScope;
+
+            openScope.$on('$destroy', function () {
+                $document.off('click', closeDatepicker);
+            });
         };
 
         this.close = function (datepickerScope) {
@@ -40,8 +44,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
             }
             var panelElement = openScope.getCanledarElement();
             var toggleElement = openScope.getToggleElement();
-            if (panelElement && panelElement[0].contains(evt.target) ||
-                toggleElement && toggleElement[0].contains(evt.target) ||
+            if (panelElement && panelElement.contains(evt.target) ||
+                toggleElement && toggleElement.contains(evt.target) ||
                 angular.element(evt.target).hasClass('uix-cal-day-inner') || // 选择下一个月的时候,会重新绘制日历面板,contains方法无效
                 angular.element(evt.target).hasClass('uix-cal-day')
             ) {
@@ -114,10 +118,10 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
 
                 // 获取日历面板和被点击的元素
                 $scope.getCanledarElement = function () {
-                    return angular.element($element[0].querySelector('.uix-datepicker-popover'));
+                    return $element[0].querySelector('.uix-datepicker-popover');
                 };
                 $scope.getToggleElement = function () {
-                    return angular.element($element[0].querySelector('.input-group'));
+                    return $element[0].querySelector('.input-group');
                 };
                 // 清除日期
                 $scope.clearDateHandler = function () {

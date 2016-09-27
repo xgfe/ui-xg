@@ -29,8 +29,8 @@ angular.module('ui.xg.dropdown', [])
 
         this.open = function (dropdownScope) {
             if (!openScope) {
-                $document.bind('click', closeDropdown);
-                $document.bind('keydown', escapeKeyBind);
+                $document.on('click', closeDropdown);
+                $document.on('keydown', escapeKeyBind);
             }
 
             if (openScope && openScope !== dropdownScope) {
@@ -38,13 +38,17 @@ angular.module('ui.xg.dropdown', [])
             }
 
             openScope = dropdownScope;
+            openScope.$on('$destroy', function () {
+                $document.off('click', closeDropdown);
+                $document.off('keydown', escapeKeyBind);
+            });
         };
 
         this.close = function (dropdownScope) {
             if (openScope === dropdownScope) {
                 openScope = null;
-                $document.unbind('click', closeDropdown);
-                $document.unbind('keydown', escapeKeyBind);
+                $document.off('click', closeDropdown);
+                $document.off('keydown', escapeKeyBind);
             }
         };
 
@@ -56,7 +60,7 @@ angular.module('ui.xg.dropdown', [])
             }
 
             var toggleElement = openScope.getToggleElement();
-            if (evt && toggleElement && toggleElement[0].contains(evt.target)) {
+            if (evt && toggleElement && toggleElement[0] && toggleElement[0].contains(evt.target)) {
                 return;
             }
 
