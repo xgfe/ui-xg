@@ -1,4 +1,4 @@
-.glyphicon-refresh-animate {
+.uix-button-wrapper .glyphicon-refresh-animate {
   -animation: spin .7s infinite linear;
   -ms-animation: spin .7s infinite linear;
   -webkit-animation: spinw .7s infinite linear;
@@ -21,3 +21,6 @@
     -moz-transform: rotate(0deg); }
   to {
     -moz-transform: rotate(360deg); } }
+
+.uix-button-wrapper .inline-b {
+  display: inline-block; }
