@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.2 - 2016-09-27
+ * Version: 2.0.2 - 2016-10-08
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -8387,8 +8387,8 @@ angular.module("alert/templates/alert.html",[]).run(["$templateCache",function($
 }]);
 angular.module("button/templates/button.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/button.html",
-    "<button type=\"{{type}}\">"+
-    "    <div ng-transclude></div>"+
+    "<button type=\"{{type}}\" class=\"uix-button-wrapper\">"+
+    "    <div ng-transclude class=\"inline-b\"></div>"+
     "    <i class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\" ng-if=\"loading\"></i>"+
     "</button>");
 }]);
