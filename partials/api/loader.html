@@ -5,11 +5,14 @@
 /&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;A&#39;</li>
+</ul><h2>Provider</h2><ul><li>uixLoaderProvider：全局配置tableLoader相关的设置。</li>
+<li>methods<ul><li>setLoadingTime(num)：设置loading的时间。</li>
+</ul></li>
 </ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>uixLoader</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td> <code>必填值</code></td><td>指定当前loading效果的状态。<pre><code>0表示初始状态或已加载成功，不需要loading；1表示当前正在加载中；<span class="hljs-deletion">-1表示当前已加载失败。</span></code></pre></td></tr><tr><td>loaderHeight</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>auto</code></td><td>设置loader的默认高度。</td></tr><tr><td>loaderWidth</td><td><label class="label label-default label-number">number</label>&nbsp;</td><td><code>auto</code></td><td>设置loader的默认宽度。</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="loaderDemoCtrl">
     <h4 class="m-t-xs font-bold panel-heading">表格加载</h4>
     <div class="padder-v">
         <div class="table-responsive">
-            <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading">
+            <table class="table table-striped m-b-none b-light b-t"  uix-loader="isLoading" loading-time="300">
                 <thead>
                 <tr>
                     <th>列表1</th>
@@ -31,7 +34,7 @@
             </table>
         </div>
     </div>
-    <uix-button text="'刷新数据'" click="reload1()"></uix-button>
+    <uix-button ng-click="reload1()">刷新数据</uix-button>
     <br>
     <h4 class="m-t-xs font-bold panel-heading">固定宽高的加载</h4>
     <div class="padder-v">
@@ -58,9 +61,9 @@
             </table>
         </div>
     </div>
-    <uix-button text="'刷新数据'" click="reload2()"></uix-button>
+    <uix-button ng-click="reload2()">刷新数据</uix-button>
     <br>
-    <uix-button text="'打开Modal'" click="open()"></uix-button>
+    <uix-button ng-click="open()">打开Modal</uix-button>
 </div>
 
 <script type="text/ng-template" id="modalContent.html">
@@ -76,7 +79,10 @@
             <button class="btn btn-default" ng-click="cancel()">Cancel</button>
         </div>
     </div>
-</script></div><script>angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$uixModal',  function ($scope, $timeout, $uixModal) {
+</script></div><script>angular.module('uixDemo').config('uixLoaderProvider', function (uixLoaderProvider) {
+    uixLoaderProvider.setLoadingTime(3000);
+});
+angular.module('uixDemo').controller('loaderDemoCtrl', ['$scope', '$timeout', '$uixModal',  function ($scope, $timeout, $uixModal) {
     $scope.loadingList = [];
     $scope.loadingList2 = [];
 
@@ -95,7 +101,7 @@
             };
             $scope.loadingList.push(test);
             $scope.isLoading = 0;
-        }, 2000);
+        }, 0);
     };
     $scope.reload2 = function () {
         $scope.isLoading2 = 1;
@@ -109,7 +115,7 @@
             };
             $scope.loadingList2.push(test);
             $scope.isLoading2 = 0;
-        }, 2000);
+        }, 0);
     };
 
     $scope.items = ['item1', 'item2', 'item3'];
@@ -123,7 +129,7 @@
                 $scope.isLoading = 1;
                 $timeout(function () {
                     $scope.isLoading = 0;
-                }, 2000);
+                }, 0);
                 $scope.ok = function () {
                     $scope.$close('close modal by $scope');
                 };
@@ -159,7 +165,7 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"m-t-xs font-bold panel-heading"</span>&gt;</span>表格加载<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"padder-v"</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"table-responsive"</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"table table-striped m-b-none b-light b-t"</span>  <span class="hljs-attr">uix-loader</span>=<span class="hljs-string">"isLoading"</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"table table-striped m-b-none b-light b-t"</span>  <span class="hljs-attr">uix-loader</span>=<span class="hljs-string">"isLoading"</span> <span class="hljs-attr">loading-time</span>=<span class="hljs-string">"300"</span>&gt;</span>
                 <span class="hljs-tag">&lt;<span class="hljs-name">thead</span>&gt;</span>
                 <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
                     <span class="hljs-tag">&lt;<span class="hljs-name">th</span>&gt;</span>列表1<span class="hljs-tag">&lt;/<span class="hljs-name">th</span>&gt;</span>
@@ -181,7 +187,7 @@
             <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'刷新数据'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"reload1()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"reload1()"</span>&gt;</span>刷新数据<span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">h4</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"m-t-xs font-bold panel-heading"</span>&gt;</span>固定宽高的加载<span class="hljs-tag">&lt;/<span class="hljs-name">h4</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"padder-v"</span>&gt;</span>
@@ -208,9 +214,9 @@
             <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'刷新数据'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"reload2()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"reload2()"</span>&gt;</span>刷新数据<span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">text</span>=<span class="hljs-string">"'打开Modal'"</span> <span class="hljs-attr">click</span>=<span class="hljs-string">"open()"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-button</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"open()"</span>&gt;</span>打开Modal<span class="hljs-tag">&lt;/<span class="hljs-name">uix-button</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/ng-template"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"modalContent.html"</span>&gt;</span><span class="javascript">
@@ -231,7 +237,10 @@
     
     
     <div class="tab-pane " id="script_js">
-<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'loaderDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$timeout'</span>, <span class="hljs-string">'$uixModal'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $timeout, $uixModal)</span> </span>{
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).config(<span class="hljs-string">'uixLoaderProvider'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(uixLoaderProvider)</span> </span>{
+    uixLoaderProvider.setLoadingTime(<span class="hljs-number">3000</span>);
+});
+angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'loaderDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$timeout'</span>, <span class="hljs-string">'$uixModal'</span>,  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $timeout, $uixModal)</span> </span>{
     $scope.loadingList = [];
     $scope.loadingList2 = [];
 
@@ -250,7 +259,7 @@
             };
             $scope.loadingList.push(test);
             $scope.isLoading = <span class="hljs-number">0</span>;
-        }, <span class="hljs-number">2000</span>);
+        }, <span class="hljs-number">0</span>);
     };
     $scope.reload2 = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
         $scope.isLoading2 = <span class="hljs-number">1</span>;
@@ -264,7 +273,7 @@
             };
             $scope.loadingList2.push(test);
             $scope.isLoading2 = <span class="hljs-number">0</span>;
-        }, <span class="hljs-number">2000</span>);
+        }, <span class="hljs-number">0</span>);
     };
 
     $scope.items = [<span class="hljs-string">'item1'</span>, <span class="hljs-string">'item2'</span>, <span class="hljs-string">'item3'</span>];
@@ -278,7 +287,7 @@
                 $scope.isLoading = <span class="hljs-number">1</span>;
                 $timeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
                     $scope.isLoading = <span class="hljs-number">0</span>;
-                }, <span class="hljs-number">2000</span>);
+                }, <span class="hljs-number">0</span>);
                 $scope.ok = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
                     $scope.$close(<span class="hljs-string">'close modal by $scope'</span>);
                 };

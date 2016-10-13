@@ -1,7 +1,7 @@
 <h1>Typeahead</h1><h2>Description</h2><p>搜索提示组件.分为本地数据和异步数据两种.</p>
 <h2>Usage</h2><pre><code class="lang-javascript">基本用法
 &lt;uix-typeahead ng-model=<span class="hljs-string">"string"</span>
-    [ query-list=<span class="hljs-string">"list"</span> ]
+    [ query-list=<span class="hljs-string">"array"</span> ]
     [ placeholder=<span class="hljs-string">"string"</span> ]
     [ get-async-func=<span class="hljs-string">"function"</span> ]
     [ typeahead-loading=<span class="hljs-string">"boolean"</span> ]
@@ -9,7 +9,7 @@
 &lt;/uix-typeahead&gt;
 </code></pre>
 <h2>Restrict</h2><ul><li>&#39;E&#39;</li>
-</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>typeahead的输入文字,改变后更新绑定的变量。</td></tr><tr><td>queryList(optional)</td><td><label class="label label-default label-list">list</label>&nbsp;</td><td></td><td>指定typeahead的筛选列表，传入一个字符串数组作为本地列表。</td></tr><tr><td>placeholder(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>指定typeahead中input的提示文字。</td></tr><tr><td>getAsyncFunc(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td><code>false</code></td><td>如果需要显示异步数据时,getAsyncFunc指定数据提供function。</td></tr><tr><td>typeaheadLoading(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>当getAsyncFunc传入时,该变量表示当前是否为loading状态。</td></tr><tr><td>typeaheadNoReuslts(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>&quot;false&quot;</code></td><td>当getAsyncFunc传入时,该变量表示当前是否为空数据。</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="typeaheadDemoCtrl">
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>ngModel</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>typeahead的输入文字,改变后更新绑定的变量。</td></tr><tr><td>queryList(optional)</td><td><label class="label label-default label-array">array</label>&nbsp;</td><td></td><td>指定typeahead的筛选列表，传入一个字符串数组作为本地列表。</td></tr><tr><td>placeholder(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>指定typeahead中input的提示文字。</td></tr><tr><td>getAsyncFunc(optional)</td><td><label class="label label-default label-function">function</label>&nbsp;</td><td><code>false</code></td><td>如果需要显示异步数据时,getAsyncFunc指定数据提供function。</td></tr><tr><td>typeaheadLoading(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>false</code></td><td>当getAsyncFunc传入时,该变量表示当前是否为loading状态。</td></tr><tr><td>typeaheadNoReuslts(optional)</td><td><label class="label label-default label-boolean">boolean</label>&nbsp;</td><td><code>&quot;false&quot;</code></td><td>当getAsyncFunc传入时,该变量表示当前是否为空数据。</td></tr></table><hr><h2>Example</h2><style></style><div class="example"><div ng-controller="typeaheadDemoCtrl">
 
     <h4>Static arrays</h4>
     <pre>Model: {{selected | json}}</pre>
