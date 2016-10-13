@@ -1,3 +1,24 @@
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/xgfe/ui-xg/compare/v2.0.2...v2.0.3) (2016-10-13)
+
+
+### Bug Fixes
+
+* **loader&tableLoader:** fix default setting ([af59869](https://github.com/xgfe/ui-xg/commit/af59869))
+* **toggle:** fix toggle bug in datepicker,dropdown and timepicker ([118f4c0](https://github.com/xgfe/ui-xg/commit/118f4c0))
+
+
+### Features
+
+* **modal:** add uixConfirm([1338d31](https://github.com/xgfe/ui-xg/commit/1338d31))
+
+
+### Reverts
+
+* **collapse:** fix padding ([1057dff](https://github.com/xgfe/ui-xg/commit/1057dff))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/xgfe/ui-xg/compare/v2.0.1...v2.0.2) (2016-09-21)
 
