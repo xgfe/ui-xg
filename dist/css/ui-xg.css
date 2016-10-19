@@ -1,30 +1,3 @@
-.uix-button-wrapper .glyphicon-refresh-animate {
-  -animation: spin .7s infinite linear;
-  -ms-animation: spin .7s infinite linear;
-  -webkit-animation: spinw .7s infinite linear;
-  -moz-animation: spinm .7s infinite linear; }
-
-@keyframes spin {
-  from {
-    transform: scale(1) rotate(0deg); }
-  to {
-    transform: scale(1) rotate(360deg); } }
-
-@-webkit-keyframes spinw {
-  from {
-    -webkit-transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg); } }
-
-@-moz-keyframes spinm {
-  from {
-    -moz-transform: rotate(0deg); }
-  to {
-    -moz-transform: rotate(360deg); } }
-
-.uix-button-wrapper .inline-b {
-  display: inline-block; }
-
 .uix-alert {
   word-wrap: break-word; }
   .uix-alert .alert-icon {
@@ -36,6 +9,33 @@
     font-size: 20px; }
   .uix-alert .show-icon {
     padding-left: 20px; }
+
+.uix-button-wrapper .glyphicon-refresh-animate {
+  -animation: uix-button-spin .7s infinite linear;
+  -ms-animation: uix-button-spin .7s infinite linear;
+  -webkit-animation: uix-button-spinw .7s infinite linear;
+  -moz-animation: uix-button-spinm .7s infinite linear; }
+
+@keyframes uix-button-spin {
+  from {
+    transform: scale(1) rotate(0deg); }
+  to {
+    transform: scale(1) rotate(360deg); } }
+
+@-webkit-keyframes uix-button-spinw {
+  from {
+    -webkit-transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes uix-button-spinm {
+  from {
+    -moz-transform: rotate(0deg); }
+  to {
+    -moz-transform: rotate(360deg); } }
+
+.uix-button-wrapper .inline-b {
+  display: inline-block; }
 
 .btn-group {
   font-size: 0; }
@@ -206,27 +206,6 @@
 .uix-carousel {
   position: relative; }
 
-.uix-datepicker {
-  position: relative; }
-  .uix-datepicker button:focus {
-    outline: 0; }
-  .uix-datepicker .uix-datepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-datepicker .uix-datepicker-input.disabled,
-  .uix-datepicker .uix-datepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-datepicker .uix-datepicker-remove {
-    border-radius: 0;
-    border-left: 0; }
-  .uix-datepicker .popover-content {
-    padding: 0; }
-  .uix-datepicker .uix-calendar {
-    border: 0; }
-
 .uix-cityselect-container {
   max-height: 280px;
   overflow-y: scroll; }
@@ -333,6 +312,27 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer; }
+
+.uix-datepicker {
+  position: relative; }
+  .uix-datepicker button:focus {
+    outline: 0; }
+  .uix-datepicker .uix-datepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-datepicker .uix-datepicker-input.disabled,
+  .uix-datepicker .uix-datepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-datepicker .uix-datepicker-remove {
+    border-radius: 0;
+    border-left: 0; }
+  .uix-datepicker .popover-content {
+    padding: 0; }
+  .uix-datepicker .uix-calendar {
+    border: 0; }
 
 .dropdown-multi > .dropdown-menu > li {
   float: left; }

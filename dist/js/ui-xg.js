@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.3 - 2016-10-13
+ * Version: 2.0.3 - 2016-10-19
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -8389,7 +8389,9 @@ angular.module("button/templates/button.html",[]).run(["$templateCache",function
     $templateCache.put("templates/button.html",
     "<button type=\"{{type}}\" class=\"uix-button-wrapper\">"+
     "    <div ng-transclude class=\"inline-b\"></div>"+
-    "    <i class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\" ng-if=\"loading\"></i>"+
+    "    <span ng-if=\"loading\">"+
+    "        <i class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></i>"+
+    "    </span>"+
     "</button>");
 }]);
 angular.module("buttonGroup/templates/buttonGroup.html",[]).run(["$templateCache",function($templateCache){
