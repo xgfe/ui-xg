@@ -1,3 +1,13 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/xgfe/ui-xg/compare/v2.0.3...v2.0.4) (2016-10-19)
+
+
+### Bug Fixes
+
+* **button:** fix loading delay ([949b4e9](https://github.com/xgfe/ui-xg/commit/949b4e9))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/xgfe/ui-xg/compare/v2.0.2...v2.0.3) (2016-10-13)
 

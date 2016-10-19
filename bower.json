@@ -1,6 +1,6 @@
 {
   "name": "ui-xg",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "UI directives based on angular and bootstrap",
   "main": "dist/js/ui-xg.js",
   "authors": [
@@ -23,7 +23,9 @@
     "tests",
     "src",
     "misc",
-    "scene"
+    "scene",
+    "gulpfile.js",
+    "karma.conf.js"
   ],
   "dependencies": {
     "angular": ">=1.2.20 <1.4.0",
