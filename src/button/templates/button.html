@@ -1,4 +1,6 @@
 <button type="{{type}}" class="uix-button-wrapper">
     <div ng-transclude class="inline-b"></div>
-    <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-if="loading"></i>
+    <span ng-if="loading">
+        <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>
+    </span>
 </button>
