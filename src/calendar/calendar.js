@@ -131,8 +131,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     return;
                 }
                 $scope.selectDate.setFullYear(day.year);
-                $scope.selectDate.setMonth(day.month);
+                $scope.selectDate.setMonth(0); // 先把月份设置为1月，保证setDate的时候不会跨月份
                 $scope.selectDate.setDate(day.day);
+                $scope.selectDate.setMonth(day.month);
                 if (!day.inMonth) {
                     if (day.isNext) {
                         $scope.nextMonth();
