@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.4 - 2016-10-19
+ * Version: 2.0.4 - 2016-11-08
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -1015,8 +1015,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                     return;
                 }
                 $scope.selectDate.setFullYear(day.year);
-                $scope.selectDate.setMonth(day.month);
+                $scope.selectDate.setMonth(0); // 先把月份设置为1月，保证setDate的时候不会跨月份
                 $scope.selectDate.setDate(day.day);
+                $scope.selectDate.setMonth(day.month);
                 if (!day.inMonth) {
                     if (day.isNext) {
                         $scope.nextMonth();
