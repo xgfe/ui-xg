@@ -44,7 +44,7 @@ angular.module('ui.xg.typeahead', [])
                 $scope.typeahead.query = ngModelCtrl.$modelValue;
             };
 
-            $element.addClass('.uix-typeahead');
+            $element.addClass('uix-typeahead');
             $element.find('input').attr('placeholder', placeholder);
             listElm.bind('click', function (evt) {
                 evt.preventDefault();
@@ -134,11 +134,7 @@ angular.module('ui.xg.typeahead', [])
             };
 
             $scope.isActive = function (index) {
-                if(index === $scope.activeIndex) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return index === $scope.activeIndex
             };
 
             // document绑定点击事件
