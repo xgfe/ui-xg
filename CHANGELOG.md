@@ -1,3 +1,14 @@
+<a name="2.0.5"></a>
+## [2.0.5](https://github.com/xgfe/ui-xg/compare/v2.0.4...v2.0.5) (2016-11-23)
+
+
+### Bug Fixes
+
+* **calendar:** fix seclect day bug ([50e0d49](https://github.com/xgfe/ui-xg/commit/50e0d49))
+* **typeahead:** fix css style bug ([45e05e4](https://github.com/xgfe/ui-xg/commit/45e05e4))
+
+
+
 <a name="2.0.4"></a>
 ## [2.0.4](https://github.com/xgfe/ui-xg/compare/v2.0.3...v2.0.4) (2016-10-19)
 

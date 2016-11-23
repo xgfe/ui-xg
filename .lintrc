@@ -1,5 +1,5 @@
 {
-    "htmls":{
+    "html":{
         "suffix":["html","htm"],
         "ignore":["**/*","!src/**/*"],
         "rules":{
@@ -14,7 +14,7 @@
             "img-size": true
         }
     },
-    "csss":{
+    "css":{
         "suffix": "css",
         "ignore":["**/*","!src/**/*"],
         "rules":{}

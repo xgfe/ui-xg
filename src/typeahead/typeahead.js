@@ -134,7 +134,7 @@ angular.module('ui.xg.typeahead', [])
             };
 
             $scope.isActive = function (index) {
-                return index === $scope.activeIndex
+                return index === $scope.activeIndex;
             };
 
             // document绑定点击事件
