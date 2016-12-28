@@ -18,6 +18,7 @@
     [ size="{{string}}" ]
     [ on-change="fn()" ]
     [ date-filter="function($date)" ]
+    [ append-to-body="boolean" ]
     [ ng-disabled="boolean" ]>
 </uix-datepicker>
 ```
@@ -54,6 +55,9 @@
     - type:`function`
 - dateFilter(optional):时间的过滤器,方法的返回值为false的话表示时间不可选,接受参数$date
     - type:`function`
+- appendToBody(optional):是否将日历插入到body中
+    - type:`boolean`
+    - default: `false`
 - ngDisabled(optional): 是否禁用
     - type:`boolean`
     - default:`false`

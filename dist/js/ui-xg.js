@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.5 - 2016-11-23
+ * Version: 2.0.5 - 2016-12-28
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3811,7 +3811,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
-        size: 'md'
+        size: 'md',
+        appendToBody: false
     })
     .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -3856,9 +3857,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
     }])
     .controller('uixDatepickerCtrl',
         ['$scope', '$element', '$attrs', '$log', 'dateFilter',
-            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
+            'uixDatepickerService', 'uixDatepickerConfig', '$parse', '$document',
             function ($scope, $element, $attrs, $log, dateFilter,
-                      uixDatepickerService, uixDatepickerConfig, $parse) {
+                      uixDatepickerService, uixDatepickerConfig, $parse, $document) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 this.init = function (_ngModelCtrl) {
@@ -3873,7 +3874,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
 
-                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
+                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
@@ -3915,8 +3916,11 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                 };
 
                 // 获取日历面板和被点击的元素
+                // 如果是appendToBody的话，需要特殊判断
                 $scope.getCanledarElement = function () {
-                    return $element[0].querySelector('.uix-datepicker-popover');
+                    return $scope.appendToBody
+                        ? $document[0].querySelector('body > .uix-datepicker-popover')
+                        : $element[0].querySelector('.uix-datepicker-popover');
                 };
                 $scope.getToggleElement = function () {
                     return $element[0].querySelector('.input-group');
@@ -7979,7 +7983,8 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
         readonlyInput: false,
         format: 'HH:mm:ss',
         size: 'md',
-        showSeconds: false
+        showSeconds: false,
+        appendToBody: false
     })
     .service('uixTimepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -8018,9 +8023,9 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
         }
     }])
     .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
-        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$document',
         function ($scope, $element, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter) {
+                  uixTimepickerService, timepickerConfig, dateFilter, $document) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -8035,13 +8040,10 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
              不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
              http://xgfe.github.io/2015/12/22/penglu/link-controller/
              */
-            $scope.hourStep = angular.isDefined($attrs.hourStep)
-                ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-            $scope.minuteStep = angular.isDefined($attrs.minuteStep)
-                ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-            $scope.secondStep = angular.isDefined($attrs.secondStep)
-                ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
-
+            angular.forEach(['hourStep', 'minuteStep', 'secondStep', 'appendToBody'], function (key) {
+                $scope[key] = angular.isDefined($attrs[key])
+                    ? $scope.$parent.$eval($attrs[key]) : timepickerConfig[key];
+            });
             // readonly input
             $scope.readonlyInput = timepickerConfig.readonlyInput;
             if ($attrs.readonlyInput) {
@@ -8100,8 +8102,11 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
                     _this.toggle();
                 }
             };
+            //如果是appendToBody的话，需要特殊判断
             $scope.getTimepanelElement = function () {
-                return $element[0].querySelector('.uix-timepicker-popover');
+                return $scope.appendToBody
+                    ? $document[0].querySelector('body > .uix-timepicker-popover')
+                    : $element[0].querySelector('.uix-timepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');
@@ -8687,7 +8692,7 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/datepicker.html",
     "<div class=\"uix-datepicker\">"+
     "    <div class=\"input-group\" popover-class=\"uix-datepicker-popover\" popover-trigger=\"none\" popover-is-open=\"showCalendar\""+
-    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/datepicker-calendar.html'\">"+
+    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/datepicker-calendar.html'\" popover-append-to-body=\"appendToBody\">"+
     "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
     "               ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\""+
     "               ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\""+
@@ -8952,7 +8957,7 @@ angular.module("timepicker/templates/timepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/timepicker.html",
     "<div class=\"uix-timepicker\">"+
     "    <div class=\"input-group\" popover-class=\"uix-timepicker-popover\" popover-trigger=\"none\" popover-is-open=\"showTimepanel\""+
-    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/timepicker-timepanel.html'\">"+
+    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/timepicker-timepanel.html'\" popover-append-to-body=\"appendToBody\">"+
     "        <input type=\"text\" ng-disabled=\"isDisabled\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
     "               class=\"form-control uix-timepicker-input\" ng-click=\"toggleTimepanel($event)\""+
     "               placeholder=\"{{placeholder}}\" ng-model=\"inputValue\" readonly>"+

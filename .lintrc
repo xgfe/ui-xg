@@ -14,11 +14,6 @@
             "img-size": true
         }
     },
-    "css":{
-        "suffix": "css",
-        "ignore":["**/*","!src/**/*"],
-        "rules":{}
-    },
     "js":{
         "suffix":["js"],
         "ignore":["**/*","!src/**/*","!misc/**/*","src/**/*.html.js"],

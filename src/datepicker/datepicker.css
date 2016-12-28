@@ -14,7 +14,9 @@
   .uix-datepicker .uix-datepicker-remove {
     border-radius: 0;
     border-left: 0; }
-  .uix-datepicker .popover-content {
-    padding: 0; }
-  .uix-datepicker .uix-calendar {
-    border: 0; }
+
+.uix-datepicker-popover .popover-content {
+  padding: 0; }
+
+.uix-datepicker-popover .uix-calendar {
+  border: 0; }

@@ -11,7 +11,9 @@
     cursor: not-allowed; }
   .uix-timepicker button {
     outline: none; }
-  .uix-timepicker .popover-content {
-    padding: 0; }
-  .uix-timepicker .uix-timepanel {
-    border: 0; }
+
+.uix-timepicker-popover .popover-content {
+  padding: 0; }
+
+.uix-timepicker-popover .uix-timepanel {
+  border: 0; }

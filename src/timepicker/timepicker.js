@@ -12,7 +12,8 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
         readonlyInput: false,
         format: 'HH:mm:ss',
         size: 'md',
-        showSeconds: false
+        showSeconds: false,
+        appendToBody: false
     })
     .service('uixTimepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -51,9 +52,9 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
         }
     }])
     .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
-        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter',
+        'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$document',
         function ($scope, $element, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter) {
+                  uixTimepickerService, timepickerConfig, dateFilter, $document) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;
@@ -68,13 +69,10 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
              不能在父组件执行link(link函数一般都是postLink函数)函数的时候执行
              http://xgfe.github.io/2015/12/22/penglu/link-controller/
              */
-            $scope.hourStep = angular.isDefined($attrs.hourStep)
-                ? $scope.$parent.$eval($attrs.hourStep) : timepickerConfig.hourStep;
-            $scope.minuteStep = angular.isDefined($attrs.minuteStep)
-                ? $scope.$parent.$eval($attrs.minuteStep) : timepickerConfig.minuteStep;
-            $scope.secondStep = angular.isDefined($attrs.secondStep)
-                ? $scope.$parent.$eval($attrs.secondStep) : timepickerConfig.secondStep;
-
+            angular.forEach(['hourStep', 'minuteStep', 'secondStep', 'appendToBody'], function (key) {
+                $scope[key] = angular.isDefined($attrs[key])
+                    ? $scope.$parent.$eval($attrs[key]) : timepickerConfig[key];
+            });
             // readonly input
             $scope.readonlyInput = timepickerConfig.readonlyInput;
             if ($attrs.readonlyInput) {
@@ -133,8 +131,11 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
                     _this.toggle();
                 }
             };
+            //如果是appendToBody的话，需要特殊判断
             $scope.getTimepanelElement = function () {
-                return $element[0].querySelector('.uix-timepicker-popover');
+                return $scope.appendToBody
+                    ? $document[0].querySelector('body > .uix-timepicker-popover')
+                    : $element[0].querySelector('.uix-timepicker-popover');
             };
             $scope.getToggleElement = function () {
                 return $element[0].querySelector('.input-group');

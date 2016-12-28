@@ -13,7 +13,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
-        size: 'md'
+        size: 'md',
+        appendToBody: false
     })
     .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -58,9 +59,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
     }])
     .controller('uixDatepickerCtrl',
         ['$scope', '$element', '$attrs', '$log', 'dateFilter',
-            'uixDatepickerService', 'uixDatepickerConfig', '$parse',
+            'uixDatepickerService', 'uixDatepickerConfig', '$parse', '$document',
             function ($scope, $element, $attrs, $log, dateFilter,
-                      uixDatepickerService, uixDatepickerConfig, $parse) {
+                      uixDatepickerService, uixDatepickerConfig, $parse, $document) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 this.init = function (_ngModelCtrl) {
@@ -75,7 +76,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
 
-                angular.forEach(['exceptions', 'clearBtn', 'showTime'], function (key) {
+                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
@@ -117,8 +118,11 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                 };
 
                 // 获取日历面板和被点击的元素
+                // 如果是appendToBody的话，需要特殊判断
                 $scope.getCanledarElement = function () {
-                    return $element[0].querySelector('.uix-datepicker-popover');
+                    return $scope.appendToBody
+                        ? $document[0].querySelector('body > .uix-datepicker-popover')
+                        : $element[0].querySelector('.uix-datepicker-popover');
                 };
                 $scope.getToggleElement = function () {
                     return $element[0].querySelector('.input-group');
