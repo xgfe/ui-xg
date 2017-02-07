@@ -1,0 +1,185 @@
+uix-steps{
+    uix-step{
+        vertical-align: top;
+        position: relative;
+        display: inline-block;
+        //vertical一些基础设置
+        $stepWidthSm:100;
+        $stepWidthMd:150;
+        $stepWidthLg:200;
+        .step-sm-vertical{
+            width:$stepWidthSm+px;
+        };
+        .step-md-vertical{
+            width:$stepWidthMd+px;
+        }
+        .step-lg-vertical{
+            width:$stepWidthLg+px;
+        }
+
+        //horizontal一些基础设置
+        $stepHeightSm:50;
+        $stepHeightMd:70;
+        $stepHeightLg:90;
+        .step-sm-horizontal{
+            height:$stepHeightSm+px;
+        };
+        .step-md-horizontal{
+            height:$stepHeightMd+px;
+        }
+        .step-lg-horizontal{
+            height:$stepHeightLg+px;
+        }
+
+        .step-head{
+            .step-icon{
+                width:40px;
+                border-radius: 50%;
+                line-height: 40px;
+                text-align: center;
+                color:white;
+            };
+
+            .step-icon-icon{
+                font-size: 35px;
+            }
+
+            //控制各个步骤的状态
+            .step-wait{
+                background: #DDDDDD;
+            }
+            .step-process{
+                background: #20A0FF;
+            }
+            .step-error{
+                background: red;
+            }
+            .step-finish{
+                background: #13CE66;
+            }
+        }
+
+        .step-head-horizontal{
+            .step-icon{
+                display: block;
+
+            }
+            //控制两个步骤之间的间距
+            .step-line-sm{
+                height:60%;
+            }
+            .step-line-md{
+                height:60%;
+            }
+            .step-line-lg{
+                height:60%;
+            }
+
+            .step-line{
+                display: inline-block;
+                width: 2px;
+                text-align: center;
+                position: absolute;
+                left:19px;
+            };
+        }
+
+        .step-head-vertical{
+            .step-icon{
+                display: inline-block;
+
+            }
+            //控制两个步骤之间的间距
+            .step-line-sm{
+                width:100%-35/$stepWidthSm*100;
+            }
+            .step-line-md{
+                width:100%-35/$stepWidthMd*100;
+            }
+            .step-line-lg{
+                width:100%-35/$stepWidthLg*100;
+            }
+
+            .step-line{
+                display: inline-block;
+                height: 2px;
+                line-height: 40px;
+                position: absolute;
+                top:19px;
+            };
+
+        };
+        .step-content-vertical{
+            display: inline-block;
+            width:60px;
+            text-align: center;
+            .step-title{
+                display: inline-block;
+                margin-top: 10px;
+                margin-left: -10px;
+                font-weight: bold;
+                font-size: 16px;
+            };
+            .step-desc{
+                display: inline-block;
+                margin-top: 5px;
+                font-size: 12px;
+                margin-left: -10px;
+            };
+            .step-wait-color{
+                color:#DDDDDD;
+            }
+            .step-process-color{
+                color:#20A0FF;
+            }
+            .step-finish-color{
+                color:#13CE66;
+            }
+            .step-error-color{
+                color:red;
+            }
+        }
+
+        .step-content-horizontal{
+            display: inline-block;
+            position: absolute;
+            left:50px;
+            top:0px;
+            width:60px;
+            margin-left: 20px;
+            .step-title{
+                display: inline-block;
+                margin-top: 10px;
+                margin-left: -10px;
+                font-weight: bold;
+                font-size: 16px;
+            };
+            .step-desc{
+                display: inline-block;
+                margin-top: 5px;
+                font-size: 12px;
+                margin-left: -10px;
+            };
+            .step-wait-color{
+                color:#DDDDDD;
+            }
+            .step-process-color{
+                color:#20A0FF;
+            }
+            .step-finish-color{
+                color:#13CE66;
+            }
+            .step-error-color{
+                color:red;
+            }
+        }
+    }
+    uix-step:last-child{
+        .step-line{
+            display: none;
+        }
+    }
+}
+
+
+
