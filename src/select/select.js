@@ -1294,10 +1294,13 @@ angular.module('ui.xg.select', [])
                                 locals[$select.parserResult.itemName] = list[index];
                                 result = $select.parserResult.modelMapper(scope, locals);
                                 if ($select.parserResult.trackByExp) {
-                                    var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
-                                    if (matches.length > 0 && result[matches[1]] === value[matches[1]]) {
-                                        resultMultiple.unshift(list[index]);
-                                        return true;
+                                    var propsItemNameMatches = /(\w*)\./.exec($select.parserResult.trackByExp);
+                                    var matches = /\.([^\s]+)/.exec($select.parserResult.trackByExp);
+                                    if(propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
+                                        if(matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                            resultMultiple.unshift(list[index]);
+                                            return true;
+                                        }
                                     }
                                 }
                                 if (angular.equals(result, value)) {

@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.5 - 2016-12-28
+ * Version: 2.0.5 - 2017-02-07
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -6768,10 +6768,13 @@ angular.module('ui.xg.select', [])
                                 locals[$select.parserResult.itemName] = list[index];
                                 result = $select.parserResult.modelMapper(scope, locals);
                                 if ($select.parserResult.trackByExp) {
-                                    var matches = /\.(.+)/.exec($select.parserResult.trackByExp);
-                                    if (matches.length > 0 && result[matches[1]] === value[matches[1]]) {
-                                        resultMultiple.unshift(list[index]);
-                                        return true;
+                                    var propsItemNameMatches = /(\w*)\./.exec($select.parserResult.trackByExp);
+                                    var matches = /\.([^\s]+)/.exec($select.parserResult.trackByExp);
+                                    if(propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
+                                        if(matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                            resultMultiple.unshift(list[index]);
+                                            return true;
+                                        }
                                     }
                                 }
                                 if (angular.equals(result, value)) {
@@ -8847,7 +8850,7 @@ angular.module("select/templates/choices.html",[]).run(["$templateCache",functio
 angular.module("select/templates/match-multiple.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/match-multiple.html",
     "<span class=\"uix-select-match\">"+
-    "  <span ng-repeat=\"$item in $select.selected\">"+
+    "  <span ng-repeat=\"$item in $select.selected track by $index\">"+
     "    <span"+
     "      class=\"uix-select-match-item btn btn-default btn-sm\""+
     "      tabindex=\"-1\""+
