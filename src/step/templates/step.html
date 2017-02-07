@@ -1,0 +1,19 @@
+<div class="step-head-{{direction}} step-head step-{{size}}-{{direction}}">
+    <span ng-if="!!icon" class="step-icon step-icon-icon" ng-style="{'color':iconColor}">
+        <i class="fa {{icon}}" aria-hidden="true"></i>
+    </span>
+
+    <span ng-if="!icon" class="step-icon step-{{status}}">
+        <span ng-if="(status=='wait')||(status=='process')">{{num+1}}</span>
+        <i ng-if="status!=('wait'||'process')" class="fa"
+           ng-class="{'fa-check':status=='finish','fa-times':status=='error'}"></i>
+    </span>
+    <span class="step-line step-line-{{size}} step-{{status}}">&nbsp;</span>
+</div>
+<div class="step-content-{{direction}}">
+    <span class="step-title step-{{status}}-color">{{title}}</span>
+    <br>
+    <span class="step-desc step-{{status}}-color">{{desc}}</span>
+</div>
+
+
