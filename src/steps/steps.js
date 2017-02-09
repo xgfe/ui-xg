@@ -18,6 +18,7 @@ angular.module('ui.xg.steps', [])
                 this.size = $scope.size;
                 this.direction = $scope.direction;
                 this.num = 0;
+                $('uix-steps').addClass('uix-steps');
             }]
         };
     });

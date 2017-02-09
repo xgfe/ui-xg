@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.5 - 2017-02-08
+ * Version: 2.0.5 - 2017-02-09
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -7632,6 +7632,8 @@ angular.module('ui.xg.step', [])
                 $scope.num = stepsCtrl.num || 0;
                 $scope.iconColor = '#DDDDDD';
 
+                $('uix-step').addClass('uixstep');
+
                 switch ($scope.status) {
                     case 'process':
                         $scope.iconColor = '#20A0FF';
@@ -7672,6 +7674,7 @@ angular.module('ui.xg.steps', [])
                 this.size = $scope.size;
                 this.direction = $scope.direction;
                 this.num = 0;
+                $('uix-steps').addClass('uix-steps');
             }]
         };
     });
@@ -8995,23 +8998,27 @@ angular.module("select/templates/select.html",[]).run(["$templateCache",function
 }]);
 angular.module("step/templates/step.html",[]).run(["$templateCache",function($templateCache){
     $templateCache.put("templates/step.html",
-    "<div class=\"step-head-{{direction}} step-head step-{{size}}-{{direction}}\">"+
-    "    <span ng-if=\"!!icon\" class=\"step-icon step-icon-icon\" ng-style=\"{'color':iconColor}\">"+
-    "        <i class=\"fa {{icon}}\" aria-hidden=\"true\"></i>"+
-    "    </span>"+
+    "<div class=\"uix-step\">"+
+    "    <div class=\"step-head-{{direction}} step-head step-{{size}}-{{direction}}\">"+
+    "        <span ng-if=\"!!icon\" class=\"step-icon step-icon-icon\" ng-style=\"{'color':iconColor}\">"+
+    "            <i class=\"fa {{icon}}\" aria-hidden=\"true\"></i>"+
+    "        </span>"+
     ""+
-    "    <span ng-if=\"!icon\" class=\"step-icon step-{{status}}\">"+
-    "        <span ng-if=\"(status=='wait')||(status=='process')\">{{num+1}}</span>"+
-    "        <i ng-if=\"status!=('wait'||'process')\" class=\"fa\""+
-    "           ng-class=\"{'fa-check':status=='finish','fa-times':status=='error'}\"></i>"+
-    "    </span>"+
-    "    <span class=\"step-line step-line-{{size}} step-{{status}}\">&nbsp;</span>"+
+    "        <span ng-if=\"!icon\" class=\"step-icon step-{{status}}\">"+
+    "            <span ng-if=\"(status=='wait')||(status=='process')\">{{num+1}}</span>"+
+    "            <i ng-if=\"status!=('wait'||'process')\" class=\"fa\""+
+    "               ng-class=\"{'fa-check':status=='finish','fa-times':status=='error'}\"></i>"+
+    "        </span>"+
+    "        <span class=\"step-line step-line-{{size}} step-{{status}}\">&nbsp;</span>"+
+    "    </div>"+
+    ""+
+    "    <div class=\"step-content-{{direction}}\">"+
+    "        <span class=\"step-title step-{{status}}-color\">{{title}}</span>"+
+    "        <br>"+
+    "        <span class=\"step-desc step-{{status}}-color\">{{desc}}</span>"+
+    "    </div>"+
     "</div>"+
-    "<div class=\"step-content-{{direction}}\">"+
-    "    <span class=\"step-title step-{{status}}-color\">{{title}}</span>"+
-    "    <br>"+
-    "    <span class=\"step-desc step-{{status}}-color\">{{desc}}</span>"+
-    "</div>"+
+    ""+
     ""+
     ""+
     "");
