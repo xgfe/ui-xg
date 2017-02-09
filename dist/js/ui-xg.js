@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 2.0.5 - 2017-02-07
+ * Version: 2.0.5 - 2017-02-09
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 /**
  * transition
  * transition directive
@@ -7610,6 +7610,78 @@ angular.module('ui.xg.sortable', [])
         }]);
 
 /**
+ * step
+ * step directive
+ * Author: your_email@gmail.com
+ * Date:2017-01-19
+ */
+angular.module('ui.xg.step', [])
+    .directive('uixStep', function () {
+        return {
+            restrict: 'AE',
+            templateUrl: 'templates/step.html',
+            require: '^?uixSteps',
+            scope: {},
+            link: function ($scope, $element, $attr, stepsCtrl) {
+                $scope.title = $attr.title || '';
+                $scope.status = $attr.status || 'wait';
+                $scope.desc = $attr.desc || '';
+                $scope.size = stepsCtrl.size || 'lg';
+                $scope.direction = stepsCtrl.direction;
+                $scope.icon = $attr.icon || '';
+                $scope.num = stepsCtrl.num || 0;
+                $scope.iconColor = '#DDDDDD';
+
+                $('uix-step').addClass('uixstep');
+
+                switch ($scope.status) {
+                    case 'process':
+                        $scope.iconColor = '#20A0FF';
+                        break;
+                    case 'finish':
+                        $scope.iconColor = '#13CE66';
+                        break;
+                    case 'error':
+                        $scope.iconColor = 'red';
+                        break;
+                }
+                stepsCtrl.num++;
+
+                if (stepsCtrl.direction === 'horizontal') {
+                    $element.css('display', 'block');
+                }
+            }
+        };
+    });
+
+/**
+ * steps
+ * steps directive
+ * Author: lihaijie02@meituan.com
+ * Date:2017-01-17
+ */
+angular.module('ui.xg.steps', [])
+    .directive('uixSteps', function () {
+        return {
+            restrict: 'AE',
+            scope: {
+                'size': '@',
+                'direction': '@'
+            },
+            controller: ['$scope', function ($scope) {
+                $scope.size = $scope.size || 'md';
+                $scope.direction = $scope.direction || 'vertical';
+                this.size = $scope.size;
+                this.direction = $scope.direction;
+                this.num = 0;
+                $('uix-steps').addClass('uix-steps');
+            }]
+        };
+    });
+
+
+
+/**
  * switch
  * 开关
  * Author:yangjiyuan@meituan.com
@@ -8922,6 +8994,33 @@ angular.module("select/templates/select.html",[]).run(["$templateCache",function
     "         ng-show=\"$select.searchEnabled && $select.open\">"+
     "  <div class=\"uix-select-choices\"></div>"+
     "</div>"+
+    "");
+}]);
+angular.module("step/templates/step.html",[]).run(["$templateCache",function($templateCache){
+    $templateCache.put("templates/step.html",
+    "<div class=\"uix-step\">"+
+    "    <div class=\"step-head-{{direction}} step-head step-{{size}}-{{direction}}\">"+
+    "        <span ng-if=\"!!icon\" class=\"step-icon step-icon-icon\" ng-style=\"{'color':iconColor}\">"+
+    "            <i class=\"fa {{icon}}\" aria-hidden=\"true\"></i>"+
+    "        </span>"+
+    ""+
+    "        <span ng-if=\"!icon\" class=\"step-icon step-{{status}}\">"+
+    "            <span ng-if=\"(status=='wait')||(status=='process')\">{{num+1}}</span>"+
+    "            <i ng-if=\"status!=('wait'||'process')\" class=\"fa\""+
+    "               ng-class=\"{'fa-check':status=='finish','fa-times':status=='error'}\"></i>"+
+    "        </span>"+
+    "        <span class=\"step-line step-line-{{size}} step-{{status}}\">&nbsp;</span>"+
+    "    </div>"+
+    ""+
+    "    <div class=\"step-content-{{direction}}\">"+
+    "        <span class=\"step-title step-{{status}}-color\">{{title}}</span>"+
+    "        <br>"+
+    "        <span class=\"step-desc step-{{status}}-color\">{{desc}}</span>"+
+    "    </div>"+
+    "</div>"+
+    ""+
+    ""+
+    ""+
     "");
 }]);
 angular.module("switch/templates/switch.html",[]).run(["$templateCache",function($templateCache){
