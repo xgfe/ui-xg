@@ -1,112 +1,112 @@
-uix-steps uix-step {
+.uix-step {
   vertical-align: top;
   position: relative;
   display: inline-block; }
-  uix-steps uix-step .step-sm-vertical {
+  .uix-step .step-sm-vertical {
     width: 100px; }
-  uix-steps uix-step .step-md-vertical {
+  .uix-step .step-md-vertical {
     width: 150px; }
-  uix-steps uix-step .step-lg-vertical {
+  .uix-step .step-lg-vertical {
     width: 200px; }
-  uix-steps uix-step .step-sm-horizontal {
+  .uix-step .step-sm-horizontal {
     height: 50px; }
-  uix-steps uix-step .step-md-horizontal {
+  .uix-step .step-md-horizontal {
     height: 70px; }
-  uix-steps uix-step .step-lg-horizontal {
+  .uix-step .step-lg-horizontal {
     height: 90px; }
-  uix-steps uix-step .step-head .step-icon {
+  .uix-step .step-head .step-icon {
     width: 40px;
     border-radius: 50%;
     line-height: 40px;
     text-align: center;
     color: white; }
-  uix-steps uix-step .step-head .step-icon-icon {
+  .uix-step .step-head .step-icon-icon {
     font-size: 35px; }
-  uix-steps uix-step .step-head .step-wait {
+  .uix-step .step-head .step-wait {
     background: #DDDDDD; }
-  uix-steps uix-step .step-head .step-process {
+  .uix-step .step-head .step-process {
     background: #20A0FF; }
-  uix-steps uix-step .step-head .step-error {
+  .uix-step .step-head .step-error {
     background: red; }
-  uix-steps uix-step .step-head .step-finish {
+  .uix-step .step-head .step-finish {
     background: #13CE66; }
-  uix-steps uix-step .step-head-horizontal .step-icon {
+  .uix-step .step-head-horizontal .step-icon {
     display: block; }
-  uix-steps uix-step .step-head-horizontal .step-line-sm {
+  .uix-step .step-head-horizontal .step-line-sm {
     height: 60%; }
-  uix-steps uix-step .step-head-horizontal .step-line-md {
+  .uix-step .step-head-horizontal .step-line-md {
     height: 60%; }
-  uix-steps uix-step .step-head-horizontal .step-line-lg {
+  .uix-step .step-head-horizontal .step-line-lg {
     height: 60%; }
-  uix-steps uix-step .step-head-horizontal .step-line {
+  .uix-step .step-head-horizontal .step-line {
     display: inline-block;
     width: 2px;
     text-align: center;
     position: absolute;
     left: 19px; }
-  uix-steps uix-step .step-head-vertical .step-icon {
+  .uix-step .step-head-vertical .step-icon {
     display: inline-block; }
-  uix-steps uix-step .step-head-vertical .step-line-sm {
+  .uix-step .step-head-vertical .step-line-sm {
     width: 65%; }
-  uix-steps uix-step .step-head-vertical .step-line-md {
+  .uix-step .step-head-vertical .step-line-md {
     width: 76.66667%; }
-  uix-steps uix-step .step-head-vertical .step-line-lg {
+  .uix-step .step-head-vertical .step-line-lg {
     width: 82.5%; }
-  uix-steps uix-step .step-head-vertical .step-line {
+  .uix-step .step-head-vertical .step-line {
     display: inline-block;
     height: 2px;
     line-height: 40px;
     position: absolute;
     top: 19px; }
-  uix-steps uix-step .step-content-vertical {
+  .uix-step .step-content-vertical {
     display: inline-block;
     width: 60px;
     text-align: center; }
-    uix-steps uix-step .step-content-vertical .step-title {
+    .uix-step .step-content-vertical .step-title {
       display: inline-block;
       margin-top: 10px;
       margin-left: -10px;
       font-weight: bold;
       font-size: 16px; }
-    uix-steps uix-step .step-content-vertical .step-desc {
+    .uix-step .step-content-vertical .step-desc {
       display: inline-block;
       margin-top: 5px;
       font-size: 12px;
       margin-left: -10px; }
-    uix-steps uix-step .step-content-vertical .step-wait-color {
+    .uix-step .step-content-vertical .step-wait-color {
       color: #DDDDDD; }
-    uix-steps uix-step .step-content-vertical .step-process-color {
+    .uix-step .step-content-vertical .step-process-color {
       color: #20A0FF; }
-    uix-steps uix-step .step-content-vertical .step-finish-color {
+    .uix-step .step-content-vertical .step-finish-color {
       color: #13CE66; }
-    uix-steps uix-step .step-content-vertical .step-error-color {
+    .uix-step .step-content-vertical .step-error-color {
       color: red; }
-  uix-steps uix-step .step-content-horizontal {
+  .uix-step .step-content-horizontal {
     display: inline-block;
     position: absolute;
     left: 50px;
     top: 0px;
     width: 60px;
     margin-left: 20px; }
-    uix-steps uix-step .step-content-horizontal .step-title {
+    .uix-step .step-content-horizontal .step-title {
       display: inline-block;
       margin-top: 10px;
       margin-left: -10px;
       font-weight: bold;
       font-size: 16px; }
-    uix-steps uix-step .step-content-horizontal .step-desc {
+    .uix-step .step-content-horizontal .step-desc {
       display: inline-block;
       margin-top: 5px;
       font-size: 12px;
       margin-left: -10px; }
-    uix-steps uix-step .step-content-horizontal .step-wait-color {
+    .uix-step .step-content-horizontal .step-wait-color {
       color: #DDDDDD; }
-    uix-steps uix-step .step-content-horizontal .step-process-color {
+    .uix-step .step-content-horizontal .step-process-color {
       color: #20A0FF; }
-    uix-steps uix-step .step-content-horizontal .step-finish-color {
+    .uix-step .step-content-horizontal .step-finish-color {
       color: #13CE66; }
-    uix-steps uix-step .step-content-horizontal .step-error-color {
+    .uix-step .step-content-horizontal .step-error-color {
       color: red; }
 
-uix-steps uix-step:last-child .step-line {
+.uixstep:last-child .step-line {
   display: none; }

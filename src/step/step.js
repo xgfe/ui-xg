@@ -21,6 +21,8 @@ angular.module('ui.xg.step', [])
                 $scope.num = stepsCtrl.num || 0;
                 $scope.iconColor = '#DDDDDD';
 
+                $('uix-step').addClass('uixstep');
+
                 switch ($scope.status) {
                     case 'process':
                         $scope.iconColor = '#20A0FF';

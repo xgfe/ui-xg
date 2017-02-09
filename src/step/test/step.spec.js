@@ -90,19 +90,19 @@ describe('ui.xg.step', function () {
     it('run without status and the status should be a empty string', function () {
         initScope('lg', 'vertical', '未开始', '我是未开始的描述', '', 'error');
         createElement('<uix-steps size="{{size}}" direction="{{direction}}"><uix-step status="{{status}}"></uix-step></uix-steps>');
-        expect(element.find('uix-step').children('.step-head').children().eq(0).find('i').hasClass('fa-times')).toBeTruthy();
+        expect(element.find('uix-step').find('.uix-step').children('.step-head').children().eq(0).find('i').hasClass('fa-times')).toBeTruthy();
     });
 
     it('run without status and the status should be a empty string', function () {
         initScope('lg', 'vertical', '未开始', '我是未开始的描述', '', 'finish');
         createElement('<uix-steps size="{{size}}" direction="{{direction}}"><uix-step status="{{status}}"></uix-step></uix-steps>');
-        expect(element.find('uix-step').children('.step-head').children().eq(0).find('i').hasClass('fa-check')).toBeTruthy();
+        expect(element.find('uix-step').find('.uix-step').children('.step-head').children().eq(0).find('i').hasClass('fa-check')).toBeTruthy();
     });
 
     it('run with a num', function () {
         initScope('lg', 'vertical', '未开始', '我是未开始的描述', '', 'wait', 0);
         createElement('<uix-steps size="{{size}}" direction="{{direction}}"><uix-step status="{{status}}"></uix-step></uix-steps>');
-        expect(element.find('uix-step').children('.step-head').children().eq(0).children().eq(0).scope().num).toEqual(0);
+        expect(element.find('uix-step').find('.uix-step').children('.step-head').children().eq(0).children().eq(0).scope().num).toEqual(0);
     });
 
     it('run with many steps', function () {
