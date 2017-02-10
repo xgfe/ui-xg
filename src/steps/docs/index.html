@@ -1,0 +1,14 @@
+<div ng-controller="stepsDemoCtrl" id="stepsbox">
+    <uix-steps>
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}' status='{{obj.status}}'
+                  desc="{{obj.desc}}"></uix-step>
+    </uix-steps>
+    <uix-steps size="lg">
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}' status='{{obj.status}}'
+                  desc="{{obj.desc}}"></uix-step>
+    </uix-steps>
+    <uix-steps direction="horizontal">
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}' status='{{obj.status}}'
+                  desc="{{obj.desc}}"></uix-step>
+    </uix-steps>
+</div>
