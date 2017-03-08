@@ -26,7 +26,8 @@ angular.module('ui.xg.loader', [])
             var $ = angular.element;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
-            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var tempHeight = windowHeight - footerHeight - $element.offset().top;
+            var height = parseInt($scope.loaderHeight, 10) || (tempHeight > 300) ? 300 : tempHeight;
             var width = $scope.loaderWidth;
             var loadingTime = parseInt($scope.loadingTime, 10) || uixLoader.getLoadingTime();
 

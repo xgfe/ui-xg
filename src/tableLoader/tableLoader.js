@@ -31,7 +31,8 @@ angular.module('ui.xg.tableLoader', [])
             var noThead = $scope.noThead;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
-            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var tempHeight = windowHeight - footerHeight - $element.offset().top;
+            var height = parseInt($scope.loaderHeight, 10) || (tempHeight > 300) ? 300 : tempHeight;
 
             var loadingTpl = $('<tbody><tr><td colspan="100%">' +
                 '<div class="loading" style="height:' + height + 'px">' +
