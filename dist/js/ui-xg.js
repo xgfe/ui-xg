@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.0.5 - 2017-02-09
+ * Version: 2.0.5 - 2017-03-08
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -4014,7 +4014,8 @@ angular.module('ui.xg.loader', [])
             var $ = angular.element;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
-            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var tempHeight = windowHeight - footerHeight - $element.offset().top;
+            var height = parseInt($scope.loaderHeight, 10) || (tempHeight > 300) ? 300 : tempHeight;
             var width = $scope.loaderWidth;
             var loadingTime = parseInt($scope.loadingTime, 10) || uixLoader.getLoadingTime();
 
@@ -7776,7 +7777,8 @@ angular.module('ui.xg.tableLoader', [])
             var noThead = $scope.noThead;
             var windowHeight = $($window).height();
             var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
-            var height = parseInt($scope.loaderHeight, 10) || windowHeight - footerHeight - $element.offset().top;
+            var tempHeight = windowHeight - footerHeight - $element.offset().top;
+            var height = parseInt($scope.loaderHeight, 10) || (tempHeight > 300) ? 300 : tempHeight;
 
             var loadingTpl = $('<tbody><tr><td colspan="100%">' +
                 '<div class="loading" style="height:' + height + 'px">' +
