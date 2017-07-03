@@ -131,7 +131,7 @@ function findModule(name) {
     }
 
     function getTplModule(str) {
-        return enquote(str.replace(new RegExp('^' + config.src + '\/'), ''));
+        return enquote(str.replace(new RegExp('^' + config.src + '/'), ''));
     }
 
     var module = {
@@ -185,7 +185,7 @@ function getDocsReadme(name) {
             tbody = '';
         table += thead + tbody;
         var code = body.split('\n').join(''), ulMatch, liMatch,
-            ulReg = /<li>([\w\-\(\)]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
+            ulReg = /<li>([\w\-()]+)[:：](.+?)<ul>(.+?)<\/ul><\/li>/g,
             liReg = /<li>(\w+)[:：](.+?)<\/li>/g,
             tr = '', cols;
         if (argumentBlock && body.match('<ul>')) {

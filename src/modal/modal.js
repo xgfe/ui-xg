@@ -8,9 +8,9 @@
  * Date:2016-03-23
  */
 angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.button'])
-    /**
-     * A helper directive for the $uixModal service. It creates a backdrop element.
-     */
+/**
+ * A helper directive for the $uixModal service. It creates a backdrop element.
+ */
     .directive('uixModalBackdrop', ['$timeout', function ($timeout) {
         return {
             restrict: 'EA',
@@ -266,9 +266,10 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                  */
                 function getTemplatePromise(options) {
                     return options.template ? $q.when(options.template)
-                        : $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
-                        {cache: $templateCache})
-                        .then(function (result) {
+                        : $http.get(
+                            angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
+                            {cache: $templateCache}
+                        ).then(function (result) {
                             return result.data;
                         });
                 }

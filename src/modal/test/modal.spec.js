@@ -17,7 +17,7 @@ describe('ui.xg.modal', function () {
             $uixModalProvider = _$uixModalProvider_;
         });
         inject(function (_$rootScope_, _$document_, _$compile_, _$templateCache_,
-                         _$timeout_, _$q_, _$uixModal_, _$uixConfirm_) {
+            _$timeout_, _$q_, _$uixModal_, _$uixConfirm_) {
             $rootScope = _$rootScope_;
             $document = _$document_;
             $compile = _$compile_;

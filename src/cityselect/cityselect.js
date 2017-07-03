@@ -66,8 +66,7 @@ cityselectModule.directive('uixCityselect', ['$compile', function ($compile) {
     return {
         restrict: 'A',
         require: ['uixCityselect', 'ngModel'],
-        scope: {
-        },
+        scope: {},
         transclude: true,
         controller: 'uixCityselectCtrl',
         controllerAs: 'vm',
@@ -129,15 +128,19 @@ uixCityselectCtrl.prototype.valueInit = function (initialValue) {
     var vm = this;
     vm.initFlag = false;
     vm.cityInfo = angular.extend({}, vm.uixCityselectConfig, initialValue);
-    if (!vm.cityInfo.chosedCity) {vm.cityInfo.chosedCity = [];}
+    if (!vm.cityInfo.chosedCity) {
+        vm.cityInfo.chosedCity = [];
+    }
     vm.ngModelController.$setViewValue(vm.cityInfo);
     vm.dom.removeAttr('uix-cityselect');
-    vm.dom.attr({'uix-popover-template': '"templates/citypanel.html"',
-              'popover-placement': vm.cityInfo.placement,
-              'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
-              'popover-trigger': 'click',
-              'popover-animation': vm.cityInfo.animation,
-              'ng-click': 'vm.exportCallback()'});
+    vm.dom.attr({
+        'uix-popover-template': '"templates/citypanel.html"',
+        'popover-placement': vm.cityInfo.placement,
+        'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
+        'popover-trigger': 'click',
+        'popover-animation': vm.cityInfo.animation,
+        'ng-click': 'vm.exportCallback()'
+    });
     return vm.dom;
 };
 
@@ -409,12 +412,12 @@ uixCityselectCtrl.prototype.changeTab = function (index) {
  */
 uixCityselectCtrl.prototype.checkCityBelong = function (city) {
     var vm = this;
-    for(var i = 0; i < vm.cityMap.length; i++) {
+    for (var i = 0; i < vm.cityMap.length; i++) {
         if (vm.cityMap[i].cityId === city.cityId) {
             return true;
         }
     }
-    for(var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
+    for (var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
         if (vm.cityInfo.chosedCity[j].cityId === city.cityId) {
             vm.cityInfo.chosedCity.splice(j, 1);
             vm.ngModelController.$setViewValue(vm.cityInfo);

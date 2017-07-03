@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.0 - 2017-07-03
+ * Version: 2.1.1 - 2017-07-03
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -2092,36 +2092,36 @@ angular.module('ui.xg.position', [])
                     adjustedSize.height <= viewportOffset.bottom
                         ? 'bottom'
                         : placement[0] === 'bottom' &&
-                    adjustedSize.height > viewportOffset.bottom &&
-                    adjustedSize.height <= viewportOffset.top
-                        ? 'top'
-                        : placement[0] === 'left' &&
-                    adjustedSize.width > viewportOffset.left &&
-                    adjustedSize.width <= viewportOffset.right
-                        ? 'right'
-                        : placement[0] === 'right' &&
-                    adjustedSize.width > viewportOffset.right &&
-                    adjustedSize.width <= viewportOffset.left
-                        ? 'left'
-                        : placement[0];
+                        adjustedSize.height > viewportOffset.bottom &&
+                        adjustedSize.height <= viewportOffset.top
+                            ? 'top'
+                            : placement[0] === 'left' &&
+                            adjustedSize.width > viewportOffset.left &&
+                            adjustedSize.width <= viewportOffset.right
+                                ? 'right'
+                                : placement[0] === 'right' &&
+                                adjustedSize.width > viewportOffset.right &&
+                                adjustedSize.width <= viewportOffset.left
+                                    ? 'left'
+                                    : placement[0];
 
                     placement[1] = placement[1] === 'top' &&
                     adjustedSize.height - hostElemPos.height > viewportOffset.bottom &&
                     adjustedSize.height - hostElemPos.height <= viewportOffset.top
                         ? 'bottom'
                         : placement[1] === 'bottom' &&
-                    adjustedSize.height - hostElemPos.height > viewportOffset.top &&
-                    adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
-                        ? 'top'
-                        : placement[1] === 'left' &&
-                    adjustedSize.width - hostElemPos.width > viewportOffset.right &&
-                    adjustedSize.width - hostElemPos.width <= viewportOffset.left
-                        ? 'right'
-                        : placement[1] === 'right' &&
-                    adjustedSize.width - hostElemPos.width > viewportOffset.left &&
-                    adjustedSize.width - hostElemPos.width <= viewportOffset.right
-                        ? 'left'
-                        : placement[1];
+                        adjustedSize.height - hostElemPos.height > viewportOffset.top &&
+                        adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
+                            ? 'top'
+                            : placement[1] === 'left' &&
+                            adjustedSize.width - hostElemPos.width > viewportOffset.right &&
+                            adjustedSize.width - hostElemPos.width <= viewportOffset.left
+                                ? 'right'
+                                : placement[1] === 'right' &&
+                                adjustedSize.width - hostElemPos.width > viewportOffset.left &&
+                                adjustedSize.width - hostElemPos.width <= viewportOffset.right
+                                    ? 'left'
+                                    : placement[1];
 
                     if (placement[1] === 'center') {
                         if (PLACEMENT_REGEX.vertical.test(placement[0])) {
@@ -2386,7 +2386,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
         this.$get = ['$compile', '$timeout', '$document', '$uixPosition', '$interpolate',
             '$rootScope', '$parse', '$uixStackedMap',
             function ($compile, $timeout, $document, $position, $interpolate,
-                      $rootScope, $parse, $uixStackedMap) {
+                $rootScope, $parse, $uixStackedMap) {
                 var openedTooltips = $uixStackedMap.createNew();
                 $document.on('keypress', keypressListener);
 
@@ -3387,8 +3387,7 @@ cityselectModule.directive('uixCityselect', ['$compile', function ($compile) {
     return {
         restrict: 'A',
         require: ['uixCityselect', 'ngModel'],
-        scope: {
-        },
+        scope: {},
         transclude: true,
         controller: 'uixCityselectCtrl',
         controllerAs: 'vm',
@@ -3450,15 +3449,19 @@ uixCityselectCtrl.prototype.valueInit = function (initialValue) {
     var vm = this;
     vm.initFlag = false;
     vm.cityInfo = angular.extend({}, vm.uixCityselectConfig, initialValue);
-    if (!vm.cityInfo.chosedCity) {vm.cityInfo.chosedCity = [];}
+    if (!vm.cityInfo.chosedCity) {
+        vm.cityInfo.chosedCity = [];
+    }
     vm.ngModelController.$setViewValue(vm.cityInfo);
     vm.dom.removeAttr('uix-cityselect');
-    vm.dom.attr({'uix-popover-template': '"templates/citypanel.html"',
-              'popover-placement': vm.cityInfo.placement,
-              'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
-              'popover-trigger': 'click',
-              'popover-animation': vm.cityInfo.animation,
-              'ng-click': 'vm.exportCallback()'});
+    vm.dom.attr({
+        'uix-popover-template': '"templates/citypanel.html"',
+        'popover-placement': vm.cityInfo.placement,
+        'popover-class': 'uix-cityselect-popoverwidth' + vm.cityInfo.class,
+        'popover-trigger': 'click',
+        'popover-animation': vm.cityInfo.animation,
+        'ng-click': 'vm.exportCallback()'
+    });
     return vm.dom;
 };
 
@@ -3730,12 +3733,12 @@ uixCityselectCtrl.prototype.changeTab = function (index) {
  */
 uixCityselectCtrl.prototype.checkCityBelong = function (city) {
     var vm = this;
-    for(var i = 0; i < vm.cityMap.length; i++) {
+    for (var i = 0; i < vm.cityMap.length; i++) {
         if (vm.cityMap[i].cityId === city.cityId) {
             return true;
         }
     }
-    for(var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
+    for (var j = 0; j < vm.cityInfo.chosedCity.length; j++) {
         if (vm.cityInfo.chosedCity[j].cityId === city.cityId) {
             vm.cityInfo.chosedCity.splice(j, 1);
             vm.ngModelController.$setViewValue(vm.cityInfo);
@@ -3859,7 +3862,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         ['$scope', '$element', '$attrs', '$log', 'dateFilter',
             'uixDatepickerService', 'uixDatepickerConfig', '$parse', '$document',
             function ($scope, $element, $attrs, $log, dateFilter,
-                      uixDatepickerService, uixDatepickerConfig, $parse, $document) {
+                uixDatepickerService, uixDatepickerConfig, $parse, $document) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 this.init = function (_ngModelCtrl) {
@@ -4096,9 +4099,9 @@ angular.module('ui.xg.loader', [])
  * Date:2016-03-23
  */
 angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.button'])
-    /**
-     * A helper directive for the $uixModal service. It creates a backdrop element.
-     */
+/**
+ * A helper directive for the $uixModal service. It creates a backdrop element.
+ */
     .directive('uixModalBackdrop', ['$timeout', function ($timeout) {
         return {
             restrict: 'EA',
@@ -4354,9 +4357,10 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                  */
                 function getTemplatePromise(options) {
                     return options.template ? $q.when(options.template)
-                        : $http.get(angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
-                        {cache: $templateCache})
-                        .then(function (result) {
+                        : $http.get(
+                            angular.isFunction(options.templateUrl) ? (options.templateUrl)() : options.templateUrl,
+                            {cache: $templateCache}
+                        ).then(function (result) {
                             return result.data;
                         });
                 }
@@ -5662,7 +5666,7 @@ angular.module('ui.xg.select', [])
         return function (matchItem, query) {
             return query && matchItem
                 ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'),
-                '<span class="uix-select-highlight">$&</span>')
+                    '<span class="uix-select-highlight">$&</span>')
                 : matchItem;
         };
     })
@@ -5682,7 +5686,7 @@ angular.module('ui.xg.select', [])
     .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser',
         'uixSelectMinErr', 'uixSelectConfig',
         function ($scope, $element, $timeout, $filter, RepeatParser,
-                  uixSelectMinErr, uixSelectConfig) {
+            uixSelectMinErr, uixSelectConfig) {
             var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
@@ -5925,7 +5929,6 @@ angular.module('ui.xg.select', [])
 
                 return isDisabled;
             };
-
 
             // When the user selects an item with ENTER or clicks the dropdown
             ctrl.select = function (item, skipFocusser, $event) {
@@ -6719,7 +6722,6 @@ angular.module('ui.xg.select', [])
                         return $select.placeholder;
                     };
 
-
                 }],
                 controllerAs: '$selectMultiple',
 
@@ -6771,8 +6773,8 @@ angular.module('ui.xg.select', [])
                                 if ($select.parserResult.trackByExp) {
                                     var propsItemNameMatches = /(\w*)\./.exec($select.parserResult.trackByExp);
                                     var matches = /\.([^\s]+)/.exec($select.parserResult.trackByExp);
-                                    if(propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
-                                        if(matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                    if (propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
+                                        if (matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
                                             resultMultiple.unshift(list[index]);
                                             return true;
                                         }
@@ -6872,7 +6874,7 @@ angular.module('ui.xg.select', [])
                     function _handleMatchSelection(key) {
                         var caretPosition = _getCaretPosition($select.searchInput[0]),
                             length = $select.selected.length,
-                        // none  = -1,
+                            // none  = -1,
                             first = 0,
                             last = length - 1,
                             curr = $selectMultiple.activeMatchIndex,
@@ -7220,7 +7222,6 @@ angular.module('ui.xg.select', [])
 
                 });
 
-
             }
         };
     }])
@@ -7555,8 +7556,7 @@ angular.module('ui.xg.sortable', [])
                                 event.stopPropagation();
                                 return false;
                             })
-                            .on('dragleave', function (event) {
-                                event = event.originalEvent || event;
+                            .on('dragleave', function () {
                                 element.removeClass('uix-sortable-dragover');
                                 $timeout(function () {
                                     if (!element.hasClass('uix-sortable-dragover') && placeholder) {
@@ -7917,16 +7917,15 @@ angular.module('ui.xg.tabs', [])
             }
         };
 
-//
-//         ctrl.removeTab = function (tab) {
-//             var index = ctrl.findTabIndex(tab);
-//             // TODO 如果删除的是当前激活状态的tab
-// //                if(ctrl.tabs[index].index === ctrl.active){
-// //                    var newActiveTabIndex = index === ctrl.tas
-// //                }
-//             ctrl.tabs.splice(index, 1); //删除tab
-//         };
-
+        //
+        //         ctrl.removeTab = function (tab) {
+        //             var index = ctrl.findTabIndex(tab);
+        //             // TODO 如果删除的是当前激活状态的tab
+        // //                if(ctrl.tabs[index].index === ctrl.active){
+        // //                    var newActiveTabIndex = index === ctrl.tas
+        // //                }
+        //             ctrl.tabs.splice(index, 1); //删除tab
+        //         };
 
         ctrl.findTabIndex = function (index) {
             for (var i = 0; i < ctrl.tabs.length; i++) {
@@ -7959,7 +7958,7 @@ angular.module('ui.xg.tabs', [])
             }
         };
     }])
-    .directive('uixTab', [ '$sce', function ($sce) {
+    .directive('uixTab', ['$sce', function ($sce) {
         return {
             restrict: 'E',
             scope: {},
@@ -8026,11 +8025,11 @@ angular.module('ui.xg.tabs', [])
                     scope.type = 'tabs'; //默认类型
                 }
 
-//                    if(angular.isDefined(attrs.tabPosition)){
-//                        scope.tabPosition = getRealAttr(scope.$parent, attrs.tabPosition);
-//                    } else {
-//                        scope.tabPosition = 'top'; //默认位置
-//                    }
+                //                    if(angular.isDefined(attrs.tabPosition)){
+                //                        scope.tabPosition = getRealAttr(scope.$parent, attrs.tabPosition);
+                //                    } else {
+                //                        scope.tabPosition = 'top'; //默认位置
+                //                    }
 
                 /**
                  * 在父作用scope解析属性值
@@ -8102,7 +8101,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
     .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
         'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$document',
         function ($scope, $element, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter, $document) {
+            uixTimepickerService, timepickerConfig, dateFilter, $document) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;

@@ -54,7 +54,7 @@ angular.module('ui.xg.timepicker', ['ui.xg.timepanel', 'ui.xg.popover'])
     .controller('uixTimepickerCtrl', ['$scope', '$element', '$attrs', '$parse', '$log',
         'uixTimepickerService', 'uixTimepickerConfig', 'dateFilter', '$document',
         function ($scope, $element, $attrs, $parse, $log,
-                  uixTimepickerService, timepickerConfig, dateFilter, $document) {
+            uixTimepickerService, timepickerConfig, dateFilter, $document) {
             var ngModelCtrl = {$setViewValue: angular.noop};
             this.init = function (_ngModelCtrl) {
                 ngModelCtrl = _ngModelCtrl;

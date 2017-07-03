@@ -154,8 +154,7 @@ angular.module('ui.xg.sortable', [])
                                 event.stopPropagation();
                                 return false;
                             })
-                            .on('dragleave', function (event) {
-                                event = event.originalEvent || event;
+                            .on('dragleave', function () {
                                 element.removeClass('uix-sortable-dragover');
                                 $timeout(function () {
                                     if (!element.hasClass('uix-sortable-dragover') && placeholder) {

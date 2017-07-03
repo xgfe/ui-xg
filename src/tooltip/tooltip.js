@@ -65,7 +65,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
         this.$get = ['$compile', '$timeout', '$document', '$uixPosition', '$interpolate',
             '$rootScope', '$parse', '$uixStackedMap',
             function ($compile, $timeout, $document, $position, $interpolate,
-                      $rootScope, $parse, $uixStackedMap) {
+                $rootScope, $parse, $uixStackedMap) {
                 var openedTooltips = $uixStackedMap.createNew();
                 $document.on('keypress', keypressListener);
 
