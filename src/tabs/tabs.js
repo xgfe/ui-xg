@@ -43,16 +43,15 @@ angular.module('ui.xg.tabs', [])
             }
         };
 
-//
-//         ctrl.removeTab = function (tab) {
-//             var index = ctrl.findTabIndex(tab);
-//             // TODO 如果删除的是当前激活状态的tab
-// //                if(ctrl.tabs[index].index === ctrl.active){
-// //                    var newActiveTabIndex = index === ctrl.tas
-// //                }
-//             ctrl.tabs.splice(index, 1); //删除tab
-//         };
-
+        //
+        //         ctrl.removeTab = function (tab) {
+        //             var index = ctrl.findTabIndex(tab);
+        //             // TODO 如果删除的是当前激活状态的tab
+        // //                if(ctrl.tabs[index].index === ctrl.active){
+        // //                    var newActiveTabIndex = index === ctrl.tas
+        // //                }
+        //             ctrl.tabs.splice(index, 1); //删除tab
+        //         };
 
         ctrl.findTabIndex = function (index) {
             for (var i = 0; i < ctrl.tabs.length; i++) {
@@ -85,7 +84,7 @@ angular.module('ui.xg.tabs', [])
             }
         };
     }])
-    .directive('uixTab', [ '$sce', function ($sce) {
+    .directive('uixTab', ['$sce', function ($sce) {
         return {
             restrict: 'E',
             scope: {},
@@ -152,11 +151,11 @@ angular.module('ui.xg.tabs', [])
                     scope.type = 'tabs'; //默认类型
                 }
 
-//                    if(angular.isDefined(attrs.tabPosition)){
-//                        scope.tabPosition = getRealAttr(scope.$parent, attrs.tabPosition);
-//                    } else {
-//                        scope.tabPosition = 'top'; //默认位置
-//                    }
+                //                    if(angular.isDefined(attrs.tabPosition)){
+                //                        scope.tabPosition = getRealAttr(scope.$parent, attrs.tabPosition);
+                //                    } else {
+                //                        scope.tabPosition = 'top'; //默认位置
+                //                    }
 
                 /**
                  * 在父作用scope解析属性值

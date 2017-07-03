@@ -382,36 +382,36 @@ angular.module('ui.xg.position', [])
                     adjustedSize.height <= viewportOffset.bottom
                         ? 'bottom'
                         : placement[0] === 'bottom' &&
-                    adjustedSize.height > viewportOffset.bottom &&
-                    adjustedSize.height <= viewportOffset.top
-                        ? 'top'
-                        : placement[0] === 'left' &&
-                    adjustedSize.width > viewportOffset.left &&
-                    adjustedSize.width <= viewportOffset.right
-                        ? 'right'
-                        : placement[0] === 'right' &&
-                    adjustedSize.width > viewportOffset.right &&
-                    adjustedSize.width <= viewportOffset.left
-                        ? 'left'
-                        : placement[0];
+                        adjustedSize.height > viewportOffset.bottom &&
+                        adjustedSize.height <= viewportOffset.top
+                            ? 'top'
+                            : placement[0] === 'left' &&
+                            adjustedSize.width > viewportOffset.left &&
+                            adjustedSize.width <= viewportOffset.right
+                                ? 'right'
+                                : placement[0] === 'right' &&
+                                adjustedSize.width > viewportOffset.right &&
+                                adjustedSize.width <= viewportOffset.left
+                                    ? 'left'
+                                    : placement[0];
 
                     placement[1] = placement[1] === 'top' &&
                     adjustedSize.height - hostElemPos.height > viewportOffset.bottom &&
                     adjustedSize.height - hostElemPos.height <= viewportOffset.top
                         ? 'bottom'
                         : placement[1] === 'bottom' &&
-                    adjustedSize.height - hostElemPos.height > viewportOffset.top &&
-                    adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
-                        ? 'top'
-                        : placement[1] === 'left' &&
-                    adjustedSize.width - hostElemPos.width > viewportOffset.right &&
-                    adjustedSize.width - hostElemPos.width <= viewportOffset.left
-                        ? 'right'
-                        : placement[1] === 'right' &&
-                    adjustedSize.width - hostElemPos.width > viewportOffset.left &&
-                    adjustedSize.width - hostElemPos.width <= viewportOffset.right
-                        ? 'left'
-                        : placement[1];
+                        adjustedSize.height - hostElemPos.height > viewportOffset.top &&
+                        adjustedSize.height - hostElemPos.height <= viewportOffset.bottom
+                            ? 'top'
+                            : placement[1] === 'left' &&
+                            adjustedSize.width - hostElemPos.width > viewportOffset.right &&
+                            adjustedSize.width - hostElemPos.width <= viewportOffset.left
+                                ? 'right'
+                                : placement[1] === 'right' &&
+                                adjustedSize.width - hostElemPos.width > viewportOffset.left &&
+                                adjustedSize.width - hostElemPos.width <= viewportOffset.right
+                                    ? 'left'
+                                    : placement[1];
 
                     if (placement[1] === 'center') {
                         if (PLACEMENT_REGEX.vertical.test(placement[0])) {

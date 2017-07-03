@@ -187,7 +187,7 @@ angular.module('ui.xg.select', [])
         return function (matchItem, query) {
             return query && matchItem
                 ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'),
-                '<span class="uix-select-highlight">$&</span>')
+                    '<span class="uix-select-highlight">$&</span>')
                 : matchItem;
         };
     })
@@ -207,7 +207,7 @@ angular.module('ui.xg.select', [])
     .controller('uixSelectCtrl', ['$scope', '$element', '$timeout', '$filter', 'uixSelectRepeatParser',
         'uixSelectMinErr', 'uixSelectConfig',
         function ($scope, $element, $timeout, $filter, RepeatParser,
-                  uixSelectMinErr, uixSelectConfig) {
+            uixSelectMinErr, uixSelectConfig) {
             var KEY = uixSelectConfig.KEY;
             var ctrl = this;
 
@@ -450,7 +450,6 @@ angular.module('ui.xg.select', [])
 
                 return isDisabled;
             };
-
 
             // When the user selects an item with ENTER or clicks the dropdown
             ctrl.select = function (item, skipFocusser, $event) {
@@ -1244,7 +1243,6 @@ angular.module('ui.xg.select', [])
                         return $select.placeholder;
                     };
 
-
                 }],
                 controllerAs: '$selectMultiple',
 
@@ -1296,8 +1294,8 @@ angular.module('ui.xg.select', [])
                                 if ($select.parserResult.trackByExp) {
                                     var propsItemNameMatches = /(\w*)\./.exec($select.parserResult.trackByExp);
                                     var matches = /\.([^\s]+)/.exec($select.parserResult.trackByExp);
-                                    if(propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
-                                        if(matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
+                                    if (propsItemNameMatches && propsItemNameMatches.length > 0 && propsItemNameMatches[1] === $select.parserResult.itemName) {
+                                        if (matches && matches.length > 0 && result[matches[1]] === value[matches[1]]) {
                                             resultMultiple.unshift(list[index]);
                                             return true;
                                         }
@@ -1397,7 +1395,7 @@ angular.module('ui.xg.select', [])
                     function _handleMatchSelection(key) {
                         var caretPosition = _getCaretPosition($select.searchInput[0]),
                             length = $select.selected.length,
-                        // none  = -1,
+                            // none  = -1,
                             first = 0,
                             last = length - 1,
                             curr = $selectMultiple.activeMatchIndex,
@@ -1744,7 +1742,6 @@ angular.module('ui.xg.select', [])
                     scope.$digest();
 
                 });
-
 
             }
         };

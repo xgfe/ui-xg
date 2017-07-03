@@ -61,7 +61,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         ['$scope', '$element', '$attrs', '$log', 'dateFilter',
             'uixDatepickerService', 'uixDatepickerConfig', '$parse', '$document',
             function ($scope, $element, $attrs, $log, dateFilter,
-                      uixDatepickerService, uixDatepickerConfig, $parse, $document) {
+                uixDatepickerService, uixDatepickerConfig, $parse, $document) {
                 var ngModelCtrl = {$setViewValue: angular.noop};
                 var self = this;
                 this.init = function (_ngModelCtrl) {
