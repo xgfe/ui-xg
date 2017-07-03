@@ -1,3 +1,14 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/xgfe/ui-xg/compare/v2.0.5...v2.1.0) (2017-07-03)
+
+
+### Features
+
+* **datepicker:** add append-to-body attr ([c5ee885](https://github.com/xgfe/ui-xg/commit/c5ee885))
+* **steps:** add steps directive ([a64b47d](https://github.com/xgfe/ui-xg/commit/a64b47d))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/xgfe/ui-xg/compare/v2.0.4...v2.0.5) (2016-11-23)
 
