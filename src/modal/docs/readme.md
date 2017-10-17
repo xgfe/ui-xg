@@ -13,7 +13,7 @@ $uixModal是一个快速创建modal的service,$uixModal只有一个方法-open(o
 
 - `templateUrl`:modal内容的模板路径
 - `template`:modal内容模板
-- `size`:modal的大小,默认中等,其他和选值为`"sm"`,`"lg"`
+- `size`:modal的大小,默认中等,其他和选值为`"sm"`,`"lg"`,`"xl"`
 - `scope`:一个作用域对象,会依据这个作用域创建一个新的应用于modal的作用域,默认是`$rootScope`
 - `controller`:modal实例的controller,可以注入`$scope`,`$uixModalInstance`等依赖
 - `controllerAs`:一个可供选择的controller

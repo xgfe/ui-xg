@@ -76,3 +76,5 @@ coverage/
 
 # 编辑器配置文件
 .vscode
+/yarn.lock
+/package-lock.json
