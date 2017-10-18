@@ -1,9 +1,11 @@
 $min-width: 900px;
 $max-width: 1440px;
 $ratio: 61.8%;
-
-.modal-xl {
-    min-width: $min-width;
-    max-width: $max-width;
-    width: $ratio;
+$threshold: 1200px;
+@media (min-width: $threshold) {
+    .modal-xl {
+        min-width: $min-width;
+        max-width: $max-width;
+        width: $ratio;
+    }
 }
