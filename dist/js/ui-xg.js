@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.1 - 2017-10-17
+ * Version: 2.1.1 - 2017-10-20
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3815,7 +3815,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         clearBtn: false,
         showTime: true,
         size: 'md',
-        appendToBody: false
+        appendToBody: false,
+        placement: 'auto bottom-left'
     })
     .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -3877,7 +3878,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
 
-                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody'], function (key) {
+                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });
@@ -3976,6 +3977,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                 maxDate: '=?',
                 placeholder: '@',
                 size: '@',
+                placement: '@',
                 isDisabled: '=?ngDisabled',
                 onChange: '&?',
                 dateFilter: '&?'
@@ -8768,7 +8770,7 @@ angular.module("datepicker/templates/datepicker.html",[]).run(["$templateCache",
     $templateCache.put("templates/datepicker.html",
     "<div class=\"uix-datepicker\">"+
     "    <div class=\"input-group\" popover-class=\"uix-datepicker-popover\" popover-trigger=\"none\" popover-is-open=\"showCalendar\""+
-    "         popover-placement=\"auto bottom-left\" uix-popover-template=\"'templates/datepicker-calendar.html'\" popover-append-to-body=\"appendToBody\">"+
+    "         popover-placement=\"{{placement}}\" uix-popover-template=\"'templates/datepicker-calendar.html'\" popover-append-to-body=\"appendToBody\">"+
     "        <input type=\"text\" ng-class=\"{'input-sm':size==='sm','input-lg':size==='lg'}\""+
     "               ng-disabled=\"isDisabled\" class=\"form-control uix-datepicker-input\""+
     "               ng-click=\"toggleCalendarHandler($event)\" placeholder=\"{{placeholder}}\""+
