@@ -4,7 +4,7 @@
 <h2>Usage</h2><h3>$uixModal</h3><p>$uixModal是一个快速创建modal的service,$uixModal只有一个方法-open(options),用于创建一个动态的modal,下面是options可以配置的属性</p>
 <ul><li><code>templateUrl</code>:modal内容的模板路径</li>
 <li><code>template</code>:modal内容模板</li>
-<li><code>size</code>:modal的大小,默认中等,其他和选值为<code>&quot;sm&quot;</code>,<code>&quot;lg&quot;</code></li>
+<li><code>size</code>:modal的大小,默认中等,其他和选值为<code>&quot;sm&quot;</code>,<code>&quot;lg&quot;</code>,<code>&quot;xl&quot;</code></li>
 <li><code>scope</code>:一个作用域对象,会依据这个作用域创建一个新的应用于modal的作用域,默认是<code>$rootScope</code></li>
 <li><code>controller</code>:modal实例的controller,可以注入<code>$scope</code>,<code>$uixModalInstance</code>等依赖</li>
 <li><code>controllerAs</code>:一个可供选择的controller</li>
@@ -64,6 +64,7 @@ $scope.onCancel = functon(modal){
     <button class="btn btn-default" ng-click="open()">Open me!</button>
     <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
     <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
+    <button class="btn btn-default" ng-click="open('xl')">Extra Large modal</button>
     <br>
     <button class="btn btn-default" ng-click="confirm()">Confirm modal By Factory</button>
     <button class="btn btn-default" uix-confirm="我是一个ConfirmModal" confirm="onConfirm()" cancel="onCancel($modal)">Confirm modal By Directive</button>
@@ -190,6 +191,7 @@ angular.module('uixDemo').controller('modalInstanceCtrl', ['$scope', '$uixModalI
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"open()"</span>&gt;</span>Open me!<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"open('lg')"</span>&gt;</span>Large modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"open('sm')"</span>&gt;</span>Small modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"open('xl')"</span>&gt;</span>Extra Large modal<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">ng-click</span>=<span class="hljs-string">"confirm()"</span>&gt;</span>Confirm modal By Factory<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-default"</span> <span class="hljs-attr">uix-confirm</span>=<span class="hljs-string">"我是一个ConfirmModal"</span> <span class="hljs-attr">confirm</span>=<span class="hljs-string">"onConfirm()"</span> <span class="hljs-attr">cancel</span>=<span class="hljs-string">"onCancel($modal)"</span>&gt;</span>Confirm modal By Directive<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>

@@ -60,6 +60,10 @@ define([
             
                 $stateProvider.state('app.api.sortable',{url: "/sortable",templateUrl: 'partials/api/sortable.html'});
             
+                $stateProvider.state('app.api.step',{url: "/step",templateUrl: 'partials/api/step.html'});
+            
+                $stateProvider.state('app.api.steps',{url: "/steps",templateUrl: 'partials/api/steps.html'});
+            
                 $stateProvider.state('app.api.switch',{url: "/switch",templateUrl: 'partials/api/switch.html'});
             
                 $stateProvider.state('app.api.tableLoader',{url: "/tableLoader",templateUrl: 'partials/api/tableLoader.html'});

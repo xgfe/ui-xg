@@ -1,0 +1,154 @@
+<h1>step</h1><h2>Description</h2><p>步骤条组件，依赖steps组件，用于描述事情的进度，需要配合steps组件一起使用</p>
+<h2>Usage</h2><pre><code class="lang-html"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">uix-steps</span> [<span class="hljs-attr">direction</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>] [<span class="hljs-attr">size</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>]&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-step</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span> [<span class="hljs-attr">desc</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>] [<span class="hljs-attr">icon</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>] [<span class="hljs-attr">status</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>string&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>]&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-step</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">uix-steps</span>&gt;</span></span>
+</code></pre>
+<h2>Restrict</h2><ul><li>&#39;AE&#39;</li>
+</ul><h2>Arguments</h2><table class="table table-striped table-bordered"><tr><th>Param</th><th>Type</th><th>Default</th><th>Detail</th></tr><tr><td>title</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td></td><td>步骤条每个步骤的标题,必填</td></tr><tr><td>desc(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>步骤条每个步骤的描述，选填默认为空</td></tr><tr><td>icon(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>null</code></td><td>自定义图标类名，此处使用fontawesome图标类名，选填默认为空</td></tr><tr><td>status(optional)</td><td><label class="label label-default label-string">string</label>&nbsp;</td><td><code>wait</code></td><td>步骤条每个步骤所处状态，选填默认为<code>wait</code>未开始。可填:<code>wait</code>表示未开始、<code>process</code>表示进行中、<code>finish</code>表示已完成、<code>error</code>表示出错了</td></tr></table><hr><h2>Example</h2><style>#stepsbox {
+    text-align: center;
+}</style><div class="example"><div ng-controller="stepDemoCtrl" id="stepsbox">
+    <p>只设置title和desc属性</p>
+    <uix-steps>
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}'
+                  desc="{{obj.desc}}"></uix-step>
+    </uix-steps>
+    <br/>
+    <br/>
+    <p>只设置title和icon属性</p>
+    <uix-steps>
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}'
+                  icon="{{obj.icon}}"></uix-step>
+    </uix-steps>
+    <br/>
+    <br/>
+    <p>只设置title和status属性</p>
+    <uix-steps>
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}'
+                  status="{{obj.status}}"></uix-step>
+    </uix-steps>
+    <br/>
+    <br/>
+    <p>设置所有属性</p>
+    <uix-steps>
+        <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}' desc='{{obj.desc}}' icon='{{obj.icon}}'
+                  status="{{obj.status}}"></uix-step>
+    </uix-steps>
+</div></div><script>angular.module('uixDemo').controller('stepDemoCtrl', ['$scope', function ($scope) {
+    // your js code here
+    $scope.objs = [{
+        'title': '标题一',
+        'desc': '我是描述一',
+        'icon': 'fa-user',
+        'status': 'wait'
+    }, {
+        'title': '标题二',
+        'desc': '我是描述二',
+        'icon': 'fa-user',
+        'status': 'process'
+    }, {
+        'title': '标题三',
+        'desc': '我是描述三',
+        'icon': '',
+        'status': 'finish'
+    }, {
+        'title': '标题四',
+        'desc': '我是描述四',
+        'icon': 'fa-user',
+        'status': 'error'
+    }];
+}]);
+</script><div><ul class="nav nav-tabs" id="codeTabs">
+    
+    <li class="active" data-tab="index_html"><a href="javascript:;">index.html</a></li>
+    
+    
+    <li class="" data-tab="script_js"><a href="javascript:;">script.js</a></li>
+    
+    
+    <li class="" data-tab="style_css"><a href="javascript:;">style.css</a></li>
+    
+</ul>
+<div class="tab-content" id="codeTabPabels">
+    
+    <div class="tab-pane active" id="index_html">
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">ng-controller</span>=<span class="hljs-string">"stepDemoCtrl"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"stepsbox"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>只设置title和desc属性<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-steps</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uix-step</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"obj in objs track by $index"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.title&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>
+                  <span class="hljs-attr">desc</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.desc&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-step</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-steps</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>只设置title和icon属性<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-steps</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uix-step</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"obj in objs track by $index"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.title&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>
+                  <span class="hljs-attr">icon</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.icon&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-step</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-steps</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>只设置title和status属性<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-steps</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uix-step</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"obj in objs track by $index"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.title&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>
+                  <span class="hljs-attr">status</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.status&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-step</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-steps</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>设置所有属性<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">uix-steps</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">uix-step</span> <span class="hljs-attr">ng-repeat</span>=<span class="hljs-string">"obj in objs track by $index"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.title&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span> <span class="hljs-attr">desc</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.desc&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span> <span class="hljs-attr">icon</span>=<span class="hljs-string">'</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.icon&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>
+                  <span class="hljs-attr">status</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable"><span>&#123;&#123;</span>obj.status&#125;&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">uix-step</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">uix-steps</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="script_js">
+<pre><code>angular.module(<span class="hljs-string">'uixDemo'</span>).controller(<span class="hljs-string">'stepDemoCtrl'</span>, [<span class="hljs-string">'$scope'</span>, <span class="hljs-keyword">function</span> ($scope) {
+    // your js code here
+    $scope.objs = [{
+        <span class="hljs-string">'title'</span>: <span class="hljs-string">'标题一'</span>,
+        <span class="hljs-string">'desc'</span>: <span class="hljs-string">'我是描述一'</span>,
+        <span class="hljs-string">'icon'</span>: <span class="hljs-string">'fa-user'</span>,
+        <span class="hljs-string">'status'</span>: <span class="hljs-string">'wait'</span>
+    }, {
+        <span class="hljs-string">'title'</span>: <span class="hljs-string">'标题二'</span>,
+        <span class="hljs-string">'desc'</span>: <span class="hljs-string">'我是描述二'</span>,
+        <span class="hljs-string">'icon'</span>: <span class="hljs-string">'fa-user'</span>,
+        <span class="hljs-string">'status'</span>: <span class="hljs-string">'process'</span>
+    }, {
+        <span class="hljs-string">'title'</span>: <span class="hljs-string">'标题三'</span>,
+        <span class="hljs-string">'desc'</span>: <span class="hljs-string">'我是描述三'</span>,
+        <span class="hljs-string">'icon'</span>: <span class="hljs-string">''</span>,
+        <span class="hljs-string">'status'</span>: <span class="hljs-string">'finish'</span>
+    }, {
+        <span class="hljs-string">'title'</span>: <span class="hljs-string">'标题四'</span>,
+        <span class="hljs-string">'desc'</span>: <span class="hljs-string">'我是描述四'</span>,
+        <span class="hljs-string">'icon'</span>: <span class="hljs-string">'fa-user'</span>,
+        <span class="hljs-string">'status'</span>: <span class="hljs-string">'error'</span>
+    }];
+}]);
+</code></pre>
+    </div>
+    
+    
+    <div class="tab-pane " id="style_css">
+<pre><code><span class="hljs-selector-id">#stepsbox</span> {
+    <span class="hljs-attribute">text-align</span>: center;
+}</code></pre>
+    </div>
+    
+</div>
+<script>
+    $(function () {
+        var tabs = $('#codeTabs > li'),
+            tabPanels = $('.tab-pane');
+        tabs.on('click',function (e) {
+            e.preventDefault();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+            var id = $(this).data('tab');
+            tabPanels.removeClass('active');
+            $('#'+id).addClass('active');
+        });
+    });
+</script></div>
