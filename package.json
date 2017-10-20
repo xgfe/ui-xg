@@ -1,6 +1,6 @@
 {
   "name": "ui-xg",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "UI directives based on angular and bootstrap",
   "main": "dist/js/ui-xg.js",
   "repository": {
@@ -9,8 +9,7 @@
   },
   "scripts": {
     "test": "gulp test",
-    "postinstall": "bower install",
-    "start": "http-server -a localhost -p 8001 -c-1 ./logs"
+    "postinstall": "bower install"
   },
   "keywords": [
     "UI",
