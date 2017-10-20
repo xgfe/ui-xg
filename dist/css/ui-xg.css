@@ -10,21 +10,6 @@
   .uix-alert .show-icon {
     padding-left: 20px; }
 
-.btn-group {
-  font-size: 0; }
-  .btn-group .btn-item {
-    font-size: 14px; }
-  .btn-group .btn-item:first-child:not(:last-child) {
-    border-radius: 6px;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    padding-right: 8px; }
-  .btn-group .btn-item:last-child:not(:first-child) {
-    border-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    padding-left: 8px; }
-
 .uix-button-wrapper .glyphicon-refresh-animate {
   -animation: uix-button-spin .7s infinite linear;
   -ms-animation: uix-button-spin .7s infinite linear;
@@ -51,116 +36,6 @@
 
 .uix-button-wrapper .inline-b {
   display: inline-block; }
-
-.uix-carousel {
-  position: relative; }
-
-.uix-cityselect-container {
-  max-height: 280px;
-  overflow-y: scroll; }
-  .uix-cityselect-container ul {
-    margin: 0;
-    padding: 0;
-    list-style: none; }
-    .uix-cityselect-container ul .uix-cityselect-cityselected {
-      float: left;
-      padding: 0 4px;
-      font-size: 12px;
-      background: #fafafa;
-      border: 1px solid #d2d2d2;
-      height: 24px;
-      line-height: 24px;
-      margin: 5px 8px 5px 0;
-      cursor: pointer; }
-      .uix-cityselect-container ul .uix-cityselect-cityselected :hover {
-        background-color: #3498db;
-        color: white; }
-
-.uix-cityselect-popoverwidth {
-  max-width: 581px; }
-
-.uix-cityselect-seeChosedCity {
-  color: #3498db;
-  cursor: pointer; }
-
-.uix-cityselect-initheight {
-  height: 0px;
-  overflow-y: hidden; }
-
-.uix-cityselect-chosecity {
-  background-color: rgba(52, 152, 219, 0.4); }
-  .uix-cityselect-chosecity a {
-    color: white !important; }
-
-.uix-cityselect-searchList {
-  max-width: 170px;
-  max-height: 270px;
-  overflow-y: scroll; }
-
-.uix-cityselect-showHot {
-  margin-top: 10px;
-  margin-bottom: 10px; }
-  .uix-cityselect-showHot button {
-    margin-right: 5px;
-    overflow-y: hidden; }
-    .uix-cityselect-showHot button i {
-      border-right-width: 0px; }
-
-.uix-cityselect-cityButton {
-  margin-right: 5px;
-  margin-top: 5px; }
-
-.uix-cityselect-haveChosed {
-  padding-bottom: 0px; }
-
-@-webkit-keyframes uixCityselectBarIn {
-  0% {
-    height: 0px; }
-  100% {
-    height: 340px; } }
-
-@-webkit-keyframes uixCityselectBarOut {
-  0% {
-    height: 340px; }
-  100% {
-    height: 0px; } }
-
-.uixCityselectCityBarOpen {
-  -webkit-animation: uixCityselectBarIn 0.75s forwards;
-  -moz-animation: uixCityselectBarIn 0.75s forwards;
-  animation: uixCityselectBarIn 0.75s forwards;
-  overflow-y: hidden; }
-
-.uixCityselectCityBarClose {
-  -webkit-animation: uixCityselectBarOut 0.75s forwards;
-  -moz-animation: uixCityselectBarOut 0.75s forwards;
-  animation: uixCityselectBarOut 0.75s forwards;
-  overflow-y: hidden; }
-
-.uix-cityselect-tab-container .uix-cityselect-tab-content {
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #dee5e7;
-  border-top-width: 0;
-  border-radius: 0 0 2px 2px;
-  height: 300px;
-  overflow-y: scroll; }
-
-.uix-cityselect-padding5 {
-  padding: 5px; }
-
-.uix-cityselect-border1 {
-  border: 1px solid #dee5e7; }
-
-.uix-cityselect-dropdown-menu {
-  max-height: 280px;
-  overflow-y: scroll; }
-  .uix-cityselect-dropdown-menu li a {
-    max-width: 170px;
-    overflow-x: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    cursor: pointer; }
 
 .uix-calendar {
   display: inline-block;
@@ -312,6 +187,131 @@
     color: #fff; }
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
+
+.uix-carousel {
+  position: relative; }
+
+.uix-cityselect-container {
+  max-height: 280px;
+  overflow-y: scroll; }
+  .uix-cityselect-container ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+    .uix-cityselect-container ul .uix-cityselect-cityselected {
+      float: left;
+      padding: 0 4px;
+      font-size: 12px;
+      background: #fafafa;
+      border: 1px solid #d2d2d2;
+      height: 24px;
+      line-height: 24px;
+      margin: 5px 8px 5px 0;
+      cursor: pointer; }
+      .uix-cityselect-container ul .uix-cityselect-cityselected :hover {
+        background-color: #3498db;
+        color: white; }
+
+.uix-cityselect-popoverwidth {
+  max-width: 581px; }
+
+.uix-cityselect-seeChosedCity {
+  color: #3498db;
+  cursor: pointer; }
+
+.uix-cityselect-initheight {
+  height: 0px;
+  overflow-y: hidden; }
+
+.uix-cityselect-chosecity {
+  background-color: rgba(52, 152, 219, 0.4); }
+  .uix-cityselect-chosecity a {
+    color: white !important; }
+
+.uix-cityselect-searchList {
+  max-width: 170px;
+  max-height: 270px;
+  overflow-y: scroll; }
+
+.uix-cityselect-showHot {
+  margin-top: 10px;
+  margin-bottom: 10px; }
+  .uix-cityselect-showHot button {
+    margin-right: 5px;
+    overflow-y: hidden; }
+    .uix-cityselect-showHot button i {
+      border-right-width: 0px; }
+
+.uix-cityselect-cityButton {
+  margin-right: 5px;
+  margin-top: 5px; }
+
+.uix-cityselect-haveChosed {
+  padding-bottom: 0px; }
+
+@-webkit-keyframes uixCityselectBarIn {
+  0% {
+    height: 0px; }
+  100% {
+    height: 340px; } }
+
+@-webkit-keyframes uixCityselectBarOut {
+  0% {
+    height: 340px; }
+  100% {
+    height: 0px; } }
+
+.uixCityselectCityBarOpen {
+  -webkit-animation: uixCityselectBarIn 0.75s forwards;
+  -moz-animation: uixCityselectBarIn 0.75s forwards;
+  animation: uixCityselectBarIn 0.75s forwards;
+  overflow-y: hidden; }
+
+.uixCityselectCityBarClose {
+  -webkit-animation: uixCityselectBarOut 0.75s forwards;
+  -moz-animation: uixCityselectBarOut 0.75s forwards;
+  animation: uixCityselectBarOut 0.75s forwards;
+  overflow-y: hidden; }
+
+.uix-cityselect-tab-container .uix-cityselect-tab-content {
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #dee5e7;
+  border-top-width: 0;
+  border-radius: 0 0 2px 2px;
+  height: 300px;
+  overflow-y: scroll; }
+
+.uix-cityselect-padding5 {
+  padding: 5px; }
+
+.uix-cityselect-border1 {
+  border: 1px solid #dee5e7; }
+
+.uix-cityselect-dropdown-menu {
+  max-height: 280px;
+  overflow-y: scroll; }
+  .uix-cityselect-dropdown-menu li a {
+    max-width: 170px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer; }
+
+.btn-group {
+  font-size: 0; }
+  .btn-group .btn-item {
+    font-size: 14px; }
+  .btn-group .btn-item:first-child:not(:last-child) {
+    border-radius: 6px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-right: 8px; }
+  .btn-group .btn-item:last-child:not(:first-child) {
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-left: 8px; }
 
 .uix-datepicker {
   position: relative; }
@@ -825,6 +825,13 @@ body > .uix-select.open {
 .uixstep:last-child .step-line {
   display: none; }
 
+.uix-steps {
+  width: 100%;
+  margin-left: 20px;
+  overflow: scroll;
+  white-space: nowrap;
+  height: 100px; }
+
 .uix-switch {
   cursor: pointer;
   position: relative;
@@ -913,13 +920,6 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
-.uix-steps {
-  width: 100%;
-  margin-left: 20px;
-  overflow: scroll;
-  white-space: nowrap;
-  height: 100px; }
-
 .uix-table-loader {
   word-wrap: break-word;
   position: relative; }
@@ -943,6 +943,9 @@ body > .uix-select.open {
     top: 50%;
     margin-left: -90px;
     margin-top: -30px; }
+
+.tab-panel-hidden {
+  display: none; }
 
 .uix-timepanel {
   display: inline-block;
@@ -993,9 +996,6 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
-
-.tab-panel-hidden {
-  display: none; }
 
 .uix-timepicker {
   position: relative; }

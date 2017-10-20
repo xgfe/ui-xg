@@ -1364,10 +1364,15 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             }
 
             function splitDate(date) {
+                var dt = new Date(date);
+                if (!angular.isDate(dt)) {
+                    $log.error('Calendar directive: date is not a Date Object');
+                    return;
+                }
                 return {
-                    year: date.getFullYear(),
-                    month: date.getMonth(),
-                    day: date.getDate()
+                    year: dt.getFullYear(),
+                    month: dt.getMonth(),
+                    day: dt.getDate()
                 };
             }
         }])
