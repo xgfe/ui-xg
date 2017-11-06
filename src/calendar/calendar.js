@@ -152,8 +152,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 var today = splitDate(new Date());
 
                 $scope.selectDate.setFullYear(today.year);
-                $scope.selectDate.setMonth(today.month);
+                $scope.selectDate.setMonth(0); // set to Jan firstly
                 $scope.selectDate.setDate(today.day);
+                $scope.selectDate.setMonth(today.month);
 
                 $scope.currentYear = today.year;
                 $scope.currentMonth = today.month;
