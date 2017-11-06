@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.1 - 2017-10-20
+ * Version: 2.1.3 - 2017-11-06
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -1036,8 +1036,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 var today = splitDate(new Date());
 
                 $scope.selectDate.setFullYear(today.year);
-                $scope.selectDate.setMonth(today.month);
+                $scope.selectDate.setMonth(0); // set to Jan firstly
                 $scope.selectDate.setDate(today.day);
+                $scope.selectDate.setMonth(today.month);
 
                 $scope.currentYear = today.year;
                 $scope.currentMonth = today.month;
