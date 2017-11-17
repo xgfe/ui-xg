@@ -384,6 +384,9 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                             return true;
                         };
                     $scope.ok = function () {
+                        if ($scope.loading) {
+                            return;
+                        }
                         var handler = okCallback();
                         $scope.loading = true;
                         $q.when(handler).then(function (success) {
