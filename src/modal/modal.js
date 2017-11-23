@@ -390,9 +390,10 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                         var handler = okCallback();
                         $scope.loading = true;
                         $q.when(handler).then(function (success) {
-                            $scope.loading = false;
                             if (success) {
                                 $uixModalInstance.close();
+                            } else {
+                                $scope.loading = false;
                             }
                         }, function () {
                             $scope.loading = false;
