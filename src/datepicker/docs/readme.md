@@ -19,6 +19,7 @@
     [ on-change="fn()" ]
     [ date-filter="function($date)" ]
     [ append-to-body="boolean" ]
+    [ placement="{{string}}" ]
     [ ng-disabled="boolean" ]>
 </uix-datepicker>
 ```
@@ -58,6 +59,9 @@
 - appendToBody(optional):是否将日历插入到body中
     - type:`boolean`
     - default: `false`
+- placement(optional):设定日期选择的弹出框位置，可取值参考<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a>组件
+    - type:`string`
+    - default:`"auto bottom-left"`
 - ngDisabled(optional): 是否禁用
     - type:`boolean`
     - default:`false`
