@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.5 - 2017-11-23
+ * Version: 2.1.6 - 2017-12-13
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -5042,16 +5042,21 @@ angular.module('ui.xg.pager', [])
             return $scope.page === $scope.totalPages;
         };
 
-        $scope.$watch('totalItems', function () {
+        var totalItemsWatcher = $scope.$watch('totalItems', function () {
             $scope.totalPages = self.calculateTotalPages();
         });
-
-        $scope.$watch('totalPages', function (value) {
-            if ($scope.page > value) {
-                $scope.selectPage(value);
-            } else {
+        var totalPagesWatcher = $scope.$watch('totalPages', function (value, oldValue) {
+            if (value === oldValue || $scope.page <= value) {
                 ngModelCtrl.$render();
+            } else {
+                $scope.selectPage(value);
             }
+        });
+
+        // 销毁监听器
+        $scope.$on('$destroy', function () {
+            totalItemsWatcher();
+            totalPagesWatcher();
         });
     }])
     .directive('uixPager', ['$parse', 'uixPagerConfig', function ($parse, uixPagerConfig) {
