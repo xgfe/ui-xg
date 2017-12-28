@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.5 - 2017-11-23
+ * Version: 2.1.7 - 2017-12-28
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -7828,7 +7828,10 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             loadingTpl.remove();
+                            errorTipTpl.remove();
+                            emptyTipTpl.remove();
                             tbody.show();
                         });
                     }
@@ -7840,9 +7843,11 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             errorTipTpl.show();
-                            loadingTpl.hide().before(errorTipTpl);
                             loadingTpl.remove();
+                            emptyTipTpl.remove();
+                            tbody.hide().before(errorTipTpl);
                         });
                     }
                 } else
@@ -7853,9 +7858,11 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             emptyTipTpl.show();
-                            loadingTpl.hide().before(emptyTipTpl);
                             loadingTpl.remove();
+                            errorTipTpl.remove();
+                            tbody.hide().before(emptyTipTpl);
                         });
                     }
                 }

@@ -70,7 +70,10 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             loadingTpl.remove();
+                            errorTipTpl.remove();
+                            emptyTipTpl.remove();
                             tbody.show();
                         });
                     }
@@ -82,9 +85,11 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             errorTipTpl.show();
-                            loadingTpl.hide().before(errorTipTpl);
                             loadingTpl.remove();
+                            emptyTipTpl.remove();
+                            tbody.hide().before(errorTipTpl);
                         });
                     }
                 } else
@@ -95,9 +100,11 @@ angular.module('ui.xg.tableLoader', [])
                             if(noThead) {
                                 thead.show();
                             }
+                            // fix #31
                             emptyTipTpl.show();
-                            loadingTpl.hide().before(emptyTipTpl);
                             loadingTpl.remove();
+                            errorTipTpl.remove();
+                            tbody.hide().before(emptyTipTpl);
                         });
                     }
                 }
