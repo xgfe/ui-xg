@@ -69,21 +69,16 @@ angular.module('ui.xg.pager', [])
             return $scope.page === $scope.totalPages;
         };
 
-        var totalItemsWatcher = $scope.$watch('totalItems', function () {
+        $scope.$watch('totalItems', function () {
             $scope.totalPages = self.calculateTotalPages();
         });
-        var totalPagesWatcher = $scope.$watch('totalPages', function (value, oldValue) {
-            if (value === oldValue || $scope.page <= value) {
-                ngModelCtrl.$render();
-            } else {
-                $scope.selectPage(value);
-            }
-        });
 
-        // 销毁监听器
-        $scope.$on('$destroy', function () {
-            totalItemsWatcher();
-            totalPagesWatcher();
+        $scope.$watch('totalPages', function (value) {
+            if ($scope.page > value) {
+                $scope.selectPage(value);
+            } else {
+                ngModelCtrl.$render();
+            }
         });
     }])
     .directive('uixPager', ['$parse', 'uixPagerConfig', function ($parse, uixPagerConfig) {
