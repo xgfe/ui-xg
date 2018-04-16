@@ -43,6 +43,22 @@ describe('loader', function () {
             }, 1000);
         });
 
+        it('should has a empty Tpl', function () {
+            expect(element.find('.loading').length).toBe(0);
+            expect(element.find('.empty-text').length).toBe(0);
+            $scope.$apply(function () {
+                $scope.isLoading = 1;
+            });
+            expect(element.find('.loading').length).toBe(1);
+            $scope.$apply(function () {
+                $scope.isLoading = 2;
+            });
+            $timeout(function () {
+                expect(element.find('.loading').length).toBe(0);
+                expect(element.find('.empty-text').length).toBe(1);
+            }, 1000);
+        });
+
         it('should has a error Tpl', function () {
             expect(element.find('.loading').length).toBe(0);
             expect(element.find('.error-tip').length).toBe(0);
