@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.7 - 2017-12-28
+ * Version: 2.1.7 - 2018-04-16
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -4036,6 +4036,9 @@ angular.module('ui.xg.loader', [])
             var errorTipTpl = $('<div class="error-tip">' +
                 '<span class="error-text">数据加载失败! </span>' +
                 '</div>');
+            var emptyTipTpl = $('<div class="error-tip">' +
+                '<span class="error-text empty-text">数据为空！</span>' +
+                '</div>');
             var startTimer, endTimer;
             $element.parent().addClass('uix-loader');
             $scope.$watch('uixLoader', function (newValue) {
@@ -4055,6 +4058,20 @@ angular.module('ui.xg.loader', [])
                         timeoutHandle(startTimer, endTimer, function () {
                             loadingTpl.remove();
                             $element.show();
+                        });
+                    }
+                } else
+                if (newValue === 2) {
+                    endTimer = new Date().getTime();
+                    if (startTimer) {
+                        timeoutHandle(startTimer, endTimer, function () {
+                            loadingTpl.remove();
+                            $element.after(emptyTipTpl);
+                            emptyTipTpl.show();
+                            emptyTipTpl.css('height', height);
+                            if (width) {
+                                emptyTipTpl.css('width', width);
+                            }
                         });
                     }
                 } else

@@ -10,21 +10,6 @@
   .uix-alert .show-icon {
     padding-left: 20px; }
 
-.btn-group {
-  font-size: 0; }
-  .btn-group .btn-item {
-    font-size: 14px; }
-  .btn-group .btn-item:first-child:not(:last-child) {
-    border-radius: 6px;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    padding-right: 8px; }
-  .btn-group .btn-item:last-child:not(:first-child) {
-    border-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    padding-left: 8px; }
-
 .uix-button-wrapper .glyphicon-refresh-animate {
   -animation: uix-button-spin .7s infinite linear;
   -ms-animation: uix-button-spin .7s infinite linear;
@@ -51,6 +36,21 @@
 
 .uix-button-wrapper .inline-b {
   display: inline-block; }
+
+.btn-group {
+  font-size: 0; }
+  .btn-group .btn-item {
+    font-size: 14px; }
+  .btn-group .btn-item:first-child:not(:last-child) {
+    border-radius: 6px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-right: 8px; }
+  .btn-group .btn-item:last-child:not(:first-child) {
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-left: 8px; }
 
 .uix-calendar {
   display: inline-block;
@@ -384,6 +384,8 @@
     top: 50%;
     margin-left: -90px;
     margin-top: -30px; }
+  .uix-loader .empty-text {
+    margin-left: -64px; }
 
 /*
  *  uix-notify-container styles
@@ -712,13 +714,6 @@ body > .uix-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
-.uix-steps {
-  width: 100%;
-  margin-left: 20px;
-  overflow: scroll;
-  white-space: nowrap;
-  height: 100px; }
-
 .uix-step {
   vertical-align: top;
   position: relative;
@@ -920,6 +915,16 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
+.uix-steps {
+  width: 100%;
+  margin-left: 20px;
+  overflow: scroll;
+  white-space: nowrap;
+  height: 100px; }
+
+.tab-panel-hidden {
+  display: none; }
+
 .uix-table-loader {
   word-wrap: break-word;
   position: relative; }
@@ -943,9 +948,6 @@ body > .uix-select.open {
     top: 50%;
     margin-left: -90px;
     margin-top: -30px; }
-
-.tab-panel-hidden {
-  display: none; }
 
 .uix-timepanel {
   display: inline-block;
