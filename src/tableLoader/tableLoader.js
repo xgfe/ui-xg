@@ -21,7 +21,7 @@ angular.module('ui.xg.tableLoader', [])
     })
 
     .controller('uixTableLoaderCtrl', ['$scope', '$timeout', '$element', '$window', 'uixTableLoader',
-        function ($scope, $timeout, $element, $window, uixTableLoader) {
+        '$document', function ($scope, $timeout, $element, $window, uixTableLoader, $document) {
 
             var $ = angular.element;
             var thead = $element.children('thead');
@@ -29,9 +29,11 @@ angular.module('ui.xg.tableLoader', [])
 
             var loadingTime = parseInt($scope.loadingTime, 10) || uixTableLoader.getLoadingTime();
             var noThead = $scope.noThead;
-            var windowHeight = $($window).height();
-            var footerHeight = parseInt($('.app-footer').css('height'), 10) || 0;
-            var tempHeight = windowHeight - footerHeight - $element.offset().top;
+            var tableDisplayType = tbody.css('display');
+            var theadDisplayType = thead.css('display');
+            var windowHeight = $window.clientHeight;
+            var footerHeight = parseInt($document.find('app-footer').css('height'), 10) || 0;
+            var tempHeight = windowHeight - footerHeight - $element.offsetTop;
             var height = parseInt($scope.loaderHeight, 10) || (tempHeight > 300) ? 300 : tempHeight;
 
             var loadingTpl = $('<tbody><tr><td colspan="100%">' +
@@ -56,25 +58,25 @@ angular.module('ui.xg.tableLoader', [])
                 if(newValue === 1) {
                     startTimer = new Date().getTime();
                     if(noThead) {
-                        thead.hide();
+                        thead.css('display', 'none');
                     }
                     errorTipTpl.remove();
                     emptyTipTpl.remove();
-                    loadingTpl.show();
-                    tbody.hide().before(loadingTpl);
+                    loadingTpl.css('display', tableDisplayType);
+                    tbody.css('display', 'none').after(loadingTpl);
                 } else
                 if(newValue === 0) {
                     endTimer = new Date().getTime();
                     if(startTimer) {
                         timeoutHandle(startTimer, endTimer, function () {
                             if(noThead) {
-                                thead.show();
+                                thead.css('display', theadDisplayType);
                             }
                             // fix #31
                             loadingTpl.remove();
                             errorTipTpl.remove();
                             emptyTipTpl.remove();
-                            tbody.show();
+                            tbody.css('display', tableDisplayType);
                         });
                     }
                 } else
@@ -83,13 +85,13 @@ angular.module('ui.xg.tableLoader', [])
                     if(startTimer) {
                         timeoutHandle(startTimer, endTimer, function () {
                             if(noThead) {
-                                thead.show();
+                                thead.css('display', theadDisplayType);
                             }
                             // fix #31
-                            errorTipTpl.show();
+                            errorTipTpl.remove();
                             loadingTpl.remove();
                             emptyTipTpl.remove();
-                            tbody.hide().before(errorTipTpl);
+                            tbody.css('display', 'none').after(errorTipTpl);
                         });
                     }
                 } else
@@ -98,13 +100,13 @@ angular.module('ui.xg.tableLoader', [])
                     if(startTimer) {
                         timeoutHandle(startTimer, endTimer, function () {
                             if(noThead) {
-                                thead.show();
+                                thead.css('display', theadDisplayType);
                             }
                             // fix #31
-                            emptyTipTpl.show();
+                            emptyTipTpl.remove();
                             loadingTpl.remove();
                             errorTipTpl.remove();
-                            tbody.hide().before(emptyTipTpl);
+                            tbody.css('display', 'none').after(emptyTipTpl);
                         });
                     }
                 }
