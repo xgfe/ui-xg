@@ -81,18 +81,24 @@
     }
 
     function getAttrClassFn(prefix, attrs, breakpoints, defaultProp) {
-        // .prefix-${media}-${prop}--value
+        // generate class for attr
         var attrFns = {};
-        var validate = {}
+
+        // attr value validate fns
+        // valid and return attr value
+        var validate = {};
+
         angular.forEach(attrs, function(validation, attr) {
             validate[attr] = getValueValid(validation);
             attrFns[attr] = getClass([prefix], function(value) {
+                // attr(not media attr) only support basic type value
                 var props = {};
                 props[attr] = value;
                 return props;
             });
         });
         angular.forEach(breakpoints, function(validation, attr) {
+            // media attr value support object
             attrFns[attr] = getClass([prefix, attr], parseProps);
         });
 
@@ -105,14 +111,20 @@
                     var validateFn = validate[prop];
                     if (angular.isFunction(validateFn)) {
                         var validValue = validateFn(value);
+
                         if (angular.isDefined(validValue)) {
                             var propClass = classPrefix;
+
+                            // omit default prop in class
                             if (prop !== defaultProp) {
                                 propClass += '-' + prop;
                             }
+
+                            // class exist / not exist, when attr only support boolean
                             if (validValue !== '') {
                                 propClass += '--' + validValue;
                             }
+
                             className.push(propClass);
                         }
                     }
