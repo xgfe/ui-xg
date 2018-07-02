@@ -5,15 +5,14 @@
  * Date:2018-06-21
  */
 (function () {
-    // TODO: args valid libs
     var GRID_COLUMN = 24;
     var GRID_BREAKPOINTS = {
-        'xs': [],
-        'sm': [],
-        'md': [],
-        'lg': [],
-        'xl': [],
-        'xxl': []
+        xs: [],
+        sm: [],
+        md: [],
+        lg: [],
+        xl: [],
+        xxl: []
     };
 
     var GRID_ATTR_PREFIX = 'uix-grid';
@@ -22,107 +21,34 @@
     var GRID_CLASS_PREFIX = 'uix-grid';
     var ITEM_CLASS_PREFIX = 'uix-grid-item';
 
-
     // Allowed attributes
-    var GRID_ATTRS = {};
-    angular.forEach({
-        type: {
-            default: 'row',
-            value: ['row', 'flex']
-        },
+    var GRID_ATTRS = getAttrClassFn(GRID_CLASS_PREFIX, {
         align: ['top', 'middle', 'bottom'],
         justify: ['start', 'end', 'center', 'around', 'between'],
-        reverse: function (value) {
-            if (value === '' || value === 'true') {
-                return 'reverse';
-            }
-        }
-    }, function (valid, attr) {
-        GRID_ATTRS[attr] = function (value, $parse) {
-            var className;
-            if (angular.isFunction(valid)) {
-                className = valid(value, $parse);
-            } else {
-                valid = angular.isArray(valid) ? { value: valid } : valid;
-                className = valid.value.indexOf(value) > -1 ? value : valid.default;
-            }
-            if (className) {
-                return GRID_CLASS_PREFIX + '-' + className;
-            }
-        };
-    });
-
-    var ITEM_ATTRS = {
-        span: true,
-        pull: true,
-        push: true,
-        offset: true,
-        order: true
-    };
-    angular.forEach(angular.extend(ITEM_ATTRS, GRID_BREAKPOINTS), function (valid, attr) {
-        ITEM_ATTRS[attr] = function (value, $parse) {
-            if (angular.isDefined(value)) {
-                // attr defined, but not set value
-                value = value ? $parse(value)() : '';
-
-                var props = {};
-                // structuring props
-                if (GRID_BREAKPOINTS[attr]) {
-                    // only support object value in media attr
-                    if (angular.isObject(value)) {
-                        props = value;
-                    } else {
-                        // media default attr 'span'
-                        props['span'] = value;
-                    }
-                } else {
-                    props[attr] = value;
-                }
-
-                var values = {};
-                // validate * format value
-                angular.forEach(props, function (value, prop) {
-                    // span, pull, push, offset, order
-                    var validProp = ITEM_ATTRS[prop] && !GRID_BREAKPOINTS[prop];
-                    var validValue = (
-                        angular.isNumber(value) && /^\d+$/.test(value) && value >= 0 && value <= GRID_COLUMN
-                    ) || (value === '' && prop === 'span');
-                    if (validProp && validValue) {
-                        values[prop] = value;
-                    }
-                });
-
-                var className = [];
-                // prefix / prefix-xs
-                var classPrefix = GRID_BREAKPOINTS[attr] ? ITEM_CLASS_PREFIX + '-' + attr : ITEM_CLASS_PREFIX;
-                angular.forEach(values, function (value, prop) {
-                    // prefix-span / prefix-xs-span / prefix-span--0
-                    var prefix = classPrefix + '-' + prop;
-                    if (angular.isNumber(value)) {
-                        prefix += '--' + value;
-                    }
-                    className.push(prefix);
-                });
-
-                if (className.length > 0) {
-                    return className.join(' ');
-                }
-            }
-        };
-    });
+        gutter: Boolean,
+        reverse: Boolean
+    }, GRID_BREAKPOINTS);
+    var ITEM_ATTRS = getAttrClassFn(ITEM_CLASS_PREFIX, {
+        span: { type: Number, valid: [0, GRID_COLUMN], default: true },
+        offset: { type: Number, valid: [0, GRID_COLUMN] },
+        order: { type: Number, valid: [0, GRID_COLUMN] }
+    }, GRID_BREAKPOINTS, 'span');
 
     angular.module('ui.xg.grid', [])
-        .directive('uixGrid', createDirective('A', GRID_ATTR_PREFIX, GRID_ATTRS))
-        .directive('uixGrid', createDirective('E', GRID_ATTR_PREFIX, GRID_ATTRS))
+        .directive('uixGrid', createDirective('A', GRID_ATTR_PREFIX, GRID_ATTRS, GRID_CLASS_PREFIX))
+        .directive('uixGrid', createDirective('E', GRID_ATTR_PREFIX, GRID_ATTRS, GRID_CLASS_PREFIX))
         .directive('uixGridItem', createDirective('E', ITEM_ATTR_PREFIX, ITEM_ATTRS))
         .directive('uixGridItem', createDirective('A', ITEM_ATTR_PREFIX, ITEM_ATTRS));
 
-    function createDirective(restrict, prefix, attrs) {
+    function createDirective(restrict, prefix, attrs, defaultClass) {
         return ['$parse', function ($parse) {
             var directive = {
                 restrict: restrict,
-                compile: function () {
+                compile: function (tElement) {
+                    defaultClass && tElement.addClass(defaultClass);
                     return function ($scope, $element, $attrs, controller, $transclude) {
+                        defaultClass && $element.addClass(defaultClass);
+
                         angular.forEach(attrs, function (getClass, attr) {
                             var attrName = getAttrName($attrs, prefix, attr);
 
@@ -152,6 +78,111 @@
 
             return directive;
         }];
+    }
+
+    function getAttrClassFn(prefix, attrs, breakpoints, defaultProp) {
+        // .prefix-${media}-${prop}--value
+        var attrFns = {};
+        var validate = {}
+        angular.forEach(attrs, function(validation, attr) {
+            validate[attr] = getValueValid(validation);
+            attrFns[attr] = getClass([prefix], function(value) {
+                var props = {};
+                props[attr] = value;
+                return props;
+            });
+        });
+        angular.forEach(breakpoints, function(validation, attr) {
+            attrFns[attr] = getClass([prefix, attr], parseProps);
+        });
+
+        function getClass(prefixs, parse) {
+            // prefix / prefix-${media}
+            var classPrefix = prefixs.join('-');
+            return function(value, $parse) {
+                var className = [];
+                angular.forEach(parse(value, $parse), function(value, prop) {
+                    var validateFn = validate[prop];
+                    if (angular.isFunction(validateFn)) {
+                        var validValue = validateFn(value);
+                        if (angular.isDefined(validValue)) {
+                            var propClass = classPrefix;
+                            if (prop !== defaultProp) {
+                                propClass += '-' + prop;
+                            }
+                            if (validValue !== '') {
+                                propClass += '--' + validValue;
+                            }
+                            className.push(propClass);
+                        }
+                    }
+                });
+
+                if (className.length > 0) {
+                    return className.join(' ');
+                }
+            };
+        }
+
+        function getValueValid(validation) {
+            if (angular.isArray(validation)) {
+                return function(value) {
+                    if (validation.indexOf(value) > -1) {
+                        return value;
+                    }
+                };
+            }
+
+            if (validation === Boolean) {
+                return function(value) {
+                    if (value === '' || value === 'true') {
+                        return '';
+                    }
+                };
+            }
+
+            if (angular.isObject(validation)) {
+                if (validation.type === Number) {
+                    return function(value) {
+                        if (value === '') {
+                            if (validation.default) {
+                                return '';
+                            }
+                        }
+
+                        if (
+                            /^\d+$/.test(value)
+                            && value >= validation.valid[0]
+                            && value <= validation.valid[1]
+                        ) {
+                            return parseInt(value, 10);
+                        }
+                    };
+                }
+            }
+
+            if (angular.isFunction(validation)) {
+                return validation;
+            }
+
+            return function() {};
+        }
+
+        function parseProps(value, $parse) {
+            var props = {}; // structuring props
+            // only support object value in media attr
+            value = value ? $parse(value)() : value;
+            if (angular.isObject(value)) {
+                props = value;
+            } else {
+                if (defaultProp) {
+                    props[defaultProp] = value;
+                }
+            }
+            return props;
+        }
+
+        return attrFns;
     }
 
     function getAttrName($attrs, prefix, name) {
