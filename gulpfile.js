@@ -15,6 +15,11 @@ var gulp = require('gulp'),
     renderer = new marked.Renderer(),
     highlight = require('highlight.js'),
     conventionalChangelog = require('gulp-conventional-changelog'),
+    webpackConfig = require('./misc/dev-server/webpack.dev.conf.js'),
+    express = require('express'),
+    gulpWatch = require('gulp-watch'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    webpack = require('webpack'),
     ejs = require('ejs');
 
 var config = {
@@ -139,6 +144,7 @@ function findModule(name) {
         moduleName: enquote(config.moduleName + '.' + name),
         srcFiles: _.matchFile(config.src + '/' + name + '/*.js'),
         cssFiles: _.matchFile(config.src + '/' + name + '/*.css'),
+        scssFiles: _.matchFile(config.src + '/' + name + '/*.scss'),
         tplFiles: _.matchFile(config.src + '/' + name + '/templates/*.html'),
         tpljsFiles: _.matchFile(config.src + '/' + name + '/templates/*.html.js'),
         tplModules: _.matchFile(config.src + '/' + name + '/templates/*.html').map(getTplModule),
@@ -503,7 +509,6 @@ function createPartial(module, docPath) {
     var jsCode = highlight.highlightAuto(js).value;
     var cssCode = highlight.highlightAuto(css).value;
 
-
     data.html = htmlCode || '';
     data.js = jsCode || '';
     data.css = cssCode || '';
@@ -534,6 +539,81 @@ gulp.task('changelog', function () {
             preset: 'angular'
         }))
         .pipe(gulp.dest('./'));
+});
+// 本地开发server
+gulp.task('webpack', function () {
+    var module = process.argv.slice(3).map(function (argv) {
+        return argv.slice(1);
+    })[0];
+    if (!module) {
+        return;
+    }
+    var addRelativePath = function (path) {
+        return './' + path;
+    };
+    var deps = [module].concat(dependenciesForModule(module, {}));
+    var entry = {
+        'angular.js': './bower_components/angular/angular.min.js',
+        'bootstrap.css': './bower_components/bootstrap/dist/css/bootstrap.min.css'
+    };
+    var thisMod = config.modules.find(function (mod) {
+        return mod.name === module;
+    });
+    var depModules = config.modules.filter(function (mod) {
+        return deps.indexOf(mod.name) !== -1;
+    });
+    var depModules2 = [];
+    depModules.forEach(function (mod) {
+        entry[mod.name] = [].concat(mod.srcFiles.map(addRelativePath), mod.scssFiles.map(addRelativePath), mod.tpljsFiles.map(addRelativePath));
+        depModules2 = depModules2.concat(mod.moduleName, mod.tplModules);
+    });
+    var jsContent = 'var app = angular.module("uixDemo",[' + depModules2 + ']);\n';
+    jsContent += thisMod.docs.js;
+    var htmlContent = thisMod.docs.html;
+    var cssContent = thisMod.docs.css;
+    webpackConfig.entry = entry;
+    webpackConfig.plugins.push(new HtmlWebpackPlugin({
+        opts: {
+            jsContent: jsContent,
+            htmlContent: htmlContent,
+            cssContent: cssContent
+        },
+        template: 'misc/dev-server/dev-template.html',
+        inject: 'head'
+    }));
+    var app = express();
+    var compiler = webpack(webpackConfig);
+
+    var devMiddleware = require('webpack-dev-middleware')(compiler, {
+        publicPath: webpackConfig.output.publicPath,
+        quiet: true
+    });
+
+    app.use(devMiddleware);
+
+    var uri = 'http://localhost:8000';
+
+    devMiddleware.waitUntilValid(function () {
+        _.log('> Listening at ' + uri + '\n');
+    });
+
+    // 监听模板文件变动
+    gulpWatch(config.src + '/' + module + '/templates/*.html', function () {
+        runSequence('html2js');
+    });
+    app.listen(8000, function (err) {
+        if (err) {
+            return _.log(err);
+        }
+    });
+});
+// 启动本地服务
+gulp.task('serve', function (done) {
+    runSequence(
+        'html2js',
+        'modules',
+        'webpack',
+        done);
 });
 gulp.task('test', ['karma']);
 gulp.task('build', function (done) {
