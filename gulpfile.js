@@ -542,9 +542,11 @@ gulp.task('changelog', function () {
 });
 // 本地开发server
 gulp.task('webpack', function () {
-    var module = process.argv.slice(3).map(function (argv) {
+    var args = process.argv.slice(3);
+    var module = args.map(function (argv) {
         return argv.slice(1);
     })[0];
+    var hasBs = args.indexOf('--bs') !== -1;
     if (!module) {
         return;
     }
@@ -553,9 +555,12 @@ gulp.task('webpack', function () {
     };
     var deps = [module].concat(dependenciesForModule(module, {}));
     var entry = {
-        'angular.js': './bower_components/angular/angular.min.js',
-        'bootstrap.css': './bower_components/bootstrap/dist/css/bootstrap.min.css'
+        'angular.js': './bower_components/angular/angular.min.js'
     };
+    // 如果需要bootstrap，则引入资源
+    if (hasBs) {
+        entry['bootstrap.css'] = './node_modules/bootstrap/dist/css/bootstrap.min.css';
+    }
     var thisMod = config.modules.find(function (mod) {
         return mod.name === module;
     });
