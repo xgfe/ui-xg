@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.8 - 2018-04-23
+ * Version: 2.1.9 - 2018-07-23
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -4501,6 +4501,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                 size: 'sm',
                 controller: ['$scope', '$uixModalInstance', function ($scope, $uixModalInstance) {
                     $scope.modalBodyText = opt.content || '';
+                    $scope.confirmBtnText = opt.confirmBtnText || '确定';
+                    $scope.cancelBtnText = opt.cancelBtnText || '取消';
                     var okCallback = opt.confirm ||
                         function () {
                             return true;
@@ -4535,7 +4537,9 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
             scope: {
                 content: '@uixConfirm',
                 confirm: '&',
-                cancel: '&'
+                cancel: '&',
+                confirmBtnText: '@',
+                cancelBtnText: '@'
             },
             replace: true,
             link: function (scope, element, attrs) {
@@ -4543,6 +4547,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                 element.on('click', function () {
                     var modalInstance = $uixConfirm({
                         content: content,
+                        confirmBtnText: scope.confirmBtnText,
+                        cancelBtnText: scope.cancelBtnText,
                         confirm: function () {
                             return attrs.confirm ? scope.confirm({
                                 $modal: modalInstance
@@ -8844,8 +8850,8 @@ angular.module("modal/templates/confirm.html",[]).run(["$templateCache",function
     "<!-- 公共的confirmModal -->"+
     "<div class=\"modal-body\" ng-bind=\"modalBodyText\"></div>"+
     "<div class=\"modal-footer\">"+
-    "    <uix-button class=\"btn btn-primary btn-sm\" b-type=\"button\" ng-click=\"ok()\" loading=\"loading\" ng-disabled=\"loading\">确定</uix-button>"+
-    "    <button class=\"btn btn-default btn-sm\" ng-click=\"cancel()\">取消</button>"+
+    "    <uix-button class=\"btn btn-primary btn-sm\" b-type=\"button\" ng-click=\"ok()\" loading=\"loading\" ng-disabled=\"loading\">{{confirmBtnText}}</uix-button>"+
+    "    <button class=\"btn btn-default btn-sm\" ng-click=\"cancel()\">{{cancelBtnText}}</button>"+
     "</div>"+
     "");
 }]);

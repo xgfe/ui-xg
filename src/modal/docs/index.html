@@ -5,7 +5,9 @@
     <button class="btn btn-default" ng-click="open('xl')">Extra Large modal</button>
     <br>
     <button class="btn btn-default" ng-click="confirm()">Confirm modal By Factory</button>
-    <button class="btn btn-default" uix-confirm="我是一个ConfirmModal" confirm="onConfirm()" cancel="onCancel($modal)">Confirm modal By Directive</button>
+    <button class="btn btn-default" uix-confirm="我是一个ConfirmModal"
+            confirm-btn-text="确认" cancel-btn-text="不确认"
+            confirm="onConfirm()" cancel="onCancel($modal)">Confirm modal By Directive</button>
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
     <pre>{{items | json}}</pre>
     <script type="text/ng-template" id="modalContent.html">

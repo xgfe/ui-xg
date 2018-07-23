@@ -1,6 +1,6 @@
 <!-- 公共的confirmModal -->
 <div class="modal-body" ng-bind="modalBodyText"></div>
 <div class="modal-footer">
-    <uix-button class="btn btn-primary btn-sm" b-type="button" ng-click="ok()" loading="loading" ng-disabled="loading">确定</uix-button>
-    <button class="btn btn-default btn-sm" ng-click="cancel()">取消</button>
+    <uix-button class="btn btn-primary btn-sm" b-type="button" ng-click="ok()" loading="loading" ng-disabled="loading">{{confirmBtnText}}</uix-button>
+    <button class="btn btn-default btn-sm" ng-click="cancel()">{{cancelBtnText}}</button>
 </div>

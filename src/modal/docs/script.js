@@ -4,6 +4,8 @@ angular.module('uixDemo').controller('modalDemoCtrl', ['$scope', '$timeout', '$l
         $scope.confirm = function () {
             $uixConfirm({
                 content: '确定执行操作吗?',
+                confirmBtnText: '好的',
+                cancelBtnText: '不好',
                 confirm: $scope.onConfirm
             });
         };
