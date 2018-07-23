@@ -379,6 +379,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                 size: 'sm',
                 controller: ['$scope', '$uixModalInstance', function ($scope, $uixModalInstance) {
                     $scope.modalBodyText = opt.content || '';
+                    $scope.confirmBtnText = opt.confirmBtnText || '确定';
+                    $scope.cancelBtnText = opt.cancelBtnText || '取消';
                     var okCallback = opt.confirm ||
                         function () {
                             return true;
@@ -413,7 +415,9 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
             scope: {
                 content: '@uixConfirm',
                 confirm: '&',
-                cancel: '&'
+                cancel: '&',
+                confirmBtnText: '@',
+                cancelBtnText: '@'
             },
             replace: true,
             link: function (scope, element, attrs) {
@@ -421,6 +425,8 @@ angular.module('ui.xg.modal', ['ui.xg.stackedMap', 'ui.xg.transition', 'ui.xg.bu
                 element.on('click', function () {
                     var modalInstance = $uixConfirm({
                         content: content,
+                        confirmBtnText: scope.confirmBtnText,
+                        cancelBtnText: scope.cancelBtnText,
                         confirm: function () {
                             return attrs.confirm ? scope.confirm({
                                 $modal: modalInstance
