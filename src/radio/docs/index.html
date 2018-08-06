@@ -1,0 +1,157 @@
+<div ng-controller="radioDemoCtrl">
+    <style>
+        .demoBox {
+            border: 1px solid #eeeeee;
+            margin: 5px;
+            padding: 15px;
+        }
+    </style>
+    <div class="demoBox">
+        <h4>基本</h4>
+        <p>最简单的用法。</p>
+        <uix-radio>Radio</uix-radio>
+    </div>
+
+    <div class="demoBox">
+        <h4>单选组合</h4>
+        <p>一组互斥的 Radio 配合使用</p>
+        <p>可以指定name</p>
+
+        <uix-radio-group name="demoName" change-fn="changedFn(value)" value="2">
+            <uix-radio value="1">A</uix-radio>
+            <uix-radio value="2">B</uix-radio>
+            <uix-radio value="3">C</uix-radio>
+            <uix-radio value="4">D</uix-radio>
+        </uix-radio-group>
+    </div>
+
+    <div class="demoBox">
+        <h4>RadioGroup 指令 - 配置方式</h4>
+        <p>通过配置 options 参数来渲染单选框。</p>
+
+        <uix-radio-group options="state1.plainOptions" disabled="true" change-fn="changedFn(value)" value="state1.value1"></uix-radio-group>
+        <uix-radio-group options="state1.options" change-fn="changedFn(value)" value="state1.value2"></uix-radio-group>
+        <uix-radio-group options="state1.options" change-fn="changedFn(value)"></uix-radio-group>
+        <uix-radio-group options="state1.optionsWithDisabled" change-fn="changedFn(value)" value="state1.value3"></uix-radio-group>
+    </div>
+    <div class="demoBox">
+        <h4>RadioGroup 垂直</h4>
+        <p>可以垂直排列</p>
+
+        <uix-radio-group change-fn="changedFn(value)" value="2">
+            <uix-radio style="display:block;height:30px;line-height:30px" value="1">A</uix-radio>
+            <uix-radio style="display:block;height:30px;line-height:30px" value="2">B</uix-radio>
+            <uix-radio style="display:block;height:30px;line-height:30px" value="3">C</uix-radio>
+            <uix-radio style="display:block;height:30px;line-height:30px" value="4">D</uix-radio>
+        </uix-radio-group>
+    </div>
+
+    <div class="demoBox">
+        <h4>不可用</h4>
+        <p>Radio 不可用。</p>
+        <uix-radio default-checked="false" name="toggleR" disabled="disabled">Disabled2</uix-radio>
+        <br />
+        <uix-radio default-checked name="toggleR" disabled="disabled">Disabled3</uix-radio>
+        <br>
+        <div>
+            <Button type="primary" ng-click="toggleDisabledFn()">
+                Toggle disabled2
+            </Button>
+        </div>
+    </div>
+
+    <div class="demoBox">
+        <h4>填底的按钮样式</h4>
+        <p>实色填底的单选按钮样式。</p>
+        <div>
+            <uix-radio-group value="1" change-fn="changedFn(value)">
+                <uix-radio-btn value="1">Beijing1</uix-radio-btn>
+                <uix-radio-btn value="2">qingdao1</uix-radio-btn>
+                <uix-radio-btn value="3">chengde</uix-radio-btn>
+                <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+            </uix-radio-group>
+        </div>
+        <div>
+            <uix-radio-group change-fn="changedFn(value)" value="4">
+                <uix-radio-btn value="1">Beijing2</uix-radio-btn>
+                <uix-radio-btn value="2" disabled>qingdao2</uix-radio-btn>
+                <uix-radio-btn value="3">chengde</uix-radio-btn>
+                <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+            </uix-radio-group>
+        </div>
+        <div>
+            <uix-radio-group disabled="true" change-fn="changedFn(value)" value="2">
+                <uix-radio-btn value="1">Beijing3</uix-radio-btn>
+                <uix-radio-btn value="2">qingdao3</uix-radio-btn>
+                <uix-radio-btn value="3">chengde</uix-radio-btn>
+                <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+            </uix-radio-group>
+        </div>
+    </div>
+    <div class="demoBox">
+        <h4>按钮样式</h4>
+        <p>按钮样式的单选组合。</p>
+
+        <uix-radio-group btn-style="success" change-fn="changedFn(value)" value="1">
+            <uix-radio-btn value="1">Beijingsss</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+
+        <uix-radio-group btn-style="info" change-fn="changedFn(value)" value="1">
+            <uix-radio-btn value="1">Beijingiii</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+
+        <uix-radio-group btn-style="warning" change-fn="changedFn(value)" value="1">
+            <uix-radio-btn value="1">Beijingwww</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+
+        <uix-radio-group btn-style="danger" change-fn="changedFn(value)" value="1">
+            <uix-radio-btn value="1">Beijingddd</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+    </div>
+
+    <div class="demoBox">
+        <h4>大小</h4>
+        <p>大中小三种组合，可以和表单输入框进行对应配合。</p>
+        
+        <uix-radio-group value="3" change-fn="changedFn(value)" size="lg">
+            <uix-radio-btn value="1">Beijing</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+        
+        <uix-radio-group value="2" change-fn="changedFn(value)">
+            <uix-radio-btn value="1">Beijing</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+
+        <uix-radio-group value="1" size="sm" change-fn="changedFn(value)">
+            <uix-radio-btn value="1">Beijing</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+
+        <uix-radio-group value="1" size="xs" change-fn="changedFn(value)">
+            <uix-radio-btn value="1">Beijing</uix-radio-btn>
+            <uix-radio-btn value="2">qingdao</uix-radio-btn>
+            <uix-radio-btn value="3">chengde</uix-radio-btn>
+            <uix-radio-btn value="4">guangzhou</uix-radio-btn>
+        </uix-radio-group>
+    </div>
+
+</div>
