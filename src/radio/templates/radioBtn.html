@@ -1,0 +1,6 @@
+<label class="uix-radio-btn">
+    <button ng-class="{true:radioBtnChecked,false:radioBtnDefault}[optionValue === state.value]"
+        class="{{btnClassGroup}}" type="button" ng-click="btnModelFn(state, optionValue)" ng-disabled="disabled">
+        <ng-transclude></ng-transclude>
+    </button>
+</label>
