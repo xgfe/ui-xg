@@ -13,6 +13,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         autoClose: true, // 是否自动关闭面板,
         clearBtn: false,
         showTime: true,
+        showSeconds: true,
         size: 'md',
         appendToBody: false,
         placement: 'auto bottom-left'
@@ -77,7 +78,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
 
-                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement'], function (key) {
+                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement', 'showSeconds'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });

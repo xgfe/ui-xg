@@ -421,6 +421,41 @@ describe('ui.xg.datepicker', function () {
             expect(findTimeHandler().length).toBe(0);
         });
     });
+    describe('showSeconds attribute', function () {
+        function showTimeHandler() {
+            return getCalendarPanel().find('.uix-cal-time').click();
+        }
+
+        function findSecondsInput() {
+            return getCalendarPanel().find('.uix-timepanel-seconds');
+        }
+
+        it('should show seconds by default', function () {
+            var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
+            scope.time = getDate();
+            createDatepicker(el);
+            clickToggleButton();
+            showTimeHandler().click();
+            expect(findSecondsInput()).not.toHaveClass('ng-hide');
+        });
+        it('should show seconds when showSecond attr is true', function () {
+            var el = '<uix-datepicker ng-model="time" show-seconds="showSeonds"></uix-datepicker>';
+            scope.time = getDate();
+            scope.showSeonds = true;
+            createDatepicker(el);
+            clickToggleButton();
+            showTimeHandler().click();
+            expect(findSecondsInput()).not.toHaveClass('ng-hide');
+        });
+        it('should not show seconds when showSecond attr is false', function () {
+            var el = '<uix-datepicker show-seconds="false" ng-model="time"></uix-datepicker>';
+            scope.time = getDate();
+            createDatepicker(el);
+            clickToggleButton();
+            showTimeHandler().click();
+            expect(findSecondsInput()).toHaveClass('ng-hide');
+        });
+    });
     describe('size attribute', function () {
         it('should be middle size by default', function () {
             var el = '<uix-datepicker ng-model="time"></uix-datepicker>';
