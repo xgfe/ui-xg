@@ -8,6 +8,7 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
     .constant('uixCalendarConfig', {
         startingDay: 0, // 一周的开始天,0-周日,1-周一,以此类推
         showTime: true, // 是否显示时间选择
+        showSeconds: true, // 是否显示秒
         minDate: null, // 最小可选日期
         maxDate: null, // 最大可选日期
         exceptions: []  // 不可选日期中的例外,比如3月份的日期都不可选,但是3月15日却是可选择的
@@ -66,6 +67,10 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             });
             $scope.showTime = angular.isDefined($attrs.showTime)
                 ? $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime;
+
+            // 是否展示秒
+            $scope.showSeconds = angular.isDefined($attrs.showSeconds)
+                ? $scope.$parent.$eval($attrs.showSeconds) : calendarConfig.showSeconds;
 
 
             if (self.startingDay > 6 || self.startingDay < 0) {

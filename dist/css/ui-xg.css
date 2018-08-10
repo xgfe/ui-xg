@@ -1,15 +1,3 @@
-.uix-alert {
-  word-wrap: break-word; }
-  .uix-alert .alert-icon {
-    float: left; }
-  .uix-alert .alert-icon-span {
-    position: relative;
-    top: 2px; }
-  .uix-alert .cancel-text {
-    font-size: 20px; }
-  .uix-alert .show-icon {
-    padding-left: 20px; }
-
 .uix-button-wrapper .glyphicon-refresh-animate {
   -animation: uix-button-spin .7s infinite linear;
   -ms-animation: uix-button-spin .7s infinite linear;
@@ -36,6 +24,18 @@
 
 .uix-button-wrapper .inline-b {
   display: inline-block; }
+
+.uix-alert {
+  word-wrap: break-word; }
+  .uix-alert .alert-icon {
+    float: left; }
+  .uix-alert .alert-icon-span {
+    position: relative;
+    top: 2px; }
+  .uix-alert .cancel-text {
+    font-size: 20px; }
+  .uix-alert .show-icon {
+    padding-left: 20px; }
 
 .btn-group {
   font-size: 0; }
@@ -714,13 +714,6 @@ body > .uix-select.open {
     margin-left: 2px;
     border-right: 1px solid #428bca; }
 
-.uix-steps {
-  width: 100%;
-  margin-left: 20px;
-  overflow: scroll;
-  white-space: nowrap;
-  height: 100px; }
-
 .uix-step {
   vertical-align: top;
   position: relative;
@@ -833,6 +826,13 @@ body > .uix-select.open {
 
 .uixstep:last-child .step-line {
   display: none; }
+
+.uix-steps {
+  width: 100%;
+  margin-left: 20px;
+  overflow: scroll;
+  white-space: nowrap;
+  height: 100px; }
 
 .uix-switch {
   cursor: pointer;
