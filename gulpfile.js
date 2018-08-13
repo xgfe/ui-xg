@@ -282,10 +282,17 @@ gulp.task('modules', function () {
 /**
  * 拼接js和css
  */
+// 样式重新组织
+// gulp.task('sass', function () {
+//     return gulp.src([config.src + '/index.scss'])
+//         .pipe(sass().on('error', sass.logError))
+//         .pipe(gulp.dest('./' + config.dist + '/css/'));
+// });
 gulp.task('sass', function () {
-    return gulp.src(config.src + '/*/*.scss')
+    return gulp.src(config.src + '/index.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest(config.src));
+        .pipe(rename({basename: config.filename}))
+        .pipe(gulp.dest('./' + config.dist + '/css/'));
 });
 gulp.task('concat:css', function () {
     var src = config.modules.map(function (module) {
@@ -555,7 +562,9 @@ gulp.task('webpack', function () {
     };
     var deps = [module].concat(dependenciesForModule(module, {}));
     var entry = {
-        'angular.js': './bower_components/angular/angular.min.js'
+        'angular.js': './bower_components/angular/angular.min.js',
+        'index.scss': './src/index.scss',
+        'bootstrap.glyphicons.css': './lib/bootstrap-glyphicons/css/bootstrap.css'
     };
     // 如果需要bootstrap，则引入资源
     if (hasBs) {
@@ -567,12 +576,12 @@ gulp.task('webpack', function () {
     var depModules = config.modules.filter(function (mod) {
         return deps.indexOf(mod.name) !== -1;
     });
-    var depModules2 = [];
+    var depModulesList = [];
     depModules.forEach(function (mod) {
-        entry[mod.name] = [].concat(mod.srcFiles.map(addRelativePath), mod.scssFiles.map(addRelativePath), mod.tpljsFiles.map(addRelativePath));
-        depModules2 = depModules2.concat(mod.moduleName, mod.tplModules);
+        entry[mod.name] = [].concat(mod.srcFiles.map(addRelativePath), mod.tpljsFiles.map(addRelativePath));
+        depModulesList = depModulesList.concat(mod.moduleName, mod.tplModules);
     });
-    var jsContent = 'var app = angular.module("uixDemo",[' + depModules2 + ']);\n';
+    var jsContent = 'var app = angular.module("uixDemo",[' + depModulesList + ']);\n';
     jsContent += thisMod.docs.js;
     var htmlContent = thisMod.docs.html;
     var cssContent = thisMod.docs.css;
@@ -627,7 +636,7 @@ gulp.task('build', function (done) {
         'eslint',
         'html2js',
         ['sass', 'modules'],
-        ['concat:css', 'concat:js'],
+        ['concat:js'],
         'uglify',
         'copy',
         'docs:api',
