@@ -45,9 +45,14 @@
             var directive = {
                 restrict: restrict,
                 compile: function (tElement) {
-                    defaultClass && tElement.addClass(defaultClass);
+                    if (defaultClass) {
+                        tElement.addClass(defaultClass);
+                    }
+
                     return function ($scope, $element, $attrs, controller, $transclude) {
-                        defaultClass && $element.addClass(defaultClass);
+                        if (defaultClass) {
+                            $element.addClass(defaultClass);
+                        }
 
                         angular.forEach(attrs, function (getClass, attr) {
                             var attrName = getAttrName($attrs, prefix, attr);
@@ -88,16 +93,16 @@
         // valid and return attr value
         var validate = {};
 
-        angular.forEach(attrs, function(validation, attr) {
+        angular.forEach(attrs, function (validation, attr) {
             validate[attr] = getValueValid(validation);
-            attrFns[attr] = getClass([prefix], function(value) {
+            attrFns[attr] = getClass([prefix], function (value) {
                 // attr(not media attr) only support basic type value
                 var props = {};
                 props[attr] = value;
                 return props;
             });
         });
-        angular.forEach(breakpoints, function(validation, attr) {
+        angular.forEach(breakpoints, function (validation, attr) {
             // media attr value support object
             attrFns[attr] = getClass([prefix, attr], parseProps);
         });
@@ -105,9 +110,9 @@
         function getClass(prefixs, parse) {
             // prefix / prefix-${media}
             var classPrefix = prefixs.join('-');
-            return function(value, $parse) {
+            return function (value, $parse) {
                 var className = [];
-                angular.forEach(parse(value, $parse), function(value, prop) {
+                angular.forEach(parse(value, $parse), function (value, prop) {
                     var validateFn = validate[prop];
                     if (angular.isFunction(validateFn)) {
                         var validValue = validateFn(value);
@@ -138,7 +143,7 @@
 
         function getValueValid(validation) {
             if (angular.isArray(validation)) {
-                return function(value) {
+                return function (value) {
                     if (validation.indexOf(value) > -1) {
                         return value;
                     }
@@ -146,7 +151,7 @@
             }
 
             if (validation === Boolean) {
-                return function(value) {
+                return function (value) {
                     if (value === '' || value === 'true') {
                         return '';
                     }
@@ -155,18 +160,14 @@
 
             if (angular.isObject(validation)) {
                 if (validation.type === Number) {
-                    return function(value) {
+                    return function (value) {
                         if (value === '') {
                             if (validation.default) {
                                 return '';
                             }
                         }
 
-                        if (
-                            /^\d+$/.test(value)
-                            && value >= validation.valid[0]
-                            && value <= validation.valid[1]
-                        ) {
+                        if (/^\d+$/.test(value) && value >= validation.valid[0] && value <= validation.valid[1]) {
                             return parseInt(value, 10);
                         }
                     };
@@ -177,7 +178,7 @@
                 return validation;
             }
 
-            return function() {};
+            return function () {};
         }
 
         function parseProps(value, $parse) {
