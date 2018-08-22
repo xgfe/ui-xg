@@ -5,7 +5,7 @@ describe('ui.xg.grid', function () {
 
     beforeEach(function () {
         module('ui.xg.grid');
-        inject(function( $compile, $rootScope) {
+        inject(function ($compile, $rootScope) {
             compile = $compile;
             scope = $rootScope.$new();
         });
@@ -36,35 +36,35 @@ describe('ui.xg.grid', function () {
             reverse: ['', 'true']
         };
 
-        Object.keys(attrs).forEach(function(attr) {
-            attrs[attr].forEach(function(value) {
+        Object.keys(attrs).forEach(function (attr) {
+            attrs[attr].forEach(function (value) {
                 scope.media = {};
                 scope.media[attr] = value;
                 scope.value = value;
 
-                createElement(`
-                    <uix-grid
-                        uix-grid-${attr}="{{value}}"
-                        uix-grid-xs="{{media}}"
-                        uix-grid-sm="{{media}}"
-                        uix-grid-md="{{media}}"
-                        uix-grid-lg="{{media}}"
-                        uix-grid-xl="{{media}}"
-                        uix-grid-xxl="{{media}}"
-                    ></uix-grid>
-                `);
+                createElement([
+                    ' <uix-grid                             ',
+                    '     uix-grid-' + attr + '="{{value}}" ',
+                    '     uix-grid-xs="{{media}}"           ',
+                    '     uix-grid-sm="{{media}}"           ',
+                    '     uix-grid-md="{{media}}"           ',
+                    '     uix-grid-lg="{{media}}"           ',
+                    '     uix-grid-xl="{{media}}"           ',
+                    '     uix-grid-xxl="{{media}}"          ',
+                    ' ></uix-grid>                          '
+                ].join(''));
                 scope.$digest();
                 var suffix = attr;
                 if (['gutter', 'reverse'].indexOf(attr) < 0) {
                     suffix += '--' + value;
                 }
-                expect(element.hasClass(`uix-grid-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-xs-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-sm-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-md-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-lg-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-xl-${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-xxl-${suffix}`)).toBe(true);
+                expect(element.hasClass('uix-grid-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-xs-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-sm-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-md-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-lg-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-xl-' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-xxl-' + suffix)).toBe(true);
             });
         });
     });
@@ -76,54 +76,54 @@ describe('ui.xg.grid', function () {
             order: [0, 24]
         };
 
-        Object.keys(attrs).forEach(function(attr) {
-            attrs[attr].forEach(function(value) {
+        Object.keys(attrs).forEach(function (attr) {
+            attrs[attr].forEach(function (value) {
                 scope.media = {};
                 scope.media[attr] = value;
                 scope.value = value;
 
-                createElement(`
-                    <uix-grid-item
-                        uix-grid-item-${attr}="{{value}}"
-                        uix-grid-item-xs="{{media}}"
-                        uix-grid-item-sm="{{media}}"
-                        uix-grid-item-md="{{media}}"
-                        uix-grid-item-lg="{{media}}"
-                        uix-grid-item-xl="{{media}}"
-                        uix-grid-item-xxl="{{media}}"
-                    ></uix-grid-item>
-                `);
+                createElement([
+                    ' <uix-grid-item                             ',
+                    '     uix-grid-item-' + attr + '="{{value}}" ',
+                    '     uix-grid-item-xs="{{media}}"           ',
+                    '     uix-grid-item-sm="{{media}}"           ',
+                    '     uix-grid-item-md="{{media}}"           ',
+                    '     uix-grid-item-lg="{{media}}"           ',
+                    '     uix-grid-item-xl="{{media}}"           ',
+                    '     uix-grid-item-xxl="{{media}}"          ',
+                    ' ></uix-grid-item>'
+                ].join(''));
                 scope.$digest();
                 var suffix = ['span'].indexOf(attr) < 0 ? '-' + attr : '';
                 suffix += '--' + value;
-                expect(element.hasClass(`uix-grid-item${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-xs${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-sm${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-md${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-lg${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-xl${suffix}`)).toBe(true);
-                expect(element.hasClass(`uix-grid-item-xxl${suffix}`)).toBe(true);
+                expect(element.hasClass('uix-grid-item' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-xs' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-sm' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-md' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-lg' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-xl' + suffix)).toBe(true);
+                expect(element.hasClass('uix-grid-item-xxl' + suffix)).toBe(true);
             });
         });
     });
 
     it('should support unset value attr', function () {
-        createElement(`
-            <uix-grid
-                uix-grid-gutter
-                uix-grid-reverse
-            >
-                <uix-grid-item
-                    uix-grid-item-span
-                    uix-grid-item-xs
-                    uix-grid-item-sm
-                    uix-grid-item-md
-                    uix-grid-item-lg
-                    uix-grid-item-xl
-                    uix-grid-item-xxl
-                ></uix-grid-item>
-            </uix-grid>
-        `);
+        createElement([
+            ' <uix-grid                  ',
+            '     uix-grid-gutter        ',
+            '     uix-grid-reverse       ',
+            ' >                          ',
+            '     <uix-grid-item         ',
+            '         uix-grid-item-span ',
+            '         uix-grid-item-xs   ',
+            '         uix-grid-item-sm   ',
+            '         uix-grid-item-md   ',
+            '         uix-grid-item-lg   ',
+            '         uix-grid-item-xl   ',
+            '         uix-grid-item-xxl  ',
+            '     ></uix-grid-item>      ',
+            ' </uix-grid>                '
+        ].join(''));
 
         expect(element.hasClass('uix-grid-gutter')).toBe(true);
         expect(element.hasClass('uix-grid-reverse')).toBe(true);
