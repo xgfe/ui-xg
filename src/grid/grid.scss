@@ -1,5 +1,3 @@
-@import "grid-mixin";
-
 $grid-prefix: "uix-grid";
 $grid-item-prefix: "uix-grid-item";
 $grid-gutter-width: 30px;
@@ -13,6 +11,36 @@ $grid-breakpoints: (
   xl: 1200px,
   xxl: 1600px
 );
+
+@function breakpoint-min($name, $breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function breakpoint-infix($name, $breakpoints) {
+  @return if(str-length($name) != 0, "-#{$name}", "");
+}
+
+@mixin media-breakpoint($name, $breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin make-item($size, $columns) {
+  flex: 0 0 percentage($size / $columns);
+  max-width: percentage($size / $columns);
+}
+
+@mixin make-item-offset($size, $columns) {
+  $num: $size / $columns;
+  margin-left: if($num == 0, 0, percentage($num));
+}
 
 @mixin make-grid($breakpoints) {
     .#{$grid-prefix} {
