@@ -1,0 +1,14 @@
+<div class="uix-radio-group">
+    <ng-transclude></ng-transclude>
+    <label class="uix-radio" ng-if="options" ng-repeat="item in options track by $index">
+        <input ng-if="item.value || item.value === 0" class="uix-radio-input" name="{{name}}" type="radio"
+               ng-value="item.value"
+               ng-model="state.value" ng-disabled="item.disabled">
+        <span ng-if="item.value || item.value === 0">{{item.label}}</span>
+
+        <input ng-if="!(item.value || item.value === 0)" class="uix-radio-input" name="{{name}}" type="radio"
+               ng-value="item" ng-model="state.value"
+               ng-disabled="item.disabled">
+        <span ng-if="!(item.value || item.value === 0)">{{item}}</span>
+    </label>
+</div>
