@@ -20,7 +20,6 @@ angular.module('ui.xg.radio', [])
                 scope.defaultChecked = scope.defaultChecked || attrs.defaultChecked === '' ? true : scope.optionValue === scope.state.value;
                 scope.size = $attrs.size;
 
-
                 scope.radioBtnDefault = 'btn-default';
                 switch ($attrs.btnStyle) {
                     case 'primary':
@@ -45,10 +44,9 @@ angular.module('ui.xg.radio', [])
 
             $scope.$watch('state.value', function (newVal, oldVal) {
                 if (newVal !== oldVal) {
-                    $scope.changeFn({ value: newVal });
+                    $scope.changeFn({value: newVal});
                 }
             });
-
 
         }])
 
@@ -82,13 +80,13 @@ angular.module('ui.xg.radio', [])
             },
             link: function (scope, element, attrs, uixRadioGroupCtrl) {
                 if (uixRadioGroupCtrl) {
-                    scope.optionValue = attrs.value;
+                    scope.optionValue = attrs.value || element[0].innerText;
                     uixRadioGroupCtrl.addOptions(scope, element, attrs);
                 } else {
                     scope.name = attrs.name ? attrs.name : 'defaultRadioName' + scope.$id;
                     scope.state = {};
-                    scope.state.value = element[0].lastChild.innerText;
-                    scope.optionValue = attrs.value;
+                    scope.state.value = attrs.value || '';
+                    scope.optionValue = element[0].lastChild.innerText;
                     scope.defaultChecked = scope.defaultChecked || attrs.defaultChecked === '' ? true : scope.optionValue === scope.state.value;
                     scope.disabled = scope.disabled || attrs.disabled === '' ? true : false;
                 }

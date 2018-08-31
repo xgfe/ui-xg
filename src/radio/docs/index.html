@@ -9,7 +9,7 @@
     <div class="demoBox">
         <h4>基本</h4>
         <p>最简单的用法。</p>
-        <uix-radio>Radio</uix-radio>
+        <uix-radio value="Radio">Radio</uix-radio>
     </div>
 
     <div class="demoBox">
@@ -17,7 +17,7 @@
         <p>一组互斥的 Radio 配合使用</p>
         <p>可以指定name</p>
 
-        <uix-radio-group name="demoName" change-fn="changedFn(value)" value="2">
+        <uix-radio-group name="demoName" change-fn="changedConsole(value)" value="2">
             <uix-radio value="1">A</uix-radio>
             <uix-radio value="2">B</uix-radio>
             <uix-radio value="3">C</uix-radio>
