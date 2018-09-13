@@ -75,21 +75,3 @@ img {
     vertical-align: middle;
 }
 
-// Responsive images (ensure images don't scale beyond their parents)
-.img-responsive {
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
-
-// Rounded corners
-.img-rounded {
-    border-radius: 6px;
-}
-
-// Perfect circle
-.img-circle {
-    border-radius: 50%; // set radius in percents
-}
-
-

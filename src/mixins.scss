@@ -5,7 +5,7 @@
 // Floats
 // -------------------------
 //
-.clearfix {
+@mixin clearfix {
     &:before,
     &:after {
         content: " "; // 1
@@ -16,48 +16,30 @@
     }
 }
 
-.center-block {
+@mixin center-block {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.pull-right {
+@mixin pull-right {
     float: right !important;
 }
 
-.pull-left {
+@mixin pull-left {
     float: left !important;
 }
 
-// Toggling content
-// -------------------------
 
-// Note: Deprecated .hide in favor of .hidden or .sr-only (as appropriate) in v3.0.1
-.hide {
-    display: none !important;
-}
-
-.show {
-    display: block !important;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-.text-hide {
+@mixin text-hide {
     font: 0/0 a;
     color: transparent;
     text-shadow: none;
     background-color: transparent;
     border: 0;
 }
-
-// Hide from screenreaders and browsers
-//
-// Credit: HTML5 Boilerplate
-
-.hidden {
-    display: none !important;
+@mixin text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
