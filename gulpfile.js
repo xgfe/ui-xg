@@ -20,7 +20,9 @@ var gulp = require('gulp'),
     gulpWatch = require('gulp-watch'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     webpack = require('webpack'),
-    ejs = require('ejs');
+    ejs = require('ejs'),
+    babel = require('gulp-babel'),
+    path = require('path');
 
 var config = {
     modules: [],
@@ -172,8 +174,8 @@ function hasDoc(name) {
     return _.isExists(config.src + '/' + name + '/docs/readme.md');
 }
 function getDocsReadme(name) {
-    var path = config.src + '/' + name + '/docs/readme.md';
-    var content = _.readFile(path, 'utf-8');
+    var filepath = config.src + '/' + name + '/docs/readme.md';
+    var content = _.readFile(filepath, 'utf-8');
     var argumentBlock = false;
     renderer.heading = function (text, level) {
         if (level === 2 && text.toLowerCase() === 'arguments') {
@@ -227,13 +229,13 @@ function getDocsReadme(name) {
     });
 }
 function getDocsFile(name, filename) {
-    var path = config.src + '/' + name + '/docs/' + filename;
-    return _.readFile(path);
+    var filepath = config.src + '/' + name + '/docs/' + filename;
+    return _.readFile(filepath);
 }
 //场景组件
-function getDocsFile2(name, filename) {
-    var path = config.scene + '/' + name + '/' + filename;
-    return _.readFile(path);
+function getScendDocsFile(name, filename) {
+    var filepath = config.scene + '/' + name + '/' + filename;
+    return _.readFile(filepath);
 }
 function dependenciesForModule(name, depModuleMapping) {
     if (depModuleMapping[name]) {
@@ -283,22 +285,28 @@ gulp.task('modules', function () {
  * 拼接js和css
  */
 gulp.task('sass', function () {
-    return gulp.src(config.src + '/*/*.scss')
+
+    var variables = path.resolve(config.src, 'variables.scss');
+    var mixins = path.resolve(config.src, 'mixins.scss');
+
+    return gulp.src([
+        'lib/normalize.css/normalize.css',
+        config.src + '/base.scss',
+        config.src + '/*/**.scss'
+    ])
+        .pipe(insert.transform(function (contents, file) {
+            var dirname = path.dirname(file.path);
+            var prefix = [
+                '@import "' + path.relative(dirname, variables) + '";',
+                '@import "' + path.relative(dirname, mixins) + '";'
+            ].join('');
+            return prefix + contents;
+        }))
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest(config.src));
+        .pipe(concat(config.filename + '.css'))
+        .pipe(gulp.dest('./' + config.dist + '/css/'));
 });
-gulp.task('concat:css', function () {
-    var src = config.modules.map(function (module) {
-        return module.name;
-    });
-    if (src.length) {
-        var srcPath = config.src + '/*(' + src.join('|') + ')/*.css';
-        return gulp.src(srcPath)
-            .pipe(concat(config.filename + '.css'))
-            .pipe(gulp.dest('./' + config.dist + '/css/'));
-    }
-});
-gulp.task('concat:js', function () {
+gulp.task('concatJs', function () {
     function getFileMapping() {
         var mapping = [];
         config.modules.forEach(function (module) {
@@ -314,6 +322,9 @@ gulp.task('concat:js', function () {
     });
     srcFile = srcFile.concat(tplPaths);
     return gulp.src(srcFile)
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(concat(config.filename + '.js'))
         .pipe(insert.transform(function (contents) {
             return config.getBanner() + contents;
@@ -470,9 +481,9 @@ gulp.task('docs:api', function () {
 
 function createScenePartial(name, docPath) {
 
-    var html = getDocsFile2(name, 'index.html'),
-        js = getDocsFile2(name, 'script.js'),
-        css = getDocsFile2(name, 'style.css'),
+    var html = getScendDocsFile(name, 'index.html'),
+        js = getScendDocsFile(name, 'script.js'),
+        css = getScendDocsFile(name, 'style.css'),
         code = '';
 
     var jsonFiles = _.matchFile(config.scene + '/' + name + '/*.json');
@@ -550,12 +561,15 @@ gulp.task('webpack', function () {
     if (!module) {
         return;
     }
-    var addRelativePath = function (path) {
-        return './' + path;
+    var addRelativePath = function (_path) {
+        return './' + _path;
     };
     var deps = [module].concat(dependenciesForModule(module, {}));
     var entry = {
-        'angular.js': './bower_components/angular/angular.min.js'
+        'angular.js': './bower_components/angular/angular.min.js',
+        'base.scss': './src/base.scss',
+        'normalize.css': './lib/normalize.css/normalize.css',
+        'bootstrap.glyphicons.css': './lib/bootstrap-glyphicons/css/bootstrap.css'
     };
     // 如果需要bootstrap，则引入资源
     if (hasBs) {
@@ -567,12 +581,16 @@ gulp.task('webpack', function () {
     var depModules = config.modules.filter(function (mod) {
         return deps.indexOf(mod.name) !== -1;
     });
-    var depModules2 = [];
+    var depModulesList = [];
     depModules.forEach(function (mod) {
-        entry[mod.name] = [].concat(mod.srcFiles.map(addRelativePath), mod.scssFiles.map(addRelativePath), mod.tpljsFiles.map(addRelativePath));
-        depModules2 = depModules2.concat(mod.moduleName, mod.tplModules);
+        entry[mod.name] = [].concat(
+            mod.srcFiles.map(addRelativePath),
+            mod.tpljsFiles.map(addRelativePath),
+            mod.scssFiles.map(addRelativePath)
+        );
+        depModulesList = depModulesList.concat(mod.moduleName, mod.tplModules);
     });
-    var jsContent = 'var app = angular.module("uixDemo",[' + depModules2 + ']);\n';
+    var jsContent = 'var app = angular.module("uixDemo",[' + depModulesList + ']);\n';
     jsContent += thisMod.docs.js;
     var htmlContent = thisMod.docs.html;
     var cssContent = thisMod.docs.css;
@@ -624,10 +642,10 @@ gulp.task('test', ['karma']);
 gulp.task('build', function (done) {
     runSequence(
         ['clean', 'clean:html2js'],
-        'eslint',
+        // 'eslint',
         'html2js',
         ['sass', 'modules'],
-        ['concat:css', 'concat:js'],
+        ['concatJs'],
         'uglify',
         'copy',
         'docs:api',
