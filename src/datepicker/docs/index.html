@@ -4,8 +4,7 @@
             设置为小尺寸:
         </div>
         <div class="col-md-4">
-            <uix-datepicker clear-btn="true" max-date="maxDate" ng-model="date"
-                            size="{{'sm'}}" format="'yyyy-MM-dd'" date-filter="dateFilter($date)"></uix-datepicker>
+            <uix-datepicker ng-model="date"></uix-datepicker>
         </div>
         <div class="col-md-2">
             不提供时间选择:
@@ -17,7 +16,7 @@
     <div class="row">
         <div class="col-md-4">
             <uix-datepicker clear-btn="true" max-date="maxDate" ng-disabled="isDisabled" ng-model="date"
-                             placeholder="选择日期" on-change="onChange()" format="formattor" min-date="minDate" exceptions="exceptions"></uix-datepicker>
+                            show-seconds="false" placeholder="选择日期" on-change="onChange()" format="formattor" min-date="minDate" exceptions="exceptions"></uix-datepicker>
         </div>
         <div class="col-md-3">
             <select ng-model="formattor" class="form-control">

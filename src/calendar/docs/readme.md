@@ -10,6 +10,7 @@
     [ min-date="date" ]
     [ max-date="date" ]
     [ show-time="boolean" ]
+    [ show-seconds="boolean" ]
     [ starting-day="number" ]
     [ date-filter="function($date)" ]
     [ exceptions="array">
@@ -32,6 +33,9 @@
 - maxDate(optional):可显示的最大日期,比这个日期大的无法选择
     - type:`date`
 - showTime(optional):是否显示时间选择
+    - type:`boolean`
+    - default:`true`
+- showSeconds(optional):是否显示秒选择
     - type:`boolean`
     - default:`true`
 - startingDay(optional):每一周的开始天,0-周日,1-周一...以此类推

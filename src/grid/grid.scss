@@ -1,0 +1,178 @@
+$grid-prefix: "uix-grid";
+$grid-item-prefix: "uix-grid-item";
+$grid-gutter-width: 30px;
+$grid-columns: 24;
+$grid-breakpoints: (
+  "": 0,
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1600px
+);
+
+@function breakpoint-min($name, $breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function breakpoint-infix($name, $breakpoints) {
+  @return if(str-length($name) != 0, "-#{$name}", "");
+}
+
+@mixin media-breakpoint($name, $breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin make-item($size, $columns) {
+  flex: 0 0 percentage($size / $columns);
+  max-width: percentage($size / $columns);
+}
+
+@mixin make-item-offset($size, $columns) {
+  $num: $size / $columns;
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+@mixin make-grid($breakpoints) {
+    .#{$grid-prefix} {
+        box-sizing: border-box;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    @each $breakpoint in map-keys($breakpoints) {
+        $infix: breakpoint-infix($breakpoint, $breakpoints);
+        $prefix: ".#{$grid-prefix}#{$infix}";
+
+        @include media-breakpoint($breakpoint, $breakpoints) {
+            #{$prefix}-justify--start {
+                justify-content: flex-start;
+            }
+
+            #{$prefix}-justify--center {
+                justify-content: center;
+            }
+
+            #{$prefix}-justify--end {
+                justify-content: flex-end;
+            }
+
+            #{$prefix}-justify--between {
+                justify-content: space-between;
+            }
+
+            #{$prefix}-justify--around {
+                justify-content: space-around;
+            }
+
+            #{$prefix}-align--top {
+                align-items: flex-start;
+            }
+
+            #{$prefix}-align--middle {
+                align-items: center;
+            }
+
+            #{$prefix}-align--bottom {
+                align-items: flex-end;
+            }
+
+            #{$prefix}-reverse {
+                flex-direction: row-reverse;
+            }
+        }
+    }
+}
+
+@mixin make-grid-items($columns, $breakpoints) {
+    // Common properties for all breakpoints
+    %grid-column {
+        box-sizing: border-box;
+        position: relative;
+        flex: 0 0 auto;
+        width: 100%;
+        min-height: 1px;
+    }
+
+    .#{$grid-item-prefix},
+    [class*="#{$grid-item-prefix}-"] {
+        @extend %grid-column;
+    }
+
+    @each $breakpoint in map-keys($breakpoints) {
+        $infix: breakpoint-infix($breakpoint, $breakpoints);
+        $prefix: ".#{$grid-item-prefix}#{$infix}";
+
+        // Span properties
+        @include media-breakpoint($breakpoint, $breakpoints) {
+            #{$prefix} {
+                flex-basis: 0;
+                flex-grow: 1;
+                max-width: 100%;
+            }
+
+            #{$prefix}--auto {
+                flex: 0 0 auto;
+                width: auto;
+                max-width: none;
+            }
+
+            #{$prefix}--0 {
+                display: none;
+            }
+
+            @for $i from 1 through $columns {
+                #{$prefix}--#{$i} {
+                    @include make-item($i, $columns);
+                }
+            }
+        }
+
+        // Order properties
+        @for $i from 0 through $columns {
+            #{$prefix}-order--#{$i} {
+                order: $i;
+            }
+        }
+
+        // Offset properties
+        @for $i from 0 through $columns {
+            #{$prefix}-offset--#{$i} {
+                @include make-item-offset($i, $columns);
+            }
+        }
+    }
+}
+
+@mixin make-grid-gutters($breakpoints) {
+    @each $breakpoint in map-keys($breakpoints) {
+        $infix: breakpoint-infix($breakpoint, $breakpoints);
+        $prefix: ".#{$grid-prefix}#{$infix}";
+
+        @include media-breakpoint($breakpoint, $breakpoints) {
+            #{$prefix}-gutter {
+                margin-right: ($grid-gutter-width / -2);
+                margin-left: ($grid-gutter-width / -2);
+
+                > .uix-grid-item,
+                > [class*="uix-grid-item-"] {
+                    padding-right: ($grid-gutter-width / 2);
+                    padding-left: ($grid-gutter-width / 2);
+                }
+            }
+        }
+    }
+}
+
+@include make-grid($grid-breakpoints);
+@include make-grid-items($grid-columns, $grid-breakpoints);
+@include make-grid-gutters($grid-breakpoints);

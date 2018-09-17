@@ -3,7 +3,6 @@ var path = require('path');
 function resolve(dir) {
     return path.join(__dirname, '..', dir);
 }
-
 module.exports = {
     entry: {},
     mode: 'development',
@@ -14,7 +13,12 @@ module.exports = {
     module: {
         rules: [{
             test: /\.scss$/,
-            loader: ['style-loader', 'css-loader', 'sass-loader']
+            loader: ['style-loader', 'css-loader', 'sass-loader', {
+                loader: resolve('dev-server/insert-loader.js'),
+                options: {
+                    importFiles: [resolve('../src/variables.scss'), resolve('../src/mixins.scss')]
+                }
+            }]
         }, {
             test: /\.css$/,
             loader: ['style-loader', 'css-loader']

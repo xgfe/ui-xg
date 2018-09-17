@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="uix-cal-panel-time" ng-show="panels.time"> <!--这里要用ng-show,不能用ng-if-->
-        <uix-timepanel min-time="minTime" max-time="maxTime" ng-model="selectDate"></uix-timepanel>
+        <uix-timepanel min-time="minTime" max-time="maxTime" ng-model="selectDate" show-seconds="showSeconds"></uix-timepanel>
         <div class="btn-group clearfix">
             <button class="btn btn-sm btn-default uix-cal-time-cancal" ng-click="timePanelBack()">返回</button>
             <button class="btn btn-sm btn-default uix-cal-time-now" ng-click="timePanelSelectNow()">此刻</button>
