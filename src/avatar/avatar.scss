@@ -34,10 +34,10 @@ $avatar-prefix-cls: "uix-avatar";
         background: transparent;
     }
     @include avatar-size($avatar-size-base, $avatar-font-size-base);
-    &-lg {
+    &-large {
         @include avatar-size($avatar-size-lg, $avatar-font-size-lg);
     }
-    &-sm {
+    &-small {
         @include avatar-size($avatar-size-sm, $avatar-font-size-sm);
     }
     &-square {

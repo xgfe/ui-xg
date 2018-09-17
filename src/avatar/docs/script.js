@@ -4,6 +4,7 @@ angular.module('uixDemo').controller('avatarDemoCtrl', ['$scope', function ($sco
     $scope.colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
     $scope.user = $scope.UserList[0];
     $scope.color = $scope.colorList[0];
+    $scope.square = 'square'
     $scope.src = 'http://vfile.meituan.net/xgfe/9d38bf112749733f06ec5b3f243c735d48409.jpg';
     $scope.changeUser = function () {
         const index = $scope.UserList.indexOf($scope.user);
