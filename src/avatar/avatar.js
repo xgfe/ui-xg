@@ -11,26 +11,24 @@ angular.module('ui.xg.avatar', [])
         sizeGroup: ['small', 'large', 'default'],
         defaultSize: 'default'
     })
-    .directive('uixAvatar', ['$parse', '$compile', 'avatarConfig', '$timeout', function ($parse, $compile, avatarConfig, $timeout) {
+    .directive('uixAvatar', ['$compile', 'avatarConfig', '$timeout', function ($compile, avatarConfig, $timeout) {
         return {
             restrict: 'E',
             templateUrl: 'templates/avatar.html',
             replace: true,
+            require: '?ngModel',
             scope: {
                 src: '=?',
                 icon: '=?',
-                content: '=?'
+                content: '=?',
+                shape: '=?',
+                size: '=?'
             },
             link: function ($scope, $element, $attrs) {
-                $scope.shape = avatarConfig.shapeGroup.includes($scope.$eval($attrs.shape)) ? $scope.$eval($attrs.shape) : avatarConfig.defaultShape;
-                $scope.size = avatarConfig.sizeGroup.includes($scope.$eval($attrs.size)) ? $scope.$eval($attrs.size) : avatarConfig.defaultSize;
-                const { shape, size, src, icon, content } = $scope;
-
-                // set avatar class
-                size === 'large' && $element.addClass('uix-avatar-lg');
-                size === 'small' && $element.addClass('uix-avatar-sm');
-                src && $element.addClass('uix-avatar-image');
-                $element.addClass(`uix-avatar-${shape}`);
+                
+                $scope.shape = avatarConfig.shapeGroup.includes($scope.shape) ? $scope.shape : avatarConfig.defaultShape;
+                $scope.size = avatarConfig.sizeGroup.includes($scope.size) ? $scope.size : avatarConfig.defaultSize;
+                const { src, icon, content } = $scope;
 
                 // watch content change
                 $scope.$watch('content', (newVal, oldVal) => {
