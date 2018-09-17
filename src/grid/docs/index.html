@@ -1,0 +1,37 @@
+<div ng-controller="gridDemoCtrl">
+    <uix-grid uix-grid-gutter>
+        <uix-grid-item uix-grid-item-span="5">
+            <div class="gridDemo">1</div>
+        </uix-grid-item>
+        <uix-grid-item uix-grid-item-span="7">
+            <div class="gridDemo">2</div>
+        </uix-grid-item>
+    </uix-grid>
+    <hr>
+    <uix-grid
+        uix-grid-align="{{grid.align}}"
+        uix-grid-justify="{{grid.justify}}"
+        uix-grid-gutter="{{grid.gutter}}"
+        uix-grid-reverse="{{grid.reverse}}"
+        uix-grid-xs="{{grid.xs}}"
+        uix-grid-sm="{{grid.sm}}"
+        uix-grid-md="{{grid.md}}"
+        uix-grid-lg="{{grid.lg}}"
+        uix-grid-xl="{{grid.xl}}"
+        uix-grid-xxl="{{grid.xxl}}"
+    >
+        <uix-grid-item
+            uix-grid-item-span="{{item.span}}"
+            uix-grid-item-offset="{{item.offset}}"
+            uix-grid-item-order="{{item.order}}"
+            uix-grid-item-xs="{{item.xs}}"
+            uix-grid-item-sm="{{item.sm}}"
+            uix-grid-item-md="{{item.md}}"
+            uix-grid-item-lg="{{item.lg}}"
+            uix-grid-item-xl="{{item.xl}}"
+            uix-grid-item-xxl="{{item.xxl}}"
+        >
+            <div class="gridDemo"></div>
+        </uix-grid-item>
+    </uix-grid>
+</div>
