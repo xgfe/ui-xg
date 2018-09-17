@@ -1,5 +1,9 @@
 {
     "extends": "eslint:recommended",
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "env": {
         "browser": true,
         "jasmine": true,

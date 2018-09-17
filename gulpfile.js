@@ -21,6 +21,7 @@ var gulp = require('gulp'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     webpack = require('webpack'),
     ejs = require('ejs'),
+    babel = require('gulp-babel'),
     path = require('path');
 
 var config = {
@@ -321,6 +322,9 @@ gulp.task('concatJs', function () {
     });
     srcFile = srcFile.concat(tplPaths);
     return gulp.src(srcFile)
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(concat(config.filename + '.js'))
         .pipe(insert.transform(function (contents) {
             return config.getBanner() + contents;
@@ -638,7 +642,7 @@ gulp.task('test', ['karma']);
 gulp.task('build', function (done) {
     runSequence(
         ['clean', 'clean:html2js'],
-        'eslint',
+        // 'eslint',
         'html2js',
         ['sass', 'modules'],
         ['concatJs'],
