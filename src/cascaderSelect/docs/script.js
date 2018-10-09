@@ -400,8 +400,5 @@ angular.module('uixDemo').controller('cascaderSelectDemoCtrl', ['$scope', '$q', 
         let defer = $q.defer();
         defer.resolve(data);
         return defer.promise;
-        // return new Promise(function (resolve) {
-        //     resolve(data);
-        // });
     }
 }]);
