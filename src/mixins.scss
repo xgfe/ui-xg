@@ -1,0 +1,45 @@
+//
+// Utility classes
+// --------------------------------------------------
+
+// Floats
+// -------------------------
+//
+@mixin clearfix {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+@mixin center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@mixin pull-right {
+    float: right !important;
+}
+
+@mixin pull-left {
+    float: left !important;
+}
+
+
+@mixin text-hide {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+@mixin text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
