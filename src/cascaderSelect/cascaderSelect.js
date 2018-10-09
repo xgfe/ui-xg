@@ -19,7 +19,7 @@ angular.module('ui.xg.cascaderSelect', ['ui.xg.select'])
             if (!conf.parentCode) {
                 (conf.getData()).then((data) => {
                     conf.list = data;
-                })
+                });
             }
         });
 
@@ -62,5 +62,5 @@ angular.module('ui.xg.cascaderSelect', ['ui.xg.select'])
                 confs: '='
             },
             controller: 'uixCascaderSelectCtrl'
-        }
+        };
     });

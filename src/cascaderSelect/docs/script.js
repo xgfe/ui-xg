@@ -1,4 +1,4 @@
-angular.module('uixDemo').controller('cascaderSelectDemoCtrl', ['$scope', function ($scope) {
+angular.module('uixDemo').controller('cascaderSelectDemoCtrl', ['$scope', '$q', function ($scope, $q) {
     $scope.category1 = [
         {
             code: 'catId1',
@@ -360,8 +360,8 @@ angular.module('uixDemo').controller('cascaderSelectDemoCtrl', ['$scope', functi
         }
     ];
     function getCategoryData(item) {
-        var data;
-        var arr = [
+        let data;
+        const arr = [
             {
                 id: '1',
                 name: '火锅'
@@ -397,8 +397,11 @@ angular.module('uixDemo').controller('cascaderSelectDemoCtrl', ['$scope', functi
             id: '',
             name: '全部'
         });
-        return new Promise(function (resolve) {
-            resolve(data);
-        });
+        let defer = $q.defer();
+        defer.resolve(data);
+        return defer.promise;
+        // return new Promise(function (resolve) {
+        //     resolve(data);
+        // });
     }
 }]);
