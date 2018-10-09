@@ -1,0 +1,11 @@
+<div ng-repeat="conf in confs track by $index" class="uix-cascader-select">
+    <div class="{{conf.className}}">
+        <label ng-class="{'empty-label':!conf.label}">{{conf.label}}</label>
+        <uix-select ng-model="conf.value">
+            <uix-select-match>{{$select.selected.name}}</uix-select-match>
+            <uix-select-choices repeat="item in conf.list | filter:$select.search">
+                <span title="{{item[conf.itemLabel]}}">{{item[conf.itemLabel]}}</span>
+            </uix-select-choices>
+        </uix-select>
+    </div>
+</div>
