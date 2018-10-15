@@ -47,6 +47,10 @@ angular.module('ui.xg.cascaderSelect', ['ui.xg.select'])
                         return item.code;
                     }
                 } else {
+                    // 在外界进行重置时，对第一级节点的值进行处理
+                    if (!item.parentCode && !value) {
+                        item.value = item.defaultValue || item.emptyValue;
+                    }
                     return code;
                 }
             }, conf.code);
