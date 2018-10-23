@@ -1,0 +1,274 @@
+$input-height-base: 32px;
+$input-height-lg: 40px;
+$input-height-sm: 24px;
+$input-padding-horizontal: 11px;
+$input-padding-horizontal-base:11px;
+$input-padding-horizontal-sm: 7px;
+$input-padding-horizontal-lg: 11px;
+$input-padding-vertical-base: 4px;
+$input-padding-vertical-sm: 1px;
+$input-padding-vertical-lg: 6px;
+$input-placeholder-color: rgba(191, 191, 192, 1);
+$input-color: rgba(0, 0, 0, 0.65);
+$input-border-color: #d9d9d9;
+$input-bg: #fff;
+$input-addon-bg: #fafafa;
+$input-disabled-bg: #fafafa;
+$font-size-base: 14px;
+$font-size-lg:$font-size-base+2px;
+$font-size-sm: 12px;
+$disabled-color: rgba(0, 0, 0, 0.25);
+$border-width-base: 1px;
+$input-affix-width :19px;
+$border-style-base: solid;
+$primary-color:#1DA57A;
+$uix-prefix: uix-input;
+@mixin placeholder($color: $input-placeholder-color) {
+    // Firefox
+    &::-moz-placeholder {
+        color: $color;
+        opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+    } // Internet Explorer 10+
+    &:-ms-input-placeholder {
+        color: $color;
+    } // Safari and Chrome
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+}
+
+@mixin disabled() {
+    background-color: $input-disabled-bg;
+    opacity: 1;
+    cursor: not-allowed !important;
+    color: $disabled-color;
+    &:hover {
+        border-color: #d9d9d9;
+    }
+}
+
+@mixin input-lg() {
+    padding: $input-padding-vertical-lg $input-padding-horizontal-lg;
+    height: $input-height-lg;
+    font-size: $font-size-lg;
+}
+
+@mixin input-sm() {
+    padding: $input-padding-vertical-sm $input-padding-horizontal-sm;
+    height: $input-height-sm;
+}
+
+// label input
+@mixin input-group($inputClass) {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    &[class*="col-"] {
+        float: none;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    >[class*="col-"] {
+        padding-right: 8px;
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+    &-addon,
+    &-wrap,
+    .uix-input-content {
+        display: table-cell;
+        &:not(:first-child):not(:last-child) .#{$inputClass} {
+            border-radius: 0;
+        }
+    }
+    &-addon,
+    &-wrap {
+        width: 1px; // To make addon/wrap as small as possible
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+    &-wrap>* {
+        display: block !important;
+    }
+    .#{$inputClass} {
+        float: left;
+        width: 100%;
+        margin-bottom: 0;
+        &:focus {
+            z-index: 1;
+        }
+    }
+    &-addon {
+        padding: 0 $input-padding-horizontal-base;
+        font-size: $font-size-base;
+        font-weight: normal;
+        line-height: 1;
+        color: $input-color;
+        text-align: center;
+        background-color: $input-addon-bg;
+        border: $border-width-base $border-style-base $input-border-color;
+        border-radius: $border-radius-base;
+        position: relative;
+        transition: all .3s;
+        >i:only-child:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+    }
+    .uix-input-content:first-child .#{$inputClass},
+    &-addon:first-child {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0; // Reset Select's style in addon
+        .#{$uix-prefix}-select .#{$uix-prefix}-select-selection {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+    }
+    >.#{$inputClass}-affix-wrapper {
+        &:not(:first-child) .#{$inputClass} {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+        &:not(:last-child) .#{$inputClass} {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+    }
+    &-addon:first-child {
+        border-right: 0;
+    }
+    &-addon:last-child {
+        border-left: 0;
+    }
+    .uix-input-content:last-child .#{$inputClass},
+    &-addon:last-child {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        .#{$uix-prefix}-select .#{$uix-prefix}-select-selection {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+    }
+    &-lg .#{$inputClass},
+    &-lg>&-addon {
+        @include input-lg();
+    }
+    &-sm .#{$inputClass},
+    &-sm>&-addon {
+        @include input-sm();
+    }
+    &-lg .#{$uix-prefix}-select-selection--single {
+        height: $input-height-lg;
+    }
+    &-sm .#{$uix-prefix}-select-selection--single {
+        height: $input-height-sm;
+    }
+    .#{$inputClass}-affix-wrapper {
+        display: table-cell;
+        width: 100%;
+        float: left;
+    }
+}
+
+@mixin input-affix-wrapper($inputClass) {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    .#{$inputClass} {
+        z-index: 1;
+    }
+    &:hover .#{$inputClass}:not(.#{$inputClass}-disabled) {
+        border-color: #d9d9d9;
+    }
+    .#{$inputClass}-prefix,
+    .#{$inputClass}-suffix {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        line-height: 0;
+        color: $input-color;
+        :not(.anticon) {
+            line-height: $line-height-base;
+        }
+    }
+    .#{$inputClass}-prefix {
+        left: $input-padding-horizontal-base + 1px;
+    }
+    .#{$inputClass}-suffix {
+        right: $input-padding-horizontal-base + 1px;
+    }
+    .uix-input-content:not(:first-child) .#{$inputClass} {
+        padding-left: $input-padding-horizontal-base + $input-affix-width;
+    }
+    .uix-input-content:not(:last-child) .#{$inputClass} {
+        padding-right: $input-padding-horizontal-base + $input-affix-width;
+    }
+}
+
+.#{$uix-prefix} {
+    font-variant: tabular-nums;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    @include placeholder();
+    padding: $input-padding-vertical-base $input-padding-horizontal-base;
+    width: 100%;
+    height: $input-height-base;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $input-color;
+    background-color: $input-bg;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    &:hover {
+        border-color: #40a9ff;
+        border-right-width: 1px !important;
+    }
+    &:focus {
+        border-color: #40a9ff;
+        outline: 0;
+        -webkit-box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        border-right-width: 1px !important;
+    }
+    &-lg {
+        @include input-lg();
+    }
+    &-sm {
+        @include input-sm();
+    }
+    &-disabled {
+        @include disabled();
+    }
+}
+
+.#{$uix-prefix}-group {
+    @include input-group("uix-input");
+    &-wrapper {
+        display: inline-block;
+        vertical-align: top;
+        width: 100%;
+    }
+}
+
+.#{$uix-prefix}-affix-wrapper {
+    @include input-affix-wrapper("uix-input");
+    .#{$uix-prefix} {
+        min-height: 100%;
+    }
+}

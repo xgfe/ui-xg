@@ -1,4 +1,4 @@
-angular.module('uixDemo').controller('avatarDemoCtrl', ['$scope', function ($scope) {
+angular.module('uixDemo').controller('avatarDemoCtrl', ['$scope',function ($scope) {
     // your js code here
     $scope.UserList = ['Z', 'ONE', 'TWO', 'THREE'];
     $scope.colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];

@@ -1,0 +1,11 @@
+<span class="uix-input-group-wrapper" ng-class="{ 'uix-input-group-sm':isSmall,'uix-input-group-lg':isLarge} ">
+    <span class="uix-input-wrapper uix-input-group">
+        <span class="uix-input-group-addon" ng-if="addonBefore">
+            {{addonBefore}}
+        </span>
+        <span ng-transclude class="uix-input-content"></span>
+        <span class="uix-input-group-addon" ng-if="addonAfter">
+            {{addonAfter}}
+        </span>
+    </span>
+</span>
