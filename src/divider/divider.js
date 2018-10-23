@@ -37,7 +37,7 @@ angular.module('ui.xg.divider', [])
     })
     .directive('uixDivider', ['diciderConfig', 'uixClassName', function (diciderConfig, uixClassName) {
         return {
-            restrict: 'AE',
+            restrict: 'E',
             templateUrl: 'templates/divider.html',
             replace: true,
 
