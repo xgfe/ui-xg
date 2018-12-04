@@ -1,0 +1,12 @@
+<div class="timeline" ng-class="{'timeline-alternate': mode === 'alternate', 'timeline-pending': pending, 'timeline-reverse': reverse}">
+    <uix-timeline-item
+            ng-repeat="dot in nodeData track by $index"
+            dot="dot"
+            first="$first"
+            last="$last"
+            mode="$parent.mode==='alternate'?($index%2?'left':'right'):$parent.mode"
+            reverse="$parent.reverse"
+            show-tail="!$last"
+            pending="(!$parent.reverse&&$last&&$parent.pending)||($parent.reverse&&$first&&$parent.pending)">
+    </uix-timeline-item>
+</div>
