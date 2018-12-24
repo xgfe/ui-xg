@@ -1,0 +1,15 @@
+<div class="timeline-item timeline-item-{{mode}}"
+     ng-class="{'timeline-item-last': last, 'timeline-item-first': first, 'timeline-item-pending': pending}">
+    <div class="timeline-item-dot timeline-item-dot-{{dot.color}}"
+         ng-class="{'timeline-item-dot-custom': dot.icon ,'timeline-item-dot-reverse': reverse}">
+        <span class="icon-wrap" ng-if="dot.icon">
+            <i class="{{dot.icon}}" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="timeline-item-tail" ng-if="showTail"></div>
+    <div class="timeline-item-content" ng-class="{'timeline-item-content-custom': dot.icon}">
+        <div class="timeline-item-content-title">{{dot.title||''}}</div>
+        <div class="timeline-item-content-desc" ng-bind-html="$sce.trustAsHtml(dot.desc)"></div>
+        <div class="timeline-item-content-other">{{dot.other||''}}</div>
+    </div>
+</div>

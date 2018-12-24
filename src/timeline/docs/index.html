@@ -1,0 +1,80 @@
+<div ng-controller="timelineDemoCtrl" id="timeline-box">
+    <p>基本的时间轴</p>
+    <uix-timeline node-data="node0Data"></uix-timeline>
+    <br/>
+    <br/>
+    <p>设置desc, other属性</p>
+    <br/>
+    <br/>
+    <uix-timeline node-data="nodeData"></uix-timeline>
+    <br/>
+    <br/>
+    <p>设置icon属性</p>
+    <p>圆圈颜色，绿色用于已完成、成功状态，红色表示告警或错误状态，蓝色可表示正在进行或其他默认状态。</p>
+    <br/>
+    <br/>
+    <uix-timeline node-data="nodeData"></uix-timeline>
+    <br/>
+    <br/>
+    <p>右侧时间轴点</p>
+    <p>时间轴点可以在内容的右边</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="right" node-data="nodeData"></uix-timeline>
+    <br/>
+    <br/>
+    <p>右侧时间轴点(icon)</p>
+    <p>时间轴点可以在内容的右边</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="right" node-data="nodeData"></uix-timeline>
+    <br/>
+    <br/>
+    <p>交替展现</p>
+    <p>内容在时间轴两侧轮流出现</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="alternate" node-data="nodeData"></uix-timeline>
+    <br/>
+    <br/>
+    <p>交替展现(icon)</p>
+    <p>内容在时间轴两侧轮流出现</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="alternate" node-data="nodeData"></uix-timeline>
+    <p>自定义时间轴点</p>
+    <p>可以设置为图标</p>
+    <br/>
+    <br/>
+    <uix-timeline node-data="nodeData"></uix-timeline>
+    <p>控制节点排序</p>
+    <p>控制节点按正序或倒序排列，默认正序</p>
+    <br/>
+    <br/>
+    <uix-timeline reverse="true" node-data="node1Data"></uix-timeline>
+    <p>幽灵节点</p>
+    <p>当任务状态正在发生，还在记录过程中，可用幽灵节点来表示当前的时间节点，当 pending 为真值时展示幽灵节点</p>
+    <br/>
+    <br/>
+    <uix-timeline pending="true" node-data="node2Data"></uix-timeline>
+    <p>幽灵节点(pending、mode)</p>
+    <br>
+    <br>
+    <uix-timeline mode="alternate" pending="true" node-data="node5Data"></uix-timeline>
+    <p>幽灵节点(pending、reverse、mode)</p>
+    <br>
+    <br>
+    <uix-timeline mode="alternate" reverse="true" pending="true" node-data="node6Data"></uix-timeline>
+    <br/>
+    <br/>
+    <p>幽灵节点(pending、mode)</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="right" pending="true" node-data="node8Data"></uix-timeline>
+    <br/>
+    <br/>
+    <p>幽灵节点(pending、mode、reverse)</p>
+    <br/>
+    <br/>
+    <uix-timeline mode="right" pending="true" reverse="true" node-data="node9Data"></uix-timeline>
+</div>
