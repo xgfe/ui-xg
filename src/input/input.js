@@ -42,11 +42,9 @@ angular.module('ui.xg.input', [])
 
             link: function ($scope, el, attrs) {
 
-
                 // judje el type equal textarea 
                 if (angular.element(el)[0].tagName.toLowerCase() === 'textarea') {
                     if (angular.isDefined(attrs.cols)) {
-
                         el[0].style.width = 'auto';
                     }
                     if (angular.isDefined(attrs.rows)) {
@@ -67,7 +65,7 @@ angular.module('ui.xg.input', [])
                     el.toggleClass(`${inputConfig.prefixCls}-disabled`, !!val);
                 });
 
-                // set class 
+                // setclass 
                 function getInputClassName() {
                     let prefixCls = 'uix-input';
                     return uixClassName(prefixCls, {
