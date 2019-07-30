@@ -330,22 +330,23 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
                                     if (tooltip) {
                                         return;
                                     }
-                                    var val = attrs[prefix + 'Trigger'];
-                                    triggers = getTriggers(val);
 
-                                    if (triggers.show !== 'none') {
-
-                                        triggers.show.forEach(function (trigger, idx) {
-                                            if (trigger !== triggers.hide[idx]) {
-                                                tooltip[0].addEventListener(trigger, showTooltipBind);
-                                                triggers.hide[idx].split(' ').forEach(function (trigger) {
-                                                    tooltip[0].addEventListener(trigger, hideTooltipBind);
-                                                });
-                                            }
-                                        });
-                                    }
                                     tooltipLinkedScope = ttScope.$new();
                                     tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
+                                        var val = attrs[prefix + 'Trigger'];
+                                        triggers = getTriggers(val);
+
+                                        if (triggers.show !== 'none') {
+                                            triggers.show.forEach(function (trigger, idx) {
+                                                if (trigger !== triggers.hide[idx]) {
+                                                    tooltip[0].addEventListener(trigger, showTooltipBind);
+                                                    triggers.hide[idx].split(' ').forEach(function (trigger) {
+                                                        tooltip[0].addEventListener(trigger, hideTooltipBind);
+                                                    });
+                                                }
+                                            });
+                                        }
+
                                         if (appendToBody) {
                                             $document.find('body').append(tooltip);
                                         } else {
