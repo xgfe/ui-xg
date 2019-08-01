@@ -18,7 +18,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
             placementClassPrefix: '',
             animation: true,
             popupDelay: 0,
-            popupCloseDelay: 0,
+            popupCloseDelay: 200,
             useContentExp: false
         };
 
