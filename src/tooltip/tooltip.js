@@ -7,10 +7,10 @@
  */
 angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
-    /**
-     * The $tooltip service creates tooltip- and popover-like directives as well as
-     * houses global options for them.
-     */
+/**
+ * The $tooltip service creates tooltip- and popover-like directives as well as
+ * houses global options for them.
+ */
     .provider('$uixTooltip', function () {
         // The default options tooltip and popover.
         var defaultOptions = {
@@ -333,6 +333,20 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
                                     tooltipLinkedScope = ttScope.$new();
                                     tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
+                                        var val = attrs[prefix + 'Trigger'];
+                                        triggers = getTriggers(val);
+
+                                        if (triggers.show !== 'none') {
+                                            triggers.show.forEach(function (trigger, idx) {
+                                                if (trigger !== triggers.hide[idx]) {
+                                                    tooltip[0].addEventListener(trigger, showTooltipBind);
+                                                    triggers.hide[idx].split(' ').forEach(function (trigger) {
+                                                        tooltip[0].addEventListener(trigger, hideTooltipBind);
+                                                    });
+                                                }
+                                            });
+                                        }
+
                                         if (appendToBody) {
                                             $document.find('body').append(tooltip);
                                         } else {
@@ -349,6 +363,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
                                     unregisterObservers();
 
                                     if (tooltip) {
+                                        unregisterTooltipTriggers();
                                         tooltip.remove();
                                         tooltip = null;
                                     }
@@ -510,6 +525,26 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
                                         });
                                     });
                                 };
+
+                                function unregisterTooltipTriggers() {
+                                    triggers.show.forEach(function (trigger) {
+                                        if (trigger === 'outsideClick') {
+                                            tooltip[0].removeEventListener('click', toggleTooltipBind);
+                                        } else {
+                                            tooltip[0].removeEventListener(trigger, showTooltipBind);
+                                            tooltip[0].removeEventListener(trigger, toggleTooltipBind);
+                                        }
+                                    });
+                                    triggers.hide.forEach(function (trigger) {
+                                        trigger.split(' ').forEach(function (hideTrigger) {
+                                            if (trigger === 'outsideClick') {
+                                                $document[0].removeEventListener('click', bodyHideTooltipBind);
+                                            } else {
+                                                tooltip[0].removeEventListener(hideTrigger, hideTooltipBind);
+                                            }
+                                        });
+                                    });
+                                }
 
                                 function prepTriggers() {
                                     var val = attrs[prefix + 'Trigger'];
