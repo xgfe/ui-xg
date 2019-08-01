@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 2.1.10 - 2018-09-17
+ * Version: 2.1.11 - 2019-08-01
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","avatar/templates/avatar.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timeline/templates/timeline.html","timeline/templates/timelineItem.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 "use strict";
 
 /**
@@ -342,6 +342,93 @@ angular.module('ui.xg.alert', []).controller('uixAlertCtrl', ['$scope', '$attrs'
     controllerAs: 'alert'
   };
 });
+"use strict";
+
+/**
+ * avatar
+ * avatar directive
+ * Author: bewithyouzyn@gmail.com
+ * Date:2018-07-23
+ */
+angular.module('ui.xg.avatar', []).constant('avatarConfig', {
+  shapeGroup: ['circle', 'square'],
+  defaultShape: 'circle',
+  sizeGroup: ['small', 'large', 'default'],
+  defaultSize: 'default'
+}).directive('uixAvatar', ['$compile', 'avatarConfig', '$timeout', function ($compile, avatarConfig, $timeout) {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/avatar.html',
+    replace: true,
+    require: '?ngModel',
+    scope: {
+      src: '=?',
+      icon: '=?',
+      content: '=?',
+      shape: '=?',
+      size: '=?'
+    },
+    link: function link($scope, $element, $attrs) {
+      $scope.shape = avatarConfig.shapeGroup.includes($scope.shape) ? $scope.shape : avatarConfig.defaultShape;
+      $scope.size = avatarConfig.sizeGroup.includes($scope.size) ? $scope.size : avatarConfig.defaultSize;
+      var src = $scope.src,
+          icon = $scope.icon,
+          content = $scope.content; // watch content change
+
+      $scope.$watch('content', function (newVal, oldVal) {
+        if (newVal === oldVal) {
+          return;
+        }
+
+        $scope.setScale(newVal);
+      }); // set scale
+
+      $scope.setScale = function (content) {
+        if (angular.isUndefined(content)) {
+          return;
+        } // add content
+
+
+        $element.empty();
+        var children = '<span class="uix-avatar-content">' + content + '</span>';
+        $element.append(children);
+        var childrenWidth = $element.find('span')[0].offsetWidth;
+        var avatarWidth = $element[0].getBoundingClientRect().width;
+
+        if (avatarWidth - 8 < childrenWidth) {
+          $scope.scale = (avatarWidth - 8) / childrenWidth;
+        } else {
+          $scope.scale = 1;
+        } // set content style
+
+
+        $element.find('span').css({
+          '-ms-transform': "scale(".concat($scope.scale, ")"),
+          '-webkit-transform': "scale(".concat($scope.scale, ")"),
+          'transform': "scale(".concat($scope.scale, ")"),
+          'position': 'absolute',
+          'display': 'inline-block',
+          'left': "calc(50% - ".concat(Math.round(childrenWidth / 2), "px)")
+        });
+      };
+
+      $element.empty();
+      var children = null;
+
+      if (src) {
+        children = '<img src="' + src + '"/>';
+      } else if (icon) {
+        children = '<i class="' + icon + '"></i>';
+      } else if (content) {
+        $scope.setScale(content);
+      } else {
+        return;
+      }
+
+      $element.append(children);
+    }
+  };
+}]);
 "use strict";
 
 /**
@@ -2678,6 +2765,20 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
 
               tooltipLinkedScope = ttScope.$new();
               tooltip = tooltipLinker(tooltipLinkedScope, function (tooltip) {
+                var val = attrs[prefix + 'Trigger'];
+                triggers = getTriggers(val);
+
+                if (triggers.show !== 'none') {
+                  triggers.show.forEach(function (trigger, idx) {
+                    if (trigger !== triggers.hide[idx]) {
+                      tooltip[0].addEventListener(trigger, showTooltipBind);
+                      triggers.hide[idx].split(' ').forEach(function (trigger) {
+                        tooltip[0].addEventListener(trigger, hideTooltipBind);
+                      });
+                    }
+                  });
+                }
+
                 if (appendToBody) {
                   $document.find('body').append(tooltip);
                 } else {
@@ -2693,6 +2794,7 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
               unregisterObservers();
 
               if (tooltip) {
+                unregisterTooltipTriggers();
                 tooltip.remove();
                 tooltip = null;
               }
@@ -2850,6 +2952,26 @@ angular.module('ui.xg.tooltip', ['ui.xg.position', 'ui.xg.stackedMap'])
                 });
               });
             };
+
+            function unregisterTooltipTriggers() {
+              triggers.show.forEach(function (trigger) {
+                if (trigger === 'outsideClick') {
+                  tooltip[0].removeEventListener('click', toggleTooltipBind);
+                } else {
+                  tooltip[0].removeEventListener(trigger, showTooltipBind);
+                  tooltip[0].removeEventListener(trigger, toggleTooltipBind);
+                }
+              });
+              triggers.hide.forEach(function (trigger) {
+                trigger.split(' ').forEach(function (hideTrigger) {
+                  if (trigger === 'outsideClick') {
+                    $document[0].removeEventListener('click', bodyHideTooltipBind);
+                  } else {
+                    tooltip[0].removeEventListener(hideTrigger, hideTooltipBind);
+                  }
+                });
+              });
+            }
 
             function prepTriggers() {
               var val = attrs[prefix + 'Trigger'];
@@ -8440,6 +8562,65 @@ angular.module('ui.xg.tabs', []).controller('tabsController', ['$scope', functio
 "use strict";
 
 /**
+ * timeline
+ * timeline directive
+ * Author: zhangjihu@meituan.com
+ * Date:2018-09-03
+ */
+angular.module('ui.xg.timeline', []).controller('UixTimelineController', ['$scope', '$attrs', function ($scope, $attrs) {
+  $scope.mode = $attrs.mode || 'left';
+  $scope.nodeData = $scope.nodeData || [];
+
+  if ($scope.pending) {
+    var lastDot = $scope.nodeData.pop();
+    $scope.nodeData.push({
+      title: lastDot.title || 'Recording...',
+      color: lastDot.color || 'blue',
+      icon: lastDot.icon || 'glyphicon glyphicon-refresh'
+    });
+  }
+
+  if ($scope.reverse) {
+    $scope.nodeData = $scope.nodeData.slice().reverse();
+  }
+}]).directive('uixTimeline', function () {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/timeline.html',
+    replace: true,
+    scope: {
+      nodeData: '=',
+      mode: '=?',
+      // 通过设置 mode 可以改变时间轴和内容的相对位置 left | alternate | right
+      reverse: '=?',
+      // 用于控制节点排序，为 false 时按正序排列，为 true 时按倒序排列
+      pending: '=?' // 当任务状态正在发生，还在记录过程中，可用幽灵节点来表示当前的时间节点，当 pending 为真值时展示幽灵节点
+
+    },
+    controller: 'UixTimelineController'
+  };
+}).directive('uixTimelineItem', ['$sce', function ($sce) {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/timelineItem.html',
+    replace: true,
+    scope: {
+      dot: '=',
+      mode: '=',
+      showTail: '=',
+      pending: '=?',
+      reverse: '=?',
+      first: '=?',
+      last: '=?'
+    },
+    link: function link($scope) {
+      $scope.$sce = $sce;
+    }
+  };
+}]);
+"use strict";
+
+/**
  * timepicker
  * timepicker directive
  * Author: yangjiyuan@meituan.com
@@ -8861,6 +9042,11 @@ angular.module("alert/templates/alert.html", []).run(["$templateCache", function
 }]);
 "use strict";
 
+angular.module("avatar/templates/avatar.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/avatar.html", "<div class=\"uix-avatar {{'uix-avatar-'+size}} {{'uix-avatar-'+shape}}\" ng-class=\"{'uix-avatar-image':src}\">" + "" + "</div>");
+}]);
+"use strict";
+
 angular.module("button/templates/button.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("templates/button.html", "<button type=\"{{type}}\" class=\"uix-button-wrapper\">" + "    <div ng-transclude class=\"inline-b\"></div>" + "    <span ng-if=\"loading\">" + "        <i class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></i>" + "    </span>" + "</button>");
 }]);
@@ -9028,6 +9214,16 @@ angular.module("tabs/templates/tab.html", []).run(["$templateCache", function ($
 
 angular.module("tabs/templates/tabs.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("templates/tabs.html", "<div>" + "    <!--<ul ng-transclude class=\"nav nav-{{type}}\" ng-class=\"{'nav-stacked': tabPosition === 'left'}\"></ul>-->" + "    <ul ng-transclude class=\"nav nav-{{type}}\"></ul>" + "    <div class=\"tab-content\">" + "        <div ng-repeat=\"tab in tabsCtrl.tabs\" ng-class=\"{'tab-panel-hidden': tabsCtrl.active !== tab.index}\">" + "            <uix-tab-panel tab=\"tab\"></uix-tab-panel>" + "        </div>" + "    </div>" + "</div>");
+}]);
+"use strict";
+
+angular.module("timeline/templates/timeline.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/timeline.html", "<div class=\"timeline\" ng-class=\"{'timeline-alternate': mode === 'alternate', 'timeline-pending': pending, 'timeline-reverse': reverse}\">" + "    <uix-timeline-item" + "            ng-repeat=\"dot in nodeData track by $index\"" + "            dot=\"dot\"" + "            first=\"$first\"" + "            last=\"$last\"" + "            mode=\"$parent.mode==='alternate'?($index%2?'left':'right'):$parent.mode\"" + "            reverse=\"$parent.reverse\"" + "            show-tail=\"!$last\"" + "            pending=\"(!$parent.reverse&&$last&&$parent.pending)||($parent.reverse&&$first&&$parent.pending)\">" + "    </uix-timeline-item>" + "</div>");
+}]);
+"use strict";
+
+angular.module("timeline/templates/timelineItem.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/timelineItem.html", "<div class=\"timeline-item timeline-item-{{mode}}\"" + "     ng-class=\"{'timeline-item-last': last, 'timeline-item-first': first, 'timeline-item-pending': pending}\">" + "    <div class=\"timeline-item-dot timeline-item-dot-{{dot.color}}\"" + "         ng-class=\"{'timeline-item-dot-custom': dot.icon ,'timeline-item-dot-reverse': reverse}\">" + "        <span class=\"icon-wrap\" ng-if=\"dot.icon\">" + "            <i class=\"{{dot.icon}}\" aria-hidden=\"true\"></i>" + "        </span>" + "    </div>" + "    <div class=\"timeline-item-tail\" ng-if=\"showTail\"></div>" + "    <div class=\"timeline-item-content\" ng-class=\"{'timeline-item-content-custom': dot.icon}\">" + "        <div class=\"timeline-item-content-title\">{{dot.title||''}}</div>" + "        <div class=\"timeline-item-content-desc\" ng-bind-html=\"$sce.trustAsHtml(dot.desc)\"></div>" + "        <div class=\"timeline-item-content-other\">{{dot.other||''}}</div>" + "    </div>" + "</div>" + "");
 }]);
 "use strict";
 

@@ -1,3 +1,64 @@
+<a name="2.1.11"></a>
+## 2.1.11 (2019-08-01)
+
+
+### Bug Fixes
+
+* **button:** fix loading delay ([c4bb3b6](https://github.com/xgfe/ui-xg/commit/c4bb3b6))
+* **calendar:** fix [#29](https://github.com/xgfe/ui-xg/issues/29) ([0c115e5](https://github.com/xgfe/ui-xg/commit/0c115e5))
+* **calendar:** fix seclect day bug ([962427e](https://github.com/xgfe/ui-xg/commit/962427e))
+* **calendar:** fix today bug ([0029773](https://github.com/xgfe/ui-xg/commit/0029773))
+* **carousel:** angular.isUndefined is function not object ([ed42c4c](https://github.com/xgfe/ui-xg/commit/ed42c4c))
+* **carousel:** change page not occur undefined error ([28f3156](https://github.com/xgfe/ui-xg/commit/28f3156)), closes [#23](https://github.com/xgfe/ui-xg/issues/23)
+* **cityselect:** fix the cityselect tab change bug ([47ac555](https://github.com/xgfe/ui-xg/commit/47ac555))
+* **collapse:** fix padding ([e20afd4](https://github.com/xgfe/ui-xg/commit/e20afd4))
+* **doc:** carousel demo img error ([f0f4320](https://github.com/xgfe/ui-xg/commit/f0f4320))
+* **gulp:** fix webpack task ([5f778fa](https://github.com/xgfe/ui-xg/commit/5f778fa))
+* **loader&tableLoader:** fix default setting ([d8efc77](https://github.com/xgfe/ui-xg/commit/d8efc77))
+* **modal:** fix double click ([7c77d6f](https://github.com/xgfe/ui-xg/commit/7c77d6f))
+* **modal:** 修复重复点击bug ([5d54269](https://github.com/xgfe/ui-xg/commit/5d54269))
+* **notification:** remove information about alert ([7daf025](https://github.com/xgfe/ui-xg/commit/7daf025))
+* **pager:** 修复分页监听器bug ([faa36fe](https://github.com/xgfe/ui-xg/commit/faa36fe))
+* **progressbar:** modify progressbar readme.md ([5a594f6](https://github.com/xgfe/ui-xg/commit/5a594f6))
+* **select:** fix dropdown position ([e7bb722](https://github.com/xgfe/ui-xg/commit/e7bb722))
+* **tableLoader:** 修复tableLoaderbug; fix [#31](https://github.com/xgfe/ui-xg/issues/31) ([aee8ac6](https://github.com/xgfe/ui-xg/commit/aee8ac6))
+* **toggle:** fix toggle bug in datepicker,dropdown and timepicker ([3f14eb6](https://github.com/xgfe/ui-xg/commit/3f14eb6))
+* **tooltip:** change display of tooltip [#2](https://github.com/xgfe/ui-xg/issues/2) ([03198c7](https://github.com/xgfe/ui-xg/commit/03198c7))
+* **tree:** click root node can't select children ([c9453bc](https://github.com/xgfe/ui-xg/commit/c9453bc))
+* **typeahead:** fix css style bug ([633196e](https://github.com/xgfe/ui-xg/commit/633196e))
+
+
+### Features
+
+* **accordion:** add accordion component ([2aea391](https://github.com/xgfe/ui-xg/commit/2aea391))
+* **button and buttonGroup:** add demo and readme docs ([acbb1f1](https://github.com/xgfe/ui-xg/commit/acbb1f1))
+* **cityselect:** add cityselect ([bc2d87b](https://github.com/xgfe/ui-xg/commit/bc2d87b))
+* **datepicker:** add append-to-body attr ([8556d80](https://github.com/xgfe/ui-xg/commit/8556d80))
+* **datepicker:** add placement attribute ([989523b](https://github.com/xgfe/ui-xg/commit/989523b))
+* **datepicker:** add showSeconds attribute ([3928e8a](https://github.com/xgfe/ui-xg/commit/3928e8a))
+* **grid:** add grid mixin scss ([968f9a1](https://github.com/xgfe/ui-xg/commit/968f9a1))
+* **grid:** add grid style ([e2ae15e](https://github.com/xgfe/ui-xg/commit/e2ae15e))
+* **grid:** update grid ([849dfad](https://github.com/xgfe/ui-xg/commit/849dfad))
+* **grid:** 增加栅格指令基础代码 ([4f1b455](https://github.com/xgfe/ui-xg/commit/4f1b455))
+* **grid:** 移除scss import语法 ([c38ff03](https://github.com/xgfe/ui-xg/commit/c38ff03))
+* **modal:** add ([3ba831b](https://github.com/xgfe/ui-xg/commit/3ba831b))
+* **modal:** add  modal-xl class ([49ad721](https://github.com/xgfe/ui-xg/commit/49ad721))
+* **modal:** add auto close ([f478bef](https://github.com/xgfe/ui-xg/commit/f478bef))
+* **modal:** add modal-xl class ([3c37fba](https://github.com/xgfe/ui-xg/commit/3c37fba))
+* **notification:** add notification ([720b22d](https://github.com/xgfe/ui-xg/commit/720b22d))
+* **progressbar:** add progressbar component ([ad218ed](https://github.com/xgfe/ui-xg/commit/ad218ed))
+* **tabs,button,buttonGroup,rate:** refator button and buttonGroup,new tab and rate ([c6f1033](https://github.com/xgfe/ui-xg/commit/c6f1033))
+* **tree:** add tree component,without test ([28395fd](https://github.com/xgfe/ui-xg/commit/28395fd))
+* **tree:** tree code in dist ([5fca609](https://github.com/xgfe/ui-xg/commit/5fca609))
+* **typeahead:** add typeahead. [#11](https://github.com/xgfe/ui-xg/issues/11) ([6a4b1b4](https://github.com/xgfe/ui-xg/commit/6a4b1b4))
+
+
+### Reverts
+
+* **collapse:** fix padding ([d86f2f1](https://github.com/xgfe/ui-xg/commit/d86f2f1))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/xgfe/ui-xg/compare/v2.0.5...v2.1.0) (2017-07-03)
 
