@@ -1,0 +1,67 @@
+<div ng-controller="inputDemoCtrl as vm" class="example-input">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    基本使用
+                </div>
+                <div class="panel-body">
+                    <input type="text" uix-input placeholder="basic usage">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 example-input-size">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    三种大小
+                </div>
+                <div class="panel-body">
+                    <input type="text" uix-input size="large" placeholder="large size">
+                    <input type="text" uix-input placeholder="default size">
+                    <input type="text" uix-input size="small" placeholder="small size">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    前置/后置标签
+                </div>
+                <div class="panel-body">
+                    <uix-input-group addon-after="'default'" class="mb-l">
+                        <input type="text" uix-input placeholder="my site">
+                    </uix-input-group>
+
+                    <uix-input-group addon-before="'size'" size="'large'" class="mb-l">
+                        <input type="text" uix-input placeholder="size 大小">
+                    </uix-input-group>
+
+                    <uix-input-group addon-before="'http'" addon-after="'.com'" class="mb-l">
+                        <input type="text" uix-input placeholder="my site">
+                    </uix-input-group>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    文本域
+                </div>
+                <div class="panel-body">
+                    <textarea name="test" id="" cols="20" rows="5" uix-input></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    数字输入框
+                </div>
+                <div class="panel-body">
+                    <input type="number" ng-model="vm.value" max="1000" min="1" step="0.1"   uix-input-number uix-input placeholder="my site">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
