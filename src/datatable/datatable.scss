@@ -1,0 +1,125 @@
+.uix-datatable-head>thead>tr>th,
+.uix-datatable-head>thead>tr>td {
+    border-bottom   : 0;
+    background-color: #f8f8f9;
+}
+
+.uix-datatable {
+    position        : relative;
+    overflow        : hidden;
+    width           : inherit;
+    height          : 100%;
+    max-width       : 100%;
+    overflow        : hidden;
+    color           : #515a6e;
+    font-size       : 12px;
+    background-color: #fff;
+    box-sizing      : border-box;
+
+    table {
+        table-layout: fixed;
+    }
+
+    td {
+        background-color: #fff;
+        transition      : background-color .2s ease-in-out;
+    }
+
+    th {
+        height          : 40px;
+        white-space     : nowrap;
+        overflow        : hidden;
+        background-color: #f8f8f9;
+    }
+
+    td,
+    th {
+        min-width     : 0;
+        padding       : 12px 0;
+        box-sizing    : border-box;
+        text-align    : left;
+        text-overflow : ellipsis;
+        vertical-align: middle;
+        border-bottom : 1px solid #e8eaec;
+    }
+
+    .uix-datatable-header {
+        overflow: hidden;
+    }
+
+    .uix-datatable-overflowX {
+        overflow-x: scroll;
+    }
+
+    .uix-datatable-overflowY {
+        overflow-y: scroll;
+    }
+
+    .uix-datatable-hidden {
+        visibility: hidden;
+    }
+
+    .uix-datatable-fixed {
+        position: absolute;
+        top     : 0;
+    }
+    
+
+    .uix-datatable-fixed-left {
+        top       : 0;
+        left      : 0;
+        box-shadow: 2px 0 6px -2px rgba(0, 0, 0, .2);
+    }
+
+    .uix-datatable-fixed-right {
+        left      : auto;
+        right     : 0;
+        box-shadow: -2px 0 6px -2px rgba(0, 0, 0, .2);
+    }
+    &.uix-datatable-scroll-position-left .uix-datatable-fixed-left{
+        box-shadow: none;
+    }
+    &.uix-datatable-scroll-position-right .uix-datatable-fixed-right{
+        box-shadow: none;
+    }
+
+    .uix-datatable-fixed-left:before,
+    .uix-datatable-fixed-right:before {
+        content         : "";
+        width           : 100%;
+        height          : 1px;
+        background-color: #dcdee2;
+        position        : absolute;
+        left            : 0;
+        bottom          : 0;
+        z-index         : 4;
+    }
+
+    .uix-datatable-fixed-body {
+        overflow: hidden;
+        position: relative;
+        z-index : 3;
+    }
+
+    .uix-datatable-cell {
+        padding-left : 18px;
+        padding-right: 18px;
+        overflow     : hidden;
+        text-overflow: ellipsis;
+        white-space  : normal;
+        word-break   : break-all;
+        box-sizing   : border-box;
+    }
+}
+
+.uix-datatable .table {
+    margin-bottom: 0;
+}
+
+.uix-datatable-head.table-bordered {
+    border-bottom: 0;
+}
+
+.uix-datatable-row-hover td{
+    background-color: #f9f9f9;
+}

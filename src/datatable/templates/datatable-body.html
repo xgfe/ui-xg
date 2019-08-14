@@ -1,0 +1,31 @@
+<table class="uix-datatable-tbody"
+    ng-class="{'table-striped':$table.isStriped,'table-bordered':$table.isBordered}"
+    ng-style="styles"
+        cellspacing="0"
+        cellpadding="0"
+        border="0"
+    >
+        <colgroup>
+            <col ng-repeat="(index, column) in columns" 
+            width="{{ $table.setCellWidth(column) }}"></col>
+        </colgroup>
+        <tbody>
+            <tr ng-repeat="(index, row) in $table.rebuildData"
+             ng-class="[$table.rowClassName(index),$table.objData[index]._isHover?'uix-datatable-row-hover':'']"
+             ng-mouseenter="handleMouseIn($event,row._index)"
+             ng-mouseleave="handleMouseOut($event,row._index)"
+            >
+                <td ng-repeat="column in columns" ng-class="alignCls(column, row)">
+                    <uix-datatable-cell fixed="fixed"
+                    row="row"
+                    key="column._columnKey"
+                    column="column"
+                    natural-index="index"
+                    index="row._index"
+                    checked="rowChecked(row._index)"
+                    disabled="rowDisabled(row._index)"
+                    expanded="rowExpanded(row._index)"></uix-datatable-cell>
+                </td>
+            </tr>
+        </tbody>
+    </table>
