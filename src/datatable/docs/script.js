@@ -169,7 +169,10 @@
     }]);
     // 多选
     app.controller('datatableSelectionDemoCtrl', ['$scope', function ($scope) {
-        $scope.columns = angular.copy(baseColumns);
+        $scope.columns = [{
+            type: 'checkbox',
+            width: 60
+        }].concat(angular.copy(baseColumns));
         $scope.data = angular.copy(baseData);
     }]);
     // 排序

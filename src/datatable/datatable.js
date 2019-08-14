@@ -782,8 +782,8 @@
                     let column = $scope.column || {};
                     if (column.type === 'index') {
                         $scope.renderType = 'index';
-                    } else if (column.type === 'selection') {
-                        $scope.renderType = 'selection';
+                    } else if (column.type === 'checkbox') {
+                        $scope.renderType = 'checkbox';
                     } else if (column.type === 'html') {
                         $scope.renderType = 'html';
                     } else if (column.type === 'expand') {

@@ -11,7 +11,10 @@
       ng-repeat="(index, column) in columns"
       width="{{ $table.setCellWidth(column) }}"
     />
-    <col ng-if="$table.showVerticalScrollBar" width="{{$table.scrollBarWidth}}" />
+    <col
+      ng-if="$table.showVerticalScrollBar"
+      width="{{ $table.scrollBarWidth }}"
+    />
   </colgroup>
   <thead>
     <tr ng-repeat="(rowIndex, cols) in headRows track by rowIndex">
@@ -23,32 +26,37 @@
       >
         <div ng-class="cellClasses(column)" class="uix-datatable-cell">
           <span ng-if="column.type === 'expand'">{{ column.title || '' }}</span>
-          <div ng-if="column.type === 'selection'">
+          <div ng-if="column.type === 'checkbox'">
             <input type="checkbox" />
           </div>
-          <span>
-            <span
-              ng-class="{'uix-datatable-cell-sort': column.sortable}"
-              ng-click="handleSortByHead(getColumn(rowIndex, index)._index)"
-              >{{ column.title || columns.key || '#' }}
+          <div ng-if="column.type !== 'expand' && column.type !== 'checkbox'">
+            <span>
+              <span
+                ng-class="{'uix-datatable-cell-sort': column.sortable}"
+                ng-click="handleSortByHead(getColumn(rowIndex, index)._index)"
+                >{{ column.title || columns.key || '#' }}
+              </span>
             </span>
-          </span>
-          <span ng-class="[prefixCls + '-sort']" ng-if="column.sortable">
-            <i
-              class="glyphicon glyphicon-triangle-top"
-              :class="{on: getColumn(rowIndex, index)._sortType === 'asc'}"
-              ng-click="handleSort(getColumn(rowIndex, index)._index, 'asc')"
-            ></i>
-            <i
-              class="glyphicon glyphicon-triangle-bottom"
-              :class="{on: getColumn(rowIndex, index)._sortType === 'desc'}"
-              ng-click="handleSort(getColumn(rowIndex, index)._index, 'desc')"
-            ></i>
-          </span>
+            <span ng-class="[prefixCls + '-sort']" ng-if="column.sortable">
+              <i
+                class="glyphicon glyphicon-triangle-top"
+                :class="{on: getColumn(rowIndex, index)._sortType === 'asc'}"
+                ng-click="handleSort(getColumn(rowIndex, index)._index, 'asc')"
+              ></i>
+              <i
+                class="glyphicon glyphicon-triangle-bottom"
+                :class="{on: getColumn(rowIndex, index)._sortType === 'desc'}"
+                ng-click="handleSort(getColumn(rowIndex, index)._index, 'desc')"
+              ></i>
+            </span>
+          </div>
         </div>
       </th>
-      <th v-if="$table.showVerticalScrollBar && rowIndex===0" 
-      ng-class='scrollBarCellClass()' rowspan="{{headRows.length}}"></th>
+      <th
+        v-if="$table.showVerticalScrollBar && rowIndex===0"
+        ng-class="scrollBarCellClass()"
+        rowspan="{{ headRows.length }}"
+      ></th>
     </tr>
   </thead>
 </table>
