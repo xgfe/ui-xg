@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'buttonGroup';
-export const cnName = 'buttonGroup';
+export const cnName = '按钮组';
 export { default as readme } from './readme.md';
 
 export const demos = {

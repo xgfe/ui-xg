@@ -1,4 +1,4 @@
-# datepicker
+# 日期选择框 datepicker
 ## Description
 
 日期选择组件,可以选择时间,依赖于<a ui-sref="app.api.calendar" href="../../calendar/docs/readme.md">calendar</a>组件

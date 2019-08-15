@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'position';
-export const cnName = 'position';
+export const cnName = '定位';
 export { default as readme } from './readme.md';
 
 export const demos = {

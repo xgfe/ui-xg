@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'switch';
-export const cnName = 'switch';
+export const cnName = '开关';
 export { default as readme } from './readme.md';
 
 export const demos = {

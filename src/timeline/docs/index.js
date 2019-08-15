@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'timeline';
-export const cnName = 'timeline';
+export const cnName = '时间轴';
 export { default as readme } from './readme.md';
 
 export const demos = {

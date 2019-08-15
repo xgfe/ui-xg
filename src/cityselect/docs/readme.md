@@ -1,4 +1,4 @@
-# cityselect
+# 城市选择器 cityselect
 ## Description
 
 cityselect组件，可以根据传入的数据进行城市的初始化并提供各种操作，整个组件使用ng-model作为唯一的数据接口，ng-model允许传入一个对象，里面可以进行参数设置。

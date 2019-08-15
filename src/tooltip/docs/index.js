@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'tooltip';
-export const cnName = 'tooltip';
+export const cnName = '工具提示';
 export { default as readme } from './readme.md';
 
 export const demos = {

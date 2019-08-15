@@ -1,4 +1,4 @@
-# Typeahead
+# 输入提示 Typeahead
 ## Description
 搜索提示组件.分为本地数据和异步数据两种.
 

@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'notify';
-export const cnName = 'notify';
+export const cnName = '提示信息';
 export { default as readme } from './readme.md';
 
 export const demos = {

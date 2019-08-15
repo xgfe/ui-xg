@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'calendar';
-export const cnName = 'calendar';
+export const cnName = '日历';
 export { default as readme } from './readme.md';
 
 export const demos = {

@@ -1,4 +1,4 @@
-# carousel
+# 走马灯 carousel
 ## Description
 
 carousel directive.

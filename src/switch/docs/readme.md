@@ -1,4 +1,4 @@
-# switch
+# 开关 switch
 ## Description
 开关组件，用于开启某些状态的地方。
 

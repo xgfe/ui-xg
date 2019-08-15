@@ -1,4 +1,4 @@
-# dropdown
+# 下拉菜单 dropdown
 ## Description
 下拉菜单组件，支持多列。可以通过Provider设置多列数目，当列表项的数目大于多列数目时以多列显示
 

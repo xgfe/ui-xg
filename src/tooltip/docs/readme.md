@@ -1,4 +1,4 @@
-# Tooltip
+# 工具提示 Tooltip
 ## Description
 工具提示组件,依赖于<a ui-sref="app.api.position" href="../../position/docs/readme.md">position</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[tooltip](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/tooltip)组件(捂脸~).
 

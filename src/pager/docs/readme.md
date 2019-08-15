@@ -1,4 +1,4 @@
-# pager
+# 分页 pager
 ## Description
 分页器组件
 

@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'timepicker';
-export const cnName = 'timepicker';
+export const cnName = '时间选择器';
 export { default as readme } from './readme.md';
 
 export const demos = {

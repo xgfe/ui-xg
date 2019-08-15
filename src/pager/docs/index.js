@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'pager';
-export const cnName = 'pager';
+export const cnName = '分页';
 export { default as readme } from './readme.md';
 
 export const demos = {

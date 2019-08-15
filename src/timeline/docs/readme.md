@@ -1,4 +1,4 @@
-# timeline
+# 时间轴 timeline
 ## Description
 
 时间轴组件，用于垂直展示时间流信息。

@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'dropdown';
-export const cnName = 'dropdown';
+export const cnName = '下拉菜单';
 export { default as readme } from './readme.md';
 
 export const demos = {

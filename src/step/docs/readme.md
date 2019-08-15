@@ -1,4 +1,4 @@
-# step
+# 步骤条 step
 ## Description
 步骤条组件，依赖steps组件，用于描述事情的进度，需要配合steps组件一起使用
 

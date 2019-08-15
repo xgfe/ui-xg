@@ -1,4 +1,4 @@
-# sortable
+# 排序 sortable
 ## Description
 
 排序指令,可以对列表进行排序,目前sortable的使用局限性较大,只能对`ngRepeat`进行排序!

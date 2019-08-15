@@ -1,4 +1,4 @@
-# collapse
+# 折叠面板 collapse
 ## Description
 
 collapse directive.

@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'progressbar';
-export const cnName = 'progressbar';
+export const cnName = '进度条';
 export { default as readme } from './readme.md';
 
 export const demos = {

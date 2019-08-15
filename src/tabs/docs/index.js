@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'tabs';
-export const cnName = 'tabs';
+export const cnName = '标签页';
 export { default as readme } from './readme.md';
 
 export const demos = {

@@ -1,4 +1,4 @@
-# Alert
+# 警告提示 Alert
 ## Description
 提示组件,可展示不同样式的提示信息。
 

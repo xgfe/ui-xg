@@ -1,4 +1,4 @@
-# calendar
+# 日历 calendar
 ## Description
 
 日历组件,可以选择日期，依赖于组件<a ui-sref="app.api.timepanel" href="../../timepanel/docs/readme.md">timepanel</a>

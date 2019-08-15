@@ -1,4 +1,4 @@
-# select
+# 下拉选择 select
 ## Description
 
 select directive.参考[ui-select](https://github.com/angular-ui/ui-select),去除了theme的设置,其他功能照搬过来

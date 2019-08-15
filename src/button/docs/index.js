@@ -4,7 +4,7 @@ import rawScript from '!!raw-loader!./script';
 
 import indexTemplate from './index.html';
 export const name = 'button';
-export const cnName = 'button';
+export const cnName = '按钮';
 export { default as readme } from './readme.md';
 
 export const demos = {

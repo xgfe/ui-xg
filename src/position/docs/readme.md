@@ -1,4 +1,4 @@
-# position
+# 定位 position
 ## Description
 `$uixPosition`是一个用于对DOM元素进行绝对定位的service，在<a ui-sref="app.api.tooltip" href="../../tooltip/docs/readme.md">`tooltip`</a>、<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">`popover`</a>、<a ui-sref="app.api.timepicker" href="../../timepicker/docs/readme.md">`timepicker`</a>和<a ui-sref="app.api.datepicker" href="../../datepicker/docs/readme.md">`datepicker`</a>中均有使用。代码使用的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)的。
 

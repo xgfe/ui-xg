@@ -1,4 +1,4 @@
-# searchBox
+# 搜索框 searchBox
 ## Description
 搜索框组件，主要封装搜索框的搜索事件。
 

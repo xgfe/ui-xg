@@ -1,4 +1,4 @@
-# Popover
+# 气泡弹窗 Popover
 ## Description
 工具提示组件,依赖于<a ui-sref="app.api.popover" href="../../popover/docs/readme.md">popover</a>,基本搬运的是[ui-bootstrap](https://github.com/angular-ui/bootstrap)中的[popover](https://github.com/angular-ui/bootstrap/tree/1.0.0/src/popover)组件。
 
