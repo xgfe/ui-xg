@@ -1,4 +1,4 @@
-<div ng-controller="alertDemoCtrl">
+<div>
     <uix-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="true" close-func="closeAlert($index)" has-icon="true">{{alert.msg}}</uix-alert>
     <uix-alert type="warning" close="true" dismiss-on-timeout="3000" has-icon="true">3s定时关闭</uix-alert>
     <uix-alert type="warning" close="true" close-text="点击关闭" has-icon="true">替换关闭按钮文案</uix-alert>

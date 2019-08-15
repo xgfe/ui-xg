@@ -1,5 +1,41 @@
-angular.module('uixDemo').controller('modalDemoCtrl', ['$scope', '$timeout', '$log', '$uixModal', '$uixConfirm',
-    function ($scope, $timeout, $log, $uixModal, $uixConfirm) {
+import app from 'app';
+
+app.controller('modalInstanceCtrl', ['$scope', '$uixModalInstance', 'items', '$uixModal',
+    function ($scope, $uixModalInstance, items, $uixModal) {
+
+        $scope.items = angular.copy(items.items);
+        $scope.selected = {
+            item: items.selected
+        };
+
+        $scope.openAnother = function () {
+            $uixModal.open({
+                templateUrl: 'anotherModal.html',
+                size: 'sm',
+                controller: ['$scope', function ($scope) {
+                    $scope.modalBodyText = 'Hello!\'I\'m a another modal';
+                    $scope.ok = function () {
+                        $scope.$close('close modal by $scope');
+                    };
+                }]
+            });
+        };
+
+        $scope.ok = function () {
+            $uixModalInstance.close({
+                items: $scope.items,
+                selected: $scope.selected.item
+            });
+        };
+
+        $scope.cancel = function () {
+            $uixModalInstance.dismiss('cancel');
+        };
+    }]);
+
+export default class {
+    static $inject = ['$scope', '$timeout', '$log', '$uixModal', '$uixConfirm'];
+    constructor($scope, $timeout, $log, $uixModal, $uixConfirm) {
         $scope.items = ['item1', 'item2', 'item3'];
         $scope.confirm = function () {
             $uixConfirm({
@@ -44,36 +80,6 @@ angular.module('uixDemo').controller('modalDemoCtrl', ['$scope', '$timeout', '$l
                 $log.info('Modal dismissed at: ' + new Date());
             });
         };
-    }]);
-angular.module('uixDemo').controller('modalInstanceCtrl', ['$scope', '$uixModalInstance', 'items', '$uixModal',
-    function ($scope, $uixModalInstance, items, $uixModal) {
+    }
+}
 
-        $scope.items = angular.copy(items.items);
-        $scope.selected = {
-            item: items.selected
-        };
-
-        $scope.openAnother = function () {
-            $uixModal.open({
-                templateUrl: 'anotherModal.html',
-                size: 'sm',
-                controller: ['$scope', function ($scope) {
-                    $scope.modalBodyText = 'Hello!\'I\'m a another modal';
-                    $scope.ok = function () {
-                        $scope.$close('close modal by $scope');
-                    };
-                }]
-            });
-        };
-
-        $scope.ok = function () {
-            $uixModalInstance.close({
-                items: $scope.items,
-                selected: $scope.selected.item
-            });
-        };
-
-        $scope.cancel = function () {
-            $uixModalInstance.dismiss('cancel');
-        };
-    }]);

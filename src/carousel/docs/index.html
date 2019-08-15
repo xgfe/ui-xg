@@ -1,4 +1,13 @@
-<div ng-controller="carouselDemoCtrl">
+<style>
+.uix-carousel {
+    width: 100%;
+}
+
+.uix-carousel img{
+    width: 100%;
+}
+</style>
+<div>
     <uix-carousel interval="interval" no-loop="noLoop" no-pause="noPause" no-transition="noTransition">
         <div uix-carousel-item  ng-repeat="img in imgs" index="img.index" active="img.active">
             <img ng-src="{{img.src}}">

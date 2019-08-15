@@ -1,4 +1,19 @@
-<div ng-controller="dropdownDemoCtrl">
+<style>
+#posdemoparent {
+    border: 1px solid #ccc;
+    padding: 15px;
+}
+
+#posdemodiv {
+    width: 100px;
+    height: 100px;
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+}
+</style>
+<div>
     <h4>$uixPosition service</h4>
     <div id="posdemoparent" ng-style="{'overflow': (parentScrollable && 'scroll'), 'position': (parentRelative && 'relative')}">
         <div class="checkbox">

@@ -1,15 +1,15 @@
 import angular from 'angular';
-import uiXg from '../../src/ui-xg';
 import ngSanitize from 'angular-sanitize';
 import ngAnimate from 'angular-animate';
 import uiRouter from 'angular-ui-router';
+import '../../dist/js/ui-xg';
 
 //定义angular模块
 const app = angular.module('uixDemo', [
     uiRouter,
-    uiXg,
     ngAnimate,
-    ngSanitize
+    ngSanitize,
+    'ui.xg'
 ]);
 
 app.config(['$controllerProvider', function ($controllerProvider) {
