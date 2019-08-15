@@ -1,0 +1,16 @@
+<button class="btn btn-default" ng-click="change()">change</button>
+<input type="checkbox" ng-model="closeOthers" /> Open only one at a time
+<uix-accordion close-others="closeOthers">
+  <div
+    uix-accordion-group
+    style="margin-bottom: 30px;"
+    heading="{{ str.heading }}"
+    is-open="openStatus"
+  >
+    this is body
+  </div>
+  <div uix-accordion-group heading="hhhhhhhh" is-open="openStatus1">
+    <div style="float: right; color: red;">this is body</div>
+  </div>
+  <div uix-accordion-group heading="xxxxxxx" is-open="openStatus2"></div>
+</uix-accordion>

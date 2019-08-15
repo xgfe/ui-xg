@@ -4,7 +4,10 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-08-01
  */
-angular.module('ui.xg.transition', [])
+import angular from 'angular';
+import module from './module';
+
+module
     .factory('$uixTransition', ['$q', '$timeout', '$rootScope', '$document', function ($q, $timeout, $rootScope, $document) {
         var doc = $document[0];
         function $transition(element, trigger, options) {

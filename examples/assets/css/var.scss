@@ -1,0 +1,1269 @@
+// Base
+// =======================================
+
+// Icon
+$icon-font-path: './styles/iconfont' !default;
+
+// Radius
+// -----------------
+// like button、tooltips、raidoButton、message....
+$radius-component-normal: 2px !default;
+$radius-component-small: 1px !default;
+$radius-component-large: 4px !default;
+// like list、accordion、table
+$radius-container-normal: 0px !default;
+$radius-container-large: 1px !default;
+$radius-container-huge: 2px !default;
+
+// Font
+// ------------------
+$font-family: PingFang SC,Helvetica Neue,Helvetica,STHeitiSC-Light, Hiragino Sans GB, Arial,Microsoft YaHei ,sans-serif!default;
+$code-family: Menlo, Monaco, Consolas, "Courier New", monospace !default;
+
+$font-size-normal: 14px!default;
+$font-size-small: 12px!default;
+$font-size-large: 16px!default;
+
+$line-height-normal: 20px!default;
+$line-height-small: 16px!default;
+$line-height-large: 22px!default;
+
+$h1-font-size: 22px!default;
+$h2-font-size: 18px!default;
+$h3-font-size: 16px!default;
+
+$h1-line-height: 30px!default;
+$h2-line-height: 24px!default;
+$h3-line-height: 22px!default;
+
+$font-weight-regular: 400!default;
+$font-weight-medium: 500!default;
+$font-weight-semi-bold: 600!default;
+$font-weight-bold: 700!default;
+
+// Z-Index
+$mtd-sidenav-z-index: 10 !default;
+$topnav-dropdown-z-index: 100 !default;
+$topnav-block-info-list-z-index: $topnav-dropdown-z-index !default;
+$navbar-zIndex: 1000 !default; // 顶部导航条
+
+// Colors
+$color-white: #fff!default;
+$color-black: #000!default;
+
+// gray color
+$color-gray50: #FAFAFA!default; // 模块浅色背景
+$color-gray150: #EBEBEB!default; // 备用灰色
+$color-gray300: #D1D1D1!default; // 引用文字等
+$color-gray450: #ADADAD!default; // 辅助文案
+$color-gray600: #6F6F6F!default; // 次级文案
+$color-gray750: #464646!default; // 正文
+$color-gray900: #1F1F1F!default; // 标题
+
+// silvery color
+$color-silvery100: #F7F8FC!default; // 浅色背景
+$color-silvery200: #F1F3F6!default; // 禁用态背景
+$color-silvery300: #EDF0F7!default; // 浅色边框
+$color-silvery500: #D3D8E4!default; // 深色边框
+$color-silvery700: #B5BBD1!default; // 默认文字禁用颜色
+$color-silvery900: #808AB1!default; // tip 背景色
+
+$color-blue: #4E73FF!default;
+$color-red: #FF6459!default;
+$color-green: #5ABB3C!default;
+$color-orange: #FF9801!default;
+
+// 语义色
+$color-primary: #4E73FF!default; // 主色
+$color-secondary1: #5D6EAC!default; // 辅色
+$color-secondary2: #849DFF!default; // 辅色
+$color-secondary3: #E6EBFF!default; // 辅色
+$color-warning: #FF9801!default;
+$color-success: #5ABB3C!default;
+$color-danger: #FF6459!default;
+$color-warning-light: #FFF6E5!default;
+$color-success-light: #E9FAE5!default;
+$color-danger-light: #FFF0EF!default;
+
+$color-light-border-color: $color-silvery300!default;
+$color-disabled-bgc: $color-silvery200!default;
+$color-disabled: $color-silvery700!default;
+$color-darken-border-color: $color-silvery500!default;
+
+// 字体颜色
+$text-disabled-color: $color-gray450!default; // 禁用状态文字
+$text-annotate-color: $color-gray600!default; // 非重要注释
+$text-color: $color-gray750!default; // 正文颜色
+$text-title-color: $color-gray900!default; // 标题文字;
+$placeholder-color: $color-silvery700!default; // 组件内规则说明
+
+// Link
+$link-color: $color-blue !default; // 不与主色联动
+$link-hover-color: $link-color !default; // hover 颜色不动
+$link-active-color: active-color($link-color, 16%, 16%) !default;
+$link-disabled-color: $text-disabled-color !default;
+$link-text-decoration: none!default;
+$link-hover-text-decoration: underline!default;
+
+// Base Component Size
+$control-height: 34px!default;
+$control-small-height: 26px!default;
+$control-large-height: 42px!default;
+
+
+// Components
+// =======================================
+// button
+$button-radius: 2px !default;
+
+$mtd-sidenav-z-index: 10!default;
+$topnav-dropdown-z-index: 100!default;
+$topnav-block-info-list-z-index: $topnav-dropdown-z-index!default;
+$navbar-zIndex: 1000!default; // 顶部导航条
+
+// Button
+// ----------------------
+$btn-font-weight: $font-weight-regular!default;
+
+$btn-width: 66px!default;
+$btn-height: $control-height!default;
+$btn-padding-horizontal: 13px!default;
+$btn-font-size: $font-size-normal!default;
+$btn-icon-color: $color-primary!default;
+
+$btn-small-width: 48px!default;
+$btn-small-height: $control-small-height!default;
+$btn-small-padding-horizontal: 9px !default;
+$btn-small-font-size: $font-size-small!default;
+
+$btn-large-width: 80px!default;
+$btn-large-height: $control-large-height!default;
+$btn-large-padding-horizontal: 15px!default;
+$btn-large-font-size: $font-size-large!default;
+
+$btn-disabled-color: $color-disabled!default;
+$btn-disabled-icon-color: #E2E2E2!default;
+$btn-disabled-bgc: $color-disabled-bgc!default;
+$btn-disabled-border-color: $color-light-border-color!default;
+
+$btn-loading-color: $color-primary!default;
+$btn-loading-border-color: #8CA5FF!default;
+
+$btn-default-color: $text-color!default;
+$btn-default-bgc: $color-white!default;
+$btn-default-border-color: $color-darken-border-color!default;
+$btn-default-hover-color: $color-primary!default;
+$btn-default-active-color: $color-primary!default;
+$btn-default-loading-color: $color-primary!default;
+
+$btn-primary-color: #fff!default;
+$btn-primary-bgc: $color-primary!default;
+$btn-primary-hover-bgc: hover-color($btn-primary-bgc) !default;
+$btn-primary-active-bgc: active-color($btn-primary-bgc) !default;
+
+$btn-success-color: #fff !default;
+$btn-success-bgc: $color-success !default;
+$btn-success-hover-bgc: hover-color($btn-success-bgc) !default;
+$btn-success-active-bgc: active-color($btn-success-bgc) !default;
+
+$btn-warning-color: #fff !default;
+$btn-warning-bgc: $color-warning !default;
+$btn-warning-hover-bgc: hover-color($btn-warning-bgc) !default;
+$btn-warning-active-bgc: active-color($btn-warning-bgc) !default;
+
+$btn-danger-color: #fff !default;
+$btn-danger-bgc: $color-danger !default;
+$btn-danger-hover-bgc: hover-color($btn-danger-bgc) !default;
+$btn-danger-active-bgc: active-color($btn-danger-bgc) !default;
+
+$btn-text-color: $text-color!default;
+$btn-text-active-color: $color-primary!default;
+
+$btn-text-primary-color: $color-primary!default;
+$btn-text-primary-active-color: hover-color($color-primary)!default;
+
+// Icon Button
+// ------------------
+$iconbtn-spacing: 12px!default;
+$iconbtn-font-size: 20px!default;
+$iconbtn-small-font-size: 16px!default;
+$iconbtn-large-font-size: 24px!default;
+$iconbtn-each-spacing: 10px!default;
+$iconbtn-hover-bgc: #F1F4FF!default;
+$iconbtn-secondary-hover-bgc: #F3F4F9!default;
+
+// Navbar
+$navbar-height: 56px!default;
+
+$navbar-user-font-size: 14px!default;
+$navbar-user-padding-horizontal: 10px !default;
+$navbar-user-arrow-color: #697597!default;
+
+$navbar-avatar-size: 34px!default;
+$navbar-avatar-border-color: rgba(#757BA7, .6)!default;
+
+$navbar-brand-width: 200px!default;
+$navbar-item-font-size: 14px!default;
+$navbar-item-min-width: 80px!default;
+$navbar-item-padding-horizontal: 20px!default;$navbar-item-dropdown-shadow: 0 1px 5px 0 rgba(20, 37, 66, 0.16)!default;
+
+$navbar-icon-item-padding-horizontal: 15px!default;
+$navbar-icon-item-font-size: 18px!default;
+
+$navbar-search-padding-horizontal: 10px!default;
+$navbar-search-width: 220px!default;
+$navbar-search-height: 30px!default;
+$navbar-search-line-height: 20px!default;
+$navbar-search-font-size: 14px!default;
+$navbar-search-input-padding-horizontal: 12px !default;
+$navbar-search-icon-padding: ($navbar-search-height - 2px - $navbar-search-font-size)/2 !default;
+// Navbar Dark
+$navbar-dark-color: #ACB8DB !default;
+$navbar-dark-bgc: #252F47 !default;
+$navbar-dark-shadow: 0 1px 3px 0 rgba(8, 28, 66, 0.45) !default;
+$navbar-dark-active-color: #EEEEF7 !default;
+$navbar-dark-active-bgc: #222D4D !default;
+$navbar-dark-search-color: #7D8CB3 !default;
+$navbar-dark-search-bgc: #3E4A6C !default;
+$navbar-dark-search-active-color: #fff !default;
+$navbar-dark-search-active-icon-color: #D2D8E9 !default;
+$navbar-dark-search-active-bgc: #454F6F !default;
+// Navbar Light
+$navbar-light-color: #8C99C1 !default;
+$navbar-light-bgc: #fff !default;
+$navbar-light-shadow: 0 1px 3px 0 rgba(8, 28, 66, 0.10) !default;
+// $navbar-light-icon-color: !default;
+$navbar-light-active-color: #666666 !default;
+$navbar-light-active-bgc: $navbar-light-bgc !default;
+$navbar-light-search-color: #BBBBBB !default;
+$navbar-light-search-bgc: #fff !default;
+$navbar-light-search-border-color: #DEE3F0 !default;
+$navbar-light-search-active-color: $navbar-light-active-color !default;
+$navbar-light-search-active-icon-color: #B9C1D9 !default;
+$navbar-light-search-active-border-color: $navbar-light-search-border-color !default;
+$navbar-light-search-active-bgc: #fff !default;
+// sidebar
+$sidebar-width: 200px !default;
+// sidebar Menu
+$sidebar-menu-font-size: 14px !default;
+$sidebar-menu-line-height: 20px !default;
+$sidebar-menu-height: 46px !default;
+$sidebar-menu-padding-left: 20px !default;
+$sidebar-menu-padding-right: 12px !default;
+$sidebar-submenu-icon-size: 16px !default;
+$sidebar-submenu-icon-margin-right: 8px !default;
+// todo 是不是放大到 14，还是替换 icon
+$sidebar-submenu-arraw-size: 12px !default;
+$sidebar-submenu-arraw-margin-left: 8px !default;
+// sidenav
+$mtd-sidenav-default-width: 200px !default;
+$mtd-sidenav-title-hide-btn-width: 24px !default;
+$mtd-sidenav-title-hide-btn-diff: 6px !default;
+$mtd-sidenav-title-hide-btn-bgc: #E8ECF5 !default;
+$mtd-sidenav-title-hide-btn-right-active: 16px !default;
+$mtd-sidenav-title-hide-btn-color: #8C99C1 !default;
+$mtd-sidenav-title-hide-btn-radius: 6px 0 0 6px !default;
+$mtd-sidenav-default-bgc: #F1F3F8 !default;
+$mtd-sidenav-bg-shadow: 1px 0 3px 0 rgba(10, 23, 45, 0.17) !default;
+$mtd-sidenav-level-one-title-height: 64px !default;
+$mtd-sidenav-title-height: 64px !default;
+$mtd-sidenav-level-one-title-padding: 10px 0 10px 20px !default;
+$mtd-sidenav-level-one-title-font-size: 18px !default;
+$mtd-sidenav-title-font-size: 18px !default;
+$mtd-sidenav-level-one-padding-left: 20px !default;
+$mtd-sidenav-padding-left: 20px !default;
+$mtd-sidenav-level-one-content-title-font-size: 14px !default;
+$mtd-sidenav-level-one-content-arrow-color: #B0B4D7 !default;
+$mtd-sidenav-level-one-content-icon-color: #8C99C1 !default;
+$mtd-sidenav-level-one-content-text-color: #666 !default;
+$mtd-sidenav-level-one-content-text-hover-color: #333 !default;
+$mtd-sidenav-level-one-content-hover-bgc: #E8ECF5 !default;
+$mtd-sidenav-level-one-child-padding-left: 40px !default;
+$mtd-sidenav-level-one-child--padding: 10px 0 10px 40px !default;
+$mtd-sidenav-level-one-child-circlr-width: 5px !default;
+$mtd-sidenav-level-one-child-circlr-default-color: #BFC4D5 !default;
+$mtd-sidenav-level-one-child-hover-bgc: #E8ECF5 !default;
+$mtd-sidenav-level-one-child-text-color: #999 !default;
+$mtd-sidenav-level-one-child-text-size: 14px !default;
+$mtd-sidenav-level-one-hide-width: 60px !default;
+$mtd-sidenav-level-one-hide-padding: 10px 0 10px 23px !default;
+$mtd-sidenav-level-one-child-hide-padding: 10px 0 10px 28px !default;
+$mtd-sidenav-level-one-child-text-high-color: #2F6BF9 !default;
+$mtd-sidenav-level-one-child-nav-high-bgc: #447CFF !default;
+$mtd-sidenav-level-one-child-circle-bgc: #3B77EF !default;
+$mtd-sidenav-level-one-child-content-bgc: #D4E1FF !default;
+$mtd-sidenav-second-width: 180px !default;
+$mtd-sidenav-level-two-child-text-size: 13px !default;
+$mtd-sidenav-level-two-bgc: #F7F8FC !default;
+$mtd-sidenav-level-two-shadow: 1px 0 2px 0 rgba(20, 37, 66, 0.1) !default;
+$mtd-sidenav-black-bgc: #293454 !default;
+$mtd-sidenav-other-level-one-title-color: #fff !default;
+$mtd-sidenav-other-level-one-hide-btn-bgc: #394567 !default;
+$mtd-sidenav-other-level-one-hide-btn-icon-size: 16px !default;
+$mtd-sidenav-other-level-one-hide-btn-icon-color: #8C99C1 !default;
+$mtd-sidenav-other-level-one-hide-btn-icon-color-hover: #7B8AB5 !default;
+$mtd-sidenav-other-level-one-text-color: #CAD0E3 !default;
+$mtd-sidenav-other-level-one-text-acitve-bgc: linear-gradient(90deg, rgba(68, 124, 255, 0.00) 0%, #447CFF 100%) !default;
+$mtd-sidenav-other-level-one-text-acitve-color: #fff !default;
+// 一级导航上 icon
+$sidenav-drawer-primary-width: 24px;
+$sidenav-drawer-primary-height: 52px;
+$sidenav-drawer-primary-icon-size: 14px;
+$sidenav-drawer-primary-color: #8C99C1;
+$sidenav-drawer-primary-bgc: #E8ECF5;
+$sidenav-drawer-primary-active-color: #7B8AB5;
+// 导航收起的时候，名字暂定
+$sidenav-drawer-primary-collapse-icon-size: 16px;
+// 二级导航上 icon
+$sidenav-drawer-secondary-width: 16px;
+$sidenav-drawer-secondary-height: 36px;
+$sidenav-drawer-secondary-icon-size: 12px;
+$sidenav-drawer-secondary-color: #8D96B3;
+$sidenav-drawer-secondary-bgc: #E7EBF9;
+$sidenav-drawer-secondary-active-color: #7B8AB5;
+// topnav
+$topnav-background: #293454 !default;
+$topnav-shadow: 0 2px 6px 0 rgba(8, 28, 66, 0.45) !default;
+$topnav-height: 56px !default;
+$topnav-logo-width: 200px !default;
+$topnav-logo-background: #293454 !default;
+$topnav-block-info-font: 14px !default;
+$topnav-block-info-color: #ACB8DB !default;
+$topnav-block-info-hover-background: #222D4D !default;
+$topnav-block-info-hover-color: #EEEEF7 !default;
+$topnav-small-person-width: 40px !default;
+$topnav-small-person-height: 40px !default;
+$topnav-small-person-line-border: 1px solid rgba(140, 153, 193, 0.16) !default;
+$topnav-small-person-name-font: 14px !default;
+$topnav-small-person-name-color: #666666 !default;
+$topnav-small-nav-block-min-width: 32px !default;
+$topnav-small-nav-block-padding: 0 20px!default;
+$topnav-large-icon-width: 20px !default;
+$topnav-large-icon-heigth: 20px !default;
+$topnav-normal-icon-width: 14px !default;
+$topnav-normal-icon-heigth: 14px !default;
+$topnav-nav-block-is-icon-width: 50px !default;
+// dropdown
+$topnav-dropdown-background: #FFFFFF !default;
+$topnav-dropdown-box-shadow: 0 0 4px 0 rgba(27, 51, 115, 0.35) !default;
+$topnav-dropdown-min-width: 100px !default;
+// dropdown-item
+$topnav-dropdown-item-font: 12px !default;
+$topnav-dropdown-item-padding: 12px 14px !default;
+$topnav-dropdown-item-max-width: 300px !default;
+$topnav-dropdown-item-link-color: #666666 !default;
+$topnav-dropdown-item-hover-background: #F3F4F6 !default;
+$topnav-dropdown-item-hover-link-color: #333333 !default;
+$topnav-dropdown-item-link-split-border-top: 1px solid #EEEEEE !default;
+// list
+$topnav-block-info-list-background: #FFFFFF !default;
+$topnav-block-info-list-box-shadow: 0 1px 5px 0 rgba(20, 37, 66, 0.16) !default;
+$topnav-block-info-list-border-radius: 1px !default;
+$topnav-block-info-list-padding: 30px !default;
+$topnav-topnav-block-item-title-icon-font: 16px !default;
+// list nav-block-item
+$topnav-block-info-list-nav-block-item-margin: 0 25px 36px 0 !default;
+$topnav-block-info-list-nav-block-item-wdith: 300px !default;
+$topnav-block-info-list-nav-block-item-font: 12px !default;
+$topnav-block-info-list-nav-block-item-line-height: 24px !default;
+$topnav-block-info-list-nav-block-item-color: #666666 !default;
+$topnav-block-info-list-nav-block-hover-color: #333333 !default;
+$topnav-block-info-list-nav-block-hover-background: #F3F4F6 !default;
+$topnav-block-info-list-nav-block-item__title-border-bottom: 1px solid #DFE4E9 !default;
+$topnav-block-info-list-nav-block-item__title-padding-bottom: 12px !default;
+$topnav-block-info-list-nav-block-item__title-margin-bottom: 4px !default;
+$topnav-block-info-list-nav-block-item__title-font: 0 !default;
+$topnav-block-info-list-nav-block-item__title-icon-color: #8C99C1 !default;
+$topnav-block-info-list-nav-block-item__title-icon-margin-right: 10px !default;
+$topnav-block-info-list-nav-block-item__title-title-text-font: 14px !default;
+$topnav-block-info-list-nav-block-item__title-title-text-color: #333333 !default;
+// search
+$topnav-search-padding: 0 10px!default;
+$topnav-search-margin-top: 16px !default;
+$topnav-header-search-background: #3A4567 !default;
+$topnav-header-search-border-radius: 56px !default;
+$topnav-header-search-color: #FFFFFF !default;
+$topnav-header-search-font: 14px !default;
+$topnav-header-search-padding: 0 28px 0 12px !default;
+$topnav-header-search-width: 200px !default;
+$topnav-header-search-height: 30px !default;
+
+// Tabs
+// ------------------
+$tabs-card-margin-right: 2px!default;
+$tabs-left-margin-right: 20px!default;
+$tabs-left-margin-bottom: 10px!default;
+
+$tabs-hover-color: $color-primary!default;
+$tabs-card-active-color: hover-color($color-primary)!default;
+$tabs-disabled-color: $text-disabled-color!default;
+
+$tabs-page-color: $color-silvery900!default;
+$tabs-page-hover-bgc: #F7F8FA!default;
+$tabs-page-border-color: $color-darken-border-color!default;
+$tabs-page-disabled-color: $text-disabled-color!default;
+
+$tabs-content-padding: 20px!default;
+
+$tabs-nav-border-bottom: $color-light-border-color!default;
+$tabs-close-color: $color-silvery900!default;
+$tabs-bar-z-index: 1!default;
+
+$tabs-bar-background-color: $color-primary!default;
+$tabs-item-color: $text-color!default;
+$tabs-item-background-color: $color-light-border-color!default;
+$tabs-item-border-width: 1px!default;
+$tabs-item-border-color: $color-darken-border-color!default;
+
+$tabs-card-padding: 6px!default;
+$tabs-card-item-hover-color: $text-color!default;
+$tabs-card-item-bgc: $color-light-border-color!default;
+$tabs-card-item-hover-bgc: #E1E5EF!default;
+$tabs-card-item-color: #fff!default;
+
+$tabs-content-border-width: 1px!default;
+$tabs-content-margin-top: -1px!default;
+$tabs-scroll-border-width: 2px!default;
+$tabs-card-border-color: $color-silvery500!default;
+
+$tabs-add-color: $color-silvery900!default;
+$tabs-add-border-width: 1px!default;
+$tabs-add-margin-left: 6px!default;
+$tabs-add-border-radius: 2px!default;
+$tabs-add-hover-color: $color-primary!default;
+
+$tabs-nav-shadow-width: 106px!default;
+$tabs-nav-shadow-right: -60px!default;
+$tabs-nav-shadow-bottom: 2px!default;
+$tabs-nav-shadow-background-image: linear-gradient(90deg, rgba(255,255,255,0.00) 0%, #FFFFFF 31%)!default;
+
+$tabs-small-height: 24px!default;
+$tabs-small-min-width: 56px!default;
+$tabs-small-max-width: 170px!default;
+$tabs-small-active-max-width: 360px!default;
+$tabs-small-padding: 10px!default;
+$tabs-small-margin-right: 20px!default;
+$tabs-small-page-height: 18px!default;
+
+$tabs-normal-height: 36px!default;
+$tabs-normal-min-width: 66px!default;
+$tabs-normal-max-width: 220px!default;
+$tabs-normal-active-max-width: 400px!default;
+$tabs-normal-padding: 12px!default;
+$tabs-normal-margin-right: 30px!default;
+$tabs-normal-page-height: 20px!default;
+
+$tabs-large-height: 40px!default;
+$tabs-large-min-width: 80px!default;
+$tabs-large-max-width: 270px!default;
+$tabs-large-active-max-width: 440px!default;
+$tabs-large-padding: 16px!default;
+$tabs-large-margin-right: 40px!default;
+$tabs-large-page-height: 28px!default;
+
+// Badge
+$badge-height: 20px !default;
+$badge-text-color: #FFFFFF !default;
+$badge-text-background-color: $color-danger !default;
+$badge-border-radius: 100px !default;
+$badge-font-size: $font-size-small !default;
+$badge-padding: 6px !default;
+$badge-dot-size: 10px !default;
+
+// Switch
+$switch-border-radius: 50px !default; // larger than $switch-height/2
+$switch-bgc: $color-silvery500 !default;
+$switch-active-bgc: $color-primary !default;
+$switch-disabled-opacity: 0.5 !default;
+$switch-loading-opacity: 0.8 !default;
+$switch-btn-spacing: 1px !default;
+$switch-btn-bgc: #fff !default;
+$switch-btn-border-color: #E6E9F3 !default;
+$switch-btn-border-width: 2px !default;
+
+$switch-width: 46px !default;
+$switch-height: 26px !default;
+$switch-loading-size: 16px !default;
+
+$switch-small-width: 34px !default;
+$switch-small-height: 20px !default;
+$switch-small-loading-size: 12px !default;
+
+// Radio
+$radio-size: $font-size-large !default;
+$radio-line-height: $line-height-large !default;
+$radio-small-size: $font-size-normal !default;
+$radio-small-line-height: $line-height-normal !default;
+$radio-text-left-spacing: 8px !default;
+$radio-text-right-spacing: 18px !default;
+
+$radio-border-width: 1px !default;
+$radio-border-color: $color-darken-border-color !default;
+
+$radio-color: #666 !default;
+
+$radio-checked-color: $color-primary !default;
+$radio-checked-text-color: #333 !default;
+$radio-checked-after-size: 8px !default;
+$radio-checked-after-size-small: 8px !default;
+
+$radio-disabled-opacity: 1 !default;
+$radio-disabled-color: $color-gray300!default;
+$radio-disabled-bgc: $color-disabled-bgc !default;
+$radio-disabled-after-bgc: $color-silvery500 !default;
+
+// RadioButton
+$radio-button-min-width: 64px !default;
+$radio-button-height: $btn-height !default;
+$radio-button-padding: 12px !default;
+
+$radio-button-small-min-width: 44px !default;
+$radio-button-small-height: $btn-small-height !default;
+$radio-button-small-padding: 10px !default;
+
+$radio-button-large-min-width: 64px !default;
+$radio-button-large-height: $btn-large-height !default;
+$radio-button-large-padding: 16px !default;
+
+$radio-button-border-width: 1px !default;
+$radio-button-border-radius: 2px !default;
+
+$radio-button-hover-after-width: 1px !default;
+$radio-button-hover-after-offset: -1px !default;
+
+$radio-button-color: $radio-color!default; //#4477F0
+$radio-button-bgc: #fff!default;
+$radio-button-border-color: $radio-border-color!default; //#D8DDE7
+
+$radio-button-checked-color: $radio-checked-color !default;
+$radio-button-checked-bgc: rgba($radio-button-checked-color, 0.20) !default;
+
+$radio-button-disabled-opacity: $radio-disabled-opacity !default;
+$radio-button-disabled-color: $radio-disabled-color!default;
+$radio-button-disabled-border-color: $color-silvery500!default;
+$radio-button-disabled-checked-bgc: $radio-disabled-bgc !default;
+
+// Pagination
+$pagination-color: $text-color !default;
+$pagination-active-color: $color-primary !default;
+$pagination-active-fontc: #fff !default;
+$pagination-default-bgc: #fff !default;
+$pagination-prev-next-color: #ccc !default;
+$pagination-total-color: $text-color !default;
+$pagination-disabled-color: $color-disabled!default;
+$pagination-disabled-bgc: $color-disabled-bgc!default;
+$pagination-default-bd: 1px solid $color-darken-border-color !default;
+$pagination-unborder-bd: 1px solid transparent!default;
+$pagination-active-bd: 1px solid $color-primary !default;
+$pagination-page-padding: 4px !default;
+$pagination-addon-spacing: 16px!default;
+$pagination-select-width: 100px!default;
+
+// Pagination default
+$pagination-font-size: $font-size-normal !default;
+$pagination-size: $control-height !default;
+$pagination-page-margin: 8px !default;
+$pagination-jumper-width: $control-height !default;
+
+// Pagination small
+$pagination-small-font-size: $font-size-small !default;
+$pagination-small-size: $control-small-height !default;
+$pagination-small-page-margin: 8px !default;
+$pagination-small-jumper-width: 40px !default;
+
+// Step
+$step-min-width: 150px !default;
+$step-zindex: 1 !default;
+$step-main-zindex: 2 !default;
+$step-line-size: 1px !default;
+$step-default-bgc: #fff !default;
+$step-icon-padding: 5px !default;
+$step-title-padding: 5px !default;
+$step-title-font-weight: $font-weight-medium !default;
+
+$step-wait-color: $color-silvery500 !default;
+$step-wait-description-color: $color-silvery700 !default;
+$step-finish-color: $color-primary !default;
+$step-error-color: $color-danger !default;
+$step-cancel-color: $color-warning !default;
+$step-process-color: $color-primary !default;
+$step-process-bgc: #edf1ff !default;
+$step-process-title-color: $text-color !default;
+$step-process-font-color: #fff !default;
+$step-description-color: $text-color !default;
+$step-line-padding: 5px !default;
+
+// Step default
+$step-size: 32px !default;
+$step-font-size: 14px !default;
+$step-font-line-height: 18px !default;
+$step-dot-size: 14px !default;
+$step-dot-broder-color: #B4C3FF !default;
+$step-dot-broder-width: 3px !default;
+$step-line: 2px !default;
+$step-icon-size: 20px !default;
+// Step small
+$step-small-size: 26px !default;
+$step-small-font-size: 12px !default;
+$step-small-font-line-height: 16px !default;
+$step-small-dot-size: 16px !default;
+$step-small-dot-broder-width: 2px!default;
+$step-small-icon-size: 16px !default;
+
+// Input
+$input-color: $text-color!default;
+$input-border-color: $color-darken-border-color!default;
+$input-border-radius: 2px!default;
+
+$input-hover-border-color: #C2C9D5!default;
+$input-focus-border-color: #5486FC!default;
+$input-focus-box-shadow: 0px 0px 0px 2px rgba(84,134,252,0.16)!default;
+$input-disabled-border-color: #E1E4EC!default;
+$input-disabled-bgc: $color-disabled-bgc!default;
+$input-disabled-color: #BEC3D0!default;
+$input-invalid-border-color: $color-danger!default;
+
+$input-icon-color: $placeholder-color!default;
+
+$input-small-font-size: $font-size-small!default;
+$input-small-height: $control-small-height!default;
+$input-small-width: 160px!default;
+$input-small-padding-horizontal: 10px!default;
+
+$input-font-size: $font-size-normal!default;
+$input-height: $control-height!default;
+$input-width: 180px!default;
+$input-padding-horizontal: 11px!default;
+
+$input-large-font-size: $font-size-normal!default;
+$input-large-height: $control-large-height!default;
+$input-large-width: 200px!default;
+$input-large-padding-horizontal: 10px!default;
+
+$input-group-addon-bgc: $color-silvery100!default;
+$textarea-padding: 10px 12px;
+$textarea-min-height: 40px;
+$textarea-width: 260px;
+
+// Checkbox
+$checkbox-color: $text-color!default;
+$checkbox-inner-color: $color-darken-border-color!default;
+$checkbox-checked-color: $color-primary!default;
+$checkbox-disabled-bgc: $color-disabled-bgc !default;
+$checkbox-checked-disabled-bgc: $color-silvery500!default;
+$checkbox-each-interval: 32px!default;
+
+$checkbox-size: 14px!default;
+// $checkbox-padding-vertical: ($control-height - $checkbox-size)/2!default;
+$checkbox-inner-margin-right: 8px!default;
+$checkbox-large-size: 16px!default;
+// $checkbox-large-padding-vertical: ($control-large-height - $checkbox-large-size)/2!default;
+
+
+// Collapse
+$collapse-border-color: $color-light-border-color!default;
+$collapse-header-font-size: $font-size-normal!default;
+$collapse-header-color: $text-color!default;
+$collapse-header-icon-color: $color-silvery700!default;
+$collapse-header-bgc: $color-silvery100!default;
+$collapse-header-padding-vertical: 12px!default;
+$collapse-header-padding-horizontal: 10px!default;
+$collapse-header-line-height: $line-height-normal!default;
+$collapse-disabled-color: $text-disabled-color!default;
+$collapse-disabled-icon-color: #DDD!default;
+
+$collapse-content-color: $text-color!default;
+$collapse-content-bgc: #fff!default;
+$collapse-content-padding-vertical: 16px!default;
+$collapse-content-padding-horizontal: 16px!default;
+
+// Sample collapse
+$collapse-sample-header-bgc: $collapse-content-bgc!default;
+
+// Pure collapse
+$collapse-area-header-bgc: #F2F4FA!default;
+$collapse-area-bgc: #F7F9FC!default;
+$collapse-area-offset: 2px!default;
+
+// Progress
+$progress-padding-right: 50px !default;
+$progress-margin-right: -55px !default;
+$progress-border-radius: 100px !default;
+$progress-bgc: $color-silvery300 !default;
+$progress-default-color: $color-primary !default;
+$progress-error-color: $color-danger !default;
+$progress-success-color: $color-success!default;
+$progress-text-margin-left: 12px !default;
+$progress-text-color: $text-color!default;
+
+// Popper
+$popper-offset: 2px!default;
+$popper-box-shadow: 0 1px 3px 0 rgba(52,88,124,0.23)!default;
+$popper-bgc: #fff!default;
+$popper-border-color: #ebeef5 !default;
+$popper-border-radius: 2px!default;
+$popper-arrow-size: 5px!default;
+$popper-arrow-offset: 12px!default; // ($height: 36px) / 2 - $arrow-size - $borderWidth;
+
+$popper-arrow-horizontal-offset: 30px!default;
+$popper-arrow-vertical-offset: 13px!default;
+
+// Notification
+$notification-width: 340px !default;
+$notification-padding: 20px !default;
+$notification-radius: 2px !default;
+$notification-bgc: #fff !default;
+$notification-shadow: 0 1px 5px 0 rgba(181, 187, 209, .35)!default;
+$notification-border-color: #E8EBF3!default;
+$notification-right: 16px !default;
+$notification-left: 16px !default;
+
+$notification-font-size: $font-size-normal !default;
+$notification-color: $text-color !default;
+$notification-title-font-size: $font-size-large !default;
+$notification-title-color: $notification-color !default;
+$notification-title-line-height: $line-height-large !default;
+$notification-title-font-weight: $font-weight-regular !default;
+$notification-icon-size: 16px !default;
+$notification-icon-margin-right: 6px !default;
+
+$notification-close-top: 12px !default;
+$notification-close-right: 12px !default;
+$notification-close-font-size: $notification-font-size !default;
+$notification-close-color: $color-silvery700 !default;
+$notification-close-hover-color: $text-color !default;
+
+$notification-success-color: $color-success !default;
+$notification-warning-color: $color-warning !default;
+$notification-info-color: $color-primary !default;
+$notification-danger-color: $color-danger !default;
+
+$notification-fade-enter-right: 0 !default;
+$notification-fade-enter-right-translate-x: 100% !default;
+$notification-fade-enter-left: 0 !default;
+$notification-fade-enter-left-translate-x: -100% !default;
+$notification-fade-leave-active-opacity: 0 !default;
+
+// Message
+$message-min-width: 220px !default;
+$message-max-width: 1000px !default;
+$message-radius: 2px !default;
+$message-bgc: $notification-bgc !default;
+$message-shadow: $notification-shadow;
+$message-border-color: $notification-border-color!default;
+$message-top: 20px !default;
+$message-left: 50% !default;
+$message-translate-x: -50% !default;
+$message-padding: ($control-height - $line-height-normal - 2px)/2 12px !default; // 2px is border-width
+$message-transition-opacity: .3s !default;
+$message-transition-transform: .4s !default;
+
+$message-icon-margin-right: 7px !default;
+
+$message-content-font-size: $font-size-normal !default;
+$message-content-line-height: $line-height-normal !default;
+$message-content-color: $notification-color !default;
+
+$message-close-top: 50% !default;
+$message-close-right: $notification-close-right !default;
+$message-close-translate-y: -50% !default;
+$message-close-font-size: $notification-font-size !default;
+$message-close-color: $notification-close-color !default;
+$message-close-hover-color: $notification-close-hover-color!default;
+$message-content-closable-padding-right: 16px !default;
+
+$message-success-color: $notification-success-color !default;
+$message-info-color: $notification-info-color !default;
+$message-warning-color: $notification-warning-color !default;
+$message-danger-color: $notification-danger-color !default;
+$message-loading-color: $color-blue !default;
+
+$message-fade-enter-opacity: 0 !default;
+$message-fade-enter-translate-x: -50% !default;
+$message-fade-enter-translate-y: -100% !default;
+// Tooltip
+$tooltip-light-height: 20px!default;
+$tooltip-color: #fff!default;
+$tooltip-bgc: $color-silvery900!default;
+$tooltip-border-color: $tooltip-bgc!default;
+$tooltip-padding-vertical: 7px!default;
+$tooltip-padding-horizontal: 12px!default;
+$tooltip-font-size: $font-size-normal!default;
+
+$tooltip-small-padding-vertical: 5px!default;
+$tooltip-small-padding-horizontal: 10px!default;
+$tooltip-small-font-size: $font-size-small!default;
+
+$tooltip-light-color: $text-color!default;
+$tooltip-light-bgc: $color-white!default;
+
+
+// Tag
+$tag-border-radius: 2px!default;
+$tag-gray-color: #939DB2!default;
+$tag-blue-color: $color-blue!default;
+$tag-green-color: $color-green!default;
+$tag-orange-color: $color-orange!default;
+$tag-red-color: $color-red!default;
+$tag-purple-color: #C75AEF!default;
+$tag-text-color: $color-primary!default;
+
+$tag-disabled-bgc: $color-disabled-bgc!default;
+$tag-disabled-color: $text-disabled-color!default;
+$tag-disabled-border-color: $color-light-border-color!default;
+
+$tag-small-min-width: 32px;
+$tag-small-max-width: 170px;
+$tag-small-height: 20px;
+$tag-small-padding: 3px;
+$tag-small-font-size: 12px;
+
+$tag-normal-min-width: 40px;
+$tag-normal-max-width: 220px;
+$tag-normal-height: 24px;
+$tag-normal-padding: 7px;
+$tag-normal-font-size: 12px;
+
+$tag-large-min-width: 52px;
+$tag-large-max-width: 270px;
+$tag-large-height: 36px;
+$tag-large-padding: 13px;
+$tag-large-font-size: 14px;
+
+//slider
+$slider-size: 8px !default;
+$slider-size-small: 4px !default;
+$silder-margin-bottom: 40px !default;
+$slider-bgc: $color-darken-border-color !default;
+$slider-border: 1px solid $color-darken-border-color !default;
+$slider-radius: 100px !default;
+$slider-color: #999 !default;
+$slider-mark-offset: 16px !default;
+
+$slider-bar-bgc: $color-primary !default;
+
+$slider-button-width: $slider-size + 8px !default;
+$slider-button-height: $slider-size + 16px !default;
+$slider-button-width-small: $slider-size-small + 8px !default;
+$slider-button-height-small: $slider-size-small + 14px !default;
+$slider-button-shadow: 0 1px 2px 0 rgba(20,50,103,0.27) !default;
+$slider-button-radius: 4px !default;
+$slider-button-zIndex: 999 !default;
+
+$slider-button-bar-width: 2px !default;
+$slider-button-bar-height: 12px !default;
+$slider-button-bar-height-small: 10px !default;
+$slider-button-bar-top: $slider-size + $slider-button-bar-width !default;
+$slider-button-bar-default-bgc: $color-gray300 !default;
+
+$slider-bar-disabled-bgc: $color-gray300 !default;
+$slider-disabled-bgc: $color-gray150 !default;
+$slider-stop-radius: $slider-size / 2 !default;
+$slider-fixed-bar-bgc: $color-gray150 !default;
+// Popover
+$popover-arrow-color: #ebeef5!default;
+$popover-padding-vertical: 12px!default;
+$popover-padding-horizontal: 16px!default;
+$popover-font-size: $font-size-normal!default;
+$popover-small-font-size: $font-size-small!default;
+$popover-small-padding-vertical: 10px!default;
+$popover-small-padding-horizontal: 12px!default;
+
+
+// Announcement
+$announcement-padding: ($control-height - $line-height-normal)/2 12px!default;
+$announcement-border-radius: 1px !default;
+$announcement-bgc: #FFFAF0 !default;
+$announcement-opacity: 1 !default;
+$announcement-transition-opacity: .2s !default;
+$announcement-color: $text-color !default;
+
+$announcement-success-color: $announcement-color !default;
+$announcement-success-bgc: $color-success-light !default;
+$announcement-icon-success-color: $color-success !default;
+
+$announcement-warning-color:  $announcement-color !default;
+$announcement-warning-bgc: $color-warning-light !default;
+$announcement-icon-warning-color: $color-warning !default;
+
+$announcement-danger-color:  $announcement-color !default;
+$announcement-danger-bgc: $color-danger-light !default;
+$announcement-icon-danger-color: $color-danger !default;
+
+$announcement-icon-font-size: 16px !default;
+$announcement-margin-left: 6px !default;
+$announcement-title-font-size: $font-size-normal !default;
+$announcement-title-large-font-size: $font-size-large !default;
+$announcement-title-line-height: $line-height-normal !default;
+
+$announcement-description-font-size: $font-size-normal !default;
+$announcement-description-line-height: $line-height-normal  !default;
+$announcement-description-margin-top: 8px !default;
+$announcement-description-color: $color-gray600!default;
+$announcement-description-padding: 20px!default;
+
+$announcement-close-font-size: $font-size-small !default;
+$announcement-close-color: $color-silvery700 !default;
+$announcement-close-hover-color: $text-color !default;
+$announcement-close-top: 12px !default;
+$announcement-close-right: 12px !default;
+$announcement-close-content-padding-right: 16px;
+
+// Breadcrumb default
+$breadcrumb-font-size: $font-size-normal !default;
+$breadcrumb-font-color: $text-color !default;
+$breadcrumb-sepreate-margin: 0px 6px 0px 8px !default;
+$breadcrumb-sepreate-color: #c6cede!default;
+$breadcrumb-hover-color: $color-primary !default;
+$breadcrumb-active-color: $color-primary !default;
+$breadcrumb-current-color: #333 !default;
+$breadcrumb-item-max-width: 200px !default;
+$breadcrumb-item-current-max-width: 400px !default;
+
+// Breadcrumb min
+$breadcrumb-small-font-size: $font-size-small !default;
+$breadcrumb-small-sepreate-margin: 0px 4px !default;
+
+// Breadcrumb max
+$breadcrumb-large-font-size: $font-size-large !default;
+$breadcrumb-large-sepreate-margin: 0px 8px !default;
+
+// Modal
+$modal-min-width: 400px!default;
+$modal-min-height: auto!default;
+$modal-max-width: 90vw!default;
+$modal-max-height: 82vh!default;
+$modal-border-radius: 2px!default;
+$modal-box-shadow: 0 5px 10px 5px rgba(0,0,0,0.10)!default;
+$modal-mask-bgc: rgba(0,0,0,.5)!default;
+
+$modal-close-size: 18px;
+$modal-close-color: #A1A8BA!default;
+$modal-close-hover-color: $text-color!default;
+$modal-close-top: 20px!default;
+$modal-close-right: 20px!default;
+
+$modal-header-padding: 20px!default;
+$modal-header-color: #333!default;
+$modal-header-font-size: $font-size-large!default;
+$modal-header-font-weight: $font-weight-medium!default;
+$modal-header-line-height: $line-height-large!default;
+
+$modal-footer-padding: 20px!default;
+
+$modal-content-padding-vertical: 20px!default;
+$modal-content-padding-horizontal: 30px!default;
+
+// Confirm
+$confirm-success-color: $color-success!default;
+$confirm-danger-color: $color-danger!default;
+$confirm-warning-color: $color-warning!default;
+$confirm-info-color: $color-primary!default;
+$confirm-icon-size: 26px!default;
+$confirm-title-margin-bottom: 16px!default;
+$confirm-icon-margin-right: 9px!default;
+$confirm-content-padding: 50px!default; // need subtract $modal-content-padding
+
+// form
+$form-inline-item-margin-right: 10px!default;
+$form-item-text-spacing: 4px!default;
+$form-item-margin-bottom: 24px!default;
+$form-item-label-font-size: $font-size-normal!default;
+$form-item-label-padding-right: 20px!default;
+$form-item-label-color: $text-annotate-color!default;
+$form-item-label-line-height: $control-height!default;
+$form-item-required-asterisk-color: #F85F6A!default;
+$form-item-error-tip-color: $color-danger!default;
+$form-item-error-tip-font-size: $font-size-small!default;
+$form-item-error-tip-line-height: 16px!default;
+$form-item-error-tip-mt: 4px!default;
+$form-item-helper-font-size: $form-item-error-tip-font-size!default;
+$form-item-helper-color: $color-gray450!default;
+$form-item-helper-line-height: $form-item-error-tip-line-height!default;
+
+// Select
+$select-dropdown-width: 300px!default;
+
+$select-choice-item-margin-top: 6px!default;
+$select-choice-item-margin-right: 8px!default;
+$select-dropdown-list-height: 204px!default;
+$select-select-group-title-font-size: 12px!default;
+$select-select-group-title-height: 22px!default;
+$select-select-group-title-color: #999999!default;
+$select-selected-color: $color-primary!default;
+$select-tags-each-spacing: 2px!default;
+$select-tags-z-index: 100!default;
+
+$select-group-title-font-size: 12px!default;
+$select-group-title-height: 22px!default;
+$select-group-title-color: $text-disabled-color!default;
+$select-tags-text-color: $color-gray450!default;
+
+// dropdownmenu
+$dropdownmenu-padding: 7px 14px!default;
+// $dropdownmenu-min-width: 160px!default;
+$dropdownmenu-small-padding: 5px 10px!default;
+
+// datepicker
+$date-picker-disable-color: $text-disabled-color!default;
+$date-picker-active-color: $color-primary!default;
+$date-picker-disabled-bgc: $color-disabled-bgc!default;
+$date-picker-border-color: #E7E9EF!default;
+$date-picker-width: 200px!default;
+
+// datepicker
+$date-picker-disable-color: $text-disabled-color!default;
+$date-picker-active-color: $color-primary!default;
+$date-picker-disabled-bgc: $color-disabled-bgc!default;
+$date-picker-border-color: #E7E9EF!default;
+$date-picker-width: 200px!default;
+
+// datepicker Header
+$date-picker-header-padding: 12px 20px!default;
+$date-picker-header-input-size: 100px!default;
+$date-picker-header-color: $text-title-color!default;
+$date-picker-header-hover-color: $color-primary!default;
+$date-picker-icon-btn-size: 12px!default;
+$date-picker-icon-btn-color: $color-silvery900!default;
+$date-picker-icon-btn-hover-color: $color-primary!default;
+
+$date-picker-sidebar-width: 160px!default;
+
+$date-picker-shortcut-padding: 6px 10px!default;
+$date-picker-shortcut-bgc: #FBFBFB!default;
+$date-picker-shortcut-margin-bottom: 8px!default;
+$date-picker-shortcut-line-height: $control-height!default;
+
+$date-picker-cell-size: 32px!default;
+$date-picker-cells-width: $date-picker-cell-size * 7 !default;
+$date-picker-cells-width-with-weeknumbers: $date-picker-cell-size * 8!default;
+$date-picker-cells-offset: 12px 16px!default;
+$date-picker-cell-font-size: 12px!default;
+$date-picker-cell-offset: 0px!default;
+$date-picker-cell-hover-color: #fff!default;
+$date-picker-cell-hover-bgc: $color-primary!default;
+$date-picker-cell-color: $text-color!default;
+$date-picker-range-bgc: #EDF1FF!default;
+$date-picker-outsize-cell-color: $color-disabled!default;
+$date-picker-today-color: $color-primary!default;
+$date-picker-disable-bgc: #f7f7f7!default;
+
+$date-picker-year-cell-height: 26px!default;
+$date-picker-month-cell-width: 38px + $date-picker-cell-offset!default;
+
+
+/* Table
+-------------------------- */
+$table-color: $text-annotate-color !default; // td的颜色 默认字体颜色
+$table-padding: 10px !default;
+$table-font-size: 14px !default;
+$table-bgc: #fff !default; // it use for fix table-column
+$table-header-color: $text-color !default; // header 464646
+$table-header-bgc: #EDF0F7 !default;
+
+$table-empty-height: 60px !default;
+
+$table-expand-height: 20px !default;
+$table-expand-font-size: 12px !default;
+$table-expand-margin: 5px !default;
+$table-expand-cell-padding: 20px 50px !default;
+$table-expand-icon-color: $color-silvery700!default;
+
+
+// $table-color-white: #fff !default;
+// $table-color-text-secondary: #909399 !default;
+$table-background-color-base: #f5f7fa !default;
+$table-color-primary: $color-primary !default;
+$table-color-text-placeholder: #c0c4cc !default;
+$table-color-info: #909399 !default;
+
+$table-border-color: #EDF0F7 !default;
+$table-border: 1px solid $table-border-color !default;
+
+$table-header-color: #909399 !default;
+$table-row-hover-bgc: #f5f7fa !default;
+
+$table-footer-background: #c0c4cc !default;
+$table-fixed-box-shadow: 0 0 10px rgba(0, 0, 0, .12) !default;
+
+// table small
+$table-small-font-size: 12px !default;
+$table-small-padding: 8px !default;
+// table large
+$table-large-padding: 16px !default;
+
+// table column
+$table-column-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !default;
+$table-column-regular-color: #606266 !default;
+
+$table-column-small-font-size: 13px !default;
+$table-column-disable-color: #c0c4cc !default;
+// dropdownmenu
+$dropdownmenu-max-height: 300px!default;
+$dropdownmenu-padding-vertical: 7px!default;
+$dropdownmenu-padding-horizontal: 12px!default;
+$dropdownmenu-min-width: 160px!default;
+$dropdownmenu-small-padding: 5px 10px!default;
+
+// Tree
+// ---
+$tree-title-height:                   24px;
+$tree-child-padding:                  18px;
+$tree-directory-selected-color:       #fff;
+$tree-directory-selected-bg:          $color-primary;
+// transfer
+$transfer-font-size: $font-size-normal !default;
+$transfer-color: #6F6F6F !default;
+
+$transfer-operation-button-width: 40px !default;
+$transfer-operation-button-spacing: 12px !default;
+$transfer-operation-button-color: #4B6EFF !default;
+$transfer-operation-button-border: 1px solid $transfer-operation-button-color !default;
+$transfer-operation-button-background: rgba(78, 115, 255, .2) !default;
+$transfer-operation-button-disabled-color: #C6CEDE !default;
+$transfer-operation-button-disabled-border: 1px solid $transfer-operation-button-disabled-color !default;
+$transfer-operation-button-disabled-background: $color-silvery100 !default;
+$transfer-operation-button-text-border-radius: 4px !default;
+$transfer-operation-button-hover-color: hover-color($transfer-operation-button-color) !default;
+$transfer-operation-button-hover-border: 1px solid $transfer-operation-button-hover-color !default;
+
+$transfer-list-padding: 16px !default;
+$transfer-list-width: 240px !default;
+$transfer-list-height: 320px !default;
+$transfer-list-with-footer-height: 360px !default;
+$transfer-list-border: 1px solid $color-silvery300 !default;
+$transfer-list-border-radius: 2px !default;
+$transfer-list-background: $color-white !default;
+
+$transfer-list-header-height: 40px !default;
+$transfer-list-header-color: $text-color !default;
+$transfer-list-header-background: $color-silvery100 !default;
+$transfer-list-header-stats-color: $color-gray450 !default;
+
+$transfer-list-body-height: 280px !default;
+$transfer-list-body-search-height: 50px !default;
+$transfer-list-body-vertical-padding: 8px !default;
+$transfer-list-content-item-height: 34px !default;
+$transfer-list-content-item-hover-color: $color-gray750;
+$transfer-list-content-item-hover-background: #EDF0F7;
+$transfer-list-not-found-color: $color-gray450;
+
+$transfer-list-footer-height: 40px !default;
+$transfer-list-footer-box-shadow: 0 -1px 2px 0 rgba(185, 192, 221, .3);
+
+// Timeline
+$timeline-item-dot-width: 17px!default;
+$timeline-item-dot-master-width: 9px!default;
+$timeline-item-dot-normal-width: 7px!default;
+$timeline-item-dot-solid-width: 13px!default;
+$timeline-item-dot-margin: 2px!default;
+
+// Card
+$card-font-size: $font-size-normal !default;
+$card-font-color: $text-color !default;
+$card-head-font-color: #333333 !default;
+$card-head-extra-font-color: #999999 !default;
+$card-head-min-height: 48px !default;
+$card-head-margin-bottom: -1px !default;
+$card-head-zoom: 1 !default;
+$card-head-padding: 0 20px 0 !default;
+$card-head-background: transparent !default;
+$card-head-title-padding: 14px 0 8px !default;
+$card-extra-padding: 12px 0 0 !default;
+$card-subhead-color: #999999 !default;
+$card-body-padding: 12px 20px 20px !default;
+$card-cover-img-radius: 2px 2px 0 0 !default;
+$card-actions-border: 1px solid #e8e8e8 !default;
+$card-actions-li-color: #000000 !default;
+$card-actions-li-margin: 12px 0 !default;
+$card-actions-li-span-min-width: 32px !default;
+$card-actions-li-span-line-height: $line-height-large !default;
+$card-actions-li-span-hover-color: #1890ff !default;
+$card-meta-margin: -4px 0 !default;
+$card-meta-avatar-padding-right: 20px !default;
+$card-meta-detail-margin-bottom: 8px !default;
+$card-meta-title-color: #666666 !default;
+$card-meta-title-font-size: 18px !default;
+$card-meta-description-color: #666666 !default;
+$card-loading-block-height: 12px !default;
+$card-loading-block-margin: 5px 0 !default;
+$card-loading-block-background-from: rgba(237, 241, 253, 0.7) !default;
+$card-loading-block-background-to: rgba(237, 241, 253, 1) !default;
+$card-loading-block-normal-margin: 10px auto 20px !default;
+$card-loading-block-normal-width: 22px !default;
+$card-loading-block-normal-height: 22px !default;
+$card-loading-block-border: 3px solid #4E73FF !default;
+$card-loading-block-border-top: 3px solid $color-white !default;
+$card-card-small-head-padding: 0 12px !default;
+$card-card-small-head-min-height: 36px !default;
+$card-card-small-head-wrapper-padding: 8px 0 !default;
+$card-card-small-body-padding: 12px !default;
+
+// Menu
+$menu-font-size: 14px!default;
+$menu-padding-horizontal: 12px!default;
+
+// MenuItem
+$menu-item-height: 40px!default;
+$menu-item-horizontal-height: 40px!default;
+$menu-item-icon-size: 16px!default;
+$menu-item-icon-margin-right: 8px!default;
+
+$menu-collapse-width: 60px!default;
+
+// light
+$menu-light-color: #666!default;
+$menu-light-bgc: #FFFFFF!default;
+
+$menu-light-hover-color: $color-primary!default;
+$menu-light-hover-bgc: none!default;
+$menu-light-horizontal-hover-bgc: none!default;
+
+$menu-light-active-color: $color-primary!default;
+$menu-light-active-bgc: #EEF6FF!default;
+$menu-light-horizontal-active-bgc: none!default;
+
+$menu-light-disabled-color: $menu-light-color; // #B5BBD1!default;
+$menu-light-disabled-bgc: none!default;
+$menu-light-disabled-opacity: .45!default;
+
+// dark
+$menu-dark-color: #CAD0E3!default;
+$menu-dark-bgc: #293454!default;
+
+$menu-dark-hover-color: #fff!default;
+$menu-dark-hover-bgc: none!default;
+$menu-dark-horizontal-hover-bgc: none!default;
+
+$menu-dark-active-color: #fff!default;
+$menu-dark-active-bgc: $color-primary!default;
+$menu-dark-horizontal-active-bgc: none!default;
+
+$menu-dark-disabled-color: $menu-dark-color!default;
+$menu-dark-disabled-bgc: transparent!default;
+$menu-dark-disabled-opacity: .45!default;
+
+$submenu-dropdown-width: 180px!default;
+
+
+// sidebar
+$sidebar-width: 200px !default;
+$sidebar-collapse-width: 60px!default;
+$sidebar-bgc: #F1F3F8!default;
+
+$sidebar-header-height: 65px!default;
+$sidebar-header-font-size: 18px!default;
+
+$sidebar-menu-item-height: 46px!default;
+
+
+$sidebar-menu-text-color: #666!default;
+$sidebar-menu-dot-color: #BFC4D5!default;
+// Rate
+$rate-size: 24px !default;
+$rate-text-font-size: $font-size-large !default;
+$rate-text-color: #636777!default;
+$rate-active-color: #FFCE32!default;
+$rate-void-color: #E7E8E7!default;
+$rate-disabled-void-color: $rate-void-color!default;
+$rate-spacing: 8px!default;

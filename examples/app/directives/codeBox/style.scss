@@ -1,0 +1,28 @@
+.demo-code-box {
+    position: relative;
+    border  : 1px solid #edf0f7;
+
+    pre {
+        padding      : 0;
+        margin       : 0;
+        border-color : #edf0f7;
+        border-radius: 0;
+        border-top   : 0;
+        border-bottom: 0;
+    }
+
+    .demo-code-box-content {
+        // transition: height .2s ease-out;
+        overflow  : hidden;
+    }
+}
+
+.demo-code-box-control {
+    height       : 50px;
+    line-height  : 50px;
+    text-align   : center;
+    color        : #808ab1;
+    cursor       : pointer;
+    border-top   : none;
+    border-radius: 0 0 6px 6px;
+}

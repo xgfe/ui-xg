@@ -4,7 +4,10 @@
  * Author: yjy972080142@gmail.com
  * Date:2016-08-01
  */
-angular.module('ui.xg.collapse', ['ui.xg.transition'])
+import angular from 'angular';
+import module from './module';
+
+module
     .directive('uixCollapse', ['$uixTransition', function ($uixTransition) {
         return {
             restrict: 'AE',
