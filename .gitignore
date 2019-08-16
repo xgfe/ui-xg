@@ -74,3 +74,6 @@ dist/docs
 src/*/example.html
 # 代码覆盖率
 coverage/
+
+/publish/
+/package-lock.json
