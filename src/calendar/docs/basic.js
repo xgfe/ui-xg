@@ -23,10 +23,5 @@ export default class {
         dt2.setMonth($scope.date.getMonth() + 1);
         dt2.setDate(5);
         $scope.exceptions = [dt1, dt2];
-
-        // 星期三不可选
-        $scope.dateFilter = function ($date) {
-            return $date.getDay() !== 3;
-        };
     }
 }

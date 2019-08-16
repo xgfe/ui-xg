@@ -27,10 +27,10 @@ docs.forEach((component) => {
             '<div class="demo-box">',
             `<div ng-controller="${controllerName} as vm">${demo.template}</div>`,
             '</div>',
-            `<code-box template="${encodeURIComponent(demo.template)}" script="${encodeURIComponent(demo.script)}"></code-box>`,
-            `<div ng-non-bindable>${readme.attrs}</div>`
+            `<code-box template="${encodeURIComponent(demo.template)}" script="${encodeURIComponent(demo.script)}"></code-box>`
         ]);
     }
+    content.push(`<div ng-non-bindable>${readme.attrs}</div>`);
     ROUTES.push({
         name: component.name,
         template: content.join('')

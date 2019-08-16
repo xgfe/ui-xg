@@ -78,3 +78,6 @@ coverage/
 .vscode
 /yarn.lock
 /package-lock.json
+
+# demo构建目录
+/publish/
