@@ -20,7 +20,8 @@ module.exports = {
         alias: {
             app: utils.resolve('examples/app/app.js'),
             '@': utils.resolve('.'), // root dir
-            'src': utils.resolve('src')
+            'src': utils.resolve('src'),
+            'examples': utils.resolve('examples')
         }
     },
     module: {

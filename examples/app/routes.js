@@ -1,5 +1,5 @@
 import app from 'app';
-import docs from './ui-xg/docs';
+import docs from 'examples/ui-xg/docs';
 
 function splitReadme(readme) {
     let idx = readme.indexOf('<h2 id="arguments"');

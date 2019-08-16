@@ -2,7 +2,7 @@ import angular from 'angular';
 import ngSanitize from 'angular-sanitize';
 import ngAnimate from 'angular-animate';
 import uiRouter from 'angular-ui-router';
-import uiXg from './ui-xg/index';
+import uiXg from 'examples/ui-xg';
 
 //定义angular模块
 const app = angular.module('uixDemo', [

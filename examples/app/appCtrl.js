@@ -1,5 +1,5 @@
 import template from './app.html';
-import docs from './ui-xg/docs';
+import docs from 'examples/ui-xg/docs';
 
 function toCamelCase(str) {
     return str[0].toUpperCase() + str.slice(1);

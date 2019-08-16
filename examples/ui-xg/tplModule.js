@@ -1,5 +1,5 @@
 // 注册所有模板
-import { putTemplate } from '../utils';
+import { putTemplate } from 'examples/app/utils';
 import templates from './templates';
 
 const name = 'ui.xg.tpls';

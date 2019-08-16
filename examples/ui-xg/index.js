@@ -1,3 +1,4 @@
+import './index.scss';
 import templateModule from './tplModule';
 import directives from './directives';
 

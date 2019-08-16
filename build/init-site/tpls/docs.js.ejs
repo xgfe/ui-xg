@@ -1,0 +1,10 @@
+/* Auto generate by code. Don't edit this file. */
+<% directives.forEach(function(item){%>
+import * as <%=item.docName%> from 'src/<%=item.name%>/docs';<% }); %>
+
+export default [
+<% directives.forEach(function(item){%>
+    <%=item.docName%>,<% }); %>
+];
+
+/* Auto generate by code. Don't edit this file. */

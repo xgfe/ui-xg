@@ -1,4 +1,5 @@
-// Auto generate by code. Don't edit this file.
+/* Auto generate by code. Don't edit this file. */
+
 import 'src/accordion/accordion.js';
 import 'src/alert/alert.js';
 import 'src/avatar/avatar.js';
@@ -34,7 +35,9 @@ import 'src/timepicker/timepicker.js';
 import 'src/tooltip/tooltip.js';
 import 'src/transition/transition.js';
 import 'src/typeahead/typeahead.js';
+
 export default [
+
     'accordion',
     'alert',
     'avatar',
@@ -71,3 +74,4 @@ export default [
     'transition',
     'typeahead',
 ];
+/* Auto generate by code. Don't edit this file. */
