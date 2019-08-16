@@ -10,7 +10,9 @@
   "scripts": {
     "test": "gulp test",
     "postinstall": "bower install",
-    "start": "webpack-dev-server --config build/webpack.config.demo.js"
+    "new": "node scripts/generators/index.js",
+    "site:init": "node build/init-site/generator.js",
+    "start": "npm run site:init && webpack-dev-server --config build/webpack.config.demo.js"
   },
   "keywords": [
     "UI",

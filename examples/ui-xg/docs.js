@@ -28,6 +28,7 @@ import * as uiSteps from 'src/steps/docs';
 import * as uiSwitch from 'src/switch/docs';
 import * as uiTableLoader from 'src/tableLoader/docs';
 import * as uiTabs from 'src/tabs/docs';
+import * as uiTest from 'src/test/docs';
 import * as uiTimeline from 'src/timeline/docs';
 import * as uiTimepanel from 'src/timepanel/docs';
 import * as uiTimepicker from 'src/timepicker/docs';
@@ -64,6 +65,7 @@ export default [
     uiSwitch,
     uiTableLoader,
     uiTabs,
+    uiTest,
     uiTimeline,
     uiTimepanel,
     uiTimepicker,

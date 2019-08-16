@@ -34,6 +34,7 @@ import stepTpl from 'src/step/templates/step.html';
 import switchTpl from 'src/switch/templates/switch.html';
 import tabTpl from 'src/tabs/templates/tab.html';
 import tabsTpl from 'src/tabs/templates/tabs.html';
+import testTpl from 'src/test/templates/test.html';
 import timelineTpl from 'src/timeline/templates/timeline.html';
 import timelineItemTpl from 'src/timeline/templates/timelineItem.html';
 import timepanelTpl from 'src/timepanel/templates/timepanel.html';
@@ -78,6 +79,7 @@ export default [
     { filename: 'switch.html', template: switchTpl },
     { filename: 'tab.html', template: tabTpl },
     { filename: 'tabs.html', template: tabsTpl },
+    { filename: 'test.html', template: testTpl },
     { filename: 'timeline.html', template: timelineTpl },
     { filename: 'timelineItem.html', template: timelineItemTpl },
     { filename: 'timepanel.html', template: timepanelTpl },
