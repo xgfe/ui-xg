@@ -29,7 +29,6 @@ import 'src/steps/steps.js';
 import 'src/switch/switch.js';
 import 'src/tableLoader/tableLoader.js';
 import 'src/tabs/tabs.js';
-import 'src/test/test.js';
 import 'src/timeline/timeline.js';
 import 'src/timepanel/timepanel.js';
 import 'src/timepicker/timepicker.js';
@@ -68,7 +67,6 @@ export default [
     'switch',
     'tableLoader',
     'tabs',
-    'test',
     'timeline',
     'timepanel',
     'timepicker',
