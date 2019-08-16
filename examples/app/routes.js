@@ -1,5 +1,5 @@
 import app from 'app';
-import components from './components';
+import docs from './ui-xg/docs';
 
 function splitReadme(readme) {
     let idx = readme.indexOf('<h2 id="arguments"');
@@ -11,7 +11,7 @@ function splitReadme(readme) {
 }
 
 const ROUTES = [];
-components.forEach((component) => {
+docs.forEach((component) => {
     let readme = splitReadme(component.readme);
     let content = [
         `<div ng-non-bindable>${readme.doc}</div>`,

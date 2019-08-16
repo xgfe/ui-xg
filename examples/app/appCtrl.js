@@ -1,5 +1,5 @@
 import template from './app.html';
-import components from './components';
+import docs from './ui-xg/docs';
 
 function toCamelCase(str) {
     return str[0].toUpperCase() + str.slice(1);
@@ -7,7 +7,7 @@ function toCamelCase(str) {
 
 class AppCtrl {
     static $inject = ['$state']
-    defaultComponet = `app.components.${components[0].name}`;
+    defaultComponet = `app.components.${docs[0].name}`;
     routerList = {
         intro: [{
             state: 'start',
@@ -19,7 +19,7 @@ class AppCtrl {
             state: 'componentDoc',
             name: '组件规范'
         }],
-        components: components.map(({ name, cnName }) => ({
+        components: docs.map(({ name, cnName }) => ({
             name: toCamelCase(name),
             state: name,
             cnName: cnName

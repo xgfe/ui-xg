@@ -1,5 +1,7 @@
 <div class="demo-code-box">
-    <pre class="demo-code-box-content" ng-show="showCode"><code ng-bind-html="content"></code></pre>
+    <div uix-collapse="!showCode">
+        <pre class="demo-code-box-content"><code ng-bind-html="content"></code></pre>
+    </div>
     <div class="demo-code-box-control" ng-click="toggleShow()">
         <i ng-class="showCode?'glyphicon-chevron-up':'glyphicon-chevron-down'" class="glyphicon"></i> {{showCode?'隐藏代码':'显示代码'}}
     </div>

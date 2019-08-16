@@ -1,4 +1,6 @@
-import 'jquery';
+import $ from 'jquery';
+// eslint-disable-next-line angular/window-service
+window.$ = $;
 import angular from 'angular';
 import app from './app';
 import './router';

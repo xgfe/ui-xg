@@ -1,5 +1,6 @@
 const utils = require('./utils');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
     mode: 'none',
     entry: {
@@ -19,6 +20,7 @@ module.exports = {
         alias: {
             app: utils.resolve('examples/app/app.js'),
             '@': utils.resolve('.'), // root dir
+            'src': utils.resolve('src')
         }
     },
     module: {
