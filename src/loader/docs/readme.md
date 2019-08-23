@@ -1,4 +1,4 @@
-# Loader
+# 加载中 Loader
 ## Description
 数据加载loading组件,当加载数据时,会显示相应的loading图标。
 

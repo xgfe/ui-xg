@@ -1,0 +1,71 @@
+<header class="header">
+  <div class="header-nav">
+    <ul class="nav-list">
+      <li class="nav-list-item">
+        <a ui-sref="app.index" ui-sref-active="router-link-active">首页</a>
+      </li>
+      <li class="nav-list-item">
+        <a ui-sref="{{vm.defaultComponet}}"
+         ng-class="{'router-link-active':vm.$state.includes('app.components')}">
+            组件
+        </a>
+      </li>
+      <li class="nav-list-item" style="padding: 5px 30px 0 30px;">
+        <a href="https://github.com/xgfe/ui-xg" target="_blank">
+            <img src="../assets/images/github.png" alt="Github" width="30" height="30">
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+<div class="page">
+  <div class="sidebar-content">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <a class="nav-brand">
+          UI XG
+        </a>
+      </div>
+      <div class="sidebar-nav-wrap">
+        <ul class="sidebar-nav">
+          <li class="sidebar-nav-item" ng-repeat="router in vm.routerList.intro">
+            <a
+              ui-sref="app.docs.{{ router.state }}"
+              ui-sref-active="router-link-exact-active"
+              class="sidebar-nav-title"
+              >{{ router.name }}</a
+            >
+          </li>
+          <li class="sidebar-nav-item components-wrap">
+            <div class="sidebar-nav-title">组件 / Components （{{vm.routerList.components.length}}）</div>
+            <div class="sidebar-bar-nav-content">
+              <ul class="sidebar-nest-nav">
+                <li
+                  class="sidebar-nest-nav-item"
+                  ng-repeat="component in vm.routerList.components"
+                >
+                  <a
+                    ui-sref="app.components.{{ component.state }}"
+                    ui-sref-active="router-link-exact-active"
+                  >
+                    {{ component.cnName }} / {{ component.name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="mk-content">
+      <div ui-view></div>
+    </div>
+    <mtd-pageturn></mtd-pageturn>
+  </div>
+  <!--<transition name="floatup">-->
+  <!--<div class="mtdicon mtdicon-arrow-up page-up" v-show="showPageUp"-->
+  <!--@click="handlePageUp"/>-->
+  <!--</transition>-->
+</div>

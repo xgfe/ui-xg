@@ -1,4 +1,4 @@
-# TableLoader
+# 表格加载 TableLoader
 ## Description
 表格加载loading组件,当加载数据时,会显示相应的loading图标。
 

@@ -1,0 +1,9 @@
+/* Auto generate by code. Don't edit this file. */
+<% directives.forEach(function(item){%>
+import 'src/<%=item.name%>/<%=item.name%>.js';<% }); %>
+
+export default [
+<% directives.forEach(function(item){%>
+    '<%=item.name%>',<% }); %>
+];
+/* Auto generate by code. Don't edit this file. */

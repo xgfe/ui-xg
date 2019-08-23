@@ -1,4 +1,9 @@
-<div ng-controller="stepDemoCtrl" id="stepsbox">
+<style>
+#stepsbox {
+    text-align: center;
+}
+</style>
+<div id="stepsbox">
     <p>只设置title和desc属性</p>
     <uix-steps>
         <uix-step ng-repeat="obj in objs track by $index" title='{{obj.title}}'

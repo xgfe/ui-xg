@@ -1,4 +1,4 @@
-# progressbar
+# 进度条 progressbar
 ## Description
 进度条组件，有两种显示方式，一种是将写成`uix-progressbar`指令的形式；另一种是写成`<uix-progress><uix-bar></uix-bar></uix-progress>`
 的形式，该种方式下可以有多个bar。参照的是[ui-bootstrap](https://github.com/angular-ui/bootstrap/tree/master/src/progressbar)指令

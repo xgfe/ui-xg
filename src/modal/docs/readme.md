@@ -1,4 +1,4 @@
-# modal
+# 对话框 modal
 ## Description
 
 modal组件,用于快捷地创建一个modal,没有实际的dom指令,通过调用$uixModal这个service来创建.

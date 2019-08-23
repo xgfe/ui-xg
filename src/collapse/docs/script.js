@@ -1,3 +1,6 @@
-angular.module('uixDemo').controller('collapseDemoCtrl', ['$scope', function ($scope) {
-    $scope.isCollapsed = false;
-}]);
+export default class {
+    static $inject = ['$scope'];
+    constructor($scope) {
+        $scope.isCollapsed = false;
+    }
+}

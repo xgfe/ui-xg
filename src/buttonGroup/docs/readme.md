@@ -1,4 +1,4 @@
-# buttonGroup
+# 按钮组 buttonGroup
 ## Description
 按钮组组件,可用于展示一组数据,实现类radio或checkbox效果。
 

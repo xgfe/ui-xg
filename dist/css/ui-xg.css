@@ -455,21 +455,6 @@ img {
   .uix-alert .show-icon {
     padding-left: 20px; }
 
-.btn-group {
-  font-size: 0; }
-  .btn-group .btn-item {
-    font-size: 14px; }
-  .btn-group .btn-item:first-child:not(:last-child) {
-    border-radius: 6px;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    padding-right: 8px; }
-  .btn-group .btn-item:last-child:not(:first-child) {
-    border-radius: 6px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
-    padding-left: 8px; }
-
 .uix-button-wrapper .glyphicon-refresh-animate {
   -animation: uix-button-spin .7s infinite linear;
   -ms-animation: uix-button-spin .7s infinite linear;
@@ -496,6 +481,21 @@ img {
 
 .uix-button-wrapper .inline-b {
   display: inline-block; }
+
+.btn-group {
+  font-size: 0; }
+  .btn-group .btn-item {
+    font-size: 14px; }
+  .btn-group .btn-item:first-child:not(:last-child) {
+    border-radius: 6px;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    padding-right: 8px; }
+  .btn-group .btn-item:last-child:not(:first-child) {
+    border-radius: 6px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    padding-left: 8px; }
 
 .uix-calendar {
   display: inline-block;
@@ -3195,30 +3195,6 @@ body > .uix-select.open {
   white-space: nowrap;
   height: 100px; }
 
-.uix-table-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-table-loader .loading {
-    position: relative;
-    width: 100%;
-    min-height: 200px; }
-  .uix-table-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-table-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-table-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
-
 .uix-switch {
   cursor: pointer;
   position: relative;
@@ -3306,6 +3282,30 @@ body > .uix-select.open {
     margin-left: 21px; }
   .uix-switch-lg i:after {
     width: 28px; }
+
+.uix-table-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-table-loader .loading {
+    position: relative;
+    width: 100%;
+    min-height: 200px; }
+  .uix-table-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-table-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-table-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
 
 .tab-panel-hidden {
   display: none; }

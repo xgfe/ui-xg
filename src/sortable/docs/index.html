@@ -1,4 +1,17 @@
-<div ng-controller="sortableDemoCtrl">
+<style>
+.bg-primary{
+    background-color: #7266ba;
+    color: #f4f3f9;
+}
+.item-large{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.m-b-md{
+    margin-bottom: 10px;
+}
+</style>
+<div>
     <div class="row">
         <div class="col-md-5">
             <ul class="list-group" uix-sortable="mockList" on-change="sorted()">

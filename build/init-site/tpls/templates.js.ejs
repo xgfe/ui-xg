@@ -1,0 +1,8 @@
+/* Auto generate by code. Don't edit this file. */
+<% directives.forEach(function(item){%>
+import <%=item.templateName%> from 'src/<%=item.name%>/templates/<%=item.filename%>';<% }); %>
+export default [<% directives.forEach(function(item){%>
+    { filename: '<%=item.filename%>', template: <%=item.templateName%> },<% }); %>
+];
+
+/* Auto generate by code. Don't edit this file. */

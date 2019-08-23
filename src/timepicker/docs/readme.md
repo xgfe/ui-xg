@@ -1,4 +1,4 @@
-# timepicker
+# 时间选择器 timepicker
 ## Description
 
 时间选择器，依赖于<a ui-sref="app.api.timepanel" href="../../timepanel/docs/readme.md">timepanel</a>
