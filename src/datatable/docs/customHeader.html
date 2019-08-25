@@ -1,0 +1,19 @@
+<h4>使用<code>headerTemplate</code></h4>
+<uix-datatable columns="vm.columns" data="vm.data"></uix-datatable>
+<h4>使用<code>headerTemplateUrl</code></h4>
+<uix-datatable columns="vm.columns2" data="vm.data"></uix-datatable>
+<!-- 地址列模板 -->
+<script type="text/ng-template" id="addressTpl">
+    这一列是：<b>{{$column.title}}</b><br>
+    这是第{{$index+1}}行<br>
+    详细地址：{{$row.province}} - {{$row.city}} {{$row.address}}<br>
+</script>
+<!-- 姓名列表头模板 -->
+<script type="text/ng-template" id="nameHeaderTpl">
+    {{$column.title}} <span class="label label-danger">提示</span>
+</script>
+<!-- 年龄列表头模板 -->
+<script type="text/ng-template" id="ageHeaderTpl">
+    {{$column.title}}
+    <i class="glyphicon glyphicon-question-sign" tooltip-append-to-body="true" uix-tooltip="我是一个提示"></i>   
+</script>

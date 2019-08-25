@@ -5,15 +5,8 @@
   <span ng-if="renderType === 'checkbox'">
     <input type="checkbox">
   </span>
-  <!-- <template ng-if="renderType === 'selection'">
-     <Checkbox
-      :value="checked"
-      @click.native.stop="handleClick"
-      @on-change="toggleSelect"
-      :disabled="disabled"
-    ></Checkbox>
-  </template> -->
-  <span ng-if="renderType === 'html'" v-html="row[column.key]"></span>
+  <span ng-if="renderType === 'template'" class="body-cell-render-template">
+  </span>
   <span ng-if="renderType === 'normal'">
     {{ row[column.key] }}
   </span>

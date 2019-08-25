@@ -21,36 +21,36 @@ body {
     min-width: $min-width;
 }
 
-::-webkit-scrollbar {
-    background-color: transparent;
-    z-index         : 11;
+// ::-webkit-scrollbar {
+//     background-color: transparent;
+//     z-index         : 11;
 
-    &:horizontal {
-        height: 6px;
-    }
+//     &:horizontal {
+//         height: 6px;
+//     }
 
-    // &:vertical{
-    width: 6px;
+//     // &:vertical{
+//     width: 6px;
 
-    // }
-    &-thumb {
-        background-color: #EDF0F7;
-        border-radius   : 1px;
-    }
+//     // }
+//     &-thumb {
+//         background-color: #EDF0F7;
+//         border-radius   : 1px;
+//     }
 
-    &-corner {
-        background: transparent;
-    }
+//     &-corner {
+//         background: transparent;
+//     }
 
-    &-track {
-        background: transparent;
+//     &-track {
+//         background: transparent;
 
-        &-piece {
-            background: transparent;
-            width     : 6px;
-        }
-    }
-}
+//         &-piece {
+//             background: transparent;
+//             width     : 6px;
+//         }
+//     }
+// }
 
 .app {
     overflow-x: hidden;
@@ -341,7 +341,7 @@ body {
     h4,
     h5,
     p {
-        margin-top: 0;
+        // margin-top: 0;
     }
 
     h1,

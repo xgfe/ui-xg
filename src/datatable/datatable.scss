@@ -1,3 +1,8 @@
+$striped-background-color:#f9f9f9;
+$hover-background-color:$striped-background-color;
+$border-color          : #ddd;
+$primary-color         : #2d8cf0;
+
 .uix-datatable-head>thead>tr>th,
 .uix-datatable-head>thead>tr>td {
     border-bottom   : 0;
@@ -43,8 +48,46 @@
         border-bottom : 1px solid #e8eaec;
     }
 
+    .uix-datatable-striped {
+
+        &>tbody>tr:nth-child(even)>td,
+        &>tbody>tr:nth-child(even)>th {
+            background-color: $striped-background-color;
+        }
+    }
+
+    .uix-datatable-bordered {
+        border: 1px solid $border-color;
+
+        &>thead>tr>th,
+        &>tbody>tr>th,
+        &>tfoot>tr>th,
+        &>thead>tr>td,
+        &>tbody>tr>td,
+        &>tfoot>tr>td {
+            border: 1px solid $border-color
+        }
+
+        &>thead>tr>th,
+        &>thead>tr>td {
+            border-bottom-width: 2px;
+        }
+    }
+
     .uix-datatable-header {
         overflow: hidden;
+    }
+
+    .uix-datatable-column-left {
+        text-align: left;
+    }
+
+    .uix-datatable-column-center {
+        text-align: center;
+    }
+
+    .uix-datatable-column-right {
+        text-align: right;
     }
 
     .uix-datatable-overflowX {
@@ -63,7 +106,7 @@
         position: absolute;
         top     : 0;
     }
-    
+
 
     .uix-datatable-fixed-left {
         top       : 0;
@@ -76,10 +119,12 @@
         right     : 0;
         box-shadow: -2px 0 6px -2px rgba(0, 0, 0, .2);
     }
-    &.uix-datatable-scroll-position-left .uix-datatable-fixed-left{
+
+    &.uix-datatable-scroll-position-left .uix-datatable-fixed-left {
         box-shadow: none;
     }
-    &.uix-datatable-scroll-position-right .uix-datatable-fixed-right{
+
+    &.uix-datatable-scroll-position-right .uix-datatable-fixed-right {
         box-shadow: none;
     }
 
@@ -110,16 +155,132 @@
         word-break   : break-all;
         box-sizing   : border-box;
     }
+
+    .uix-datatable-sort {
+        display       : inline-block;
+        width         : 14px;
+        height        : 14px;
+        margin-top    : -1px;
+        vertical-align: middle;
+        overflow      : hidden;
+        cursor        : pointer;
+        position      : relative;
+
+        i {
+            display    : block;
+            height     : 6px;
+            line-height: 6px;
+            overflow   : hidden;
+            position   : absolute;
+            color      : #c5c8ce;
+            transition : color .2s ease-in-out;
+            font-size  : 12px;
+
+            &:hover,
+            &.on {
+                color: $primary-color;
+            }
+        }
+
+        .glyphicon-triangle-top {
+            top: 0;
+        }
+
+        .glyphicon-triangle-bottom {
+            top   : auto; // override glyphicon's style
+            bottom: 0;
+        }
+    }
+
+    .uix-datatable-loading,
+    .uix-datatable-empty,
+    .uix-datatable-error {
+        position  : absolute;
+        left      : 0;
+        top       : 0;
+        right     : 0;
+        bottom    : 0;
+        background: rgba(255, 255, 255, 0.5);
+        text-align: center;
+
+        .loading-icon {
+            -webkit-animation: spin 2s infinite linear;
+            -moz-animation   : spin 2s infinite linear;
+            -o-animation     : spin 2s infinite linear;
+            animation        : spin 2s infinite linear
+        }
+
+        .inner-text {
+            font-size  : 16px;
+            position   : absolute;
+            top        : 50%;
+            height     : 30px;
+            line-height: 30px;
+            margin-top : -15px;
+            left       : 0;
+            right      : 0;
+        }
+    }
 }
 
 .uix-datatable .table {
     margin-bottom: 0;
 }
 
-.uix-datatable-head.table-bordered {
-    border-bottom: 0;
+.uix-datatable-head {
+    &.uix-datatable-bordered {
+        border-bottom: 0;
+
+        &>thead>tr>th,
+        &>thead>tr>td,
+        &>tbody>tr>td {
+            border-bottom: none;
+        }
+    }
 }
 
-.uix-datatable-row-hover td{
-    background-color: #f9f9f9;
+.uix-datatable-row-hover td {
+    background-color: $hover-background-color;
+}
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg)
+    }
+
+    100% {
+        -moz-transform: rotate(359deg)
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg)
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg)
+    }
+
+    100% {
+        -o-transform: rotate(359deg)
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform        : rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform        : rotate(359deg)
+    }
 }

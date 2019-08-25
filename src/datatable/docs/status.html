@@ -1,0 +1,10 @@
+切换状态：
+<uix-button-group ng-model="vm.status">
+    <label class="btn btn-default" btn-radio-val="'loading'">加载中</label>
+    <label class="btn btn-default" btn-radio-val="'error'">加载异常</label>
+    <label class="btn btn-default" btn-radio-val="'empty'">数据为空</label>
+</uix-button-group>
+<uix-datatable error-text="列表加载失败咯（属性设置）" status="vm.status" columns="vm.columns" data="[]"></uix-datatable>
+<h4>完整加载过程</h4>
+<button type="button" class="btn btn-sm btn-danger" ng-click="vm.handleLoading()">加载数据</button>
+<uix-datatable status="vm.status2" columns="vm.columns" data="vm.data"></uix-datatable>

@@ -1,6 +1,6 @@
 <table
   class="uix-datatable-head"
-  ng-class="{'table-bordered':$table.isBordered}"
+  ng-class="{'uix-datatable-bordered':$table.isBordered}"
   cellspacing="0"
   cellpadding="0"
   ng-style="styles"
@@ -24,12 +24,11 @@
         rowspan="{{ column.rowSpan }}"
         ng-class="alignCls(column)"
       >
-        <div ng-class="cellClasses(column)" class="uix-datatable-cell">
-          <span ng-if="column.type === 'expand'">{{ column.title || '' }}</span>
-          <div ng-if="column.type === 'checkbox'">
-            <input type="checkbox" />
-          </div>
-          <div ng-if="column.type !== 'expand' && column.type !== 'checkbox'">
+      <uix-datatable-head-cell row-index="rowIndex" index="index" fixed="fixed" column="column">
+
+      </uix-datatable-head-cell>  
+        <!-- <div ng-class="cellClasses(column)" class="uix-datatable-cell">
+          <div>
             <span>
               <span
                 ng-class="{'uix-datatable-cell-sort': column.sortable}"
@@ -37,20 +36,20 @@
                 >{{ column.title || columns.key || '#' }}
               </span>
             </span>
-            <span ng-class="[prefixCls + '-sort']" ng-if="column.sortable">
+            <span class="uix-datatable-sort" ng-if="column.sortable">
               <i
                 class="glyphicon glyphicon-triangle-top"
-                :class="{on: getColumn(rowIndex, index)._sortType === 'asc'}"
+                ng-class="{on: getColumn(rowIndex, index)._sortType === 'asc'}"
                 ng-click="handleSort(getColumn(rowIndex, index)._index, 'asc')"
               ></i>
               <i
                 class="glyphicon glyphicon-triangle-bottom"
-                :class="{on: getColumn(rowIndex, index)._sortType === 'desc'}"
+                ng-class="{on: getColumn(rowIndex, index)._sortType === 'desc'}"
                 ng-click="handleSort(getColumn(rowIndex, index)._index, 'desc')"
               ></i>
             </span>
           </div>
-        </div>
+        </div> -->
       </th>
       <th
         v-if="$table.showVerticalScrollBar && rowIndex===0"

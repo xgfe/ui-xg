@@ -11,7 +11,7 @@ module.exports = {
     },
     output: {
         path: utils.resolve('publish/ui-xg'),
-        filename: `assets/[name]${isPublish ? '.[hash]' : ''}.js`,
+        filename: `assets/js/[name]${isPublish ? '.[hash]' : ''}.js`,
         publicPath: '/ui-xg/'
     },
     optimization: {
