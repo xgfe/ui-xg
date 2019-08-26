@@ -1,1 +1,9 @@
+<pre><code>{{vm.selectMap|json}}</code></pre>
 <uix-datatable bordered columns="vm.columns" data="vm.data"></uix-datatable>
+
+<script type="text/ng-template" id="selectAllTpl">
+    <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.handleSelectAll()">
+</script>
+<script type="text/ng-template" id="selectTpl">
+    <input type="checkbox" ng-change="vm.handleSelect()" ng-model="vm.selectMap[$row.id]">
+</script>

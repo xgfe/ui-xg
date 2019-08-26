@@ -437,30 +437,30 @@ body {
     // a{
     //   text-decoration: none;
     // }
-    .table {
-        width          : 100%;
-        // table-layout: fixed;
-        border-collapse: collapse;
-        margin-bottom  : 45px;
-        color          : #333;
+    // .table {
+    //     width          : 100%;
+    //     // table-layout: fixed;
+    //     border-collapse: collapse;
+    //     margin-bottom  : 45px;
+    //     color          : #333;
 
-        th {
-            text-align   : left;
-            padding      : 20px 32px;
-            line-height  : 20px;
-            border-bottom: $border;
-            color        : $color-gray450;
-            font-weight  : $font-weight-medium;
-            white-space  : nowrap;
-        }
+    //     th {
+    //         text-align   : left;
+    //         padding      : 20px 32px;
+    //         line-height  : 20px;
+    //         border-bottom: $border;
+    //         color        : $color-gray450;
+    //         font-weight  : $font-weight-medium;
+    //         white-space  : nowrap;
+    //     }
 
-        td {
-            padding      : 20px 32px;
-            line-height  : 20px;
-            border-bottom: $border;
-            max-width    : 200px;
-        }
-    }
+    //     td {
+    //         padding      : 20px 32px;
+    //         line-height  : 20px;
+    //         border-bottom: $border;
+    //         max-width    : 200px;
+    //     }
+    // }
 
     .mtdicon-link {
         font-size: 12px;

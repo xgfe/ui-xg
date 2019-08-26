@@ -154,6 +154,10 @@ $primary-color         : #2d8cf0;
         white-space  : normal;
         word-break   : break-all;
         box-sizing   : border-box;
+        position: relative;
+        &.uix-datatable-cell-sortable{
+            padding-right: 30px;
+        }
     }
 
     .uix-datatable-sort {
@@ -164,7 +168,10 @@ $primary-color         : #2d8cf0;
         vertical-align: middle;
         overflow      : hidden;
         cursor        : pointer;
-        position      : relative;
+        position      : absolute;
+        right: 10px;
+        top: 50%;
+        margin-top: -7px;
 
         i {
             display    : block;

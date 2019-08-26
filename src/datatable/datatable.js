@@ -109,7 +109,8 @@
         .constant('uixDatatableConfig', {
             loadingText: '数据加载中',
             emptyText: '数据为空',
-            errorText: '加载失败'
+            errorText: '加载失败',
+            emptyDataHeight: 350 // 没有数据时，提示文案占据高度
         })
         .provider('uixDatatable', ['uixDatatableConfig', function (uixDatatableConfig) {
             let statusText = {
@@ -131,8 +132,8 @@
                 };
             };
         }])
-        .controller('uixDatatableCtrl', ['$scope', '$timeout', '$element', '$attrs',
-            function ($scope, $timeout, $element, $attrs) {
+        .controller('uixDatatableCtrl', ['$scope', '$timeout', '$element', 'uixDatatableConfig',
+            function ($scope, $timeout, $element, uixDatatableConfig) {
                 const $table = this;
                 $table.scrollBarWidth = getScrollBarSize();
                 $table.scrollPosition = 'left';
@@ -535,6 +536,14 @@
                     }
                     $table.objData[_index]._isHover = false;
                 };
+                $table.handleClickRow = (index) => {
+                    if ($scope.onRowClick) {
+                        $scope.onRowClick({
+                            $row: $table.objData[index],
+                            $index: index
+                        });
+                    }
+                };
                 $table.rowClassName = function (index) {
                     return $scope.rowClassName({
                         $row: $table.objData[index],
@@ -554,7 +563,7 @@
                     }
                     // 数据为空
                     if (!$table.maxHeight && !$table.height && ($table.isEmpty || $table.isError || $table.isLoading)) {
-                        style.height = '350px';
+                        style.height = `${uixDatatableConfig.emptyDataHeight}px`;
                     }
                     return style;
                 };
@@ -676,7 +685,6 @@
                     $table.allColumns = getAllColumns(colsWithId);
                     $table.objData = $table.makeObjData();
                     $table.rebuildData = $table.makeDataWithSortAndFilter();
-                    console.log($attrs);
                     $timeout(() => {
                         $table.handleResize();
                     }, 1);
@@ -695,9 +703,11 @@
                 scope: {
                     columns: '=',
                     data: '=',
-                    rowClassName: '&',
                     status: '=',
-                    onSortChange: '&'
+                    disabledHover: '=',
+                    rowClassName: '&',
+                    onSortChange: '&',
+                    onRowClick: '&'
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -727,6 +737,11 @@
                             $table[attr] = parseInt($attrs[attr], 10);
                         }
                     });
+
+                    scope.$watch('disabledHover', function (val) {
+                        $table.disabledHover = val;
+                    });
+
                     scope.$watch('data', function (val, old) {
                         if (val !== old && angular.isDefined(val)) {
                             $table.data = scope.data;
@@ -835,6 +850,10 @@
                     $scope.handleMouseOut = function (evt, _index) {
                         evt.stopPropagation();
                         $table.handleMouseOut(_index);
+                    };
+                    $scope.handleClickRow = function (evt, _index) {
+                        evt.stopPropagation();
+                        $table.handleClickRow(_index);
                     };
                     let fixed = attrs.fixed || '';
                     $scope.alignCls = (column, row = {}) => {
@@ -974,7 +993,8 @@
                     $scope.cellClasses = (column) => {
                         return [
                             !fixed && column.fixed && (column.fixed === 'left' || column.fixed === 'right') ? 'uix-datatable-hidden' : '',
-                            column.type === 'selection' ? 'uix-datatable-cell-with-selection' : ''
+                            column.type === 'selection' ? 'uix-datatable-cell-with-selection' : '',
+                            column.sortable ? 'uix-datatable-cell-sortable' : ''
                         ];
                     };
                     $scope.handleSort = (index, type) => {

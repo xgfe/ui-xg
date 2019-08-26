@@ -14,6 +14,7 @@
              ng-class="[$table.rowClassName(index),$table.objData[index]._isHover?'uix-datatable-row-hover':'']"
              ng-mouseenter="handleMouseIn($event,row._index)"
              ng-mouseleave="handleMouseOut($event,row._index)"
+             ng-click="handleClickRow($event,row._index)"
             >
                 <td ng-repeat="column in columns" ng-class="alignCls(column, row)">
                     <uix-datatable-cell fixed="fixed"
