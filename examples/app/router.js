@@ -4,6 +4,7 @@ import home from './pages/home';
 import gettingStart from './pages/start';
 import componentDoc from './pages/component-doc';
 import guide from './pages/guide';
+import demoContainer from './pages/demo-container';
 import { ROUTES } from './routes';
 
 app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -13,11 +14,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
             url: '/docs',
             template: '<div ui-view></div>'
         })
-        .state('app.components', {
-            url: '/components',
-            abstract: true,
-            template: '<div class="components-router-view" ui-view></div>'
-        })
+        .state(demoContainer)
         .state(home)
         .state(gettingStart)
         .state(guide)
