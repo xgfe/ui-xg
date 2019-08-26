@@ -29,10 +29,18 @@
 
 ### uixDatatable 回调函数
 
-| 属性 | 说明 | 返回参数 |
+| 属性 | 说明 | 参数 |
 | --- | --- | --- | 
 | on-sort-change | 排序时有效，当点击排序时触发 | <ul><li>`$column`：当前列数据</li><li>`$order`：排序的顺序，值为 `asc` 或 `desc`</li><li>`$key`：排序依据的指标</li></ul> |
 |on-row-click|单击某一行时触发|<ul><li>`$row`：当前行数据</li><li>`$index`：行索引</li></ul> |
+
+### uixDatatableProvider 
+
+`uixDatatableProvider`可以在应用全局配置表格相关属性。
+
+| 方法 | 说明 | 参数 |
+| --- | --- | --- | 
+| setStatusText | 设置表格不同状态的提示文案，参考示例[表格状态](#datatable_status) | Object |
 
 ### Column 描述
 列描述数据对象，是 columns 中的一项

@@ -1,6 +1,9 @@
 /**
- * datatable
- * datatable directive
+ * 数据表格 - datatable
+ * 数据表格指令
+ * 主要用于展示大量结构化数据。
+ * 支持排序、固定列、固定表头、分页、自定义操作、单选多选等复杂功能。
+ * 
  * Author: yjy972080142@gmail.com
  * Date:2019-08-13
  */
@@ -413,19 +416,6 @@
                         column.width = parseInt(column.width, 10);
                         column._width = column.width ? column.width : '';    // update in handleResize()
                         column._sortType = 'normal';
-                        column._filterVisible = false;
-                        column._isFiltered = false;
-                        column._filterChecked = [];
-
-                        if ('filterMultiple' in column) {
-                            column._filterMultiple = column.filterMultiple;
-                        } else {
-                            column._filterMultiple = true;
-                        }
-                        if ('filteredValue' in column) {
-                            column._filterChecked = column.filteredValue;
-                            column._isFiltered = true;
-                        }
 
                         if ('sortType' in column) {
                             column._sortType = column.sortType;
@@ -470,42 +460,11 @@
                     });
                     return data;
                 };
-                $table.filterData = (data, column) => {
-                    return data.filter((row) => {
-                        //如果定义了远程过滤方法则忽略此方法
-                        if (angular.isFunction(column.filterRemote)) {
-                            return true;
-                        }
-
-                        let status = !column._filterChecked.length;
-                        for (let i = 0; i < column._filterChecked.length; i++) {
-                            status = column.filterMethod(column._filterChecked[i], row);
-                            if (status) {
-                                break;
-                            }
-                        }
-                        return status;
-                    });
-                };
                 $table.makeData = () => {
                     let data = angular.copy($scope.data);
                     data.forEach((row, index) => {
                         row._index = index;
                         row._rowKey = rowKey++;
-                    });
-                    return data;
-                };
-                $table.makeDataWithSort = () => {
-                    let data = this.makeData();
-                    this.cloneColumns.forEach(col => {
-                        data = this.filterData(data, col);
-                    });
-                    return data;
-                };
-                $table.makeDataWithSortAndFilter = () => {
-                    let data = this.makeDataWithSort();
-                    this.cloneColumns.forEach(col => {
-                        data = this.filterData(data, col);
                     });
                     return data;
                 };
@@ -612,10 +571,7 @@
                     style.right = `${$table.showVerticalScrollBar ? $table.scrollBarWidth : 0}px`;
                     $table.fixedRightTableStyle = style;
                 }
-                $scope.$watch('$table.rightFixedColumns', (newVal, oldVal) => {
-                    updateFixedRightTableStyle();
-                    // console.log('updateFixedRightTableStyle',newVal, oldVal)
-                });
+                $scope.$watch('$table.rightFixedColumns', updateFixedRightTableStyle);
                 $scope.$watch('$table.tableWidth', () => {
                     let style = {};
                     if ($table.tableWidth !== 0) {
@@ -684,7 +640,7 @@
                     $table.rightFixedColumns = $table.getRightFixedColumns();
                     $table.allColumns = getAllColumns(colsWithId);
                     $table.objData = $table.makeObjData();
-                    $table.rebuildData = $table.makeDataWithSortAndFilter();
+                    $table.rebuildData = $table.makeData();
                     $timeout(() => {
                         $table.handleResize();
                     }, 1);

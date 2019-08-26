@@ -19,7 +19,6 @@ app.directive('demoAffix', ['$window', function ($window) {
             function activeDemo() {
                 let hashId = location.hash.slice(1);
                 $scope.cloneDemos.forEach((demo, index) => {
-                    console.log(hashId, demo)
                     $scope.cloneDemos[index].active = demo.id === hashId;
                 });
             }
