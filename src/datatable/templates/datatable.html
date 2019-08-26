@@ -49,6 +49,9 @@ ng-style="$table.getStyles()">
                 </uix-datatable-body>
             </div>
         </div>
+        <div class="uix-datatable-fixed-right-header" 
+            ng-style="{height:$table.headerHeight+'px',width:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':0}"
+            ng-if="$table.isRightFixed()"></div>
         <div class="uix-datatable-footer" ng-if="$table.showFooter">
             <uix-datatable-foot>
 
