@@ -1,0 +1,37 @@
+$active-color: #2d8cf0;
+
+.demo-affix {
+    position: fixed;
+    top     : 100px;
+    right   : 20px;
+    width   : 120px;
+    font-size: 12px;
+
+    ul {
+        margin    : 0;
+        padding   : 0;
+        list-style: none;
+    }
+
+    li {
+        white-space   : nowrap;
+        overflow      : hidden;
+        text-overflow : ellipsis;
+        padding: 2px 0 2px 10px;
+        border-left   : 1px solid #ccc;
+        a {
+            color: #333;
+            text-decoration: none;
+            &:hover{
+                color: $active-color;
+            }
+        }
+        &.actived {
+            border-left-color: $active-color;
+            border-left-width: 2px;
+            a {
+                color: $active-color;
+            }
+        }
+    }
+}

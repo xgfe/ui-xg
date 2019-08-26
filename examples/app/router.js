@@ -6,7 +6,7 @@ import componentDoc from './pages/component-doc';
 import guide from './pages/guide';
 import { ROUTES } from './routes';
 
-app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('app', appCtrl)
         .state('app.docs', {
@@ -16,7 +16,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state('app.components', {
             url: '/components',
             abstract: true,
-            template: '<div ui-view></div>'
+            template: '<div class="components-router-view" ui-view></div>'
         })
         .state(home)
         .state(gettingStart)
@@ -24,6 +24,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         .state(componentDoc);
 
     $urlRouterProvider.otherwise(`/app${home.url}`);
+    $locationProvider.html5Mode(true);
 }]);
 
 ROUTES.forEach(addRoutes);

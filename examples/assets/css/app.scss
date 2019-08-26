@@ -291,10 +291,22 @@ body {
     padding-top: 0px;
 }
 
+.components-router-view {
+    position     : relative;
+    padding-right: 120px;
+}
+
+.demo-anchor {
+    display   : block;
+    padding-top: 60px; 
+    margin-top: -60px;
+    visibility: hidden;
+}
+
 .page-content {
     height     : 100%;
     margin-left: $sidebar-width + 15px;
-    padding    : 0 100px;
+    padding    : 0 50px;
 }
 
 .page-turn {

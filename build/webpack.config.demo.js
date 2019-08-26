@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isPublish = process.env.MODE === 'publish';
+const publicPath = '/ui-xg/';
 
 module.exports = {
     mode: isPublish ? 'production' : 'none',
@@ -12,7 +13,7 @@ module.exports = {
     output: {
         path: utils.resolve('publish/ui-xg'),
         filename: `assets/js/[name]${isPublish ? '.[hash]' : ''}.js`,
-        publicPath: '/ui-xg/'
+        publicPath
     },
     optimization: {
         splitChunks: {
@@ -127,6 +128,13 @@ module.exports = {
             filename: 'assets/css/[name].[hash].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
         })
-    ]
+    ],
+    devServer: {
+        historyApiFallback: {
+            rewrites: [
+                { from: /^\/app\//, to: publicPath }
+            ]
+        }
+    }
 };
 
