@@ -27,29 +27,6 @@
       <uix-datatable-head-cell row-index="rowIndex" index="index" fixed="fixed" column="column">
 
       </uix-datatable-head-cell>  
-        <!-- <div ng-class="cellClasses(column)" class="uix-datatable-cell">
-          <div>
-            <span>
-              <span
-                ng-class="{'uix-datatable-cell-sort': column.sortable}"
-                ng-click="handleSortByHead(getColumn(rowIndex, index)._index)"
-                >{{ column.title || columns.key || '#' }}
-              </span>
-            </span>
-            <span class="uix-datatable-sort" ng-if="column.sortable">
-              <i
-                class="glyphicon glyphicon-triangle-top"
-                ng-class="{on: getColumn(rowIndex, index)._sortType === 'asc'}"
-                ng-click="handleSort(getColumn(rowIndex, index)._index, 'asc')"
-              ></i>
-              <i
-                class="glyphicon glyphicon-triangle-bottom"
-                ng-class="{on: getColumn(rowIndex, index)._sortType === 'desc'}"
-                ng-click="handleSort(getColumn(rowIndex, index)._index, 'desc')"
-              ></i>
-            </span>
-          </div>
-        </div> -->
       </th>
       <th
         v-if="$table.showVerticalScrollBar && rowIndex===0"

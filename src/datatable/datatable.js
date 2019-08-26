@@ -629,8 +629,7 @@
                         });
                     }
                 };
-                // 初始化
-                $table.init = function () {
+                $table.initColums = function () {
                     const colsWithId = $table.makeColumnsId($scope.columns);
                     $table.cloneColumns = $table.makeColumns(colsWithId);
                     $table.columnRows = $table.makeColumnRows(false, colsWithId);
@@ -639,11 +638,19 @@
                     $table.leftFixedColumns = $table.getLeftFixedColumns();
                     $table.rightFixedColumns = $table.getRightFixedColumns();
                     $table.allColumns = getAllColumns(colsWithId);
-                    $table.objData = $table.makeObjData();
-                    $table.rebuildData = $table.makeData();
                     $timeout(() => {
                         $table.handleResize();
                     }, 1);
+                };
+                $table.initData = function () {
+                    $table.objData = $table.makeObjData();
+                    $table.rebuildData = $table.makeData();
+                };
+
+                // 初始化
+                $table.init = function () {
+                    $table.initColums();
+                    $table.initData();
                     $table.bindEvents();
                 };
                 $scope.$on('$destroy', () => {
@@ -701,14 +708,14 @@
                     scope.$watch('data', function (val, old) {
                         if (val !== old && angular.isDefined(val)) {
                             $table.data = scope.data;
+                            $table.initData();
                         }
-                        $table.init();
                     });
                     scope.$watch('columns', function (val, old) {
                         if (val !== old && angular.isDefined(val)) {
                             $table.columns = scope.columns;
+                            $table.initColums();
                         }
-                        $table.init();
                     });
                     scope.$watch('status', function (val) {
                         $table.isLoading = val === 1 || val === 'loading';
