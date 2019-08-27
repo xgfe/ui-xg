@@ -2,7 +2,12 @@ import { baseData } from './data';
 export default class {
     columns = [
         { key: 'name', title: '姓名' },
-        { key: 'age', title: '年龄' },
+        {
+            key: 'age', title: '年龄',
+            format(row) {
+                return row.age + '岁';
+            }
+        },
         { key: 'date', title: '日期', template: '<b>日期</b>' },
         {
             key: 'address', title: '地址',

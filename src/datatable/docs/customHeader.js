@@ -1,7 +1,13 @@
 import { baseData } from './data';
 export default class {
     columns = [
-        { key: 'name', title: '姓名' },
+        {
+            title: '姓名',
+            key: 'name',
+            headerFormat(column) {
+                return column.title.split('').join('-');
+            }
+        },
         { key: 'age', title: '年龄' },
         { key: 'date', title: '日期', headerTemplate: '<b>日期</b>' },
         {

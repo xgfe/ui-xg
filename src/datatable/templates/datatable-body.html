@@ -12,20 +12,16 @@
         <tbody>
             <tr ng-repeat="(index, row) in $table.rebuildData"
              ng-class="[$table.rowClassName(index),$table.objData[index]._isHover?'uix-datatable-row-hover':'']"
+             ng-style="{height: row._height+'px'}"
              ng-mouseenter="handleMouseIn($event,row._index)"
              ng-mouseleave="handleMouseOut($event,row._index)"
              ng-click="handleClickRow($event,row._index)"
             >
                 <td ng-repeat="column in columns" ng-class="alignCls(column, row)">
-                    <uix-datatable-cell fixed="fixed"
+                    <uix-datatable-cell 
                     row="row"
                     key="column._columnKey"
-                    column="column"
-                    natural-index="index"
-                    index="row._index"
-                    checked="rowChecked(row._index)"
-                    disabled="rowDisabled(row._index)"
-                    expanded="rowExpanded(row._index)"></uix-datatable-cell>
+                    column="column"></uix-datatable-cell>
                 </td>
             </tr>
         </tbody>

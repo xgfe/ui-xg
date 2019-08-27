@@ -1,20 +1,7 @@
-<div :class="" class="uix-datatable-cell">
-  <span ng-if="renderType === 'index'">{{
-    column.indexMethod ? column.indexMethod(row) : naturalIndex + 1
-  }}</span>
-  <span ng-if="renderType === 'checkbox'">
-    <input type="checkbox">
-  </span>
-  <span ng-if="renderType === 'template'" class="body-cell-render-template">
-  </span>
-  <span ng-if="renderType === 'normal'">
+<div class="uix-datatable-cell">
+<span ng-if="renderType === 'template'" class="body-cell-render-template"></span>
+<span ng-if="renderType === 'format'">{{formatData}}</span>
+<span ng-if="renderType === 'normal'">
     {{ row[column.key] }}
-  </span>
-  <div
-    ng-if="renderType === 'expand' && !row._disableExpand"
-    :class="expandCls"
-    @click="toggleExpand"
-  >
-    <Icon type="ios-arrow-forward"></Icon>
-  </div>
+</span>
 </div>

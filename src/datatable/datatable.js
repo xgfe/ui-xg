@@ -45,7 +45,7 @@
                 other.push(col);
             }
         });
-        return list.concat(other);
+        return list;//.concat(other);
     };
     const SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
     const MOZ_HACK_REGEXP = /^moz([A-Z])/;
@@ -141,7 +141,6 @@
                 $table.scrollBarWidth = getScrollBarSize();
                 $table.scrollPosition = 'left';
 
-                $table.tableStyle = {}; // tableBody样式
                 $table.fixedLeftTableStyle = {}; // 左侧固定表格样式
                 $table.fixedRightTableStyle = {}; // 右侧固定表格样式
                 $table.tableHeaderStyle = {}; // 表头样式
@@ -156,7 +155,6 @@
                     let header = $element[0].querySelector('.uix-datatable-header');
                     if (header) {
                         $table.headerWidth = header.offsetWidth;
-                        $table.headerHeight = header.offsetHeight;
                     }
 
                     if (!$table.data || $table.data.length === 0) {
@@ -182,10 +180,11 @@
                         }
                     }
                 };
+                $scope.$watch('$table.headerHeight', $table.fixedHeader);
                 $table.fixedHeader = () => {
                     if ($table.height || $table.maxHeight) {
                         $timeout(() => {
-                            const headerHeight = parseInt(getStyle($element[0].querySelector('.uix-datatable-header'), 'height'), 10) || 0;
+                            const headerHeight = $table.headerHeight || 0;
                             const footerHeight = parseInt(getStyle($element[0].querySelector('.uix-datatable-footer'), 'height'), 10) || 0;
                             if ($table.height) {
                                 $table.bodyHeight = $table.height - headerHeight - footerHeight;
@@ -647,6 +646,35 @@
                     $table.rebuildData = $table.makeData();
                 };
 
+                $table.rowSlotScopes = {};
+                $table.colSlotScopes = {};
+
+                $table.getRowSlotScopes = (rowIndex, colIndex) => {
+                    if ($table.rowSlotScopes[rowIndex]) {
+                        return $table.rowSlotScopes[rowIndex];
+                    }
+                    let slotScope = $scope.$parent.$new();
+                    let row = this.rebuildData.find(item => item._index === rowIndex);
+                    let column = this.cloneColumns.find(item => item._index === colIndex);
+                    slotScope.$row = row;
+                    slotScope.$rowIndex = rowIndex;
+                    slotScope.$column = column;
+                    slotScope.$colIndex = colIndex;
+                    $table.rowSlotScopes[rowIndex] = slotScope;
+                    return slotScope;
+                };
+                $table.getColSlotScopes = (colIndex) => {
+                    if ($table.colSlotScopes[colIndex]) {
+                        return $table.colSlotScopes[colIndex];
+                    }
+                    let slotScope = $scope.$parent.$new();
+                    let column = this.cloneColumns.find(item => item._index === colIndex);
+                    slotScope.$column = column;
+                    slotScope.$colIndex = colIndex;
+                    $table.colSlotScopes[colIndex] = slotScope;
+                    return slotScope;
+                };
+
                 // 初始化
                 $table.init = function () {
                     $table.initColums();
@@ -864,49 +892,52 @@
                     key: '@'
                 },
                 link: function ($scope, el, attrs, $table) {
+                    function updateRowHeight() {
+                        $timeout(() => {
+                            let height = el.parent()[0].getBoundingClientRect().height;
+                            let rowHeight = $table.rebuildData[$scope.row._index]._height;
+                            if (!rowHeight || height > rowHeight) {
+                                $table.rebuildData[$scope.row._index]._height = height;
+                            }
+                        }, 0);
+                    }
                     let column = $scope.column || {};
                     if (column.type === 'index') {
                         $scope.renderType = 'index';
-                    } else if (column.type === 'checkbox') {
-                        $scope.renderType = 'checkbox';
-                    } else if (column.type === 'expand') {
-                        $scope.renderType = 'expand';
-                    } else if (column.render) {
-                        $scope.renderType = 'render';
-                    } else if (column.slot) {
-                        $scope.renderType = 'slot';
-                    } else {
-                        if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
-                            $scope.renderType = 'template';
-                            let template = '';
-                            let include = '';
-                            if (angular.isString(column.templateUrl)) {
-                                include = column.templateUrl;
-                            } else if (angular.isFunction(column.templateUrl)) {
-                                include = column.templateUrl($scope.row, $scope.row._index);
-                            }
-                            template = $templateCache.get(include) || '';
-
-                            if (angular.isString(column.template)) {
-                                template = column.template;
-                            } else if (angular.isFunction(column.template)) {
-                                template = column.template($scope.row, $scope.row._index);
-                            }
-                            let slotScope = $table.scope.$parent.$new();
-                            slotScope.$row = $scope.row;
-                            slotScope.$index = $scope.row._index;
-                            slotScope.$column = column;
-                            $timeout(() => {
-                                $compile(`<div>${template}</div>`)(slotScope, (clonedElement) => {
-                                    let includeContainer = angular.element(el[0].querySelector('.body-cell-render-template'));
-                                    includeContainer.replaceWith(clonedElement);
-                                });
-                            }, 0);
-                        } else {
-                            $scope.renderType = 'normal';
+                        updateRowHeight();
+                    } else if (angular.isFunction(column.format)) {
+                        $scope.renderType = 'format';
+                        $scope.formatData = column.format($scope.row, $scope.row._index);
+                        updateRowHeight();
+                    } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
+                        $scope.renderType = 'template';
+                        let template = '';
+                        let include = '';
+                        if (angular.isString(column.templateUrl)) {
+                            include = column.templateUrl;
+                        } else if (angular.isFunction(column.templateUrl)) {
+                            include = column.templateUrl($scope.row, $scope.row._index);
                         }
+                        template = $templateCache.get(include) || '';
 
+                        if (angular.isString(column.template)) {
+                            template = column.template;
+                        } else if (angular.isFunction(column.template)) {
+                            template = column.template($scope.row, $scope.row._index);
+                        }
+                        let slotScope = $table.getRowSlotScopes($scope.row._index, column._index);
+                        $timeout(() => {
+                            $compile(`<div>${template}</div>`)(slotScope, (clonedElement) => {
+                                let includeContainer = angular.element(el[0].querySelector('.body-cell-render-template'));
+                                includeContainer.replaceWith(clonedElement);
+                                updateRowHeight();
+                            });
+                        }, 0);
+                    } else {
+                        $scope.renderType = 'normal';
+                        updateRowHeight();
                     }
+
                 }
             };
         }])
@@ -922,8 +953,18 @@
                     index: '='
                 },
                 link: function ($scope, el, attrs, [$table, $tableHead]) {
+                    
                     let fixed = attrs.fixed || '';
                     let column = $scope.column || {};
+                    function updateHeaderHeight() {
+                        $timeout(() => {
+                            let height = el.parent()[0].getBoundingClientRect().height;
+                            let headerHeight = $table.headerHeight;
+                            if (!headerHeight || height > headerHeight) {
+                                $table.headerHeight = height;
+                            }
+                        }, 0);
+                    }
                     if (angular.isDefined(column.headerTemplate) || angular.isDefined(column.headerTemplateUrl)) {
                         $scope.renderType = 'template';
                         let template = '';
@@ -940,17 +981,21 @@
                         } else if (angular.isFunction(column.headerTemplate)) {
                             template = column.headerTemplate(column, column._index);
                         }
-                        let slotScope = $table.scope.$parent.$new();
-                        slotScope.$column = column;
-                        slotScope.$index = column._index;
+                        let slotScope = $table.getColSlotScopes(column._index);
                         $timeout(() => {
                             $compile(`<div>${template}</div>`)(slotScope, (clonedElement) => {
                                 let includeContainer = angular.element(el[0].querySelector('.head-cell-render-template'));
                                 includeContainer.replaceWith(clonedElement);
+                                updateHeaderHeight();
                             });
                         }, 0);
+                    } else if (angular.isFunction(column.headerFormat)) {
+                        $scope.renderType = 'format';
+                        $scope.formatData = column.headerFormat(column, column._index);
+                        updateHeaderHeight();
                     } else {
                         $scope.renderType = 'normal';
+                        updateHeaderHeight();
                     }
 
                     $scope.cellClasses = (column) => {
