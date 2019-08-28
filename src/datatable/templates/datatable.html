@@ -1,31 +1,38 @@
 <div class="uix-datatable" 
 ng-class="'uix-datatable-scroll-position-'+$table.scrollPosition" 
-ng-style="$table.getStyles()">
+ng-style="$table.containerStyle">
     <div class="uix-datatable-wrap">
         <div class="uix-datatable-header middle-header">
             <uix-datatable-head 
-            columns="$table.cloneColumns"
+            fixed="center"
+            columns="$table.centerColumns"
+            column-rows="$table.centerColumnRows"
             width="$table.tableHeaderStyle.width"></uix-datatable-head>
         </div>
-        <div class="uix-datatable-body" ng-style="$table.bodyStyle()">
+        <div class="uix-datatable-body"
+         ng-class="{'uix-datatable-overflowY':$table.showVerticalScrollBar,'uix-datatable-overflowX':$table.showHorizontalScrollBar}"
+         ng-style="$table.bodyStyle">
             <uix-datatable-body
-            columns="$table.cloneColumns"
+            fixed="center"
+            columns="$table.centerColumns"
             width="$table.tableBodyStyle.width"></uix-datatable-body>
         </div>
         <div class="uix-datatable-fixed uix-datatable-fixed-left"
             ng-style="$table.fixedLeftTableStyle"
-             ng-if="$table.isLeftFixed()">
+             ng-if="$table.isLeftFixed">
             <div class="uix-datatable-header uix-datatable-fixed-header">
                 <uix-datatable-head fixed="left"
-                fixed-column-rows="leftFixedColumnRows"
-                columns="$table.leftFixedColumns"
+                column-rows="$table.leftColumnRows"
+                columns="$table.leftColumns"
                  width="$table.fixedLeftTableStyle.width">
 
                 </uix-datatable-head>
             </div>
-            <div class="uix-datatable-fixed-body" ng-style="$table.fixedBodyStyle()">
+            <div class="uix-datatable-fixed-body"
+            ng-class="{'uix-datatable-overflowY':$table.showVerticalScrollBar,'uix-datatable-overflowX':$table.showHorizontalScrollBar}"
+             ng-style="$table.fixedBodyStyle">
                 <uix-datatable-body 
-                columns="$table.leftFixedColumns"
+                columns="$table.leftColumns"
                 fixed="left" width="$table.fixedLeftTableStyle.width">
 
                 </uix-datatable-body>
@@ -33,25 +40,27 @@ ng-style="$table.getStyles()">
         </div>
         <div class="uix-datatable-fixed uix-datatable-fixed-right"
         ng-style="$table.fixedRightTableStyle"
-         ng-if="$table.isRightFixed()">
+         ng-if="$table.isRightFixed">
             <div class="uix-datatable-header uix-datatable-fixed-header">
                 <uix-datatable-head fixed="right" 
-                columns="$table.rightFixedColumns"
-                fixed-column-rows="rightFixedColumnRows"
+                columns="$table.rightColumns"
+                column-rows="$table.rightColumnRows"
                 width="$table.fixedRightTableStyle.width">
 
                 </uix-datatable-head>
             </div>
-            <div class="uix-datatable-fixed-body" ng-style="$table.fixedBodyStyle()">
+            <div class="uix-datatable-fixed-body"
+            ng-class="{'uix-datatable-overflowY':$table.showVerticalScrollBar,'uix-datatable-overflowX':$table.showHorizontalScrollBar}"
+             ng-style="$table.fixedBodyStyle">
                 <uix-datatable-body
-                columns="$table.rightFixedColumns"
+                columns="$table.rightColumns"
                  fixed="right" width="$table.fixedRightTableStyle.width">
                 </uix-datatable-body>
             </div>
         </div>
         <div class="uix-datatable-fixed-right-header" 
             ng-style="{height:$table.headerHeight+'px',width:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':0}"
-            ng-if="$table.isRightFixed()"></div>
+            ng-if="$table.isRightFixed"></div>
         <div class="uix-datatable-footer" ng-if="$table.showFooter">
             <uix-datatable-foot>
 

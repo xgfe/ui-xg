@@ -3,7 +3,7 @@
   ng-class="{'uix-datatable-bordered':$table.isBordered}"
   cellspacing="0"
   cellpadding="0"
-  ng-style="styles"
+  ng-style="{width: width}"
   border="0"
 >
   <colgroup>
@@ -17,21 +17,44 @@
     />
   </colgroup>
   <thead>
-    <tr ng-style="{height:$table.headerHeight+'px'}" ng-repeat="(rowIndex, cols) in headRows track by rowIndex">
+    <tr ng-repeat="(rowIndex, cols) in columnRows track by rowIndex">
       <th
         ng-repeat="(index, column) in cols track by index"
         colspan="{{ column.colSpan }}"
         rowspan="{{ column.rowSpan }}"
-        ng-class="alignCls(column)"
+        ng-class="$table.alignCls(fixed, column)"
       >
-      <uix-datatable-head-cell row-index="rowIndex" index="index" fixed="fixed" column="column">
-
-      </uix-datatable-head-cell>  
+        <div ng-class="cellClasses(column)" ng-if="fixed!=='center'||!column.fixed"
+         class="uix-datatable-cell">
+          <div ng-if="column.__renderHeadType==='normal'">
+            <span ng-click="handleSortByHead(column)"
+              >{{ column.title || '#' }}
+            </span>
+          </div>
+          <span ng-if="column.__renderHeadType === 'template'"
+                uix-datatable-cell
+                type="head"
+                column="column">
+          </span>
+          <div ng-if="column.__renderHeadType==='format'">{{ ::column.headerFormat(column) }}</div>
+          <span class="uix-datatable-sort" ng-if="column.sortable">
+            <i
+              class="glyphicon glyphicon-triangle-top"
+              ng-class="{on: column._sortType === 'asc'}"
+              ng-click="handleSort(column, 'asc')"
+            ></i>
+            <i
+              class="glyphicon glyphicon-triangle-bottom"
+              ng-class="{on: column._sortType === 'desc'}"
+              ng-click="handleSort(column, 'desc')"
+            ></i>
+          </span>
+        </div>
       </th>
       <th
         v-if="$table.showVerticalScrollBar && rowIndex===0"
         ng-class="scrollBarCellClass()"
-        rowspan="{{ headRows.length }}"
+        rowspan="{{ columnRows.length }}"
       ></th>
     </tr>
   </thead>

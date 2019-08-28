@@ -15,7 +15,6 @@ import datatableCellTpl from 'src/datatable/templates/datatable-cell.html';
 import datatableFootTpl from 'src/datatable/templates/datatable-foot.html';
 import datatableHeadCellTpl from 'src/datatable/templates/datatable-head-cell.html';
 import datatableHeadTpl from 'src/datatable/templates/datatable-head.html';
-import datatableTrTpl from 'src/datatable/templates/datatable-tr.html';
 import datatableTpl from 'src/datatable/templates/datatable.html';
 import datepickerCalendarTpl from 'src/datepicker/templates/datepicker-calendar.html';
 import datepickerTpl from 'src/datepicker/templates/datepicker.html';
@@ -66,7 +65,6 @@ export default [
     { filename: 'datatable-foot.html', template: datatableFootTpl },
     { filename: 'datatable-head-cell.html', template: datatableHeadCellTpl },
     { filename: 'datatable-head.html', template: datatableHeadTpl },
-    { filename: 'datatable-tr.html', template: datatableTrTpl },
     { filename: 'datatable.html', template: datatableTpl },
     { filename: 'datepicker-calendar.html', template: datepickerCalendarTpl },
     { filename: 'datepicker.html', template: datepickerTpl },
