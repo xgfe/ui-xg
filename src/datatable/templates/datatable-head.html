@@ -17,7 +17,7 @@
     />
   </colgroup>
   <thead>
-    <tr ng-repeat="(rowIndex, cols) in columnRows track by rowIndex">
+    <tr ng-style="{height:heightMap[rowIndex]+'px'}" ng-repeat="(rowIndex, cols) in columnRows track by rowIndex">
       <th
         ng-repeat="(index, column) in cols track by index"
         colspan="{{ column.colSpan }}"

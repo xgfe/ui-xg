@@ -35,6 +35,7 @@
     };
     const convertColumnOrder = (columns, fixedType) => {
         let list = [];
+        let others = [];
         columns.forEach((col) => {
             if (fixedType) {
                 if (col.fixed && col.fixed === fixedType) {
@@ -44,7 +45,7 @@
                 list.push(col);
             }
         });
-        return list;
+        return list.concat(others);
     };
     const SPECIAL_CHARS_REGEXP = /([:\-_]+(.))/g;
     const MOZ_HACK_REGEXP = /^moz([A-Z])/;
@@ -256,7 +257,7 @@
                 };
 
                 function updateAllStyles() {
-                    // updateBodyStyle();
+                    updateBodyStyle();
                     updateFixedBodyStyle();
                     updateTableBodyStyle();
                     updateTableHeaderStyle();
@@ -336,7 +337,7 @@
                     $table.fixedRightTableStyle = style;
                 }
 
-                function fixedBody() {
+                function calcScrollBar() {
                     if (!$table.data || $table.data.length === 0) {
                         $table.showVerticalScrollBar = false;
                     } else {
@@ -348,23 +349,9 @@
                         $table.showVerticalScrollBar = $table.bodyHeight ?
                             bodyHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) < bodyContentHeight
                             : false;
-                        console.log(bodyHeight, $table.bodyHeight, bodyContentHeight, $table.showVerticalScrollBar);
                     }
-                    console.log('fixbody', $table.showVerticalScrollBar, $table.showHorizontalScrollBar)
-                    updateAllStyles();
                 }
-                function bindEvents() {
-                    findEl('.uix-datatable-body').on('scroll', handleBodyScroll);
-                    angular.element(window).on('resize', () => {
-                        console.log('window resize handle resize');
-                        handleResize();
-                    });
-                }
-                function unbindEvents() {
-                    findEl('.uix-datatable-body').off('scroll', handleBodyScroll);
-                    angular.element(window).off('resize', handleResize);
-                }
-                function fixedHeader() {
+                function calcBodyHeight() {
                     if ($table.height || $table.maxHeight) {
                         const headerHeight = $table.headerHeight || 0;
                         const footerHeight = parseInt(getStyle(findEl('.uix-datatable-footer')[0], 'height'), 10) || 0;
@@ -376,22 +363,66 @@
                     } else {
                         $table.bodyHeight = 0;
                     }
-                    // fixedBody();
+                    $timeout(() => {
+                        calcScrollBar();
+                    }, 0);
                 }
+
+                $scope.$watch('$table.bodyHeight', calcScrollBar);
+                $scope.$watch('$table.headerHeight', calcBodyHeight);
+
+                // function fixedBody() {
+                //     if (!$table.data || $table.data.length === 0) {
+                //         $table.showVerticalScrollBar = false;
+                //     } else {
+                //         let bodyContentEl = $element[0].querySelector('.uix-datatable-tbody');
+                //         let bodyEl = bodyContentEl.parentElement;
+                //         let bodyContentHeight = bodyContentEl.offsetHeight;
+                //         let bodyHeight = bodyEl.offsetHeight;
+                //         $table.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0);
+                //         $table.showVerticalScrollBar = $table.bodyHeight ?
+                //             bodyHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) < bodyContentHeight
+                //             : false;
+                //     }
+                //     updateAllStyles();
+                // }
+                function bindEvents() {
+                    findEl('.uix-datatable-body').on('scroll', handleBodyScroll);
+                    angular.element(window).on('resize', () => {
+                        handleResize();
+                    });
+                }
+                function unbindEvents() {
+                    findEl('.uix-datatable-body').off('scroll', handleBodyScroll);
+                    angular.element(window).off('resize', handleResize);
+                }
+                // function fixedHeader() {
+                //     if ($table.height || $table.maxHeight) {
+                //         const headerHeight = $table.headerHeight || 0;
+                //         const footerHeight = parseInt(getStyle(findEl('.uix-datatable-footer')[0], 'height'), 10) || 0;
+                //         if ($table.height) {
+                //             $table.bodyHeight = $table.height - headerHeight - footerHeight;
+                //         } else if ($table.maxHeight) {
+                //             $table.bodyHeight = $table.maxHeight - headerHeight - footerHeight;
+                //         }
+                //     } else {
+                //         $table.bodyHeight = 0;
+                //     }
+                //     // fixedBody();
+                // }
                 $scope.$watch('$table.showVerticalScrollBar', (newVal, oldVal) => {
                     if (newVal !== oldVal) {
-                        console.log('showVerticalScrollBar, handleResize');
                         handleResize();
                     }
                 });
                 $scope.$watch('$table.showHorizontalScrollBar', (newVal, oldVal) => {
                     if (newVal !== oldVal) {
-                        console.log('showHorizontalScrollBar, handleResize');
                         handleResize();
                     }
                 });
 
                 function handleResize() {
+
                     //let tableWidth = parseInt(getStyle(this.$el, 'width')) - 1;
                     let tableWidth = $element[0].offsetWidth - 1;
                     let columnsWidth = {};
@@ -480,7 +511,9 @@
                         .map(cell => cell._width)
                         .reduce((item, prev) => item + prev, 0) + ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0) + 1;
                     $table.columnsWidth = columnsWidth;
-                    fixedBody();
+                    // fixedBody();
+                    updateAllStyles();
+                    calcScrollBar();
                 }
                 function prepareColumns(columns) {
                     return columns.map(column => {
@@ -534,9 +567,9 @@
                         }
                     });
                     return {
-                        left,
+                        left: left,
                         center: left.concat(center).concat(right),
-                        right
+                        right: right,
                     };
                 }
                 function makeColumnRows(colsWithId, position) {
@@ -632,11 +665,9 @@
                     $table.rebuildData = makeRebuildData();
                 };
                 $table.refresh = () => {
-                    fixedHeader();
-                    updateBodyStyle();
                     $timeout(() => {
-                        console.log('refresh,handleResize');
                         handleResize();
+                        $table.headerHeight = 42;
                     }, 0);
                 };
 
@@ -751,7 +782,7 @@
                 }
             };
         }])
-        .directive('uixDatatableHead', ['$timeout', function ($timeout) {
+        .directive('uixDatatableHead', ['$timeout', function () {
             return {
                 restrict: 'E',
                 templateUrl: 'templates/datatable-head.html',
@@ -766,6 +797,8 @@
                 link: function ($scope, el, attrs, [$table]) {
                     let fixed = $scope.fixed || '';
                     $scope.$table = $table;
+
+                    $scope.heightMap = {};
 
                     $scope.scrollBarCellClass = () => {
                         let hasRightFixed = false;
@@ -807,9 +840,6 @@
                             }
                         }
                     };
-                    $timeout(() => {
-                        console.log(el[0].offsetHeight);
-                    }, 0);
                 }
             };
         }])

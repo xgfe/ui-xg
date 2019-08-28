@@ -96,20 +96,20 @@ export const demos = {
     //     template: customStyleTemplate,
     //     script: rawData + rawcustomStyle
     // },
-    // fixedHeader: {
-    //     title: '固定表头',
-    //     description: '通过设置属性 <code>height</code>或<code>max-height</code> 给表格指定高度后，会自动固定表头。当纵向内容过多时可以使用。',
-    //     controller: fixedHeader,
-    //     template: fixedHeaderTemplate,
-    //     script: rawData + rawfixedHeader
-    // },
-    // fixedColumns: {
-    //     title: '固定列',
-    //     description: '通过给数据 <code>columns</code> 的项设置 <code>fixed</code> 为 <code>left</code> 或 <code>right</code>，可以左右固定需要的列。当横向内容过多时可以使用。',
-    //     controller: fixedColumns,
-    //     template: fixedColumnsTemplate,
-    //     script: rawData + rawfixedColumns
-    // },
+    fixedHeader: {
+        title: '固定表头',
+        description: '通过设置属性 <code>height</code>或<code>max-height</code> 给表格指定高度后，会自动固定表头。当纵向内容过多时可以使用。',
+        controller: fixedHeader,
+        template: fixedHeaderTemplate,
+        script: rawData + rawfixedHeader
+    },
+    fixedColumns: {
+        title: '固定列',
+        description: '通过给数据 <code>columns</code> 的项设置 <code>fixed</code> 为 <code>left</code> 或 <code>right</code>，可以左右固定需要的列。当横向内容过多时可以使用。',
+        controller: fixedColumns,
+        template: fixedColumnsTemplate,
+        script: rawData + rawfixedColumns
+    },
     fixedHeaderAndColumns: {
         title: '固定表头和列',
         description: '同时应用上述两个属性，可以同时固定表头和列。',
