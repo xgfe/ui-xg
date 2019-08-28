@@ -151,18 +151,18 @@ export const demos = {
     //     template: sortTemplate,
     //     script: rawData + rawsort
     // },
-    // customTemplate: {
-    //     title: '自定义列模板',
-    //     description: `
-    //     通过给 <code>columns</code> 数据的项设置参数 <code>template</code>或<code>templateUrl</code> ，可以自定义渲染当前列。<br>
-    //     <code>template</code> 的值是一段HTML，<code>templateUrl</code> 的值是<code>ng-template</code>。<br/>
-    //     二者都可以是直接的值，也可以是一个具有返回值的函数，函数有两个参数，分别是当前行的内容以及行索引。
-    //     使用自定义模板时，模板内可以调用外部作用域的属性或值，同时可以获取<code>$row(行数据)</code>、<code>$column(列数据)</code>、<code>$index(行索引)</code>三个值，具体使用方法可以查看demo
-    //     `,
-    //     controller: customTemplate,
-    //     template: customTemplateTemplate,
-    //     script: rawData + rawcustomTemplate
-    // },
+    customTemplate: {
+        title: '自定义列模板',
+        description: `
+        通过给 <code>columns</code> 数据的项设置参数 <code>template</code>或<code>templateUrl</code> ，可以自定义渲染当前列。<br>
+        <code>template</code> 的值是一段HTML，<code>templateUrl</code> 的值是<code>ng-template</code>。<br/>
+        二者都可以是直接的值，也可以是一个具有返回值的函数，函数有两个参数，分别是当前行的内容以及行索引。
+        使用自定义模板时，模板内可以调用外部作用域的属性或值，同时可以获取<code>$row(行数据)</code>、<code>$column(列数据)</code>、<code>$index(行索引)</code>三个值，具体使用方法可以查看demo
+        `,
+        controller: customTemplate,
+        template: customTemplateTemplate,
+        script: rawData + rawcustomTemplate
+    },
     // customHeader: {
     //     title: '自定义表头',
     //     description: `

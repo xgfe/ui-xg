@@ -346,8 +346,8 @@
                         let bodyContentHeight = bodyContentEl.offsetHeight;
                         let bodyHeight = bodyEl.offsetHeight;
                         $table.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0);
-                        $table.showVerticalScrollBar = $table.bodyHeight ?
-                            bodyHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) < bodyContentHeight
+                        $table.showVerticalScrollBar = $table.bodyHeight
+                            ? bodyHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) < bodyContentHeight
                             : false;
                     }
                 }
@@ -371,21 +371,6 @@
                 $scope.$watch('$table.bodyHeight', calcScrollBar);
                 $scope.$watch('$table.headerHeight', calcBodyHeight);
 
-                // function fixedBody() {
-                //     if (!$table.data || $table.data.length === 0) {
-                //         $table.showVerticalScrollBar = false;
-                //     } else {
-                //         let bodyContentEl = $element[0].querySelector('.uix-datatable-tbody');
-                //         let bodyEl = bodyContentEl.parentElement;
-                //         let bodyContentHeight = bodyContentEl.offsetHeight;
-                //         let bodyHeight = bodyEl.offsetHeight;
-                //         $table.showHorizontalScrollBar = bodyEl.offsetWidth < bodyContentEl.offsetWidth + ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0);
-                //         $table.showVerticalScrollBar = $table.bodyHeight ?
-                //             bodyHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) < bodyContentHeight
-                //             : false;
-                //     }
-                //     updateAllStyles();
-                // }
                 function bindEvents() {
                     findEl('.uix-datatable-body').on('scroll', handleBodyScroll);
                     angular.element(window).on('resize', () => {
@@ -396,20 +381,6 @@
                     findEl('.uix-datatable-body').off('scroll', handleBodyScroll);
                     angular.element(window).off('resize', handleResize);
                 }
-                // function fixedHeader() {
-                //     if ($table.height || $table.maxHeight) {
-                //         const headerHeight = $table.headerHeight || 0;
-                //         const footerHeight = parseInt(getStyle(findEl('.uix-datatable-footer')[0], 'height'), 10) || 0;
-                //         if ($table.height) {
-                //             $table.bodyHeight = $table.height - headerHeight - footerHeight;
-                //         } else if ($table.maxHeight) {
-                //             $table.bodyHeight = $table.maxHeight - headerHeight - footerHeight;
-                //         }
-                //     } else {
-                //         $table.bodyHeight = 0;
-                //     }
-                //     // fixedBody();
-                // }
                 $scope.$watch('$table.showVerticalScrollBar', (newVal, oldVal) => {
                     if (newVal !== oldVal) {
                         handleResize();
@@ -567,9 +538,9 @@
                         }
                     });
                     return {
-                        left: left,
+                        left: left,//.concat(center).concat(right),
                         center: left.concat(center).concat(right),
-                        right: right,
+                        right: right,//.concat(left).concat(center),
                     };
                 }
                 function makeColumnRows(colsWithId, position) {
@@ -628,6 +599,15 @@
                     });
                     return width;
                 }
+
+                // 冻结列时，计算body每行的高度
+                $table.updateBodyRowHeights = function (fixedType, heights) {
+                    $table.rebuildData.forEach((row, index) => {
+                        if (!row._height || row._height < heights[index]) {
+                            row._height = heights[index];
+                        }
+                    });
+                };
 
                 $table.alignCls = (fixed, column, row = {}) => {
                     let cellClassName = '';
@@ -843,7 +823,7 @@
                 }
             };
         }])
-        .directive('uixDatatableBody', function () {
+        .directive('uixDatatableBody', ['$timeout', function ($timeout) {
             return {
                 restrict: 'E',
                 templateUrl: 'templates/datatable-body.html',
@@ -868,9 +848,18 @@
                         evt.stopPropagation();
                         $table.handleClickRow(row);
                     };
+                    $timeout(() => {
+                        if ($table.isLeftFixed || $table.isRightFixed) {
+                            let trHeights = [];
+                            el[0].querySelectorAll('tbody > tr').forEach((tr) => {
+                                trHeights.push(tr.offsetHeight);
+                            });
+                            $table.updateBodyRowHeights($scope.fixed, trHeights);
+                        }
+                    }, 0);
                 }
             };
-        })
+        }])
         .directive('uixDatatableCell', ['$templateCache', '$compile', function ($templateCache, $compile) {
             return {
                 restrict: 'A',
