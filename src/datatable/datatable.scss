@@ -55,22 +55,33 @@ $primary-color         : #2d8cf0;
             background-color: $striped-background-color;
         }
     }
-
-    .uix-datatable-bordered {
-        border: 1px solid $border-color;
-
-        &>thead>tr>th,
-        &>tbody>tr>th,
-        &>tfoot>tr>th,
-        &>thead>tr>td,
-        &>tbody>tr>td,
-        &>tfoot>tr>td {
-            border: 1px solid $border-color
+    
+    &.uix-datatable-bordered {
+        table{
+            border: 1px solid $border-color;
+    
+            &>thead>tr>th,
+            &>tbody>tr>th,
+            &>tfoot>tr>th,
+            &>thead>tr>td,
+            &>tbody>tr>td,
+            &>tfoot>tr>td {
+                border: 1px solid $border-color
+            }
+    
+            &>thead>tr>th,
+            &>thead>tr>td {
+                border-bottom-width: 2px;
+            }
         }
-
-        &>thead>tr>th,
-        &>thead>tr>td {
-            border-bottom-width: 2px;
+        .uix-datatable-thead {
+            border-bottom: 0;
+    
+            &>thead>tr>th,
+            &>thead>tr>td,
+            &>tbody>tr>td {
+                border-bottom: none;
+            }
         }
     }
     
@@ -135,10 +146,10 @@ $primary-color         : #2d8cf0;
         top     : 0;
     }
 
+    .uix-datatable-tbody {
+        width: 100%;
+    }
     &.uix-datatable-has-fixed{
-        .uix-datatable-tbody {
-            width: 100%;
-        }
         .uix-datatable-thead {
             width: 100%;
         }
@@ -178,12 +189,19 @@ $primary-color         : #2d8cf0;
 
     .uix-datatable-fixed-right-header {
         position        : absolute;
-        top             : -1px;
+        top             : 0;
         right           : 0;
         background-color: $hover-background-color;
-        border-top      : 1px solid #dcdee2;
-        border-bottom   : 1px solid #e8eaec;
         z-index: 5;
+        
+    }
+    &.uix-datatable-bordered {
+        .uix-datatable-fixed-right-header{
+            border-color: #e8eaec;
+            border-style: solid;
+            border-width: 1px;
+            border-left-width: 0;
+        }
     }
 
     .uix-datatable-cell {
@@ -275,17 +293,7 @@ $primary-color         : #2d8cf0;
     margin-bottom: 0;
 }
 
-.uix-datatable-thead {
-    &.uix-datatable-bordered {
-        border-bottom: 0;
 
-        &>thead>tr>th,
-        &>thead>tr>td,
-        &>tbody>tr>td {
-            border-bottom: none;
-        }
-    }
-}
 
 .uix-datatable-row-hover td {
     background-color: $hover-background-color;

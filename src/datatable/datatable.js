@@ -525,9 +525,9 @@
                     $table.rightTableWidth = getFixedColumnsWidth('right') + 'px';
 
                     $timeout(() => {
-                        handleResize();
+                        // handleResize();
                         renderTableBody();
-                        renderTableHead();
+                        // renderTableHead();
                     }, 0);
                 };
 
@@ -567,74 +567,95 @@
                     });
                     return tpls;
                 }
+                function calcColumnsWidthCol(mainTable) {
+                    let cells = mainTable.find('tr').eq(0).find('td');
+                    let result = [];
+                    angular.forEach(cells, (cell) => {
+                        result.push(cell.offsetWidth);
+                    });
+                    return result.map(width => `<col width="${width}"></col>`).join('');
+                }
                 function renderTableBody() {
                     let template = $templateCache.get('templates/datatable-body.html');
                     template = template.replace('<%template%>', getCellTpls());
                     $compile(template)($tableBodyScope, (clonedElement) => {
                         let mainTable = angular.element($element[0]
                             .querySelector('.uix-datatable-main-body'));
-                        let leftTable = angular.element($element[0]
-                            .querySelector('.uix-datatable-left-body'));
-                        let rightTable = angular.element($element[0]
-                            .querySelector('.uix-datatable-right-body'));
                         mainTable.empty().append(clonedElement);
                         $timeout(() => {
+                            $table.showHorizontalScrollBar = mainTable[0].querySelector('.uix-datatable-tbody').offsetWidth > $element[0].offsetWidth;
+                            let mainBodyHeight = mainTable[0].offsetHeight;
+
+
+
                             if ($table.height) {
-                                if (mainTable[0].offsetHeight > $table.height) {
+                                if (mainBodyHeight > $table.height) {
                                     $table.showVerticalScrollBar = true;
                                     $table.bodyStyle = {
                                         height: ($table.height + $table.scrollBarWidth) + 'px',
-                                        paddingRight: $table.isRightFixed ? $table.scrollBarWidth + 'px' : 0
                                     };
-                                    $table.leftBodyStyle = {
-                                        height: ($table.height + $table.scrollBarWidth) + 'px',
-                                    }
-                                    $table.rightBodyStyle = {
-                                        height: ($table.height + $table.scrollBarWidth) + 'px',
-                                    }
                                 }
                             } else if ($table.maxHeight) {
-                                if (mainTable[0].offsetHeight > $table.maxHeight) {
+                                if (mainBodyHeight > $table.maxHeight) {
                                     $table.showVerticalScrollBar = true;
                                     $table.bodyStyle = {
                                         maxHeight: ($table.maxHeight + $table.scrollBarWidth) + 'px',
-                                        paddingRight: $table.isRightFixed ? $table.scrollBarWidth + 'px' : 0
                                     };
-                                    $table.leftBodyStyle = {
-                                        height: ($table.height + $table.scrollBarWidth) + 'px',
-                                    }
-                                    $table.rightBodyStyle = {
-                                        height: ($table.height + $table.scrollBarWidth) + 'px',
-                                    }
                                 }
                             }
                             $timeout(() => {
-                                $table.mainTableHeight = $element[0].querySelector('.uix-datatable-main-table').offsetHeight - (showVerticalScrollBar() ? $table.scrollBarWidth : 0);
+                                let columnsWidth = calcColumnsWidthCol(mainTable);
+                                renderTableHead(columnsWidth);
+
+                                let mainBodyWrapHeight = mainTable.parent()[0].offsetHeight;
+
+                                if ($table.isLeftFixed) {
+                                    let leftTable = angular.element($element[0]
+                                        .querySelector('.uix-datatable-left-body'));
+                                    leftTable.empty().append(mainTable.clone(true).children());
+
+                                    $table.leftBodyStyle = {
+                                        height: mainBodyWrapHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) + 'px',
+                                    }
+                                }
+                                if ($table.isRightFixed) {
+                                    let rightTable = angular.element($element[0]
+                                        .querySelector('.uix-datatable-right-body'));
+                                    rightTable.empty().append(mainTable.clone(true).children());
+
+                                    $table.rightBodyStyle = {
+                                        height: mainBodyWrapHeight - ($table.showHorizontalScrollBar ? $table.scrollBarWidth : 0) + 'px',
+                                        right: $table.showVerticalScrollBar ? $table.scrollBarWidth + 'px' : 0
+                                    }
+                                }
                             }, 0);
-                            leftTable.empty().append(mainTable.clone(true).children());
-                            rightTable.empty().append(mainTable.clone(true).children());
                         }, 0);
                     });
                 }
-                function renderTableHead() {
+                function renderTableHead(columnsWidth) {
                     let template = $templateCache.get('templates/datatable-head.html');
-                    template = template.replace('<%template%>', getHeadTpls());
+                    template = template.replace('<%cols%>', columnsWidth)
+                        .replace('<%template%>', getHeadTpls());
                     $compile(template)($tableBodyScope, (clonedElement) => {
                         let mainTable = angular.element($element[0]
                             .querySelector('.uix-datatable-main-header'));
-                        let leftTable = angular.element($element[0]
-                            .querySelector('.uix-datatable-left-header'));
-                        let rightTable = angular.element($element[0]
-                            .querySelector('.uix-datatable-right-header'));
                         mainTable.empty().append(clonedElement);
                         $timeout(() => {
                             $table.headerHeight = mainTable[0].offsetHeight;
-                            $table.rightBodyStyle = {
-                                ...$table.rightBodyStyle,
-                                marginTop: $table.headerHeight + 'px'
+                            if ($table.isLeftFixed) {
+                                let leftTable = angular.element($element[0]
+                                    .querySelector('.uix-datatable-left-header'));
+                                leftTable.empty().append(mainTable.clone(true).children());
                             }
-                            leftTable.empty().append(mainTable.clone(true).children());
-                            rightTable.empty().append(mainTable.clone(true).children());
+                            if ($table.isRightFixed) {
+                                let rightTable = angular.element($element[0]
+                                    .querySelector('.uix-datatable-right-header'));
+                                $table.rightBodyStyle = {
+                                    ...$table.rightBodyStyle,
+                                    marginTop: $table.headerHeight + 'px'
+                                }
+                                rightTable.empty().append(mainTable.clone(true).children());
+                            }
                         }, 0);
                     });
                 }

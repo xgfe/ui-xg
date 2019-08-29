@@ -14,12 +14,12 @@
 </script>
 <!-- 通过函数返回值区分模板 -->
 <script type="text/ng-template" id="settingsTpl1">
-    <uix-select ng-model="row.age" append-to-body="true">
+    <!-- <uix-select ng-model="row.age" append-to-body="true">
         <uix-select-match>{{$select.selected}}</uix-select-match>
         <uix-select-choices repeat="item in [10,20,30,40]">
             <span>{{item}}</span>
         </uix-select-choices>
-    </uix-select>
+    </uix-select> -->
 </script>
 <script type="text/ng-template" id="settingsTpl2">
     年龄：{{row.age}}

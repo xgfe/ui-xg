@@ -1,20 +1,11 @@
 <table
   class="uix-datatable-thead"
-  ng-class="{'uix-datatable-bordered':$table.isBordered}"
   cellspacing="0"
   cellpadding="0"
   border="0"
 >
   <colgroup>
-    <col
-      ng-repeat="(index, column) in $table.allDataColumns"
-      width="{{:: $table.setCellWidth(column) }}"
-    />
-    <col
-      class="uix-datatable-thead-right-col"
-      ng-if="$table.showVerticalScrollBar"
-      width="{{:: $table.scrollBarWidth }}"
-    />
+    <%cols%>
   </colgroup>
   <thead>
     <tr ng-repeat="(rowIndex, cols) in $table.allColumnRows track by rowIndex">
@@ -49,12 +40,6 @@
           </span>
         </div>
       </th>
-      <th
-        ng-if="$table.showVerticalScrollBar && rowIndex===0"
-        class="uix-datatable-thead-right-th"
-        ng-class="scrollBarCellClass()"
-        rowspan="{{ $table.allColumnRows.length }}"
-      ></th>
     </tr>
   </thead>
 </table>

@@ -1,6 +1,6 @@
 <div
   class="uix-datatable"
-  ng-class="{'uix-datatable-has-fixed': $table.isLeftFixed||$table.isRightFixed}"
+  ng-class="{'uix-datatable-has-fixed': $table.isLeftFixed||$table.isRightFixed,'uix-datatable-bordered':$table.isBordered}"
   ng-style="{height:$table.containerHeight}"
 >
   <div class="uix-datatable-wrap">
@@ -14,7 +14,7 @@
     </div>
     <div
       class="uix-datatable-fixed uix-datatable-fixed-left"
-      ng-style="{height:$table.mainTableHeight+'px',width:$table.leftTableWidth}"
+      ng-style="{width:$table.leftTableWidth}"
       ng-if="$table.isLeftFixed"
     >
       <div class="uix-datatable-header uix-datatable-left-header"></div>
@@ -26,7 +26,7 @@
     </div>
     <div
       class="uix-datatable-fixed uix-datatable-fixed-right"
-      ng-style="{height:$table.mainTableHeight+'px',width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':''}"
+      ng-style="{width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':''}"
       ng-if="$table.isRightFixed"
     >
       <div class="uix-datatable-header uix-datatable-right-header"></div>
@@ -38,8 +38,8 @@
     </div>
     <div
       class="uix-datatable-fixed-right-header"
-      ng-style="{height:$table.headerHeight+'px',width:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':0}"
-      ng-if="$table.isRightFixed"
+      ng-style="{height:$table.headerHeight+'px',width:$table.scrollBarWidth+'px'}"
+      ng-if="$table.showVerticalScrollBar"
     ></div>
     <div class="uix-datatable-footer" ng-if="$table.showFooter">
       <uix-datatable-foot> </uix-datatable-foot>

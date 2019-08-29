@@ -1,13 +1,13 @@
 <table class="uix-datatable-tbody"
-    ng-class="{'uix-datatable-striped':$table.isStriped,'uix-datatable-bordered':$table.isBordered}"
+    ng-class="{'uix-datatable-striped':$table.isStriped}"
         cellspacing="0"
         cellpadding="0"
         border="0"
     >
-        <colgroup>
+        <!-- <colgroup>
             <col ng-repeat="(index, column) in $table.allDataColumns" 
             width="{{ ::$table.setCellWidth(column) }}"></col>
-        </colgroup>
+        </colgroup> -->
         <tbody>
             <!-- ng-mouseenter="$table.handleMouseIn($event,row)"
             ng-mouseleave="$table.handleMouseOut($event,row)" -->
@@ -15,7 +15,7 @@
              ng-class="row._rowClassName"
              ng-click="$table.handleClickRow($event,row)"
             >
-                <td ng-repeat="(colIndex, column) in $table.allDataColumns" ng-class="::$table.alignCls(column, row)">
+                <td ng-style="{width:column.width+'px'}" ng-repeat="(colIndex, column) in $table.allDataColumns" ng-class="::$table.alignCls(column, row)">
                     <div class="uix-datatable-cell">
                         <div ng-if="column.__renderBodyCellType === 'template'">
                                 <%template%>
