@@ -1,31 +1,21 @@
-<table class="uix-datatable-tbody"
-    ng-class="{'uix-datatable-striped':$table.isStriped}"
-        cellspacing="0"
-        cellpadding="0"
-        border="0"
-    >
-        <!-- <colgroup>
-            <col ng-repeat="(index, column) in $table.allDataColumns" 
-            width="{{ ::$table.setCellWidth(column) }}"></col>
-        </colgroup> -->
-        <tbody>
-            <!-- ng-mouseenter="$table.handleMouseIn($event,row)"
+<table class="uix-datatable-tbody" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <!-- ng-mouseenter="$table.handleMouseIn($event,row)"
             ng-mouseleave="$table.handleMouseOut($event,row)" -->
-            <tr ng-repeat="(rowIndex, row) in $table.rebuildData"
-             ng-class="row._rowClassName"
-             ng-click="$table.handleClickRow($event,row)"
-            >
-                <td ng-style="{width:column.width+'px'}" ng-repeat="(colIndex, column) in $table.allDataColumns" ng-class="::$table.alignCls(column, row)">
-                    <div class="uix-datatable-cell">
-                        <div ng-if="column.__renderBodyCellType === 'template'">
-                                <%template%>
-                        </div>
-                        <span ng-if="column.__renderBodyCellType === 'format'">{{::column.format(row, row._index)}}</span>
-                        <span ng-if="column.__renderBodyCellType === 'normal'">
-                            {{ row[column.key] }}
-                        </span>
+        <tr ng-repeat="(rowIndex, row) in $table.rebuildData" ng-class="row._rowClassName"
+            ng-click="$table.handleClickRow($event,row)">
+            <td ng-style="{width:column.width+'px'}" ng-repeat="(colIndex, column) in $table.allDataColumns"
+                ng-class="::$table.alignCls(column, row)">
+                <div class="uix-datatable-cell">
+                    <div ng-if="column.__renderBodyCellType === 'template'">
+                        <%template%>
                     </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    <span ng-if="column.__renderBodyCellType === 'format'">{{::column.format(row, row._index)}}</span>
+                    <span ng-if="column.__renderBodyCellType === 'normal'">
+                        {{ row[column.key] }}
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -48,8 +48,7 @@ $primary-color         : #2d8cf0;
         border-bottom : 1px solid #e8eaec;
     }
 
-    .uix-datatable-striped {
-
+    &.uix-datatable-striped .uix-datatable-tbody {
         &>tbody>tr:nth-child(even)>td,
         &>tbody>tr:nth-child(even)>th {
             background-color: $striped-background-color;

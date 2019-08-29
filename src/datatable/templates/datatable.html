@@ -1,6 +1,10 @@
 <div
   class="uix-datatable"
-  ng-class="{'uix-datatable-has-fixed': $table.isLeftFixed||$table.isRightFixed,'uix-datatable-bordered':$table.isBordered}"
+  ng-class="{
+    'uix-datatable-has-fixed': $table.isLeftFixed||$table.isRightFixed,
+    'uix-datatable-bordered':$table.isBordered,
+    'uix-datatable-striped':$table.isStriped
+  }"
   ng-style="{height:$table.containerHeight}"
 >
   <div class="uix-datatable-wrap">
