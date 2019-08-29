@@ -9,5 +9,5 @@ export default class {
         }
         return item;
     });
-    data = angular.copy(baseData);
+    data = angular.copy(baseData).concat(angular.copy(baseData));
 }

@@ -1,25 +1,25 @@
 <table class="uix-datatable-tbody"
     ng-class="{'uix-datatable-striped':$table.isStriped,'uix-datatable-bordered':$table.isBordered}"
-    ng-style="{width:width}"
         cellspacing="0"
         cellpadding="0"
         border="0"
     >
         <colgroup>
-            <col ng-repeat="(index, column) in columns" 
-            width="{{ $table.setCellWidth(column) }}"></col>
+            <col ng-repeat="(index, column) in $table.allDataColumns" 
+            width="{{ ::$table.setCellWidth(column) }}"></col>
         </colgroup>
         <tbody>
+            <!-- ng-mouseenter="$table.handleMouseIn($event,row)"
+            ng-mouseleave="$table.handleMouseOut($event,row)" -->
             <tr ng-repeat="(rowIndex, row) in $table.rebuildData"
-             ng-class="[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']"
-             ng-mouseenter="handleMouseIn($event,row)"
-             ng-mouseleave="handleMouseOut($event,row)"
-             ng-click="handleClickRow($event,row)"
+             ng-class="row._rowClassName"
+             ng-click="$table.handleClickRow($event,row)"
             >
-                <td ng-repeat="(colIndex, column) in columns" ng-class="$table.alignCls(fixed, column, row)">
-                    <div class="uix-datatable-cell" ng-if="fixed!=='center'||!column.fixed">
-                        <div ng-if="column.__renderBodyCellType === 'template'" 
-                            uix-datatable-cell column="column" row="row"></div>
+                <td ng-repeat="(colIndex, column) in $table.allDataColumns" ng-class="::$table.alignCls(column, row)">
+                    <div class="uix-datatable-cell">
+                        <div ng-if="column.__renderBodyCellType === 'template'">
+                                <%template%>
+                        </div>
                         <span ng-if="column.__renderBodyCellType === 'format'">{{::column.format(row, row._index)}}</span>
                         <span ng-if="column.__renderBodyCellType === 'normal'">
                             {{ row[column.key] }}

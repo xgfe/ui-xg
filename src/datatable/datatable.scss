@@ -3,8 +3,8 @@ $hover-background-color:$striped-background-color;
 $border-color          : #ddd;
 $primary-color         : #2d8cf0;
 
-.uix-datatable-head>thead>tr>th,
-.uix-datatable-head>thead>tr>td {
+.uix-datatable-thead>thead>tr>th,
+.uix-datatable-thead>thead>tr>td {
     border-bottom   : 0;
     background-color: #f8f8f9;
 }
@@ -73,9 +73,37 @@ $primary-color         : #2d8cf0;
             border-bottom-width: 2px;
         }
     }
-
+    
     .uix-datatable-header {
         overflow: hidden;
+        z-index: 4;
+        position: relative;
+    }
+    .uix-datatable-main-table .uix-datatable-body-wrap{
+        overflow-x: auto;
+        overflow-y: auto;
+    }   
+    .uix-datatable-fixed{
+        overflow: hidden;
+    }
+    .uix-datatable-left-body,
+    .uix-datatable-right-body{
+        overflow: hidden;
+        z-index: 3;
+    }
+    .uix-datatable-right-header{
+        position: absolute;
+        left: auto;
+        right: 0;
+        .uix-datatable-thead-right-th,
+        .uix-datatable-thead-right-col{
+            display: none;
+        }
+    }
+    .uix-datatable-right-body{
+        position: absolute;
+        left: auto;
+        right: 0;
     }
 
     .uix-datatable-column-left {
@@ -107,6 +135,14 @@ $primary-color         : #2d8cf0;
         top     : 0;
     }
 
+    &.uix-datatable-has-fixed{
+        .uix-datatable-tbody {
+            width: 100%;
+        }
+        .uix-datatable-thead {
+            width: 100%;
+        }
+    }
 
     .uix-datatable-fixed-left {
         top       : 0;
@@ -147,12 +183,7 @@ $primary-color         : #2d8cf0;
         background-color: $hover-background-color;
         border-top      : 1px solid #dcdee2;
         border-bottom   : 1px solid #e8eaec;
-    }
-
-    .uix-datatable-fixed-body {
-        overflow: hidden;
-        position: relative;
-        z-index : 3;
+        z-index: 5;
     }
 
     .uix-datatable-cell {
@@ -244,7 +275,7 @@ $primary-color         : #2d8cf0;
     margin-bottom: 0;
 }
 
-.uix-datatable-head {
+.uix-datatable-thead {
     &.uix-datatable-bordered {
         border-bottom: 0;
 

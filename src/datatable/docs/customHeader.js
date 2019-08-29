@@ -12,9 +12,7 @@ export default class {
         { key: 'date', title: '日期', headerTemplate: '<b>日期</b>' },
         {
             key: 'address', title: '地址',
-            headerTemplate(column, index) {
-                return `${index}: ${column.key} ${column.title}`;
-            }
+            headerTemplate: '{{colIndex}}: {{column.key}} {{column.title}}'
         },
     ];
     columns2 = [
@@ -24,7 +22,7 @@ export default class {
         },
         {
             key: 'age', title: '年龄', width: 150,
-            headerTemplateUrl: () => 'ageHeaderTpl'
+            headerTemplateUrl: 'ageHeaderTpl'
         },
         { key: 'date', title: '日期', width: 200 },
         {

@@ -11,9 +11,10 @@ export default class {
         { key: 'date', title: '日期', template: '<b>日期</b>' },
         {
             key: 'address', title: '地址',
-            template(row, index) {
-                return `${index}: ${row.province}-${row.city} ${row.address}`;
-            }
+            template: '<span>{{rowIndex}}: {{row.province}}-{{row.city}} {{row.address}}</span>'
+            // template(row, index) {
+            //     return `${index}: ${row.province}-${row.city} ${row.address}`;
+            // }
         },
     ];
     columns2 = [
@@ -26,12 +27,13 @@ export default class {
         }, {
             title: '配置',
             width: 200,
-            templateUrl($row) {
-                if ($row.age > 24) {
-                    return 'settingsTpl1';
-                }
-                return 'settingsTpl2';
-            }
+            templateUrl: 'settingsTpl1'
+            // templateUrl($row) {
+            //     if ($row.age > 24) {
+            //         return 'settingsTpl1';
+            //     }
+            //     return 'settingsTpl2';
+            // }
         }, {
             title: '操作',
             fixed: 'right',

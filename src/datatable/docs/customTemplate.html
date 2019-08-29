@@ -4,17 +4,17 @@
 <uix-datatable columns="vm.columns2" data="vm.data"></uix-datatable>
 <!-- 地址列模板 -->
 <script type="text/ng-template" id="addressTpl">
-    这一列是：<b>{{$column.title}}</b><br>
-    这是第{{$rowIndex+1}}行<br>
-    详细地址：{{$row.province}} - {{$row.city}} {{$row.address}}<br>
+    这一列是：<b>{{column.title}}</b><br>
+    这是第{{rowIndex+1}}行<br>
+    详细地址：{{row.province}} - {{row.city}} {{row.address}}<br>
 </script>
 <!-- 操作列模板 -->
 <script type="text/ng-template" id="actionsTpl">
-    <button ng-disabled="$row.age>18" class="btn btn-sm btn-primary" ng-click="vm.handleView()">查看</button>
+    <button ng-disabled="row.age>18" class="btn btn-sm btn-primary" ng-click="vm.handleView()">查看</button>
 </script>
 <!-- 通过函数返回值区分模板 -->
 <script type="text/ng-template" id="settingsTpl1">
-    <uix-select ng-model="$row.age" append-to-body="true">
+    <uix-select ng-model="row.age" append-to-body="true">
         <uix-select-match>{{$select.selected}}</uix-select-match>
         <uix-select-choices repeat="item in [10,20,30,40]">
             <span>{{item}}</span>
@@ -22,5 +22,5 @@
     </uix-select>
 </script>
 <script type="text/ng-template" id="settingsTpl2">
-    年龄：{{$row.age}}
+    年龄：{{row.age}}
 </script>
