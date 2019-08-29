@@ -15,7 +15,7 @@
         rowspan="{{:: column.rowSpan }}"
         ng-class="$table.alignCls(column)"
       >
-        <div ng-class="cellClasses(column)" ng-if="fixed!=='center'||!column.fixed"
+        <div ng-class="cellClasses(column)"
          class="uix-datatable-cell">
           <div ng-if="column.__renderHeadType==='normal'">
             <span ng-click="$table.handleSortByHead(column)"
