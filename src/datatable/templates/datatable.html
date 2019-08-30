@@ -7,7 +7,7 @@
   }"
   ng-style="{height:$table.containerHeight}"
 >
-  <div class="uix-datatable-wrap">
+<div class="uix-datatable-wrap">
     <div
       class="uix-datatable-main-table"
     >
@@ -21,8 +21,8 @@
       ng-style="{width:$table.leftTableWidth}"
       ng-if="$table.isLeftFixed"
     >
-      <div class="uix-datatable-header uix-datatable-left-header"></div>
-      <div class="uix-datatable-body-wrap" ng-style="$table.leftBodyStyle">
+      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-header uix-datatable-left-header"></div>
+      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-body-wrap" ng-style="$table.leftBodyStyle">
         <div
           class="uix-datatable-body uix-datatable-fixed-body uix-datatable-left-body"
         ></div>
@@ -33,8 +33,8 @@
       ng-style="{width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':''}"
       ng-if="$table.isRightFixed"
     >
-      <div class="uix-datatable-header uix-datatable-right-header"></div>
-      <div class="uix-datatable-body-wrap" ng-style="$table.rightBodyStyle">
+      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-header uix-datatable-right-header"></div>
+      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-body-wrap" ng-style="$table.rightBodyStyle">
         <div
           class="uix-datatable-body uix-datatable-fixed-body uix-datatable-right-body"
         ></div>

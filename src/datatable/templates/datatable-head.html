@@ -1,12 +1,13 @@
 <table
   class="uix-datatable-thead"
+  ng-style="{width: $table.tableHeaderWidth+'px'}"
   cellspacing="0"
   cellpadding="0"
   border="0"
 >
-  <colgroup>
-    <%cols%>
-  </colgroup>
+<colgroup>
+    <col ng-repeat="col in $table.allDataColumns track by col.__id" ng-style="{width:col._width+'px'}">
+   </colgroup>
   <thead>
     <tr ng-repeat="(rowIndex, cols) in $table.allColumnRows track by rowIndex">
       <th
