@@ -10,14 +10,12 @@ import calendarTpl from 'src/calendar/templates/calendar.html';
 import carouselItemTpl from 'src/carousel/templates/carousel-item.html';
 import carouselTpl from 'src/carousel/templates/carousel.html';
 import citypanelTpl from 'src/cityselect/templates/citypanel.html';
-import datatableBodyLeftTpl from 'src/datatable/templates/datatable-body-left.html';
-import datatableBodyMainTpl from 'src/datatable/templates/datatable-body-main.html';
-import datatableBodyRightTpl from 'src/datatable/templates/datatable-body-right.html';
-import datatableBodyTpl from 'src/datatable/templates/datatable-body.html';
-import datatableCellTpl from 'src/datatable/templates/datatable-cell.html';
+import datatableBodyTplTpl from 'src/datatable/templates/datatable-body-tpl.html';
 import datatableFootTpl from 'src/datatable/templates/datatable-foot.html';
-import datatableHeadCellTpl from 'src/datatable/templates/datatable-head-cell.html';
-import datatableHeadTpl from 'src/datatable/templates/datatable-head.html';
+import datatableHeadTplTpl from 'src/datatable/templates/datatable-head-tpl.html';
+import datatableTableLeftTpl from 'src/datatable/templates/datatable-table-left.html';
+import datatableTableMainTpl from 'src/datatable/templates/datatable-table-main.html';
+import datatableTableRightTpl from 'src/datatable/templates/datatable-table-right.html';
 import datatableTpl from 'src/datatable/templates/datatable.html';
 import datepickerCalendarTpl from 'src/datepicker/templates/datepicker-calendar.html';
 import datepickerTpl from 'src/datepicker/templates/datepicker.html';
@@ -63,14 +61,12 @@ export default [
     { filename: 'carousel-item.html', template: carouselItemTpl },
     { filename: 'carousel.html', template: carouselTpl },
     { filename: 'citypanel.html', template: citypanelTpl },
-    { filename: 'datatable-body-left.html', template: datatableBodyLeftTpl },
-    { filename: 'datatable-body-main.html', template: datatableBodyMainTpl },
-    { filename: 'datatable-body-right.html', template: datatableBodyRightTpl },
-    { filename: 'datatable-body.html', template: datatableBodyTpl },
-    { filename: 'datatable-cell.html', template: datatableCellTpl },
+    { filename: 'datatable-body-tpl.html', template: datatableBodyTplTpl },
     { filename: 'datatable-foot.html', template: datatableFootTpl },
-    { filename: 'datatable-head-cell.html', template: datatableHeadCellTpl },
-    { filename: 'datatable-head.html', template: datatableHeadTpl },
+    { filename: 'datatable-head-tpl.html', template: datatableHeadTplTpl },
+    { filename: 'datatable-table-left.html', template: datatableTableLeftTpl },
+    { filename: 'datatable-table-main.html', template: datatableTableMainTpl },
+    { filename: 'datatable-table-right.html', template: datatableTableRightTpl },
     { filename: 'datatable.html', template: datatableTpl },
     { filename: 'datepicker-calendar.html', template: datepickerCalendarTpl },
     { filename: 'datepicker.html', template: datepickerTpl },

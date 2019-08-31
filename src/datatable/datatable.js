@@ -48,43 +48,6 @@
         });
         return list.concat(others);
     };
-    function getScrollBarSize() {
-        // eslint-disable-next-line angular/document-service
-        const inner = document.createElement('div');
-        inner.style.width = '100%';
-        inner.style.height = '200px';
-
-        // eslint-disable-next-line angular/document-service
-        const outer = document.createElement('div');
-        const outerStyle = outer.style;
-
-        outerStyle.position = 'absolute';
-        outerStyle.top = 0;
-        outerStyle.left = 0;
-        outerStyle.pointerEvents = 'none';
-        outerStyle.visibility = 'hidden';
-        outerStyle.width = '200px';
-        outerStyle.height = '150px';
-        outerStyle.overflow = 'hidden';
-
-        outer.appendChild(inner);
-
-        // eslint-disable-next-line angular/document-service
-        document.body.appendChild(outer);
-
-        const widthContained = inner.offsetWidth;
-        outer.style.overflow = 'scroll';
-        let widthScroll = inner.offsetWidth;
-
-        if (widthContained === widthScroll) {
-            widthScroll = outer.clientWidth;
-        }
-
-        // eslint-disable-next-line angular/document-service
-        document.body.removeChild(outer);
-
-        return widthContained - widthScroll;
-    }
 
     angular.module('ui.xg.datatable', [])
         .constant('uixDatatableConfig', {
@@ -116,24 +79,14 @@
         .controller('uixDatatableCtrl', ['$scope', '$timeout', '$element', 'uixDatatableConfig', '$templateCache', '$compile',
             function ($scope, $timeout, $element, uixDatatableConfig, $templateCache, $compile) {
                 const $table = this;
-                $table.scrollBarWidth = getScrollBarSize();
-                $table.scrollPosition = 'left';
-
-                $table.fixedLeftTableStyle = {}; // 左侧固定表格样式
-                $table.fixedRightTableStyle = {}; // 右侧固定表格样式
-                $table.tableHeaderStyle = {}; // 表头样式
-                $table.tableBodyStyle = ''; // 表格内容区宽度
                 $table.columnsWidth = {}; // 列宽
-                $table.fixedBodyStyle = {};
-                $scope.containerStyle = {};
                 $table.bodyStyle = {};
 
-                $table.showVerticalScrollBar = false;
-                $table.showHorizontalScrollBar = false;
-
                 $table.headerHeight = 0; // initial header height
-                let $tableBodyScope = $scope.$parent.$new();
-                $tableBodyScope.$table = $table;
+                $table.containerHeight = null;
+
+                let compileScope = $scope.$parent.$new();
+                compileScope.$table = $table;
                 function findEl(selector) {
                     return angular.element($element[0].querySelector(selector));
                 }
@@ -216,16 +169,24 @@
                         transform: `translateX(-${scrollLeft}px)`
                     });
 
-                    findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
-                    findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+                    if ($table.isLeftFixed) {
+                        findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+                    }
+                    if ($table.isRightFixed) {
+                        findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+                    }
+
                 }
                 function handleFixedBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
-                    findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
-                    findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
                     findEl('.uix-datatable-main-body')[0].scrollTop = scrollTop;
+                    if ($table.isLeftFixed) {
+                        findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+                    }
+                    if ($table.isRightFixed) {
+                        findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+                    }
                 }
-
 
                 $table.updateContainerByStatus = () => {
                     // 数据为空
@@ -236,15 +197,17 @@
                     }
                 };
 
+                function handleResize() {
+                    calcColumnsWidth();
+                    $scope.$digest();
+                }
+
                 function bindEvents() {
                     findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
 
-                    angular.element(window).on('resize', () => {
-                        handleResize();
-                        $scope.$digest();
-                    });
+                    angular.element(window).on('resize', handleResize);
                 }
                 function unbindEvents() {
                     findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
@@ -253,7 +216,7 @@
                     angular.element(window).off('resize', handleResize);
                 }
 
-                function handleResize() {
+                function calcColumnsWidth() {
                     let tableWidth = $element[0].offsetWidth - 1;
                     let columnsWidth = {};
                     let sumMinWidth = 0;
@@ -350,7 +313,7 @@
                             prepareColumns(column.children);
                         }
                         column.__id = getRandomStr(6);
-                        column.width = parseInt(column.width, 10);
+                        column.width = parseFloat(column.width, 10);
                         column._width = column.width ? column.width : '';
                         column._sortType = 'normal';
 
@@ -434,7 +397,7 @@
                     return [
                         cellClassName,
                         column.className,
-                        column.align ? `uix-datatable-column-${column.align}` : ''
+                        column.align ? `uix-datatable-align-${column.align}` : ''
                     ];
                 };
 
@@ -468,7 +431,7 @@
                     return $table[columnsKey].map((column, colIndex) => {
                         let classes = [
                             column.className,
-                            column.align ? `uix-datatable-column-${column.align}` : '',
+                            column.align ? `uix-datatable-align-${column.align}` : '',
                         ].join(' ');
                         let ngClass = [
                             `row.cellClassName['${column.key}']`
@@ -476,12 +439,12 @@
                         let content = '';
                         if (column.type === 'index') {
                             if (column.indexMethod) {
-                                content = '{{::$table[' + columnsKey + '][' + colIndex + '].indexMethod(row, rowIndex)}}';
+                                content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].indexMethod(row, rowIndex)}}';
                             } else {
                                 content = '{{rowIndex+1}}';
                             }
                         } else if (angular.isFunction(column.format)) {
-                            content = '{{::$table[' + columnsKey + '][' + colIndex + '].format(row, rowIndex)}}';
+                            content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].format(row, rowIndex)}}';
                         } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
                             content = column.template || $templateCache.get(column.templateUrl) || '';
                         } else {
@@ -500,12 +463,12 @@
                     }).join('');
                 }
                 function getTemplate(position = 'main') {
-                    let template = $templateCache.get(`templates/datatable-body-${position}.html`);
+                    let template = $templateCache.get(`templates/datatable-table-${position}.html`);
                     return template.replace('<%head%>', getHeadTemplate(position))
                         .replace('<%body%>', getBodyTemplate(position));
                 }
                 function getBodyTemplate(position) {
-                    let template = $templateCache.get('templates/datatable-body.html') || '';
+                    let template = $templateCache.get('templates/datatable-body-tpl.html') || '';
                     let columnsKey = '';
                     let widthKey = '';
                     if (position === 'left') {
@@ -525,7 +488,7 @@
                         .replace('<%template%>', getBodyRowsTemplate(position));
                 }
                 function getHeadTemplate(position) {
-                    let template = $templateCache.get('templates/datatable-head.html') || '';
+                    let template = $templateCache.get('templates/datatable-head-tpl.html') || '';
                     let widthKey = '';
                     let columnsKey = '';
                     let columnRowsKey = '';
@@ -556,7 +519,7 @@
                     if ($table.isRightFixed) {
                         template += getTemplate('right');
                     }
-                    $compile(template)($tableBodyScope, (clonedElement) => {
+                    $compile(template)(compileScope, (clonedElement) => {
                         let tableWrap = angular.element($element[0]
                             .querySelector('.uix-datatable-wrap'));
                         tableWrap.empty().append(clonedElement);
@@ -567,8 +530,6 @@
                             });
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
-
-                            
                         }, 0);
                     });
                 }
@@ -613,20 +574,21 @@
                 $table.initData = function () {
                     $table.rebuildData = makeRebuildData();
                 };
-                $table.refresh = () => {
-                    handleResize();
+                $table.render = () => {
+                    calcColumnsWidth();
                     renderTableBody();
                 };
                 // 初始化
                 $table.init = function () {
                     $table.initColums();
                     $table.initData();
-                    $table.refresh();
+                    $table.render();
 
                     bindEvents();
                 };
                 $scope.$on('$destroy', () => {
                     unbindEvents();
+                    compileScope.$destory();
                 });
             }])
         .directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', function (uixDatatable, uixDatatableConfig) {
@@ -662,9 +624,6 @@
                     $table.isEmpty = false;
                     $table.isError = false;
 
-                    $table.height = scope.height;
-                    $table.maxHeight = scope.maxHeight;
-
                     ['loading', 'empty', 'error'].forEach(type => {
                         scope[`${type}Text`] = $attrs[`${type}Text`] ||
                             uixDatatable.getStatusText(type) ||
@@ -672,17 +631,22 @@
                     });
 
                     scope.$watch('height', (val) => {
-                        $table.height = parseFloat(val, 10);
-                        $table.bodyStyle = {
-                            height: $table.height + 'px',
-                        };
+                        val = parseFloat(val, 10);
+                        if (!isNaN(val)) {
+                            $table.height = val;
+                            $table.bodyStyle = {
+                                height: $table.height + 'px',
+                            };
+                        }
                     });
                     scope.$watch('maxHeight', (val) => {
-                        $table.maxHeight = parseFloat(val, 10);
-                        if (!$table.height) {
-                            $table.bodyStyle = {
-                                maxHeight: $table.maxHeight + 'px',
-                            };
+                        val = parseFloat(val, 10);
+                        if (!isNaN(val)) {
+                            if (!$table.height) {
+                                $table.bodyStyle = {
+                                    maxHeight: val + 'px',
+                                };
+                            }
                         }
                     });
 
@@ -694,14 +658,14 @@
                         if (val !== old && angular.isDefined(val)) {
                             $table.data = val;
                             $table.initData();
-                            $table.refresh();
+                            $table.render();
                         }
                     });
                     scope.$watch('columns', function (val, old) {
                         if (val !== old && angular.isDefined(val)) {
                             $table.columns = val;
                             $table.initColums();
-                            $table.refresh();
+                            $table.render();
                         }
                     });
                     scope.$watch('status', function (val) {
