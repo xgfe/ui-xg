@@ -1,6 +1,5 @@
 <table
-  ng-style="{width:$table.rightTableWidth}"
-  style="width: <%tableWidth%>px"
+  ng-style="{width:$table.<%widthKey%>+'px'}"
   class="uix-datatable-tbody"
   cellspacing="0"
   cellpadding="0"
@@ -9,7 +8,7 @@
   <colgroup>
     <col
       ng-repeat="col in $table.<%columnsKey%> track by col.__id"
-      ng-style="{width:col._width+'px'}"
+      width="{{col._width}}"
     />
   </colgroup>
   <tbody>

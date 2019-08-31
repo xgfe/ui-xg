@@ -1,32 +1,38 @@
 <table
   class="uix-datatable-thead"
-  ng-style="{width: $table.tableHeaderWidth+'px'}"
+  ng-style="{width:$table.<%widthKey%>+'px'}"
   cellspacing="0"
   cellpadding="0"
   border="0"
 >
-<colgroup>
-    <col ng-repeat="col in $table.allDataColumns track by col.__id" ng-style="{width:col._width+'px'}">
-   </colgroup>
+  <colgroup>
+    <col
+      ng-repeat="col in $table.<%columnsKey%> track by col.__id"
+      width="{{ col._width }}"
+    />
+  </colgroup>
   <thead>
-    <tr ng-repeat="(rowIndex, cols) in $table.allColumnRows track by rowIndex">
+    <tr
+      ng-repeat="(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex"
+    >
       <th
         ng-repeat="(colIndex, column) in cols track by colIndex"
         colspan="{{:: column.colSpan }}"
         rowspan="{{:: column.rowSpan }}"
         ng-class="$table.alignCls(column)"
       >
-        <div ng-class="cellClasses(column)"
-         class="uix-datatable-cell">
+        <div ng-class="cellClasses(column)" class="uix-datatable-cell">
           <div ng-if="column.__renderHeadType==='normal'">
             <span ng-click="$table.handleSortByHead(column)"
               >{{:: column.title || '#' }}
             </span>
           </div>
           <span ng-if="column.__renderHeadType === 'template'">
-              <%template%>
+            <%template%>
           </span>
-          <div ng-if="column.__renderHeadType==='format'">{{ ::column.headerFormat(column) }}</div>
+          <div ng-if="column.__renderHeadType==='format'">
+            {{ ::column.headerFormat(column) }}
+          </div>
           <span class="uix-datatable-sort" ng-if="column.sortable">
             <i
               class="glyphicon glyphicon-triangle-top"

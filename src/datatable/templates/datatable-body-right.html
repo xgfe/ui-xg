@@ -4,9 +4,10 @@
 >
   <div
     class="uix-datatable-header uix-datatable-right-header"
-  ></div>
+  ><%head%></div>
   <div
     class="uix-datatable-body uix-datatable-fixed-body uix-datatable-right-body"
+    ng-style="{top:$table.headerHeight+'px'}"
   >
   <%body%>
   </div>

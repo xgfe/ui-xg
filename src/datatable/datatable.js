@@ -38,10 +38,12 @@
         let list = [];
         let others = [];
         columns.forEach((col) => {
-            if (col.fixed && col.fixed === fixedType) {
-                list.push(col);
+            if (fixedType) {
+                if (col.fixed && col.fixed === fixedType) {
+                    list.push(col);
+                }
             } else {
-                others.push(col);
+                list.push(col);
             }
         });
         return list.concat(others);
@@ -207,26 +209,23 @@
                         });
                     }
                 };
-                function handleBodyScroll() {
-                    let scrollEl = findEl('.uix-datatable-main-table > .uix-datatable-body-wrap')[0];
-                    let scrollTop = scrollEl.scrollTop;
-                    let scrollLeft = scrollEl.scrollLeft;
+                function handleMainBodyScroll(event) {
+                    let scrollTop = event.target.scrollTop;
+                    let scrollLeft = event.target.scrollLeft;
                     findEl('.uix-datatable-main-table .uix-datatable-thead').css({
                         transform: `translateX(-${scrollLeft}px)`
                     });
-                    if ($table.isLeftFixed) {
-                        findEl('.uix-datatable-left-body')
-                            .css({
-                                transform: `translateY(-${scrollTop}px)`
-                            });
-                    }
-                    if ($table.isRightFixed) {
-                        findEl('.uix-datatable-right-body')
-                            .css({
-                                transform: `translateY(-${scrollTop}px)`
-                            });
-                    }
+
+                    findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+                    findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
                 }
+                function handleFixedBodyScroll(event) {
+                    let scrollTop = event.target.scrollTop;
+                    findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+                    findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+                    findEl('.uix-datatable-main-body')[0].scrollTop = scrollTop;
+                }
+
 
                 $table.updateContainerByStatus = () => {
                     // 数据为空
@@ -238,19 +237,23 @@
                 };
 
                 function bindEvents() {
-                    findEl('.uix-datatable-main-table > .uix-datatable-body-wrap').on('scroll', handleBodyScroll);
+                    findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
+                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+
                     angular.element(window).on('resize', () => {
                         handleResize();
                         $scope.$digest();
                     });
                 }
                 function unbindEvents() {
-                    findEl('.uix-datatable-main-table > .uix-datatable-body-wrap').off('scroll', handleBodyScroll);
+                    findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
+                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
                     angular.element(window).off('resize', handleResize);
                 }
 
                 function handleResize() {
-                    //let tableWidth = parseInt(getStyle(this.$el, 'width')) - 1;
                     let tableWidth = $element[0].offsetWidth - 1;
                     let columnsWidth = {};
                     let sumMinWidth = 0;
@@ -275,7 +278,7 @@
                         col._width = null;
                     });
                     let unUsableWidth = hasWidthColumns.map(cell => cell.width).reduce((a, b) => a + b, 0);
-                    let usableWidth = tableWidth - unUsableWidth - sumMinWidth - ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0) - 1;
+                    let usableWidth = tableWidth - unUsableWidth - sumMinWidth - 1;
                     let usableLength = noWidthColumns.length;
                     let columnWidth = 0;
                     if (usableWidth > 0 && usableLength > 0) {
@@ -337,9 +340,8 @@
                     $table.tableWidth = $table.allDataColumns
                         .map(cell => cell._width)
                         .reduce((item, prev) => item + prev, 0) + 1;
-                    $table.tableHeaderWidth = $table.tableWidth - ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0);
+                    $table.tableHeaderWidth = $table.tableWidth;
                     $table.columnsWidth = columnsWidth;
-                    $table.showHorizontalScrollBar = $table.tableWidth > $element[0].offsetWidth;
                 }
 
                 function prepareColumns(columns) {
@@ -504,27 +506,48 @@
                 }
                 function getBodyTemplate(position) {
                     let template = $templateCache.get('templates/datatable-body.html') || '';
-                    let tableWidth = 300;
                     let columnsKey = '';
+                    let widthKey = '';
                     if (position === 'left') {
                         columnsKey = 'leftColumns';
-                        tableWidth = $table.leftTableWidth;
+                        widthKey = 'leftTableWidth';
                     } else if (position === 'right') {
                         columnsKey = 'rightColumns';
-                        tableWidth = $table.rightTableWidth;
+                        widthKey = 'rightTableWidth';
                     } else {
                         columnsKey = 'allDataColumns';
-                        tableWidth = $table.tableWidth;
+                        widthKey = 'tableWidth';
                     }
-                    return template.replace('<%tableWidth%>', tableWidth)
+                    return template
+                        .replace('<%widthKey%>', widthKey)
                         .replace('<%columnsKey%>', columnsKey)
                         .replace('<%rowHeightExp%>', position === 'left' || position === 'right' ? 'ng-style="{height:row._height+\'px\'}"' : '')
                         .replace('<%template%>', getBodyRowsTemplate(position));
                 }
                 function getHeadTemplate(position) {
-                    return '';
+                    let template = $templateCache.get('templates/datatable-head.html') || '';
+                    let widthKey = '';
+                    let columnsKey = '';
+                    let columnRowsKey = '';
+                    if (position === 'left') {
+                        columnsKey = 'leftColumns';
+                        columnRowsKey = 'leftColumnRows';
+                        widthKey = 'leftTableWidth';
+                    } else if (position === 'right') {
+                        columnsKey = 'rightColumns';
+                        columnRowsKey = 'rightColumnRows';
+                        widthKey = 'rightTableWidth';
+                    } else {
+                        columnsKey = 'allDataColumns';
+                        columnRowsKey = 'allColumnRows';
+                        widthKey = 'tableWidth';
+                    }
+                    return template
+                        .replace('<%columnsKey%>', columnsKey)
+                        .replace('<%columnRowsKey%>', columnRowsKey)
+                        .replace('<%widthKey%>', widthKey)
+                        .replace('<%template%>', getHeadTpls());
                 }
-                $scope.$watch('$table.showVerticalScrollBar', handleResize);
                 function renderTableBody() {
                     let template = getTemplate('main');
                     if ($table.isLeftFixed) {
@@ -542,50 +565,17 @@
                             $table.rebuildData.forEach((row, index) => {
                                 row._height = mainTable.find('tr').eq(index)[0].offsetHeight;
                             });
-                            if ($table.height) {
-                                $table.bodyStyle = {
-                                    height: ($table.height + $table.scrollBarWidth) + 'px',
-                                };
-                            } else if ($table.maxHeight) {
-                                $table.bodyStyle = {
-                                    maxHeight: ($table.maxHeight + $table.scrollBarWidth) + 'px',
-                                };
-                            }
-                            // handleResize();
+                            let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
+                            $table.headerHeight = headerHeight;
+
+                            
                         }, 0);
                     });
                 }
-                function renderTableHead() {
-                    let template = $templateCache.get('templates/datatable-head.html');
-                    template = template.replace('<%template%>', getHeadTpls());
-                    $compile(template)($tableBodyScope, (clonedElement) => {
-                        let mainTable = angular.element($element[0]
-                            .querySelector('.uix-datatable-main-header'));
-                        mainTable.empty().append(clonedElement);
-                        $timeout(() => {
-                            $table.headerHeight = mainTable[0].offsetHeight;
-                            if ($table.isLeftFixed) {
-                                let leftTable = angular.element($element[0]
-                                    .querySelector('.uix-datatable-left-header'));
-                                leftTable.empty().append(mainTable.clone(true).children());
-                            }
-                            if ($table.isRightFixed) {
-                                let rightTable = angular.element($element[0]
-                                    .querySelector('.uix-datatable-right-header'));
-                                $table.rightBodyStyle = {
-                                    ...$table.rightBodyStyle,
-                                    marginTop: $table.headerHeight + 'px'
-                                }
-                                rightTable.empty().append(mainTable.clone(true).children());
-                            }
-                        }, 0);
-                    });
-                }
-                function splitDataColumns() {
+                function getFixedColumns() {
                     let columns = $table.allDataColumns;
                     let left = [];
                     let right = [];
-                    let center = [];
 
                     columns.forEach((column, index) => {
                         column._index = index;
@@ -594,13 +584,10 @@
                             left.push(column);
                         } else if (column.fixed && column.fixed === 'right') {
                             right.push(column);
-                        } else {
-                            center.push(column);
                         }
                     });
                     return {
                         left: left,
-                        center: left.concat(center).concat(right),
                         right: right,
                     };
                 }
@@ -609,14 +596,16 @@
                     const colsWithId = prepareColumns($scope.columns);
                     $table.allDataColumns = getDataColumns(colsWithId);
 
-                    let columsObj = splitDataColumns(colsWithId);
+                    let columsObj = getFixedColumns(colsWithId);
                     $table.leftColumns = columsObj.left;
                     $table.rightColumns = columsObj.right;
 
                     $table.allColumnRows = makeColumnRows(colsWithId);
+                    $table.leftColumnRows = makeColumnRows(colsWithId, 'left');
+                    $table.rightColumnRows = makeColumnRows(colsWithId, 'right');
 
-                    $table.leftTableWidth = getFixedColumnsWidth('left') + 'px';
-                    $table.rightTableWidth = getFixedColumnsWidth('right') + 'px';
+                    $table.leftTableWidth = getFixedColumnsWidth('left');
+                    $table.rightTableWidth = getFixedColumnsWidth('right');
 
                     $table.isLeftFixed = hasFixedColumns('left');
                     $table.isRightFixed = hasFixedColumns('right');
@@ -625,6 +614,7 @@
                     $table.rebuildData = makeRebuildData();
                 };
                 $table.refresh = () => {
+                    handleResize();
                     renderTableBody();
                 };
                 // 初始化
@@ -652,7 +642,9 @@
                     disabledHover: '=',
                     rowClassName: '&',
                     onSortChange: '&',
-                    onRowClick: '&'
+                    onRowClick: '&',
+                    height: '=',
+                    maxHeight: '=',
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -670,14 +662,27 @@
                     $table.isEmpty = false;
                     $table.isError = false;
 
+                    $table.height = scope.height;
+                    $table.maxHeight = scope.maxHeight;
+
                     ['loading', 'empty', 'error'].forEach(type => {
                         scope[`${type}Text`] = $attrs[`${type}Text`] ||
                             uixDatatable.getStatusText(type) ||
                             uixDatatableConfig[`${type}Text`];
                     });
-                    ['height', 'maxHeight', 'width'].forEach(attr => {
-                        if ($attrs[attr]) {
-                            $table[attr] = parseInt($attrs[attr], 10);
+
+                    scope.$watch('height', (val) => {
+                        $table.height = parseFloat(val, 10);
+                        $table.bodyStyle = {
+                            height: $table.height + 'px',
+                        };
+                    });
+                    scope.$watch('maxHeight', (val) => {
+                        $table.maxHeight = parseFloat(val, 10);
+                        if (!$table.height) {
+                            $table.bodyStyle = {
+                                maxHeight: $table.maxHeight + 'px',
+                            };
                         }
                     });
 

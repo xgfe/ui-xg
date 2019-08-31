@@ -88,7 +88,6 @@ $primary-color         : #2d8cf0;
 
     .uix-datatable-header {
         overflow: hidden;
-        z-index : 4;
         position: relative;
     }
 
@@ -104,6 +103,10 @@ $primary-color         : #2d8cf0;
     .uix-datatable-left-body,
     .uix-datatable-right-body {
         height: 100%;
+        position: absolute;
+        bottom: 0;
+        top:0;
+
         overflow-y     : auto;
         overflow-x     : hidden;
         z-index        : 3;
@@ -119,22 +122,22 @@ $primary-color         : #2d8cf0;
         }
     }
 
-    .uix-datatable-right-header {
-        position: absolute;
-        left    : auto;
-        right   : 0;
+    // .uix-datatable-right-header {
+    //     position: absolute;
+    //     left    : auto;
+    //     right   : 0;
 
-        .uix-datatable-thead-right-th,
-        .uix-datatable-thead-right-col {
-            display: none;
-        }
-    }
+    //     .uix-datatable-thead-right-th,
+    //     .uix-datatable-thead-right-col {
+    //         display: none;
+    //     }
+    // }
 
-    .uix-datatable-right-body {
-        position: absolute;
-        left    : auto;
-        right   : 0;
-    }
+    // .uix-datatable-right-body {
+    //     position: absolute;
+    //     left    : auto;
+    //     right   : 0;
+    // }
 
     .uix-datatable-column-left {
         text-align: left;
@@ -201,8 +204,6 @@ $primary-color         : #2d8cf0;
         top             : 0;
         right           : 0;
         background-color: $hover-background-color;
-        z-index         : 5;
-
     }
 
     &.uix-datatable-bordered {
