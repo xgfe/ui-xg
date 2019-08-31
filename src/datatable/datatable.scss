@@ -105,7 +105,6 @@ $state-text-size: 16px; // 状态提示文本大小
 
     .uix-datatable-left-body,
     .uix-datatable-right-body {
-        height  : 100%;
         position: absolute;
         bottom  : 0;
         top     : 0;
@@ -155,12 +154,15 @@ $state-text-size: 16px; // 状态提示文本大小
         box-shadow: -2px 0 6px -2px rgba(0, 0, 0, .2);
     }
 
-    &.uix-datatable-scroll-position-left .uix-datatable-fixed-left {
-        box-shadow: none;
+    &.uix-datatable-scroll-left {
+        .uix-datatable-fixed-left {
+            box-shadow: none;
+        }
     }
-
-    &.uix-datatable-scroll-position-right .uix-datatable-fixed-right {
-        box-shadow: none;
+    &.uix-datatable-scroll-right {
+        .uix-datatable-fixed-right {
+            box-shadow: none;
+        }
     }
 
     .uix-datatable-cell {

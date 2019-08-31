@@ -176,6 +176,7 @@
                         findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
                     }
 
+                    updateFixedTableShadow();
                 }
                 function handleFixedBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
@@ -199,7 +200,11 @@
 
                 function handleResize() {
                     calcColumnsWidth();
+                    updateFixedTableShadow();
                     $scope.$digest();
+                    $timeout(() => {
+                        updateFixedRowHeight();
+                    }, 0);
                 }
 
                 function bindEvents() {
@@ -214,6 +219,25 @@
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
                     angular.element(window).off('resize', handleResize);
+                }
+
+                // 更新阴影
+                function updateFixedTableShadow() {
+                    let scrollLeft = findEl('.uix-datatable-main-body')[0].scrollLeft;
+                    let leftClass = 'uix-datatable-scroll-left';
+                    let rightClass = 'uix-datatable-scroll-right';
+                    if (scrollLeft === 0) {
+                        $element.addClass(leftClass);
+                        if ($element[0].offsetWidth >= $table.tableWidth) { // 无滚动条
+                            $element.addClass(rightClass);
+                        } else {
+                            $element.removeClass(rightClass);
+                        }
+                    } else if (scrollLeft >= $table.tableWidth - $element[0].offsetWidth) {
+                        $element.addClass(rightClass).removeClass(leftClass);
+                    } else {
+                        $element.removeClass(leftClass).removeClass(rightClass);
+                    }
                 }
 
                 function calcColumnsWidth() {
@@ -303,7 +327,6 @@
                     $table.tableWidth = $table.allDataColumns
                         .map(cell => cell._width)
                         .reduce((item, prev) => item + prev, 0) + 1;
-                    $table.tableHeaderWidth = $table.tableWidth;
                     $table.columnsWidth = columnsWidth;
                 }
 
@@ -511,6 +534,16 @@
                         .replace('<%widthKey%>', widthKey)
                         .replace('<%template%>', getHeadTpls());
                 }
+
+                function updateFixedRowHeight() {
+                    let tableWrap = angular.element($element[0]
+                        .querySelector('.uix-datatable-wrap'));
+                    let mainTable = angular.element(tableWrap[0].querySelector('.uix-datatable-main-body > table'));
+                    $table.rebuildData.forEach((row, index) => {
+                        row._height = mainTable.find('tr').eq(index)[0].offsetHeight;
+                    });
+                }
+
                 function renderTableBody() {
                     let template = getTemplate('main');
                     if ($table.isLeftFixed) {
@@ -524,10 +557,8 @@
                             .querySelector('.uix-datatable-wrap'));
                         tableWrap.empty().append(clonedElement);
                         $timeout(() => {
-                            let mainTable = angular.element(tableWrap[0].querySelector('.uix-datatable-main-body > table'));
-                            $table.rebuildData.forEach((row, index) => {
-                                row._height = mainTable.find('tr').eq(index)[0].offsetHeight;
-                            });
+                            updateFixedTableShadow();
+                            updateFixedRowHeight();
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
                         }, 0);
@@ -658,7 +689,6 @@
                         if (val !== old && angular.isDefined(val)) {
                             $table.data = val;
                             $table.initData();
-                            $table.render();
                         }
                     });
                     scope.$watch('columns', function (val, old) {

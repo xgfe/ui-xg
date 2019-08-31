@@ -54,6 +54,10 @@ import status from './status';
 import rawstatus from '!!raw-loader!./status';
 import statusTemplate from './status.html';
 
+import changeColumns from './changeColumns';
+import rawchangeColumns from '!!raw-loader!./changeColumns';
+import changeColumnsTemplate from './changeColumns.html';
+
 import pagination from './pagination';
 import rawpagination from '!!raw-loader!./pagination';
 import paginationTemplate from './pagination.html';
@@ -195,6 +199,13 @@ export const demos = {
         controller: status,
         template: statusTemplate,
         script: rawData + rawstatus
+    },
+    changeColumns: {
+        title: '修改Columns',
+        description: '修改<code>columns</code>数据时会对重新生成表格',
+        controller: changeColumns,
+        template: changeColumnsTemplate,
+        script: rawData + rawchangeColumns
     },
     pagination: {
         title: '带分页',
