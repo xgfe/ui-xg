@@ -1,14 +1,27 @@
-<table ng-style="{width: $table.tableWidth+'px'}" class="uix-datatable-tbody" cellspacing="0" cellpadding="0" border="0">
-    <colgroup>
-     <col ng-repeat="col in $table.allDataColumns track by col.__id" ng-style="{width:col._width+'px'}">
-    </colgroup>
-    <tbody>
-        <!-- ng-mouseenter="$table.handleMouseIn($event,row)"
-        ng-mouseleave="$table.handleMouseOut($event,row)" -->
-        <tr ng-repeat="(rowIndex, row) in $table.rebuildData"
-           ng-class="row._rowClassName"
-            ng-click="$table.handleClickRow($event,row)">
-            <%template%>
-        </tr>
-    </tbody>
+<table
+  ng-style="{width:$table.rightTableWidth}"
+  style="width: <%tableWidth%>px"
+  class="uix-datatable-tbody"
+  cellspacing="0"
+  cellpadding="0"
+  border="0"
+>
+  <colgroup>
+    <col
+      ng-repeat="col in $table.<%columnsKey%> track by col.__id"
+      ng-style="{width:col._width+'px'}"
+    />
+  </colgroup>
+  <tbody>
+    <tr
+      ng-repeat="(rowIndex, row) in $table.rebuildData"
+      ng-mouseenter="$table.handleMouseIn($event,row)"
+      ng-mouseleave="$table.handleMouseOut($event,row)"
+      ng-class="[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']"
+      ng-click="$table.handleClickRow($event,row)"
+      <%rowHeightExp%>
+    >
+     <%template%>
+    </tr>
+  </tbody>
 </table>

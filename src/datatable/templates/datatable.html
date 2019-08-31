@@ -7,47 +7,15 @@
   }"
   ng-style="{height:$table.containerHeight}"
 >
-<div class="uix-datatable-wrap">
-    <div
-      class="uix-datatable-main-table"
-    >
-      <div class="uix-datatable-header uix-datatable-main-header"></div>
-      <div class="uix-datatable-body-wrap" ng-style="$table.bodyStyle">
-        <div class="uix-datatable-body uix-datatable-main-body"></div>
-      </div>
-    </div>
-    <div
-      class="uix-datatable-fixed uix-datatable-fixed-left"
-      ng-style="{width:$table.leftTableWidth}"
-      ng-if="$table.isLeftFixed"
-    >
-      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-header uix-datatable-left-header"></div>
-      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-body-wrap" ng-style="$table.leftBodyStyle">
-        <div
-          class="uix-datatable-body uix-datatable-fixed-body uix-datatable-left-body"
-        ></div>
-      </div>
-    </div>
-    <div
-      class="uix-datatable-fixed uix-datatable-fixed-right"
-      ng-style="{width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':''}"
-      ng-if="$table.isRightFixed"
-    >
-      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-header uix-datatable-right-header"></div>
-      <div ng-show="$table.showHorizontalScrollBar" class="uix-datatable-body-wrap" ng-style="$table.rightBodyStyle">
-        <div
-          class="uix-datatable-body uix-datatable-fixed-body uix-datatable-right-body"
-        ></div>
-      </div>
-    </div>
-    <div
-      class="uix-datatable-fixed-right-header"
-      ng-style="{height:$table.headerHeight+'px',width:$table.scrollBarWidth+'px'}"
-      ng-if="$table.showVerticalScrollBar"
-    ></div>
-    <div class="uix-datatable-footer" ng-if="$table.showFooter">
-      <uix-datatable-foot> </uix-datatable-foot>
-    </div>
+  <div class="uix-datatable-wrap">
+    <!-- <div
+    class="uix-datatable-fixed-right-header"
+    ng-style="{height:$table.headerHeight+'px',width:$table.scrollBarWidth+'px'}"
+    ng-if="$table.showVerticalScrollBar"
+  ></div>
+  <div class="uix-datatable-footer" ng-if="$table.showFooter">
+    <uix-datatable-foot> </uix-datatable-foot>
+  </div> -->
   </div>
   <div class="uix-datatable-empty" ng-if="$table.isEmpty">
     <span class="inner-text">{{ emptyText }}</span>

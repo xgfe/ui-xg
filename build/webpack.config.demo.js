@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isPublish = process.env.MODE === 'publish';
-const publicPath = '/ui-xg/';
+const publicPath = isPublish ? '/ui-xg/' : '/';
 
 module.exports = {
     mode: isPublish ? 'production' : 'none',

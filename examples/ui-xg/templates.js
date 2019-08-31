@@ -10,6 +10,9 @@ import calendarTpl from 'src/calendar/templates/calendar.html';
 import carouselItemTpl from 'src/carousel/templates/carousel-item.html';
 import carouselTpl from 'src/carousel/templates/carousel.html';
 import citypanelTpl from 'src/cityselect/templates/citypanel.html';
+import datatableBodyLeftTpl from 'src/datatable/templates/datatable-body-left.html';
+import datatableBodyMainTpl from 'src/datatable/templates/datatable-body-main.html';
+import datatableBodyRightTpl from 'src/datatable/templates/datatable-body-right.html';
 import datatableBodyTpl from 'src/datatable/templates/datatable-body.html';
 import datatableCellTpl from 'src/datatable/templates/datatable-cell.html';
 import datatableFootTpl from 'src/datatable/templates/datatable-foot.html';
@@ -60,6 +63,9 @@ export default [
     { filename: 'carousel-item.html', template: carouselItemTpl },
     { filename: 'carousel.html', template: carouselTpl },
     { filename: 'citypanel.html', template: citypanelTpl },
+    { filename: 'datatable-body-left.html', template: datatableBodyLeftTpl },
+    { filename: 'datatable-body-main.html', template: datatableBodyMainTpl },
+    { filename: 'datatable-body-right.html', template: datatableBodyRightTpl },
     { filename: 'datatable-body.html', template: datatableBodyTpl },
     { filename: 'datatable-cell.html', template: datatableCellTpl },
     { filename: 'datatable-foot.html', template: datatableFootTpl },
