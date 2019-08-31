@@ -540,9 +540,13 @@
                         .querySelector('.uix-datatable-wrap'));
                     let mainTable = angular.element(tableWrap[0].querySelector('.uix-datatable-main-body > table'));
                     $table.rebuildData.forEach((row, index) => {
-                        row._height = mainTable.find('tr').eq(index)[0].offsetHeight;
+                        let tr = mainTable.find('tr').eq(index)[0];
+                        if (tr) {
+                            row._height = tr.offsetHeight;
+                        }
                     });
                 }
+                let start = Date.now();
 
                 function renderTableBody() {
                     let template = getTemplate('main');
@@ -557,10 +561,11 @@
                             .querySelector('.uix-datatable-wrap'));
                         tableWrap.empty().append(clonedElement);
                         $timeout(() => {
-                            updateFixedTableShadow();
-                            updateFixedRowHeight();
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
+                            updateFixedTableShadow();
+                            updateFixedRowHeight();
+                            console.log('take time', Date.now() - start);
                         }, 0);
                     });
                 }
@@ -604,6 +609,9 @@
                 };
                 $table.initData = function () {
                     $table.rebuildData = makeRebuildData();
+                    $timeout(() => {
+                        updateFixedRowHeight();
+                    }, 0)
                 };
                 $table.render = () => {
                     calcColumnsWidth();
@@ -619,7 +627,7 @@
                 };
                 $scope.$on('$destroy', () => {
                     unbindEvents();
-                    compileScope.$destory();
+                    compileScope.$destroy();
                 });
             }])
         .directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', function (uixDatatable, uixDatatableConfig) {
