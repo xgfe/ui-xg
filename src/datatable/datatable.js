@@ -331,7 +331,7 @@
                 }
 
                 function prepareColumns(columns) {
-                    return columns.map(column => {
+                    return columns.filter(column => !column.hidden).map(column => {
                         if ('children' in column) {
                             prepareColumns(column.children);
                         }

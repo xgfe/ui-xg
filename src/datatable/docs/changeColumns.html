@@ -3,4 +3,9 @@
   type="button"
   ng-click="vm.changeColumns()"
 >修改columns数据</button>
+<button
+  class="btn btn-sm btn-success"
+  type="button"
+  ng-click="vm.toggleColumn()"
+>{{vm.showColumn?'隐藏':'显示'}}第4列</button>
 <uix-datatable columns="vm.columns" data="vm.data"></uix-datatable>
