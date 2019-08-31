@@ -14,6 +14,10 @@ import customStyle from './customStyle';
 import rawcustomStyle from '!!raw-loader!./customStyle';
 import customStyleTemplate from './customStyle.html';
 
+import tooltip from './tooltip';
+import rawtooltip from '!!raw-loader!./tooltip';
+import tooltipTemplate from './tooltip.html';
+
 import fixedHeader from './fixedHeader';
 import rawfixedHeader from '!!raw-loader!./fixedHeader';
 import fixedHeaderTemplate from './fixedHeader.html';
@@ -99,6 +103,17 @@ export const demos = {
         controller: customStyle,
         template: customStyleTemplate,
         script: rawData + rawcustomStyle
+    },
+    tooltip: {
+        title: '超长文本',
+        description: `
+        <code>column</code>设置属性<code>ellipsis:true</code>可以对长文本省略显示，同时显示tooltip <br>
+        <b>注意：除了<code>filter</code>之外，如果设置了其他特殊渲染模板时，该属性不会才生效，</b><br>
+        参考示例中的第2列
+        `,
+        controller: tooltip,
+        template: tooltipTemplate,
+        script: rawData + rawtooltip
     },
     fixedHeader: {
         title: '固定表头',

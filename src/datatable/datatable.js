@@ -460,6 +460,7 @@
                             `row.cellClassName['${column.key}']`
                         ];
                         let content = '';
+                        let enableTooltip = false;
                         if (column.type === 'index') {
                             if (column.indexMethod) {
                                 content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].indexMethod(row, rowIndex)}}';
@@ -472,15 +473,24 @@
                             content = column.template || $templateCache.get(column.templateUrl) || '';
                         } else {
                             content = '{{';
-                            content += 'row["' + column.key + '"]';
+                            content += `row['${column.key}']`;
                             if (column.filter) {
                                 content += ` | ${column.filter}`;
                             }
                             content += '}}';
+                            enableTooltip = column.ellipsis;
+                            if (enableTooltip) {
+                                content = content.replace(/"/g, '\'');
+                            }
+                        }
+                        if (enableTooltip) {
+                            content = `<span tooltip-append-to-body="true" uix-tooltip="${content}">${content}</span>`;
                         }
                         return `
                             <td class="${classes}" ng-class="${ngClass}">
-                                <div class="uix-datatable-cell">${content}</div>
+                                <div class="uix-datatable-cell ${enableTooltip ? 'uix-datatable-cell-ellipsis' : ''}">
+                                    ${content}
+                                </div>
                             </td>
                         `;
                     }).join('');

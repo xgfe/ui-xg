@@ -2,7 +2,7 @@ $text-color: #515a6e; // 默认字体颜色
 $text-size: 12px; // 默认字号
 
 $border-color  : #ddd; // 边框颜色
-$primary-color : #2d8cf0;  // 主颜色
+$primary-color : #2d8cf0; // 主颜色
 
 $thead-bg-color  : #f8f8f9; // 表头背景颜色
 $hover-bg-color  : #f9f9f9; // 悬浮颜色
@@ -10,7 +10,7 @@ $striped-bg-color: $hover-bg-color; // 斑马纹颜色
 
 $cell-padding: 12px 12px; // 单元格内边距
 
-$sort-icon-size: 7px;  // 排序箭头图标大小
+$sort-icon-size : 7px; // 排序箭头图标大小
 $sort-icon-color: #c5c8ce; // 排序箭头图标颜色
 
 $state-text-size: 16px; // 状态提示文本大小
@@ -159,6 +159,7 @@ $state-text-size: 16px; // 状态提示文本大小
             box-shadow: none;
         }
     }
+
     &.uix-datatable-scroll-right {
         .uix-datatable-fixed-right {
             box-shadow: none;
@@ -167,9 +168,16 @@ $state-text-size: 16px; // 状态提示文本大小
 
     .uix-datatable-cell {
         padding   : $cell-padding;
-        overflow  : hidden;
         box-sizing: border-box;
         position  : relative;
+        word-break: break-all;
+
+        &.uix-datatable-cell-ellipsis {
+            word-break   : normal;
+            white-space  : nowrap;
+            overflow     : hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     .uix-datatable-sort {
