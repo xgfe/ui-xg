@@ -1,17 +1,28 @@
-$striped-background-color:#f9f9f9;
-$hover-background-color:$striped-background-color;
-$border-color          : #ddd;
-$primary-color         : #2d8cf0;
+$text-color: #515a6e; // 默认字体颜色
+$text-size: 12px; // 默认字号
+
+$border-color  : #ddd; // 边框颜色
+$primary-color : #2d8cf0;  // 主颜色
+
+$thead-bg-color  : #f8f8f9; // 表头背景颜色
+$hover-bg-color  : #f9f9f9; // 悬浮颜色
+$striped-bg-color: $hover-bg-color; // 斑马纹颜色
+
+$cell-padding: 12px 12px; // 单元格内边距
+
+$sort-icon-size: 7px;  // 排序箭头图标大小
+$sort-icon-color: #c5c8ce; // 排序箭头图标颜色
+
+$state-text-size: 16px; // 状态提示文本大小
 
 .uix-datatable {
     position        : relative;
-    overflow        : hidden;
     width           : inherit;
     height          : 100%;
     max-width       : 100%;
     overflow        : hidden;
-    color           : #515a6e;
-    font-size       : 12px;
+    color           : $text-color;
+    font-size       : $text-size;
     background-color: #fff;
     box-sizing      : border-box;
 
@@ -25,28 +36,25 @@ $primary-color         : #2d8cf0;
     }
 
     th {
-        height          : 40px;
         white-space     : nowrap;
         overflow        : hidden;
-        background-color: #f8f8f9;
+        background-color: $thead-bg-color;
     }
 
     td,
     th {
         min-width     : 0;
-        padding       : 12px 0;
         box-sizing    : border-box;
         text-align    : left;
-        text-overflow : ellipsis;
         vertical-align: middle;
-        border-bottom : 1px solid #e8eaec;
+        border-bottom : 1px solid $border-color;
     }
 
     &.uix-datatable-striped .uix-datatable-tbody {
 
         &>tbody>tr:nth-child(even)>td,
         &>tbody>tr:nth-child(even)>th {
-            background-color: $striped-background-color;
+            background-color: $striped-bg-color;
         }
     }
 
@@ -83,7 +91,7 @@ $primary-color         : #2d8cf0;
     .uix-datatable-thead>thead>tr>th,
     .uix-datatable-thead>thead>tr>td {
         border-bottom   : 0;
-        background-color: #f8f8f9;
+        background-color: $thead-bg-color;
     }
 
     .uix-datatable-main-body {
@@ -156,24 +164,16 @@ $primary-color         : #2d8cf0;
     }
 
     .uix-datatable-cell {
-        padding-left : 18px;
-        padding-right: 18px;
-        overflow     : hidden;
-        text-overflow: ellipsis;
-        white-space  : normal;
-        word-break   : break-all;
-        box-sizing   : border-box;
-        position     : relative;
-
-        &.uix-datatable-cell-sortable {
-            padding-right: 30px;
-        }
+        padding   : $cell-padding;
+        overflow  : hidden;
+        box-sizing: border-box;
+        position  : relative;
     }
 
     .uix-datatable-sort {
         display       : inline-block;
-        width         : 14px;
-        height        : 14px;
+        width         : $sort-icon-size * 2;
+        height        : $sort-icon-size * 2;
         margin-top    : -1px;
         vertical-align: middle;
         overflow      : hidden;
@@ -181,17 +181,17 @@ $primary-color         : #2d8cf0;
         position      : absolute;
         right         : 10px;
         top           : 50%;
-        margin-top    : -7px;
+        margin-top    : - $sort-icon-size;
 
         i {
             display    : block;
-            height     : 6px;
-            line-height: 6px;
+            height     : $sort-icon-size - 1;
+            line-height: $sort-icon-size - 1;
             overflow   : hidden;
             position   : absolute;
-            color      : #c5c8ce;
+            color      : $sort-icon-color;
             transition : color .2s ease-in-out;
-            font-size  : 12px;
+            font-size  : $text-size;
 
             &:hover,
             &.on {
@@ -228,7 +228,7 @@ $primary-color         : #2d8cf0;
         }
 
         .inner-text {
-            font-size  : 16px;
+            font-size  : $state-text-size;
             position   : absolute;
             top        : 50%;
             height     : 30px;
@@ -240,7 +240,7 @@ $primary-color         : #2d8cf0;
     }
 
     .uix-datatable-row-hover td {
-        background-color: $hover-background-color;
+        background-color: $hover-bg-color;
     }
 }
 
