@@ -1,5 +1,15 @@
-当前选中的是第 {{vm.checked}} 行
-<uix-datatable bordered columns="vm.columns" data="vm.data" on-row-click="vm.handleRowClick($row,$index)"></uix-datatable>
-<script type="text/ng-template" id="radioTpl">
-    <input type="radio" ng-value="row._index" name="tableradio" ng-model="vm.checked">
-</script>
+<style>
+  .custom-disabled-checked {
+    cursor: not-allowed;
+  }
+</style>
+当前选中的是第 {{ vm.selectRow }} 行
+<uix-datatable
+  bordered
+  columns="vm.columns"
+  data="vm.data"
+  row-class-name="vm.rowClassName($row,$index)"
+  on-current-change="
+    vm.handleCurrentChange($newRow, $oldRow, $newIndex, $oldIndex)
+  "
+></uix-datatable>

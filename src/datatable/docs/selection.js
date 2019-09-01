@@ -1,37 +1,16 @@
 import { baseColumns, baseData } from './data';
+let data = angular.copy(baseData);
+data[2].disabled = true;
+data[2].checked = true;
+data[3].checked = true;
 export default class {
     columns = [{
-        headerTemplateUrl: 'selectAllTpl',
-        templateUrl: 'selectTpl',
+        type: 'selection',
+        width: 50
     }].concat(angular.copy(baseColumns));
-    data = angular.copy(baseData);
-    selectAll = false;
-    selectMap = {};
-
-    constructor() {
-        this.selectMap = this.data.reduce((prev, item) => {
-            prev[item.id] = false;
-            return prev;
-        }, {});
-    }
-
-    handleSelectAll() {
-        angular.forEach(this.selectMap, (value, id) => {
-            this.selectMap[id] = this.selectAll;
-        });
-    }
-
-    getSelectedItems() {
-        let result = [];
-        angular.forEach(this.selectMap, (value, id) => {
-            if (value) {
-                result.push(id);
-            }
-        });
-        return result;
-    }
-
-    handleSelect() {
-        this.selectAll = this.getSelectedItems().length >= this.data.length;
+    data = data;
+    disabledRowClickSelect = false;
+    onSelectionChange(newRows, oldRows) {
+        console.log(newRows, oldRows);
     }
 }

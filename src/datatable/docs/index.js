@@ -151,23 +151,27 @@ export const demos = {
         template: expandTemplate,
         script: rawData + rawexpand
     },
-    radio: {
-        title: '单选',
-        description: `
-        单选尚未封装到组件中，可以通过自定义表头和列模板的方式实现
-        `,
-        controller: radio,
-        template: radioTemplate,
-        script: rawData + rawradio
-    },
     selection: {
         title: '多选',
         description: `
-        多选尚未封装到组件中，可以通过自定义表头和列模板的方式实现
+        通过<code>type:'selection'</code>可以开启多选，行数据中配置<code>checked:true</code>表示默认选中，
+        <code>disabled:true</code>表示默认不可选中。<br>
+        修改选中项时会触发<code>on-selection-change</code>事件，参数有<code>$newRows</code>、<code>$oldRows</code>，分别表示当前选中数据与上一次选中数据<br>
+        默认情况下，每次点击行数据会触发本行选中，可通过配置<code>disabled-row-click-select</code>取消这一特性
         `,
         controller: selection,
         template: selectionTemplate,
         script: rawData + rawselection
+    },
+    radio: {
+        title: '单选',
+        description: `
+        配置属性同“多选”，在配置<code>type:'selection'</code>的同时，设置<code>singleSelect: true</code>表示单选<br>
+        修改选中项时会触发<code>on-current-change</code>事件，参数有<code>$newRow</code>、<code>$oldRow</code>、<code>$newIndex</code>、<code>$oldIndex</code>
+        `,
+        controller: radio,
+        template: radioTemplate,
+        script: rawData + rawradio
     },
     sort: {
         title: '排序',

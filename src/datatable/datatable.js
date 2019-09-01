@@ -81,6 +81,9 @@
                 const $table = this;
                 $table.columnsWidth = {}; // 列宽
                 $table.bodyStyle = {};
+                $table.currentChecked = null;
+                $table.selections = {};
+                $table.isSelectedAll = false;
 
                 $table.headerHeight = 0; // initial header height
                 $table.containerHeight = null;
@@ -97,15 +100,63 @@
                         newRow._index = index;
                         newRow._isHover = false;
                         newRow._isExpand = false;
+                        newRow.disabled = !!row.disabled;
                         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
                             newRow._rowClassName = $scope.rowClassName({
                                 $row: newRow,
                                 $index: index
                             });
                         }
+                        if (row.checked) {
+                            $table.currentChecked = index;
+                            $table.selections[index] = true;
+                        }
                         return newRow;
                     });
                 }
+                $scope.$watch('$table.currentChecked', (newIndex, oldIndex) => {
+                    if (newIndex !== null && $scope.onCurrentChange) {
+                        let newRow = $table.rebuildData[newIndex];
+                        let oldRow = $table.rebuildData[oldIndex];
+                        $scope.onCurrentChange({
+                            $newRow: newRow,
+                            $oldRow: oldRow,
+                            $newIndex: newIndex,
+                            $oldIndex: oldIndex,
+                        });
+                    }
+                });
+                $scope.$watch('$table.selections', (newVal, oldVal) => {
+                    let currentSelect = [];
+                    let oldSelect = [];
+                    for (let index in newVal) {
+                        if (newVal[index]) {
+                            currentSelect.push($table.rebuildData[index]);
+                        }
+                    }
+                    for (let index in oldVal) {
+                        if (oldVal[index]) {
+                            oldSelect.push($table.rebuildData[index]);
+                        }
+                    }
+                    if ($scope.onSelectionChange) {
+                        $table.isSelectedAll = currentSelect.length >= $table.rebuildData.length;
+                        $scope.onSelectionChange({
+                            $newRows: currentSelect,
+                            $oldRows: oldSelect
+                        });
+                    }
+                }, true);
+
+                $table.handleSelectAll = () => {
+                    $table.rebuildData.forEach((row, index) => {
+                        if (row.disabled) {
+                            return;
+                        }
+                        $table.selections[index] = $table.isSelectedAll;
+                    });
+                };
+
                 $table.handleMouseIn = (event, row) => {
                     event.stopPropagation();
                     if ($table.disabledHover) {
@@ -131,6 +182,20 @@
                             $index: row._index
                         });
                     }
+                    // 禁用通过点击行选择
+                    if ($table.disabledRowClickSelect) {
+                        return;
+                    }
+                    if (row.disabled) {
+                        return;
+                    }
+                    // 单选
+                    $table.currentChecked = row._index;
+                    // 多选
+                    $table.selections[row._index] = !$table.selections[row._index];
+                };
+                $table.handleSelect = ($event) => {
+                    $event.stopPropagation();
                 };
                 $table.handleSortByHead = (column) => {
                     if (column.sortable) {
@@ -382,6 +447,8 @@
                             column.__renderHeadType = 'format';
                         } else if (column.type === 'expand') {
                             column.__renderHeadType = 'expand';
+                        } else if (column.type === 'selection') {
+                            column.__renderHeadType = 'selection';
                         } else {
                             column.__renderHeadType = 'normal';
                         }
@@ -500,6 +567,10 @@
                             } else {
                                 content = '{{rowIndex+1}}';
                             }
+                        } else if (column.type === 'selection') {
+                            content = column.singleSelect
+                                ? '<input type="radio" ng-disabled="row.disabled" ng-value="row._index" ng-model="$table.currentChecked">'
+                                : '<input type="checkbox" ng-click="$table.handleSelect($event)" ng-disabled="row.disabled" ng-model="$table.selections[row._index]">';
                         } else if (column.type === 'expand') {
                             content = `
                             <div class="uix-datatable-expand-trigger" ng-click="$table.handleRowExpand(row, rowIndex)">
@@ -732,9 +803,12 @@
                     rowClassName: '&',
                     onSortChange: '&',
                     onRowClick: '&',
+                    onSelectionChange: '&',
+                    onCurrentChange: '&',
                     height: '=',
                     maxHeight: '=',
-                    expandTemplate: '@'
+                    expandTemplate: '@',
+                    disabledRowClickSelect: '='
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -782,6 +856,10 @@
 
                     scope.$watch('disabledHover', function (val) {
                         $table.disabledHover = val;
+                    });
+
+                    scope.$watch('disabledRowClickSelect', function (val) {
+                        $table.disabledRowClickSelect = val;
                     });
 
                     scope.$watch('data', function (val, old) {

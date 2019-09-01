@@ -29,6 +29,9 @@
           </div>
           <div ng-if="column.__renderHeadType==='expand'">
           </div>
+          <div ng-if="column.__renderHeadType==='selection'">
+              <input type="checkbox" ng-change="$table.handleSelectAll()" ng-if="!column.singleSelect" ng-model="$table.isSelectedAll">
+          </div>
           <span ng-if="column.__renderHeadType === 'template'">
             <%template%>
           </span>
