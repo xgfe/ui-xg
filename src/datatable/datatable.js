@@ -4,7 +4,7 @@
  * 数据表格指令
  * 主要用于展示大量结构化数据。
  * 支持排序、固定列、固定表头、分页、自定义操作、单选多选等复杂功能。
- * 
+ *
  * Author: yjy972080142@gmail.com
  * Date:2019-08-13
  */
@@ -360,7 +360,7 @@
                         }
                         col._width = null;
                     });
-                    let unUsableWidth = hasWidthColumns.map(cell => cell.width).reduce((a, b) => a + b, 0);
+                    let unUsableWidth = hasWidthColumns.map(cell => cell.width).reduce((prev, next) => prev + next, 0);
                     let usableWidth = tableWidth - unUsableWidth - sumMinWidth - 1;
                     let usableLength = noWidthColumns.length;
                     let columnWidth = 0;
@@ -625,10 +625,10 @@
                     let leftTd = '';
                     let rightTd = '';
                     if ($table.isLeftFixed) {
-                        leftTd = `<td colspan="${$table[columnsKeyMap.left].length}"></td>`
+                        leftTd = `<td colspan="${$table[columnsKeyMap.left].length}"></td>`;
                     }
                     if ($table.isRightFixed) {
-                        rightTd = `<td colspan="${$table[columnsKeyMap.right].length}"></td>`
+                        rightTd = `<td colspan="${$table[columnsKeyMap.right].length}"></td>`;
                     }
                     return `
                         <tr ng-repeat-end ng-show="row._isExpand" class="uix-datatable-expand-row">
@@ -700,7 +700,6 @@
                         });
                     }
                 }
-                let start = Date.now();
 
                 function renderTableBody() {
                     let template = getTemplate('main');
@@ -719,7 +718,6 @@
                             $table.headerHeight = headerHeight;
                             updateFixedTableShadow();
                             updateFixedRowHeight();
-                            console.log('take time', Date.now() - start);
                         }, 0);
                     });
                 }
