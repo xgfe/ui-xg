@@ -30,6 +30,10 @@ import fixedHeaderAndColumns from './fixedHeaderAndColumns';
 import rawfixedHeaderAndColumns from '!!raw-loader!./fixedHeaderAndColumns';
 import fixedHeaderAndColumnsTemplate from './fixedHeaderAndColumns.html';
 
+import expand from './expand';
+import rawexpand from '!!raw-loader!./expand';
+import expandTemplate from './expand.html';
+
 import radio from './radio';
 import rawradio from '!!raw-loader!./radio';
 import radioTemplate from './radio.html';
@@ -108,8 +112,8 @@ export const demos = {
         title: '超长文本',
         description: `
         <code>column</code>设置属性<code>ellipsis:true</code>可以对长文本省略显示，同时显示tooltip <br>
-        <b>注意：除了<code>filter</code>之外，如果设置了其他特殊渲染模板时，该属性不会才生效，</b><br>
-        参考示例中的第2列
+        <b>注意：除了<code>filter</code>之外，如果设置了其他特殊渲染模板时，该属性不会才生效。</b><br>
+        参考示例中的第2列并不会生效，因为设置了<code>format</code>
         `,
         controller: tooltip,
         template: tooltipTemplate,
@@ -135,6 +139,17 @@ export const demos = {
         controller: fixedHeaderAndColumns,
         template: fixedHeaderAndColumnsTemplate,
         script: rawData + rawfixedHeaderAndColumns
+    },
+    expand: {
+        title: '可展开',
+        description: `
+        通过<code>type:'expand'</code>和<code>expand-template</code>可以开启行展开，模板中自动注入变量<code>row</code>和<code>rowIndex</code><br>
+        如果需要自定义展开列的方法，可以通过自定义模板，且在自定义模板中绑定<code>$table.handleRowExpand(row)</code>方法，参考示例2<br>
+        <b>注意：当与列固定同时使用时，只会对中间表格进行展开，固定列仅做高度适配</b>
+        `,
+        controller: expand,
+        template: expandTemplate,
+        script: rawData + rawexpand
     },
     radio: {
         title: '单选',

@@ -27,6 +27,8 @@
               >{{:: column.title || '#' }}
             </span>
           </div>
+          <div ng-if="column.__renderHeadType==='expand'">
+          </div>
           <span ng-if="column.__renderHeadType === 'template'">
             <%template%>
           </span>

@@ -13,7 +13,8 @@
   </colgroup>
   <tbody>
     <tr
-      ng-repeat="(rowIndex, row) in $table.rebuildData"
+      ng-repeat-start="(rowIndex, row) in $table.rebuildData"
+      class="uix-datatable-normal-row"
       ng-mouseenter="$table.handleMouseIn($event,row)"
       ng-mouseleave="$table.handleMouseOut($event,row)"
       ng-class="[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']"
@@ -22,5 +23,6 @@
     >
      <%template%>
     </tr>
+    <%expand%>
   </tbody>
 </table>

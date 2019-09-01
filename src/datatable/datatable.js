@@ -96,6 +96,7 @@
                         const newRow = angular.copy(row);
                         newRow._index = index;
                         newRow._isHover = false;
+                        newRow._isExpand = false;
                         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
                             newRow._rowClassName = $scope.rowClassName({
                                 $row: newRow,
@@ -162,6 +163,36 @@
                         });
                     }
                 };
+                // 展开行响应事件，对外可调用
+                $table.handleRowExpand = (row) => {
+                    if (!row) {
+                        return;
+                    }
+                    let rowIndex = row._index;
+                    row._isExpand = !row._isExpand;
+                    $timeout(() => {
+                        let currentRow = findEl('.uix-datatable-main-body table')
+                            .find('.uix-datatable-expand-row').get(rowIndex);
+                        if (currentRow) {
+                            let expandHeight = currentRow.offsetHeight;
+                            if ($table.isLeftFixed) {
+                                findEl('.uix-datatable-left-body table')
+                                    .find('.uix-datatable-expand-row')
+                                    .eq(rowIndex).css({
+                                        height: expandHeight + 'px'
+                                    });
+                            }
+                            if ($table.isRightFixed) {
+                                findEl('.uix-datatable-right-body table')
+                                    .find('.uix-datatable-expand-row')
+                                    .eq(rowIndex).css({
+                                        height: expandHeight + 'px'
+                                    });
+                            }
+                        }
+                    }, 0);
+                };
+
                 function handleMainBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
                     let scrollLeft = event.target.scrollLeft;
@@ -349,6 +380,8 @@
                             column.__headTemplate = column.headerTemplate || $templateCache.get(column.headerTemplateUrl) || '';
                         } else if (angular.isFunction(column.headerFormat)) {
                             column.__renderHeadType = 'format';
+                        } else if (column.type === 'expand') {
+                            column.__renderHeadType = 'expand';
                         } else {
                             column.__renderHeadType = 'normal';
                         }
@@ -467,6 +500,13 @@
                             } else {
                                 content = '{{rowIndex+1}}';
                             }
+                        } else if (column.type === 'expand') {
+                            content = `
+                            <div class="uix-datatable-expand-trigger" ng-click="$table.handleRowExpand(row, rowIndex)">
+                                <i ng-show="!row._isExpand" class="glyphicon glyphicon-menu-right"></i>
+                                <i ng-show="row._isExpand" class="glyphicon glyphicon-menu-down"></i>
+                            </div>
+                            `;
                         } else if (angular.isFunction(column.format)) {
                             content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].format(row, rowIndex)}}';
                         } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
@@ -495,6 +535,42 @@
                         `;
                     }).join('');
                 }
+                const columnsKeyMap = {
+                    main: 'allDataColumns',
+                    left: 'leftColumns',
+                    right: 'rightColumns'
+                };
+                // 获取展开行模板
+                // 当具有左右固定列时，只展开中间表格
+                function getExpandTemplate(position = 'main') {
+                    let expandTemplate = $templateCache.get($table.expandTemplate) || '';
+                    if (position === 'left' || position === 'right') {
+                        return `
+                            <tr ng-repeat-end ng-show="row._isExpand" class="uix-datatable-expand-row">
+                                <td colspan="${$table[columnsKeyMap[position]].length}"></td>
+                            </tr>
+                        `;
+                    }
+                    let leftTd = '';
+                    let rightTd = '';
+                    if ($table.isLeftFixed) {
+                        leftTd = `<td colspan="${$table[columnsKeyMap.left].length}"></td>`
+                    }
+                    if ($table.isRightFixed) {
+                        rightTd = `<td colspan="${$table[columnsKeyMap.right].length}"></td>`
+                    }
+                    return `
+                        <tr ng-repeat-end ng-show="row._isExpand" class="uix-datatable-expand-row">
+                            ${leftTd}
+                            <td colspan="${$table.centerColumns.length}">
+                                <div class="uix-datatable-expand-cell">
+                                    ${expandTemplate}
+                                </div>
+                            </td>
+                            ${rightTd}
+                        </tr>
+                    `;
+                }
                 function getTemplate(position = 'main') {
                     let template = $templateCache.get(`templates/datatable-table-${position}.html`);
                     return template.replace('<%head%>', getHeadTemplate(position))
@@ -502,39 +578,35 @@
                 }
                 function getBodyTemplate(position) {
                     let template = $templateCache.get('templates/datatable-body-tpl.html') || '';
-                    let columnsKey = '';
+                    let columnsKey = columnsKeyMap[position];
                     let widthKey = '';
                     if (position === 'left') {
-                        columnsKey = 'leftColumns';
                         widthKey = 'leftTableWidth';
                     } else if (position === 'right') {
-                        columnsKey = 'rightColumns';
                         widthKey = 'rightTableWidth';
                     } else {
-                        columnsKey = 'allDataColumns';
                         widthKey = 'tableWidth';
                     }
                     return template
                         .replace('<%widthKey%>', widthKey)
                         .replace('<%columnsKey%>', columnsKey)
+                        .replace('<%columnsLength%>', $table[columnsKey].length)
+                        .replace('<%expand%>', getExpandTemplate(position))
                         .replace('<%rowHeightExp%>', position === 'left' || position === 'right' ? 'ng-style="{height:row._height+\'px\'}"' : '')
                         .replace('<%template%>', getBodyRowsTemplate(position));
                 }
                 function getHeadTemplate(position) {
                     let template = $templateCache.get('templates/datatable-head-tpl.html') || '';
                     let widthKey = '';
-                    let columnsKey = '';
+                    let columnsKey = columnsKeyMap[position];
                     let columnRowsKey = '';
                     if (position === 'left') {
-                        columnsKey = 'leftColumns';
                         columnRowsKey = 'leftColumnRows';
                         widthKey = 'leftTableWidth';
                     } else if (position === 'right') {
-                        columnsKey = 'rightColumns';
                         columnRowsKey = 'rightColumnRows';
                         widthKey = 'rightTableWidth';
                     } else {
-                        columnsKey = 'allDataColumns';
                         columnRowsKey = 'allColumnRows';
                         widthKey = 'tableWidth';
                     }
@@ -546,15 +618,16 @@
                 }
 
                 function updateFixedRowHeight() {
-                    let tableWrap = angular.element($element[0]
-                        .querySelector('.uix-datatable-wrap'));
-                    let mainTable = angular.element(tableWrap[0].querySelector('.uix-datatable-main-body > table'));
-                    $table.rebuildData.forEach((row, index) => {
-                        let tr = mainTable.find('tr').eq(index)[0];
-                        if (tr) {
-                            row._height = tr.offsetHeight;
-                        }
-                    });
+                    let tableWrap = $element.find('.uix-datatable-wrap');
+                    let allRows = tableWrap.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
+                    if (allRows.length) {
+                        $table.rebuildData.forEach((row, index) => {
+                            let tr = allRows.get(index);
+                            if (tr) {
+                                row._height = tr.offsetHeight;
+                            }
+                        });
+                    }
                 }
                 let start = Date.now();
 
@@ -579,10 +652,11 @@
                         }, 0);
                     });
                 }
-                function getFixedColumns() {
+                function splitColumns() {
                     let columns = $table.allDataColumns;
                     let left = [];
                     let right = [];
+                    let center = [];
 
                     columns.forEach((column, index) => {
                         column._index = index;
@@ -591,10 +665,13 @@
                             left.push(column);
                         } else if (column.fixed && column.fixed === 'right') {
                             right.push(column);
+                        } else {
+                            center.push(column);
                         }
                     });
                     return {
                         left: left,
+                        center: center,
                         right: right,
                     };
                 }
@@ -603,9 +680,10 @@
                     const colsWithId = prepareColumns($scope.columns);
                     $table.allDataColumns = getDataColumns(colsWithId);
 
-                    let columsObj = getFixedColumns(colsWithId);
+                    let columsObj = splitColumns(colsWithId);
                     $table.leftColumns = columsObj.left;
                     $table.rightColumns = columsObj.right;
+                    $table.centerColumns = columsObj.center;
 
                     $table.allColumnRows = makeColumnRows(colsWithId);
                     $table.leftColumnRows = makeColumnRows(colsWithId, 'left');
@@ -621,7 +699,7 @@
                     $table.rebuildData = makeRebuildData();
                     $timeout(() => {
                         updateFixedRowHeight();
-                    }, 0)
+                    }, 0);
                 };
                 $table.render = () => {
                     calcColumnsWidth();
@@ -656,6 +734,7 @@
                     onRowClick: '&',
                     height: '=',
                     maxHeight: '=',
+                    expandTemplate: '@'
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -672,6 +751,8 @@
                     $table.isLoading = false;
                     $table.isEmpty = false;
                     $table.isError = false;
+
+                    $table.expandTemplate = scope.expandTemplate || '';
 
                     ['loading', 'empty', 'error'].forEach(type => {
                         scope[`${type}Text`] = $attrs[`${type}Text`] ||

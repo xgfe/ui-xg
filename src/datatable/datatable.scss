@@ -180,6 +180,15 @@ $state-text-size: 16px; // 状态提示文本大小
         }
     }
 
+    .uix-datatable-expand-cell {
+        padding: 18px;
+    }
+
+    .uix-datatable-expand-trigger {
+        text-align: center;
+        cursor: pointer;
+    }
+
     .uix-datatable-sort {
         display       : inline-block;
         width         : $sort-icon-size * 2;
