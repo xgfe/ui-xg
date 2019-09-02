@@ -274,7 +274,18 @@ $state-text-size: 16px; // 状态提示文本大小
     }
 }
 
+// 移动端不显示固定列
+@media screen and (max-width: 768px) {
+    .uix-datatable {
+        .uix-datatable-fixed {
+            display: none;
+        }
 
+        .uix-datatable-main-table .uix-datatable-cell-fixed {
+            visibility: visible;
+        }
+    }
+}
 
 @-moz-keyframes spin {
     0% {
