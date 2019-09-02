@@ -48,6 +48,43 @@
         });
         return list.concat(others);
     };
+    function getScrollBarSize() {
+        // eslint-disable-next-line angular/document-service
+        const inner = document.createElement('div');
+        inner.style.width = '100%';
+        inner.style.height = '200px';
+
+        // eslint-disable-next-line angular/document-service
+        const outer = document.createElement('div');
+        const outerStyle = outer.style;
+
+        outerStyle.position = 'absolute';
+        outerStyle.top = 0;
+        outerStyle.left = 0;
+        outerStyle.pointerEvents = 'none';
+        outerStyle.visibility = 'hidden';
+        outerStyle.width = '200px';
+        outerStyle.height = '150px';
+        outerStyle.overflow = 'hidden';
+
+        outer.appendChild(inner);
+
+        // eslint-disable-next-line angular/document-service
+        document.body.appendChild(outer);
+
+        const widthContained = inner.offsetWidth;
+        outer.style.overflow = 'scroll';
+        let widthScroll = inner.offsetWidth;
+
+        if (widthContained === widthScroll) {
+            widthScroll = outer.clientWidth;
+        }
+
+        // eslint-disable-next-line angular/document-service
+        document.body.removeChild(outer);
+
+        return widthContained - widthScroll;
+    }
 
     angular.module('ui.xg.datatable', [])
         .constant('uixDatatableConfig', {
@@ -84,6 +121,9 @@
                 $table.currentChecked = null;
                 $table.selections = {};
                 $table.isSelectedAll = false;
+                $table.scrollBarWidth = getScrollBarSize();
+                $table.showVerticalScrollBar = false;
+                $table.showHorizontalScrollBar = false;
 
                 $table.headerHeight = 0; // initial header height
                 $table.containerHeight = null;
@@ -299,6 +339,8 @@
                     updateFixedTableShadow();
                     $scope.$digest();
                     $timeout(() => {
+                        $table.updateHorizontalScroll();
+                        $table.updateVerticalScroll();
                         updateFixedRowHeight();
                     }, 0);
                 }
@@ -361,7 +403,7 @@
                         col._width = null;
                     });
                     let unUsableWidth = hasWidthColumns.map(cell => cell.width).reduce((prev, next) => prev + next, 0);
-                    let usableWidth = tableWidth - unUsableWidth - sumMinWidth - 1;
+                    let usableWidth = tableWidth - unUsableWidth - sumMinWidth - ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0) - 1;
                     let usableLength = noWidthColumns.length;
                     let columnWidth = 0;
                     if (usableWidth > 0 && usableLength > 0) {
@@ -500,6 +542,19 @@
 
                     return rows;
                 }
+                $table.updateVerticalScroll = () => {
+                    let mainTableHeight = $element.find('.uix-datatable-main-body > table').get(0).offsetHeight;
+                    if ($table.height) {
+                        $table.showVerticalScrollBar = mainTableHeight > $table.height;
+                    } else if ($table.maxHeight) {
+                        $table.showVerticalScrollBar = mainTableHeight > $table.maxHeight;
+                    }
+                };
+                $table.updateHorizontalScroll = () => {
+                    let mainTableWidth = $element.find('.uix-datatable-main-body').get(0).offsetWidth;
+
+                    $table.showHorizontalScrollBar = $table.tableWidth > mainTableWidth;
+                };
 
                 // 获取固定列的宽度
                 function getFixedColumnsWidth(fixedType) {
@@ -599,7 +654,7 @@
                         }
                         return `
                             <td class="${classes}" ng-class="${ngClass}">
-                                <div class="uix-datatable-cell ${enableTooltip ? 'uix-datatable-cell-ellipsis' : ''}">
+                                <div class="${column.fixed ? 'uix-datatable-cell-fixed' : ''} uix-datatable-cell ${enableTooltip ? 'uix-datatable-cell-ellipsis' : ''}">
                                     ${content}
                                 </div>
                             </td>
@@ -611,9 +666,16 @@
                     left: 'leftColumns',
                     right: 'rightColumns'
                 };
+                function hasExpandTemplate() {
+                    let expandTemplate = $templateCache.get($table.expandTemplate) || '';
+                    return !!expandTemplate;
+                }
                 // 获取展开行模板
                 // 当具有左右固定列时，只展开中间表格
                 function getExpandTemplate(position = 'main') {
+                    if (!hasExpandTemplate()) {
+                        return '';
+                    }
                     let expandTemplate = $templateCache.get($table.expandTemplate) || '';
                     if (position === 'left' || position === 'right') {
                         return `
@@ -644,7 +706,8 @@
                 }
                 function getTemplate(position = 'main') {
                     let template = $templateCache.get(`templates/datatable-table-${position}.html`);
-                    return template.replace('<%head%>', getHeadTemplate(position))
+                    return template
+                        .replace('<%head%>', getHeadTemplate(position))
                         .replace('<%body%>', getBodyTemplate(position));
                 }
                 function getBodyTemplate(position) {
@@ -658,7 +721,9 @@
                     } else {
                         widthKey = 'tableWidth';
                     }
+                    let hasExpand = hasExpandTemplate();
                     return template
+                        .replace('<%repeatExp%>', hasExpand ? 'ng-repeat-start' : 'ng-repeat')
                         .replace('<%widthKey%>', widthKey)
                         .replace('<%columnsKey%>', columnsKey)
                         .replace('<%columnsLength%>', $table[columnsKey].length)
@@ -700,6 +765,16 @@
                         });
                     }
                 }
+                $scope.$watch('$table.showVerticalScrollBar', (val, oldVal) => {
+                    if (val !== oldVal) {
+                        calcColumnsWidth();
+                    }
+                });
+                $scope.$watch('$table.tableWidth', (val, oldVal) => {
+                    if (val !== oldVal) {
+                        $table.updateHorizontalScroll();
+                    }
+                });
 
                 function renderTableBody() {
                     let template = getTemplate('main');
@@ -716,6 +791,9 @@
                         $timeout(() => {
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
+
+                            $table.updateHorizontalScroll();
+                            $table.updateVerticalScroll();
                             updateFixedTableShadow();
                             updateFixedRowHeight();
                         }, 0);
@@ -787,7 +865,7 @@
                     compileScope.$destroy();
                 });
             }])
-        .directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', function (uixDatatable, uixDatatableConfig) {
+        .directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', '$timeout', function (uixDatatable, uixDatatableConfig, $timeout) {
             return {
                 restrict: 'E',
                 templateUrl: 'templates/datatable.html',
@@ -844,6 +922,7 @@
                     scope.$watch('maxHeight', (val) => {
                         val = parseFloat(val, 10);
                         if (!isNaN(val)) {
+                            $table.maxHeight = val;
                             if (!$table.height) {
                                 $table.bodyStyle = {
                                     maxHeight: val + 'px',
@@ -864,6 +943,10 @@
                         if (val !== old && angular.isDefined(val)) {
                             $table.data = val;
                             $table.initData();
+                            // 当内容发生变化时，重新计算是否有纵向滚动
+                            $timeout(() => {
+                                $table.updateVerticalScroll();
+                            }, 0);
                         }
                     });
                     scope.$watch('columns', function (val, old) {

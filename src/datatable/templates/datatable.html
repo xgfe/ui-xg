@@ -6,8 +6,13 @@
   }"
   ng-style="{height:$table.containerHeight}"
 >
-  <div class="uix-datatable-wrap">
-  </div>
+  <div class="uix-datatable-wrap"></div>
+  <!-- 横纵向同时滚动时填充右上角 -->
+  <div
+    class="uix-datatable-right-header-block"
+    ng-if="$table.showVerticalScrollBar"
+    ng-style="{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}"
+  ></div>
   <div class="uix-datatable-empty" ng-if="$table.isEmpty">
     <span class="inner-text">{{ emptyText }}</span>
   </div>

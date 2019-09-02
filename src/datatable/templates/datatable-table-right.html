@@ -1,13 +1,13 @@
 <div
   class="uix-datatable-fixed uix-datatable-fixed-right"
-  ng-style="{width:$table.rightTableWidth}"
+  ng-style="{width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':0}"
 >
   <div
     class="uix-datatable-right-header"
   ><%head%></div>
   <div
     class="uix-datatable-right-body"
-    ng-style="{top:$table.headerHeight+'px'}"
+    ng-style="{top:$table.headerHeight+'px',bottom:$table.showHorizontalScrollBar?$table.scrollBarWidth+'px':0}"
   >
   <%body%>
   </div>

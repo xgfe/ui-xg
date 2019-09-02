@@ -186,7 +186,11 @@ $state-text-size: 16px; // 状态提示文本大小
 
     .uix-datatable-expand-trigger {
         text-align: center;
-        cursor: pointer;
+        cursor    : pointer;
+    }
+
+    .uix-datatable-main-table .uix-datatable-cell-fixed {
+        visibility: hidden;
     }
 
     .uix-datatable-sort {
@@ -226,6 +230,13 @@ $state-text-size: 16px; // 状态提示文本大小
             top   : auto; // override glyphicon's style
             bottom: 0;
         }
+    }
+
+    .uix-datatable-right-header-block {
+        position        : absolute;
+        right           : 0;
+        top             : 0;
+        background-color: $thead-bg-color;
     }
 
     .uix-datatable-loading,
