@@ -8,9 +8,9 @@ $thead-bg-color  : #f8f8f9; // 表头背景颜色
 $hover-bg-color  : #f9f9f9; // 悬浮颜色
 $striped-bg-color: $hover-bg-color; // 斑马纹颜色
 
-$cell-padding: 12px 12px; // 单元格内边距
+$cell-padding: 12px; // 单元格内边距
 
-$sort-icon-size : 7px; // 排序箭头图标大小
+$sort-icon-size : 6px; // 排序箭头图标大小
 $sort-icon-color: #c5c8ce; // 排序箭头图标颜色
 
 $state-text-size: 16px; // 状态提示文本大小
@@ -36,8 +36,6 @@ $state-text-size: 16px; // 状态提示文本大小
     }
 
     th {
-        white-space     : nowrap;
-        overflow        : hidden;
         background-color: $thead-bg-color;
     }
 
@@ -48,6 +46,10 @@ $state-text-size: 16px; // 状态提示文本大小
         text-align    : left;
         vertical-align: middle;
         border-bottom : 1px solid $border-color;
+    }
+
+    .uix-datatable-wrap {
+        position: relative;
     }
 
     &.uix-datatable-striped .uix-datatable-tbody {
@@ -167,7 +169,7 @@ $state-text-size: 16px; // 状态提示文本大小
     }
 
     .uix-datatable-cell {
-        padding   : $cell-padding;
+        padding   : $cell-padding $cell-padding;
         box-sizing: border-box;
         position  : relative;
         word-break: break-all;
@@ -177,6 +179,10 @@ $state-text-size: 16px; // 状态提示文本大小
             white-space  : nowrap;
             overflow     : hidden;
             text-overflow: ellipsis;
+        }
+
+        &.uix-datatable-sort-cell {
+            padding-right: $cell-padding + $sort-icon-size * 2;
         }
     }
 
@@ -196,7 +202,7 @@ $state-text-size: 16px; // 状态提示文本大小
     .uix-datatable-sort {
         display       : inline-block;
         width         : $sort-icon-size * 2;
-        height        : $sort-icon-size * 2;
+        height        : $sort-icon-size * 2 + 2;
         margin-top    : -1px;
         vertical-align: middle;
         overflow      : hidden;
@@ -204,31 +210,39 @@ $state-text-size: 16px; // 状态提示文本大小
         position      : absolute;
         right         : 10px;
         top           : 50%;
-        margin-top    : - $sort-icon-size;
+        margin-top    : - $sort-icon-size - 1;
 
         i {
-            display    : block;
-            height     : $sort-icon-size - 1;
-            line-height: $sort-icon-size - 1;
-            overflow   : hidden;
-            position   : absolute;
-            color      : $sort-icon-color;
-            transition : color .2s ease-in-out;
-            font-size  : $text-size;
+            display     : block;
+            border-width: $sort-icon-size;
+            border-style: solid;
+            overflow    : hidden;
+            position    : absolute;
+            left        : 0;
 
-            &:hover,
-            &.on {
+            &:hover {
                 color: $primary-color;
             }
         }
 
-        .glyphicon-triangle-top {
-            top: 0;
+        .uix-datatable-sort-up {
+            top             : 0;
+            border-top-width: 0;
+            border-color    : transparent transparent $sort-icon-color transparent;
+
+            &.on {
+                border-bottom-color: $primary-color;
+            }
         }
 
-        .glyphicon-triangle-bottom {
-            top   : auto; // override glyphicon's style
-            bottom: 0;
+        .uix-datatable-sort-down {
+            bottom             : 0;
+            border-bottom-width: 0;
+            border-color       : $sort-icon-color transparent transparent transparent;
+
+            &.on {
+                border-top-color: $primary-color;
+            }
         }
     }
 

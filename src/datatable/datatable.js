@@ -629,8 +629,8 @@
                         } else if (column.type === 'expand') {
                             content = `
                             <div class="uix-datatable-expand-trigger" ng-click="$table.handleRowExpand(row, rowIndex)">
-                                <i ng-show="!row._isExpand" class="glyphicon glyphicon-menu-right"></i>
-                                <i ng-show="row._isExpand" class="glyphicon glyphicon-menu-down"></i>
+                                <i ng-show="!row._isExpand" class="glyphicon glyphicon-chevron-right"></i>
+                                <i ng-show="row._isExpand" class="glyphicon glyphicon-chevron-down"></i>
                             </div>
                             `;
                         } else if (angular.isFunction(column.format)) {

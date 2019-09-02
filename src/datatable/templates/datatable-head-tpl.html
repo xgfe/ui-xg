@@ -21,31 +21,29 @@
         rowspan="{{:: column.rowSpan }}"
         ng-class="$table.alignCls(column)"
       >
-        <div ng-class="cellClasses(column)" class="uix-datatable-cell">
+        <div ng-class="{'uix-datatable-sort-cell':column.sortable}" class="uix-datatable-cell"  ng-click="$table.handleSortByHead(column)">
           <div ng-if="column.__renderHeadType==='normal'">
-            <span ng-click="$table.handleSortByHead(column)"
-              >{{:: column.title || '#' }}
-            </span>
+            <span>{{:: column.title || '#' }}</span>
           </div>
           <div ng-if="column.__renderHeadType==='expand'">
           </div>
           <div ng-if="column.__renderHeadType==='selection'">
               <input type="checkbox" ng-change="$table.handleSelectAll()" ng-if="!column.singleSelect" ng-model="$table.isSelectedAll">
           </div>
-          <span ng-if="column.__renderHeadType === 'template'">
+          <div ng-if="column.__renderHeadType === 'template'">
             <%template%>
-          </span>
+          </div>
           <div ng-if="column.__renderHeadType==='format'">
             {{ ::column.headerFormat(column) }}
           </div>
           <span class="uix-datatable-sort" ng-if="column.sortable">
             <i
-              class="glyphicon glyphicon-triangle-top"
+              class="uix-datatable-sort-up"
               ng-class="{on: column._sortType === 'asc'}"
               ng-click="$table.handleSort(column, 'asc')"
             ></i>
             <i
-              class="glyphicon glyphicon-triangle-bottom"
+              class="uix-datatable-sort-down"
               ng-class="{on: column._sortType === 'desc'}"
               ng-click="$table.handleSort(column, 'desc')"
             ></i>

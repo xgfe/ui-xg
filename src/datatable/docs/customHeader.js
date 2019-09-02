@@ -22,7 +22,8 @@ export default class {
         },
         {
             key: 'age', title: '年龄', width: 150,
-            headerTemplateUrl: 'ageHeaderTpl'
+            headerTemplate: `<div>近7/15/30日加权平均销量<span uix-popover="（近7日总销量÷7+近15日总销量÷15+近30日总销量÷30）÷3" popover-trigger="mouseenter" popover-placement="top" popover-append-to-body="true"><i class="glyphicon glyphicon-question-sign"></i></span></div>`,
+            sortable: true
         },
         { key: 'date', title: '日期', width: 200 },
         {
