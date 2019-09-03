@@ -36,7 +36,6 @@
     };
     const convertColumnOrder = (columns, fixedType) => {
         let list = [];
-        let others = [];
         columns.forEach((col) => {
             if (fixedType) {
                 if (col.fixed && col.fixed === fixedType) {
@@ -46,7 +45,7 @@
                 list.push(col);
             }
         });
-        return list.concat(others);
+        return list;
     };
     function getScrollBarSize() {
         // eslint-disable-next-line angular/document-service
@@ -342,6 +341,7 @@
                         $table.updateHorizontalScroll();
                         $table.updateVerticalScroll();
                         updateFixedRowHeight();
+                        updateFixedHeadHeight();
                     }, 0);
                 }
 
@@ -498,7 +498,9 @@
                     });
                 }
                 function makeColumnRows(colsWithId, position) {
-                    const originColumns = convertColumnOrder(colsWithId, position);
+                    const originColumns = position
+                        ? angular.copy(convertColumnOrder(colsWithId, position))
+                        : angular.copy(colsWithId);
                     let maxLevel = 1;
                     const traverse = (column, parent) => {
                         if (parent) {
@@ -765,6 +767,50 @@
                         });
                     }
                 }
+                // 当固定列与主表格行相同时，直接匹配
+                // 当固定列行少于主表格时，由上往下进行匹配，多余的行高补充到最下一行
+                // 当固定列行多于主表格时，不用处理
+                function fitDiffColumnsRows(mainRows, fixedRows) {
+                    let mainLength = mainRows.length;
+                    let fixedLength = fixedRows.length;
+                    let headerHeight = $table.headerHeight;
+                    if (mainLength === fixedLength) { // 表头行相同
+                        mainRows.each((index, row) => {
+                            fixedRows.eq(index).css({
+                                height: row.offsetHeight
+                            });
+                        });
+                    } else if (mainLength > fixedLength) {
+                        let restHeight = headerHeight;
+                        fixedRows.each((index, row) => {
+                            let height = mainRows.get(index).offsetHeight;
+                            restHeight -= height;
+                            angular.element(row).css({
+                                height
+                            });
+                        });
+                        if (restHeight > 0) {
+                            fixedRows.eq(fixedLength - 1).css({
+                                height: restHeight + fixedRows.get(fixedLength - 1).offsetHeight
+                            });
+                        }
+                    }
+                }
+                // 计算固定列的表头高度
+                function updateFixedHeadHeight() {
+                    let allRows = $element.find('.uix-datatable-main-header > table tr');
+                    if (!allRows.length) {
+                        return;
+                    }
+                    if ($table.isLeftFixed) {
+                        let leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
+                        fitDiffColumnsRows(allRows, leftHeadRows);
+                    }
+                    if ($table.isRightFixed) {
+                        let rightHeadRows = $element.find('.uix-datatable-right-header > table tr');
+                        fitDiffColumnsRows(allRows, rightHeadRows);
+                    }
+                }
                 $scope.$watch('$table.showVerticalScrollBar', (val, oldVal) => {
                     if (val !== oldVal) {
                         calcColumnsWidth();
@@ -796,6 +842,7 @@
                             $table.updateVerticalScroll();
                             updateFixedTableShadow();
                             updateFixedRowHeight();
+                            updateFixedHeadHeight();
                         }, 0);
                     });
                 }

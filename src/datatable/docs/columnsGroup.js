@@ -1,6 +1,38 @@
 import { baseData } from './data';
 export default class {
     columns = [{
+        title: '一级表头',
+        fixed: 'left',
+        children: [{
+            title: '二级表头-1',
+            fixed: 'left',
+            children: [{
+                title: '三级表头-1',
+                fixed: 'left',
+                key: 'name',
+                width: 100
+            }, {
+                title: '三级表头-2',
+                fixed: 'left',
+                key: 'name',
+                width: 100
+            }]
+        }, {
+            title: '二级表头-2',
+            fixed: 'left',
+            children: [{
+                title: '三级表头-3',
+                fixed: 'left',
+                key: 'name',
+                width: 100
+            }, {
+                title: '三级表头-4',
+                fixed: 'left',
+                key: 'name',
+                width: 100
+            }]
+        }]
+    }, {
         title: '基本信息',
         align: 'center',
         children: [{
