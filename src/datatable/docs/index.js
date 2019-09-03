@@ -18,6 +18,10 @@ import tooltip from './tooltip';
 import rawtooltip from '!!raw-loader!./tooltip';
 import tooltipTemplate from './tooltip.html';
 
+import hint from './hint';
+import rawhint from '!!raw-loader!./hint';
+import hintTemplate from './hint.html';
+
 import fixedHeader from './fixedHeader';
 import rawfixedHeader from '!!raw-loader!./fixedHeader';
 import fixedHeaderTemplate from './fixedHeader.html';
@@ -118,6 +122,16 @@ export const demos = {
         controller: tooltip,
         template: tooltipTemplate,
         script: rawData + rawtooltip
+    },
+    hint: {
+        title: '表头提示',
+        description: `
+        <code>column</code>设置属性<code>hint:''</code>可以使用tooltip对当前列展示提示信息<br>
+        <b>只有当设置纯文本表头或者使用<code>headerFormat</code>设置表头时生效</b>
+        `,
+        controller: hint,
+        template: hintTemplate,
+        script: rawData + rawhint
     },
     fixedHeader: {
         title: '固定表头',

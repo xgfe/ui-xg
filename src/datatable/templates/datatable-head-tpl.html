@@ -24,6 +24,8 @@
         <div ng-class="{'uix-datatable-sort-cell':column.sortable}" class="uix-datatable-cell"  ng-click="$table.handleSortByHead(column)">
           <div ng-if="column.__renderHeadType==='normal'">
             <span>{{:: column.title || '#' }}</span>
+            <i class="glyphicon glyphicon-question-sign" ng-if="column.hint"
+            tooltip-append-to-body="true" uix-tooltip="{{column.hint}}"></i> 
           </div>
           <div ng-if="column.__renderHeadType==='expand'">
           </div>
@@ -35,6 +37,8 @@
           </div>
           <div ng-if="column.__renderHeadType==='format'">
             {{ ::column.headerFormat(column) }}
+            <i class="glyphicon glyphicon-question-sign" ng-if="column.hint"
+            tooltip-append-to-body="true" uix-tooltip="{{column.hint}}"></i> 
           </div>
           <span class="uix-datatable-sort" ng-if="column.sortable">
             <i

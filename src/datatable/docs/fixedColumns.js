@@ -11,7 +11,6 @@ let cols = angular.copy(baseColumns).map((item, index) => {
     }
     return item;
 });
-cols[2].headerTemplate = '测试一下<br>测试一下<br>测试一下<br>'
 export default class {
     columns = cols;
     data = angular.copy(baseData);
