@@ -1,16 +1,24 @@
 <style>
 </style>
 <div>
-    <uix-form data="vm.data" layout="form"></uix-form>
+    <uix-form data="vm.data" layout="horizontal"
+        textalign="right"
+        confirm-text="查询"
+        on-confirm="vm.submit"
+        cancel-text="取消"
+        on-cancel="vm.cancel"
+        reset-data="true"
+        show-btn="true"></uix-form>
 </div>
 <div>
-    <uix-form data="vm.data2" layout="form"></uix-form>
+    <uix-form data="vm.data2" layout="vertical" textalign="right" button-inline="true"></uix-form>
 </div>
 <div>
-    <uix-form data="vm.data1" layout="search"></uix-form>
+    <uix-form data="vm.data"  layout="inline" textalign="right"></uix-form>
 </div>
 <script type="text/ng-template" id="actionTpl">
-    <uix-datepicker size="sm" ng-model="vm.value"></uix-datepicker>
+    <uix-tree></uix-tree> 
+    <uix-datepicker size="sm" ng-model="vm.value" ng-if="vm.inputValue==='888'"></uix-datepicker>
     <!-- <button class="btn btn-sm btn-primary" ng-click="vm.click()">查看</button> -->
     <input type="text" ng-model="vm.inputValue" ng-change="vm.changeInput()">
 </script>
