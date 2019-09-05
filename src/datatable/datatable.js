@@ -497,10 +497,8 @@
                         return column;
                     });
                 }
-                function makeColumnRows(colsWithId, position) {
-                    const originColumns = position
-                        ? angular.copy(convertColumnOrder(colsWithId, position))
-                        : angular.copy(colsWithId);
+                function makeColumnRows(colsWithId) {
+                    const originColumns = colsWithId;
                     let maxLevel = 1;
                     const traverse = (column, parent) => {
                         if (parent) {
@@ -542,7 +540,31 @@
                         rows[column.level - 1].push(column);
                     });
 
-                    return rows;
+                    let left = [];
+                    let right = [];
+                    // 从所有的表头行中找到固定表头
+                    // 需要要求固定列的表头不管是否有多级，必须设置fixed
+                    for (let rowIndex in rows) {
+                        if (rows[rowIndex].length) {
+                            rows[rowIndex].forEach(item => {
+                                if (item.fixed) {
+                                    if (item.fixed === 'left') {
+                                        left[rowIndex] = left[rowIndex] || [];
+                                        left[rowIndex].push(item);
+                                    }
+                                    if (item.fixed === 'right') {
+                                        right[rowIndex] = right[rowIndex] || [];
+                                        right[rowIndex].push(item);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    return {
+                        left,
+                        center: rows,
+                        right
+                    };
                 }
                 $table.updateVerticalScroll = () => {
                     let mainTableHeight = $element.find('.uix-datatable-main-body > table').get(0).offsetHeight;
@@ -879,9 +901,10 @@
                     $table.rightColumns = columsObj.right;
                     $table.centerColumns = columsObj.center;
 
-                    $table.allColumnRows = makeColumnRows(colsWithId);
-                    $table.leftColumnRows = makeColumnRows(colsWithId, 'left');
-                    $table.rightColumnRows = makeColumnRows(colsWithId, 'right');
+                    let columnRowsObj = makeColumnRows(colsWithId);
+                    $table.allColumnRows = columnRowsObj.center;
+                    $table.leftColumnRows = columnRowsObj.left;
+                    $table.rightColumnRows = columnRowsObj.right;
 
                     $table.leftTableWidth = getFixedColumnsWidth('left');
                     $table.rightTableWidth = getFixedColumnsWidth('right');
