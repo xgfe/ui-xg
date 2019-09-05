@@ -3403,13 +3403,6 @@ body > .uix-select.open {
 .uixstep:last-child .step-line {
   display: none; }
 
-.uix-steps {
-  width: 100%;
-  margin-left: 20px;
-  overflow: scroll;
-  white-space: nowrap;
-  height: 100px; }
-
 .uix-switch {
   cursor: pointer;
   position: relative;
@@ -3498,6 +3491,16 @@ body > .uix-select.open {
   .uix-switch-lg i:after {
     width: 28px; }
 
+.uix-steps {
+  width: 100%;
+  margin-left: 20px;
+  overflow: scroll;
+  white-space: nowrap;
+  height: 100px; }
+
+.tab-panel-hidden {
+  display: none; }
+
 .uix-table-loader {
   word-wrap: break-word;
   position: relative; }
@@ -3521,9 +3524,6 @@ body > .uix-select.open {
     top: 50%;
     margin-left: -90px;
     margin-top: -30px; }
-
-.tab-panel-hidden {
-  display: none; }
 
 .timeline .timeline-item {
   position: relative;
@@ -3634,26 +3634,6 @@ body > .uix-select.open {
 .timeline.timeline-pending.timeline-reverse .timeline-item:nth-last-child(2) .timeline-item-tail {
   border-left: 2px solid #e8e8e8; }
 
-.uix-timepicker {
-  position: relative; }
-  .uix-timepicker .uix-timepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-timepicker .uix-timepicker-input.disabled,
-  .uix-timepicker .uix-timepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-timepicker button {
-    outline: none; }
-
-.uix-timepicker-popover .popover-content {
-  padding: 0; }
-
-.uix-timepicker-popover .uix-timepanel {
-  border: 0; }
-
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -3703,6 +3683,26 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.uix-timepicker {
+  position: relative; }
+  .uix-timepicker .uix-timepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-timepicker .uix-timepicker-input.disabled,
+  .uix-timepicker .uix-timepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-timepicker button {
+    outline: none; }
+
+.uix-timepicker-popover .popover-content {
+  padding: 0; }
+
+.uix-timepicker-popover .uix-timepanel {
+  border: 0; }
 
 [uix-typeahead-popup].dropdown-menu {
   display: block; }
