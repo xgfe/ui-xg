@@ -1284,7 +1284,10 @@
                         }
                     }
                 };
-                $table.handleSort = (column, type) => {
+                $table.handleSort = (column, type, event) => {
+                    if (event) {
+                        event.stopPropagation();
+                    }
                     if (column._sortType === type) {
                         type = 'normal';
                     }

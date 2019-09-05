@@ -44,12 +44,12 @@
             <i
               class="uix-datatable-sort-up"
               ng-class="{on: column._sortType === 'asc'}"
-              ng-click="$table.handleSort(column, 'asc')"
+              ng-click="$table.handleSort(column, 'asc', $event)"
             ></i>
             <i
               class="uix-datatable-sort-down"
               ng-class="{on: column._sortType === 'desc'}"
-              ng-click="$table.handleSort(column, 'desc')"
+              ng-click="$table.handleSort(column, 'desc', $event)"
             ></i>
           </span>
         </div>
