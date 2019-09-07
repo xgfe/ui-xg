@@ -1179,7 +1179,7 @@
                         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
                             newRow._rowClassName = $scope.rowClassName({
                                 $row: newRow,
-                                $index: index
+                                $rowIndex: index
                             });
                         }
                         if (row.checked) {
@@ -1254,7 +1254,7 @@
                     if ($scope.onRowClick) {
                         $scope.onRowClick({
                             $row: row,
-                            $index: row._index
+                            $rowIndex: row._index
                         });
                     }
                     // 禁用通过点击行选择

@@ -22,6 +22,10 @@ import hint from './hint';
 import rawhint from '!!raw-loader!./hint';
 import hintTemplate from './hint.html';
 
+import typeIndex from './typeIndex';
+import rawtypeIndex from '!!raw-loader!./typeIndex';
+import typeIndexTemplate from './typeIndex.html';
+
 import fixedHeader from './fixedHeader';
 import rawfixedHeader from '!!raw-loader!./fixedHeader';
 import fixedHeaderTemplate from './fixedHeader.html';
@@ -82,7 +86,7 @@ export { default as readme } from './readme.md';
 export const demos = {
     basic: {
         title: '基本用法',
-        description: '表格的最简单用法。<br> 通过设置<code>align</code>可以设置文本对齐方式',
+        description: '表格的最简单用法。<br> 通过设置<code>align</code>可以设置文本对齐方式，设置属性<code>disabled-hover</code>取消默认的鼠标悬浮高亮效果',
         controller: basic,
         template: basicTemplate,
         script: rawData + rawBasic
@@ -116,7 +120,7 @@ export const demos = {
         title: '超长文本',
         description: `
         <code>column</code>设置属性<code>ellipsis:true</code>可以对长文本省略显示，同时显示tooltip <br>
-        <b>注意：除了<code>filter</code>之外，如果设置了其他特殊渲染模板时，该属性不会才生效。</b><br>
+        <b>注意：除了<code>filter</code>之外，如果设置了其他特殊渲染方式时，该属性不会生效。</b><br>
         参考示例中的第2列并不会生效，因为设置了<code>format</code>
         `,
         controller: tooltip,
@@ -133,6 +137,16 @@ export const demos = {
         template: hintTemplate,
         script: rawData + rawhint
     },
+    typeIndex: {
+        title: '序号列',
+        description: `
+        <code>column</code>设置属性<code>type:'index'</code>可以生成序号列，默认只是当前数据的序号<br>
+        如果需要跨页或其他需要的话，可以自定义<code>indexMethod</code>方法，传入参数<code>row</code>和<code>rowIndex</code>，分别是当前行数据以及行索引，返回自定义的内容
+        `,
+        controller: typeIndex,
+        template: typeIndexTemplate,
+        script: rawData + rawtypeIndex
+    },
     fixedHeader: {
         title: '固定表头',
         description: '通过设置属性 <code>height</code>或<code>max-height</code> 给表格指定高度后，会自动固定表头。当纵向内容过多时可以使用。',
@@ -142,7 +156,10 @@ export const demos = {
     },
     fixedColumns: {
         title: '固定列',
-        description: '通过给数据 <code>columns</code> 的项设置 <code>fixed</code> 为 <code>left</code> 或 <code>right</code>，可以左右固定需要的列。当横向内容过多时可以使用。',
+        description: `
+        通过给数据 <code>columns</code> 的项设置 <code>fixed</code> 为 <code>left</code> 或 <code>right</code>，可以左右固定需要的列。当横向内容过多时可以使用。<br>
+        需要注意的是，对于非固定列，同样需要设置宽度<code>width</code>或最小宽度<code>minWidth</code>，这样才能保证出现固定效果。
+        `,
         controller: fixedColumns,
         template: fixedColumnsTemplate,
         script: rawData + rawfixedColumns
@@ -204,23 +221,23 @@ export const demos = {
         script: rawData + rawsort
     },
     customTemplate: {
-        title: '自定义列模板',
+        title: '自定义单元格模板',
         description: `
         通过给 <code>columns</code> 数据的项设置参数 <code>template</code>或<code>templateUrl</code> ，可以自定义渲染当前列。<br>
         <code>template</code> 的值是一段HTML，<code>templateUrl</code> 的值是<code>ng-template</code>。<br/>
         二者都可以是直接的值，也可以是一个具有返回值的函数，函数有两个参数，分别是当前行的内容以及行索引。
-        使用自定义模板时，模板内可以调用外部作用域的属性或值，同时可以获取<code>$row(行数据)</code>、<code>$column(列数据)</code>、<code>$index(行索引)</code>三个值，具体使用方法可以查看demo
+        使用自定义模板时，模板内可以调用外部作用域的属性或值，同时可以获取<code>row(行数据)</code>、<code>rowIndex(行索引)</code>三个值，具体使用方法可以查看demo
         `,
         controller: customTemplate,
         template: customTemplateTemplate,
         script: rawData + rawcustomTemplate
     },
     customHeader: {
-        title: '自定义表头',
+        title: '自定义表头模板',
         description: `
         通过给 <code>columns</code> 数据的项设置参数 <code>headerTemplate</code>或<code>headerTemplateUrl</code> ，可以自定义渲染当前列的表头。<br>
         使用方式同“自定义列模板”，区别在于如果指定的是函数的话，函数的两个参数分别是当前列的内容以及列索引。<br>
-        模板内可以调用外部作用域的属性或值，同时可以获取<code>$column(列数据)</code>、<code>$index(列索引)</code>两个值，具体使用方法可以查看demo
+        模板内可以调用外部作用域的属性或值，同时可以获取<code>column(列数据)</code>、<code>colIndex(列索引)</code>两个值，具体使用方法可以查看demo
         `,
         controller: customHeader,
         template: customHeaderTemplate,
@@ -228,7 +245,10 @@ export const demos = {
     },
     columnsGroup: {
         title: '表头分组',
-        description: '给 <code>column</code> 设置 <code>children</code>，可以渲染出分组表头。',
+        description: `
+        给 <code>column</code> 设置 <code>children</code>，可以渲染出分组表头。<br>
+        注意：如果多级表头存在列固定的话，多级表头的每一级都需要设置<code>fixed</code>，但是只需要给最末级的表头设置宽度即可
+        `,
         controller: columnsGroup,
         template: columnsGroupTemplate,
         script: rawData + rawcolumnsGroup
@@ -250,7 +270,10 @@ export const demos = {
     },
     changeColumns: {
         title: '修改Columns',
-        description: '修改<code>columns</code>数据时会对重新生成表格',
+        description: `
+        修改<code>columns</code>数据时会对重新生成表格。column中设置属性<code>hidden:true</code>可以隐藏列<br>
+        注意：修改表头时，会对表格做整体的计算和渲染，非必要情况下，尽量少修改columns属性的引用值。
+        `,
         controller: changeColumns,
         template: changeColumnsTemplate,
         script: rawData + rawchangeColumns
