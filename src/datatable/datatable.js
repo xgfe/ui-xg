@@ -1163,6 +1163,8 @@
                 $table.headerHeight = 0; // initial header height
                 $table.containerHeight = null;
 
+                $table.scrollX = null; // 滚动宽度
+
                 let compileScope = $scope.$parent.$new();
                 compileScope.$table = $table;
                 function findEl(selector) {
@@ -1425,6 +1427,9 @@
 
                 function calcColumnsWidth() {
                     let tableWidth = $element[0].offsetWidth - 1;
+                    if ($table.scrollX && tableWidth < $table.scrollX) {
+                        tableWidth = $table.scrollX;
+                    }
                     let columnsWidth = {};
                     let sumMinWidth = 0;
                     let hasWidthColumns = [];
@@ -1999,7 +2004,8 @@
                     height: '=',
                     maxHeight: '=',
                     expandTemplate: '@',
-                    disabledRowClickSelect: '='
+                    disabledRowClickSelect: '=',
+                    scrollX: '='
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -2052,6 +2058,15 @@
 
                     scope.$watch('disabledRowClickSelect', function (val) {
                         $table.disabledRowClickSelect = val;
+                    });
+
+                    scope.$watch('scrollX', (val) => {
+                        val = parseFloat(val, 10);
+                        if (isNaN(val)) {
+                            $table.scrollX = 0;
+                        } else {
+                            $table.scrollX = val;
+                        }
                     });
 
                     scope.$watch('data', function (val, old) {

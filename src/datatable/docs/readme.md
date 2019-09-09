@@ -22,6 +22,7 @@
 | width | 表格宽度，单位 `px` | Number | `auto` |
 | height | 表格高度，单位 px，设置后，如果表格内容大于此值，会固定表头 | Number / String | - |
 | maxHeight | 表格最大高度，单位 px，设置后，如果表格内容大于此值，会固定表头 | Number / String | - |
+| scrollX | 滚动宽度 | Number / String | - |
 | rowClassName | 行的 className 的回调方法，传入参数：row-当前行数据；rowIndex：当前行的索引 | Function | - |
 | expandTemplate | 自定义行展开模板，需要配合column的`type:expand`使用 | String | - |
 | status | 表格状态，可选值<ul><li>`1/loading`：加载状态</li><li>`2/empty`：数据为空</li><li>`-1/error`：加载失败状态</li></ul> | String | - |
