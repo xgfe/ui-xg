@@ -1,0 +1,44 @@
+
+<div>
+    <uix-form 
+        data="vm.data"
+        layout="inline"
+        textalign="right"
+        confirm-text="查询"
+        on-confirm="vm.submit"
+        cancel-button="true"
+        cancel-text="重置"
+        on-cancel="vm.cancel"
+        reset-data="true"
+        button-inline="true"
+        final-value="vm.result"></uix-form>
+    <uix-form 
+        data="vm.data"
+        layout="inline"
+        textalign="right"
+        confirm-text="查询"
+        on-confirm="vm.submit"
+        cancel-button="true"
+        cancel-text="重置"
+        on-cancel="vm.cancel"
+        reset-data="true"
+        final-value="vm.result"></uix-form>
+        
+        <uix-form data="vm.data1" 
+            layout="vertical"
+            textalign="right"
+            confirm-text="保存"
+            on-confirm="vm.submit"
+            cancel-button="true"
+            cancel-text="取消"
+            on-cancel="vm.cancel"
+            final-value="vm.result"
+            colon='true'></uix-form>
+
+        <uix-form data="vm.data2" 
+            layout="horizontal"
+            textalign="right"
+            final-value="vm.result"
+            show-btn="false"
+            colon='true'></uix-form>
+</div>

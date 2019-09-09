@@ -3,62 +3,37 @@
         content: "*";
         color: #ff5a5a;
     }
-
-    .f-l {
-        float: left;
-    }
-
-    .m-t-xs {
-        margin-top: 5px;
-    }
-
-    .m-l-n-xs {
+    .uix-form-m-l {
         margin-left: -5px;
     }
 
-    .i-checks {
+    .uix-form-checks {
         padding-left: 20px;
         cursor: pointer;
+        input {
+            opacity: 0;
+            position: absolute;
+            margin-left: -20px;
+        }
+        input:checked+i {
+            border-color: #23b7e5;
+        }
+        input:checked+i:before {
+            left: 4px;
+            top: 4px;
+            width: 10px;
+            height: 10px;
+            background-color: #23b7e5;
+        }
+        input:checked+span .active {
+            display: inherit;
+        }
+        input[type="radio"]+i,
+        input[type="radio"]+i:before {
+            border-radius: 50%;
+        }
     }
-
-    .i-checks input {
-        opacity: 0;
-        position: absolute;
-        margin-left: -20px;
-    }
-
-    .i-checks input:checked+i {
-        border-color: #23b7e5;
-    }
-
-    .i-checks input:checked+i:before {
-        left: 4px;
-        top: 4px;
-        width: 10px;
-        height: 10px;
-        background-color: #23b7e5;
-    }
-
-    .i-checks input:checked+span .active {
-        display: inherit;
-    }
-
-    .i-checks input[type="radio"]+i,
-    .i-checks input[type="radio"]+i:before {
-        border-radius: 50%;
-    }
-
-    .i-checks input[disabled]+i,
-    fieldset[disabled] .i-checks input+i {
-        border-color: #dee5e7;
-    }
-
-    .i-checks input[disabled]+i:before,
-    fieldset[disabled] .i-checks input+i:before {
-        background-color: #dee5e7;
-    }
-
-    .i-checks>i {
+    .uix-form-checks>i {
         width: 20px;
         height: 20px;
         line-height: 1;
@@ -71,8 +46,7 @@
         margin-right: 4px;
         position: relative;
     }
-
-    .i-checks>i:before {
+    .uix-form-checks>i:before {
         content: "";
         position: absolute;
         left: 10px;
@@ -84,65 +58,67 @@
         transition: all 0.2s;
     }
 
-    .i-checks>span {
+    .uix-form-checks>span {
         margin-left: -20px;
     }
 
-    .i-checks>span .active {
+    .uix-form-checks>span .active {
         display: none;
     }
 
-    .m-r {
+    .uix-form-m-r {
         margin-right: 15px;
     }
 
-    .pos-rlt {
+    .uix-form-pos-rlt {
         position: relative;
     }
 
-    .pos-stc {
-        position: static;
-    }
-
-    .pos-abt {
+    .uix-form-pos-abt {
         position: absolute;
     }
 
-    .m-b-md {
+    .uix-form-m-b-md {
         margin-bottom: 20px;
     }
 
-    .text-xs {
+    .uix-form-text-xs {
         font-size: 12px;
     }
 
-    .text-error {
+    .uix-form-text-error {
         color: #f05050;
     }
 
-    .text-warning {
+    .uix-form-text-warning {
         color: #fad733;
     }
 
-    .text-success {
+    .uix-form-text-success {
         color: #27c24c;
+    }
+    .uix-form-l-h {
+        line-height: 30px;
     }
 
 }
-.w-sm {
+.uix-form-m-l-md {
+    margin-left: 20px;
+}
+.uix-form-w-sm {
     width: 150px;
 }
-.m-t-md {
+.uix-form-m-t-md {
     margin-top: 20px;
 }
 
-.btn {
+.uix-form-btn {
     font-weight: 500;
     border-radius: 2px;
     outline: 0 !important;
 }
 
-.btn-default {
+.uix-form-btn-default {
     color: #58666e !important;
     background-color: #fcfdfd;
     border-color: #dee5e7;
@@ -152,83 +128,71 @@
     box-shadow: 0 1px 1px rgba(90, 90, 90, 0.1);
 }
 
-.btn-default:hover,
-.btn-default:focus,
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
+.uix-form-btn-default:hover,
+.uix-form-btn-default:focus,
+.uix-form-btn-default:active,
+.uix-form-btn-default.active {
     color: #58666e !important;
     background-color: #edf1f2;
     border-color: #c7d3d6;
 }
 
-.btn-default:active,
-.btn-default.active,
-.open .dropdown-toggle.btn-default {
+.uix-form-btn-default:active,
+.uix-form-btn-default.active {
     background-image: none;
 }
 
-.btn-default.disabled,
-.btn-default.disabled:hover,
-.btn-default.disabled:focus,
-.btn-default.disabled:active,
-.btn-default.disabled.active,
-.btn-default[disabled],
-.btn-default[disabled]:hover,
-.btn-default[disabled]:focus,
-.btn-default[disabled]:active,
-.btn-default[disabled].active,
-fieldset[disabled] .btn-default,
-fieldset[disabled] .btn-default:hover,
-fieldset[disabled] .btn-default:focus,
-fieldset[disabled] .btn-default:active,
-fieldset[disabled] .btn-default.active {
+.uix-form-btn-default.disabled,
+.uix-form-btn-default.disabled:hover,
+.uix-form-btn-default.disabled:focus,
+.uix-form-btn-default.disabled:active,
+.uix-form-btn-default.disabled.active,
+.uix-form-btn-default[disabled],
+.uix-form-btn-default[disabled]:hover,
+.uix-form-btn-default[disabled]:focus,
+.uix-form-btn-default[disabled]:active,
+.uix-form-btn-default[disabled].active {
     background-color: #fcfdfd;
     border-color: #dee5e7;
 }
 
-.btn-default.btn-bg {
+.uix-form-btn-default.btn-bg {
     border-color: rgba(0, 0, 0, 0.1);
     background-clip: padding-box;
 }
 
-.btn-primary {
+.uix-form-btn-primary {
     color: #fff !important;
     background-color: #7266ba;
     border-color: #7266ba;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
-.open .dropdown-toggle.btn-primary {
+.uix-form-btn-primary:hover,
+.uix-form-btn-primary:focus,
+.uix-form-btn-primary:active,
+.uix-form-btn-primary.active,
+.open .dropdown-toggle.uix-form-btn-primary {
     color: #fff !important;
     background-color: #6254b2;
     border-color: #5a4daa;
 }
 
-.btn-primary:active,
-.btn-primary.active,
-.open .dropdown-toggle.btn-primary {
+.uix-form-btn-primary:active,
+.uix-form-btn-primary.active,
+.open .dropdown-toggle.uix-form-btn-primary {
     background-image: none;
 }
 
-.btn-primary.disabled,
-.btn-primary.disabled:hover,
-.btn-primary.disabled:focus,
-.btn-primary.disabled:active,
-.btn-primary.disabled.active,
-.btn-primary[disabled],
-.btn-primary[disabled]:hover,
-.btn-primary[disabled]:focus,
-.btn-primary[disabled]:active,
-.btn-primary[disabled].active,
-fieldset[disabled] .btn-primary,
-fieldset[disabled] .btn-primary:hover,
-fieldset[disabled] .btn-primary:focus,
-fieldset[disabled] .btn-primary:active,
-fieldset[disabled] .btn-primary.active {
+.uix-form-btn-primary.disabled,
+.uix-form-btn-primary.disabled:hover,
+.uix-form-btn-primary.disabled:focus,
+.uix-form-btn-primary.disabled:active,
+.uix-form-btn-primary.disabled.active,
+.uix-form-btn-primary[disabled],
+.uix-form-btn-primary[disabled]:hover,
+.uix-form-btn-primary[disabled]:focus,
+.uix-form-btn-primary[disabled]:active,
+.uix-form-btn-primary[disabled].active {
     background-color: #7266ba;
     border-color: #7266ba;
 }

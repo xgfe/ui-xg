@@ -95,61 +95,119 @@ const commonRegUtil = {
     twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
 };
 angular.module('ui.xg.form', [])
-    .controller('uixFormCtrl', ['$scope', '$attrs', '$compile', '$templateCache', '$element', function ($scope, $attrs, $compile, $templateCache, $element) {
+    .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', function ($scope, $compile, $templateCache, $element, $q) {
+        $scope.layout = $scope.layout || 'horizontal';
+        $scope.finalValue = $scope.finalValue || {};
+        $scope.showBtn = $scope.showBtn || true;
         const $form = this;
         $form.copyData = angular.copy($scope.data);
         $form.html = '';
         $form.layout = $scope.layout;
         $form.tplObj = {};
         let compileScope = $scope.$parent.$new();
-        $form.getTpl = () => {
-            $compile($form.html)($scope, (clonedElement) => {
-                let tableWrap = angular.element($element[0]
-                    .querySelector('.uix-form'));
-                tableWrap.empty().append(clonedElement);
-            });
-        }
-        // 循环渲染dom
-        $form.renderTpl = (tpl) => {
-            if ($form.tplObj[tpl]) {
+        $scope.data.map((item) => {
+            if (item.key) {
+                $scope.finalValue[item.key] = item.value;
+            }
+        });
+        // 渲染模板dom
+        $form.renderTpl = (item) => {
+            if ($form.tplObj[item.templateName]) {
                 return;
             }
-            $form.tplObj[tpl] = 1;
-           tpl = $templateCache.get(tpl);
+            $form.tplObj[item.templateName] = 1;
+            let tpl = item.template || $templateCache.get(item.templateUrl);
             $compile(tpl)(compileScope, (clonedElement) => {
                 let tableWrap = angular.element($element[0]
-                    .querySelector('.tplHtml'));
+                    .querySelector(`.tplHtml${item.templateName}`));
                 tableWrap.empty().append(clonedElement);
             });
-        }
+        };
+        // 提交时校验
         $form.confirm = () => {
+            if ($scope.checkAll) {
+                let arr = [];
+                $scope.data.map((item) => {
+                    arr.push($form.validor(item, 'confirm'));
+                });
+                $q.all(arr).then(() => {
+                    $form.updateConfirmState();
+                });
+            }
             if($scope.onConfirm) {
                 $scope.onConfirm();
             }
-        }
+        };
         $form.cancle = () => {
             if ($scope.resetData) {
                 $form.tplObj = {};
                 $scope.data = $form.copyData;
             }
-            $scope.onCancel && $scope.onCancel();
-        }
-        $form.checkChange = (item) => {
+            if ($scope.onCancel) {
+                $scope.onCancel()
+            }
+        };
+        // change事件
+        $form.onChange = (item) => {
+            if (item.key) {
+                $scope.finalValue[item.key] = item.value;
+            }
             if (item.onChange) {
                 item.onChange(item.value);
             }
-            if (item.immediateCheck && item.validor) {
-                item.tipInfo = item.validor(item.value);
-                return;
-            }
-            if(item.immediateCheck && item.publicCheck) {
-                if (!commonRegUtil[item.publicCheck].test(item.value)) {
-                    item.tipInfo = {message: `${item.text}输入不正确`, type: 'error'}
+            $form.validor(item, 'onChange').then(() => {
+                $form.updateConfirmState();
+            });
+        };
+        // 校验
+        $form.validor = (item, type) => {
+            return $q((resolve)=>{
+                // 自定义校验覆盖默认的必填和publicCheck校验
+                if (item.validor) {
+                    item.validor(item.value).then((res) => {
+                        if (type === 'onChange' && !item.immediateCheck) {
+                            item.tipInfo = true;
+                        } else {
+                            item.tipInfo = res;
+                        }
+                        resolve(item);
+                    });
                 } else {
-                    item.tipInfo = {};
+                    if (item.value) {
+                        item.tipInfo = true;
+                    }
+                    if (item.necessary && !item.value) {
+                        if (type === 'onChange' && !item.immediateCheck) {
+                            item.tipInfo = true;
+                        } else {
+                            item.tipInfo = {message: `${item.text}必填`, type: 'error'};
+                        }
+                    } else {
+                        item.tipInfo = true;
+                    }
+                    if(item.publicCheck) {
+                        if (!commonRegUtil[item.publicCheck].test(item.value)) {
+                            if (type === 'onChange' && !item.immediateCheck) {
+                                item.tipInfo = true;
+                            } else {
+                                item.tipInfo = {message: `${item.text}输入不正确`, type: 'error'};
+                            }
+                        } else {
+                            item.tipInfo = true;
+                        }
+                    }
+                    resolve(item);
                 }
+            });
+        };
+        $form.updateConfirmState = () => {
+            let result = $scope.data.filter((item) => item.tipInfo && item.tipInfo.message);
+            if(result && result.length) {
+                $scope.disabled = true;
+            } else {
+                $scope.disabled = false;
             }
-        }
+        };
     }])
     .directive('uixForm', function () {
         return {
@@ -160,14 +218,14 @@ angular.module('ui.xg.form', [])
             scope: {
                 data: '=', layout: '@?', textalign: '@?', buttonInline: '@?',
                 confirmText: '@?', onConfirm: '=?', showBtn: '@?',
-                cancelText: '@?', onCancel: '=?', resetData: '@?',
+                cancelText: '@?', onCancel: '=?', resetData: '@?', checkAll: '@?',
+                finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '@?'
             },
             controller: 'uixFormCtrl',
             controllerAs: '$form',
-            link: function ($scope, el, attrs, ctrls) {
-                // var formCtrl = ctrls[0];
-                // formCtrl.init();
+            link: function ($scope) {
                 $scope.layout = $scope.layout ? $scope.layout : 'search';
             }
-        }
-    });
+        };
+    })
+
