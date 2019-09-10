@@ -214,7 +214,8 @@ export const demos = {
         <li><code>$key</code>：列标识</li>  
         <li><code>$order</code>：排序方式。<code>normal-默认</code>，<code>asc-升序</code>和<code>desc-降序</code></li>  
         </ul>
-        使用方式参看demo
+        使用方式参看demo<br>
+        配置属性<code>multiSort</code>可以开启多列排序效果。当触发排序时，触发事件<code>on-columns-sort</code>
         `,
         controller: sort,
         template: sortTemplate,

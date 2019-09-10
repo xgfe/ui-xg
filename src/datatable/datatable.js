@@ -1293,21 +1293,44 @@
                     if (column._sortType === type) {
                         type = 'normal';
                     }
+                    if ($table.multiSort) {
+                        column._sortType = type;
+                        if (angular.isFunction($scope.onColumnsSort)) {
+                            let sorts = $table.allDataColumns
+                                .filter(col => col.sortable)
+                                .map((column) => {
+                                    return {
+                                        column,
+                                        key: column.key,
+                                        order: column._sortType
+                                    };
+                                });
+                            $scope.onColumnsSort({
+                                $sorts: sorts
+                            });
+                        }
+                    } else {
+                        $table.allDataColumns.forEach((col) => {
+                            col._sortType = 'normal';
+                        });
+                        column._sortType = type;
+                        const key = column.key;
+                        if (angular.isFunction($scope.onSortChange)) {
+                            $scope.onSortChange({
+                                $column: column,
+                                $key: key,
+                                $order: type
+                            });
+                        }
+                    }
+                };
+                // 清空排序效果
+                $table.clearSort = () => {
                     $table.allDataColumns.forEach((col) => {
                         col._sortType = 'normal';
                     });
-
-                    const key = column.key;
-
-                    column._sortType = type;
-                    if (angular.isFunction($scope.onSortChange)) {
-                        $scope.onSortChange({
-                            $column: column,
-                            $key: key,
-                            $order: type
-                        });
-                    }
                 };
+
                 // 展开行响应事件，对外可调用
                 $table.handleRowExpand = (row) => {
                     if (!row) {
@@ -1994,6 +2017,12 @@
                     unbindEvents();
                     compileScope.$destroy();
                 });
+                $scope.$on('uix-datatable-clear-sort', (evt, id) => {
+                    if (id !== $scope.id) {
+                        return;
+                    }
+                    $table.clearSort();
+                });
             }])
         .directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', '$timeout', function (uixDatatable, uixDatatableConfig, $timeout) {
             return {
@@ -2008,6 +2037,7 @@
                     disabledHover: '=',
                     rowClassName: '&',
                     onSortChange: '&',
+                    onColumnsSort: '&',
                     onRowClick: '&',
                     onSelectionChange: '&',
                     onCurrentChange: '&',
@@ -2018,7 +2048,8 @@
                     disabledRowClickSelect: '=',
                     scrollX: '=',
                     pageSizes: '=',
-                    pagination: '='
+                    pagination: '=',
+                    id: '@'
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -2029,7 +2060,6 @@
 
                     $table.isStriped = 'striped' in $attrs;
                     $table.isBordered = 'bordered' in $attrs;
-
 
                     $table.showPagination = 'pagination' in $attrs;
                     if ($table.showPagination) {
@@ -2046,6 +2076,8 @@
                     if ($table.showSizer) {
                         $table.pageSizes = scope.pageSizes;
                     }
+
+                    $table.multiSort = 'multiSort' in $attrs;
 
                     $table.isLoading = false;
                     $table.isEmpty = false;

@@ -13,6 +13,7 @@
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| id | 组件ID，唯一标识 | string | - |
 | data | 显示的结构化数据，其中，字段 `cellClassName` 用于设置任意单元格的样式名称，因此数据不能使用该字段，详见示例[特定样式](#datatable_customStyle)。 | Array&lt;Object&gt; | [] | 
 | columns | 表格列的配置描述，具体项见后文 | Array&lt;Column&gt; | [] |
 | striped | 是否显示间隔斑马纹 | boolean | `false` |
@@ -27,6 +28,7 @@
 | expandTemplate | 自定义行展开模板，需要配合column的`type:expand`使用 | String | - |
 | pagination | 分页配置 | Object&lt;pageNo,pageSize,totalCount&gt; | {pageNo:1,pageSize:20,totalCount:0} |
 | pageSizes | 调整每页显示条数 | Array&lt;Number&gt; | [20, 40, 50, 100, 200] |
+| multiSort | 是否开启多列同时排序 | Boolean | false |
 | status | 表格状态，可选值<ul><li>`1/loading`：加载状态</li><li>`2/empty`：数据为空</li><li>`-1/error`：加载失败状态</li></ul> | String | - |
 | loadingText | 加载中状态提示文案，也可通过全局的`uixDatatableProvider`设置，属性优先级高于全局设置| String| `'数据加载中'` |
 | emptyText | 数据为空状态提示文案，配置方式同`loadingText`| String| `'数据为空'` |
@@ -37,10 +39,16 @@
 | 属性 | 说明 | 参数 |
 | --- | --- | --- | 
 | on-sort-change | 排序时有效，当点击排序时触发 | <ul><li>`$column`：当前列数据</li><li>`$order`：排序的顺序，值为 `asc` 或 `desc`</li><li>`$key`：排序依据的指标</li></ul> |
+|on-columns-sort|开启多列排序时，调整排序时触发|<ul><li>`$sorts`：对象数组，每一个对象包含<code>column</code>、<code>key</code>、<code>order</code>等字段</li></ul> |
 |on-row-click|单击某一行时触发|<ul><li>`$row`：当前行数据</li><li>`$rowIndex`：行索引</li></ul> |
 |on-selection-change|开启多选时，选择内容变化时触发|<ul><li>`$newRows`：当前选中的行，类型为数组</li><li>`$newRows`：上一次选中的行</li></ul> |
 |on-current-change|开启单选时，选择内容发生变化时触发|<ul><li>`$newRow`：当前选中</li><li>`$oldRow`：上次选中</li><li>`$newInex`：当前选中的行索引</li><li>`$oldIndex`：上次选中的行索引</li></ul> |
 |on-page-change|修改页码的时候触发|<ul><li>`$pageNo`：当前页码</li><li>`$pageSize`：当前每页条数</li></ul> |
+
+### 监听事件
+| 事件 | 说明 | 参数 |
+| --- | --- | --- | 
+| uix-datatable-clear-sort | 清空当前排序效果 | id：组件id，只有当匹配时才会生效 |
 
 ### uixDatatableProvider 
 
