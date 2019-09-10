@@ -34,7 +34,7 @@ describe('ui.xg.tabs', function () {
     });
 
 
-    it('should set content by three way', function () {
+    xit('should set content by three way', function () {
         scope.content = '通过{{}}设置的内容';
         createTabs('<uix-tabs><uix-tab>{{content}}</uix-tab><uix-tab>直接设置内容</uix-tab><uix-tab><i class="glyphicon glyphicon-eye-open"></i></uix-tab></uix-tabs>');
         var ele = element.find('uix-tab-panel');
