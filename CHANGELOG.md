@@ -1,3 +1,32 @@
+<a name="2.1.13"></a>
+## [2.1.13](https://github.com/xgfe/ui-xg/compare/v2.1.12...v2.1.13) (2019-09-10)
+
+
+### Bug Fixes
+
+* **columngroup:** calc fixed head row height ([9a6ec4f](https://github.com/xgfe/ui-xg/commit/9a6ec4f))
+* **datatable:** fix fixedcolumns bug ([925ff35](https://github.com/xgfe/ui-xg/commit/925ff35))
+* **table:** fix pagination bug ([be659c0](https://github.com/xgfe/ui-xg/commit/be659c0))
+* **table:** fix sort error and change bg color ([88479f1](https://github.com/xgfe/ui-xg/commit/88479f1))
+* **table:** fix stopPropagation ([cf3c52a](https://github.com/xgfe/ui-xg/commit/cf3c52a))
+* **table:** fix style bug ([81cf8b3](https://github.com/xgfe/ui-xg/commit/81cf8b3))
+* **table:** fix update row height ([91e7ee8](https://github.com/xgfe/ui-xg/commit/91e7ee8))
+
+
+### Features
+
+* **datatable:** add expand feature ([02d1ef5](https://github.com/xgfe/ui-xg/commit/02d1ef5))
+* **datatable:** add new feature for datatable ([1093333](https://github.com/xgfe/ui-xg/commit/1093333))
+* **hint:** add hint feature ([59a47ab](https://github.com/xgfe/ui-xg/commit/59a47ab))
+* **sort:** multi sort ([9485a94](https://github.com/xgfe/ui-xg/commit/9485a94))
+* **table:** add pagination ([d19ea65](https://github.com/xgfe/ui-xg/commit/d19ea65))
+* **table:** add scroll X prop ([eb31c01](https://github.com/xgfe/ui-xg/commit/eb31c01))
+* **table:** add tooltip prop ([73eb36b](https://github.com/xgfe/ui-xg/commit/73eb36b))
+* **table:** mobile ([589a9b6](https://github.com/xgfe/ui-xg/commit/589a9b6))
+* **table:** selection feature ([2369766](https://github.com/xgfe/ui-xg/commit/2369766))
+
+
+
 <a name="2.1.11"></a>
 ## 2.1.11 (2019-08-01)
 
