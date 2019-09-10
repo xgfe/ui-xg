@@ -94,6 +94,7 @@ const commonRegUtil = {
     // 两位小数浮点数，可为负数
     twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
 };
+
 angular.module('ui.xg.form', [])
     .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$filter', function ($scope, $compile, $templateCache, $element, $q, $filter) {
         $scope.layout = $scope.layout || 'horizontal';
@@ -101,6 +102,11 @@ angular.module('ui.xg.form', [])
         $scope.showBtn = $scope.showBtn || true;
         let timer = null;
         const $form = this;
+        const INPUTLIMIT = {
+            number: /\D/g,
+            letter: /[^a-zA-Z]/g,
+            letterNumber: /[^A-Za-z\d]/g
+        };
         const INNERFORMAT = ['currency', 'number', 'date', 'json', 'lowercase', 'uppercase', 'limitTo', 'orderBy'];
         $form.copyData = angular.copy($scope.data);
         $form.html = '';
@@ -137,7 +143,7 @@ angular.module('ui.xg.form', [])
                 });
             }
             if($scope.onConfirm) {
-                $scope.onConfirm();
+                $scope.onConfirm({AllPassCheck: !$scope.disabled});
             }
         };
         $form.cancle = () => {
@@ -151,6 +157,14 @@ angular.module('ui.xg.form', [])
         };
         // change事件
         $form.onChange = (item, from='front') => {
+            // input限制输入
+            if (item.type === 'input' && item.inputLimit) {
+                let reg = INPUTLIMIT[item.inputLimit.limit];
+                item.value = item.value.replace(reg, '').trim();
+                if (item.inputLimit.maxlength && item.value.length > item.inputLimit.maxlength) {
+                    item.value = item.value.slice(0, item.inputLimit.maxlength);
+                }
+            }
             if (item.key) {
                 $scope.finalValue[item.key] = item.value;
             }

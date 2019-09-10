@@ -8,7 +8,10 @@ export default class {
                 value: '',
                 checkTiming: ['change'],
                 publicCheck: ['intOrFloatOneDecimalReg','firstNotZeroIntReg'],
-                formatValue: 'uppercase',
+                inputLimit: {
+                    limit: 'letterNumber',
+                    maxlength: 12
+                },
                 relatedCheckKeys: ['select']
             }, {
                 key: 'date',
