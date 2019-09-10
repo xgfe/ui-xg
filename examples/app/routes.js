@@ -38,7 +38,10 @@ docs.forEach((component) => {
         ]);
     }
     content.push(`<div ng-non-bindable>${readme.attrs}</div>`);
-    content.push(`<demo-affix demos="${encodeURIComponent(angular.toJson(demos))}"></demo-affix>`);
+    // eslint-disable-next-line no-undef
+    if (!PUBLISH_TO_GITHUB) {
+        content.push(`<demo-affix demos="${encodeURIComponent(angular.toJson(demos))}"></demo-affix>`);
+    }
     ROUTES.push({
         name: component.name,
         template: content.join('')

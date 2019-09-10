@@ -1,5 +1,7 @@
+/* eslint-disable */
 const utils = require('./utils');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isPublish = process.env.MODE === 'publish';
@@ -127,6 +129,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'assets/css/[name].[hash].css',
             ignoreOrder: false, // Enable to remove warnings about conflicting order
+        }),
+        new webpack.DefinePlugin({
+            PUBLISH_TO_GITHUB: JSON.stringify(isPublish && process.env.TARGET === 'github'),
         })
     ],
     devServer: {

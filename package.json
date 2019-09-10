@@ -14,7 +14,7 @@
         "site:init": "node build/init-site/generator.js",
         "start": "npm run site:init && webpack-dev-server --config build/webpack.config.demo.js",
         "build:lib": "gulp",
-        "build:demo": "npm run site:init && rm -rf publish && MODE=publish webpack --config build/webpack.config.demo.js",
+        "build:demo": "npm run site:init && rm -rf publish && MODE=publish TARGET=github webpack --config build/webpack.config.demo.js",
         "build": "npm run build:lib && npm run build:demo"
     },
     "keywords": [
