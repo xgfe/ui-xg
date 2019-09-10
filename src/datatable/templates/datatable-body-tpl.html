@@ -1,0 +1,28 @@
+<table
+  ng-style="{width:$table.<%widthKey%>+'px'}"
+  class="uix-datatable-tbody"
+  cellspacing="0"
+  cellpadding="0"
+  border="0"
+>
+  <colgroup>
+    <col
+      ng-repeat="col in $table.<%columnsKey%> track by col.__id"
+      width="{{col._width}}"
+    />
+  </colgroup>
+  <tbody>
+    <tr
+      <%repeatExp%>="(rowIndex, row) in $table.rebuildData"
+      class="uix-datatable-normal-row"
+      ng-mouseenter="$table.handleMouseIn($event,row)"
+      ng-mouseleave="$table.handleMouseOut($event,row)"
+      ng-class="[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']"
+      ng-click="$table.handleClickRow($event,row)"
+      <%rowHeightExp%>
+    >
+     <%template%>
+    </tr>
+    <%expand%>
+  </tbody>
+</table>

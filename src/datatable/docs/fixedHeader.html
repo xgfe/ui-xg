@@ -1,0 +1,12 @@
+<h4>设置高度</h4>
+<uix-datatable
+  bordered
+  height="300"
+  columns="vm.columns"
+  data="vm.data"
+></uix-datatable>
+<h4>设置最大高度</h4>
+<button class="btn btn-primary" type="button" ng-click="vm.appendData()">
+  追加数据
+</button>
+<uix-datatable max-height="400" columns="vm.columns" data="vm.data2"></uix-datatable>

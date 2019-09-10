@@ -4,26 +4,24 @@ import home from './pages/home';
 import gettingStart from './pages/start';
 import componentDoc from './pages/component-doc';
 import guide from './pages/guide';
+import demoContainer from './pages/demo-container';
 import { ROUTES } from './routes';
 
-app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('app', appCtrl)
         .state('app.docs', {
             url: '/docs',
             template: '<div ui-view></div>'
         })
-        .state('app.components', {
-            url: '/components',
-            abstract: true,
-            template: '<div ui-view></div>'
-        })
+        .state(demoContainer)
         .state(home)
         .state(gettingStart)
         .state(guide)
         .state(componentDoc);
 
     $urlRouterProvider.otherwise(`/app${home.url}`);
+    $locationProvider.html5Mode(true);
 }]);
 
 ROUTES.forEach(addRoutes);

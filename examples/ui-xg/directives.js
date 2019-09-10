@@ -9,8 +9,10 @@ import 'src/calendar/calendar.js';
 import 'src/carousel/carousel.js';
 import 'src/cityselect/cityselect.js';
 import 'src/collapse/collapse.js';
+import 'src/datatable/datatable.js';
 import 'src/datepicker/datepicker.js';
 import 'src/dropdown/dropdown.js';
+import 'src/form/form.js';
 import 'src/grid/grid.js';
 import 'src/loader/loader.js';
 import 'src/modal/modal.js';
@@ -47,8 +49,10 @@ export default [
     'carousel',
     'cityselect',
     'collapse',
+    'datatable',
     'datepicker',
     'dropdown',
+    'form',
     'grid',
     'loader',
     'modal',

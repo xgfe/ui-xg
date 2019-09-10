@@ -1,0 +1,25 @@
+<uix-datatable bordered expand-template="expandTpl" columns="vm.columns" data="vm.data"></uix-datatable>
+<h3>固定列时展开行</h3>
+<uix-datatable expand-template="expandTpl" columns="vm.columns2" data="vm.data"></uix-datatable>
+<script type="text/ng-template" id="expandTpl">
+    <h5>基本信息（第{{rowIndex+1}}行）</h5>
+    <div class="row">
+        <div class="col-md-4">姓名：{{row.name}}</div>
+        <div class="col-md-4">年龄：{{row.age}}</div>
+        <div class="col-md-4">日期：{{row.date|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+    </div>
+    <h5>地址信息</h5>
+    <div class="row">
+        <div class="col-md-4">省份：{{row.name}}</div>
+        <div class="col-md-4">城市：{{row.age}}</div>
+        <div class="col-md-4">邮编：{{row.zip}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            详细地址：{{row.address}}
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="nameTpl">
+    {{row.name}} <span class="label label-danger" ng-click="$table.handleRowExpand(row)">{{row._isExpand?'折叠':'展开'}}</span>
+</script>
