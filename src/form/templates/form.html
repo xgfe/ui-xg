@@ -19,17 +19,21 @@
             'col-md-{{item.divWidth?item.divWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal',
             'col-md-{{item.divWidth?item.divWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'
         }" ng-if="!item.template&&!item.templateUrl&&item.type!=='tpl'">
-            <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" ng-change="$form.onChange(item)" placeholder="{{item.placeholder}}">
+            <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" placeholder="{{item.placeholder}}"
+                ng-change="$form.onChange(item)" ng-blur="$form.onBlur(item)" ng-focus="$form.onFocus(item)">
                 <div class="row" ng-if="item.type==='dateRange'">
                     <div class="col-md-6">
-                        <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime" ng-change="$form.onChange(item)"></uix-datepicker>
+                        <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime"
+                        ng-change="$form.onChange(item)"></uix-datepicker>
                     </div>
                     <div class="row pull-left text-center uix-form-m-l">至</div>
                     <div class="col-md-6">
-                        <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime" ng-change="$form.onChange(item)"></uix-datepicker>
+                        <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime"
+                        ng-change="$form.onChange(item)"></uix-datepicker>
                     </div>
                 </div>
-                <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'" ng-change="$form.onChange(item)" placeholder="{{item.placeholder}}"></uix-datepicker>
+                <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'"  placeholder="{{item.placeholder}}" format="item.dateFormat"
+                ng-change="$form.onChange(item)"></uix-datepicker>
                 <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.onChange(item)">
                     <uix-select-match placeholder="{{item.placeholder}}">{{$select.selected.desc}}</uix-select-match>
                     <uix-select-choices repeat="option in item.options | filter:$select.search">
@@ -70,5 +74,4 @@
             {{cancelText?cancelText:'取消'}}
         </button>
     </div>
-        
 </div>

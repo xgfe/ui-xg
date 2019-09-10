@@ -68,8 +68,9 @@ data = [{
 | labelWidth | label栅格化列数，horizontal和vertical布局生效 | Number | horizontal：2，vertical：6 |
 | divWidth | div栅格化列数 | Number | inline:3,horizontal:4,vertical:8 |
 | options | 单选多选下拉框列表 | Array[{desc:'',value:''}] | - |
-| immediateCheck | 实时校验 | Boolean | False |
-| publicCheck | 默认常用校验规则可选范围,'emailReg'，'validCharacterReg'，'letterNumberReg'，'mobileRegTwelveNum'具体可参考regUtil文件 | String |  |
+| checkTiming | 校验触发条件可选值为：change，blur，focus | [] | - |
+| relatedCheckKeys | 关联校验，配置关联项的key值，eg:项目a的更改触发b校验，则在a中设置此配置项值为b的key值即可 | [] | - |
+| publicCheck | 默认常用校验规则可选范围,'emailReg'，'validCharacterReg'，'letterNumberReg'，'mobileRegTwelveNum'具体可参考regUtil文件 | [] | - |
 | validor | 自定义校验方法,异步,校验通过返回true或者空对象，校验不通过返回{message:'',type:''},type可选值为error,warning,success | Function |  |
 | template | 自定义模板 | String | - |
 | templateUrl | 自定义模板ID | String | - |
