@@ -30,7 +30,7 @@ export default class {
             text: 'email',
             type: 'input',
             value: '',
-            publicCheck: 'emailReg'
+            publicCheck: ['emailReg']
         },
         {
             key: 'check',

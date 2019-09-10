@@ -4,10 +4,30 @@ export default class {
         this.data = [{
                 key: 'input',
                 text: 'input',
-                type: 'input'
+                type: 'input',
+                value: '',
+                checkTiming: ['change'],
+                publicCheck: ['intOrFloatOneDecimalReg','firstNotZeroIntReg'],
+                inputLimit: {
+                    limit: 'letterNumber',
+                    maxlength: 12
+                },
+                relatedCheckKeys: ['select']
+            }, {
+                key: 'date',
+                text: 'test',
+                value: '',
+                type: 'datepicker',
+                placeholder: '测试222',
+                checkTiming: ['change'],
+                publicCheck: ['emailReg'],
+                dateFormat: 'yyyy-MM-dd',
+                relatedCheckKeys: ['input']
             }, {
                 key: 'select',
                 type: 'select',
+                value: '',
+                publicCheck: ['emailReg'],
                 text: '下拉框',
                 options: [{
                     desc: '描述',

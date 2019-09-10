@@ -94,12 +94,20 @@ const commonRegUtil = {
     // 两位小数浮点数，可为负数
     twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
 };
+
 angular.module('ui.xg.form', [])
-    .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', function ($scope, $compile, $templateCache, $element, $q) {
+    .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$filter', function ($scope, $compile, $templateCache, $element, $q, $filter) {
         $scope.layout = $scope.layout || 'horizontal';
         $scope.finalValue = $scope.finalValue || {};
         $scope.showBtn = $scope.showBtn || true;
+        let timer = null;
         const $form = this;
+        const INPUTLIMIT = {
+            number: /\D/g,
+            letter: /[^a-zA-Z]/g,
+            letterNumber: /[^A-Za-z\d]/g
+        };
+        const INNERFORMAT = ['currency', 'number', 'date', 'json', 'lowercase', 'uppercase', 'limitTo', 'orderBy'];
         $form.copyData = angular.copy($scope.data);
         $form.html = '';
         $form.layout = $scope.layout;
@@ -128,14 +136,14 @@ angular.module('ui.xg.form', [])
             if ($scope.checkAll) {
                 let arr = [];
                 $scope.data.map((item) => {
-                    arr.push($form.validor(item, 'confirm'));
+                    arr.push($form.validor(item));
                 });
                 $q.all(arr).then(() => {
                     $form.updateConfirmState();
                 });
             }
             if($scope.onConfirm) {
-                $scope.onConfirm();
+                $scope.onConfirm({AllPassCheck: !$scope.disabled});
             }
         };
         $form.cancle = () => {
@@ -148,53 +156,96 @@ angular.module('ui.xg.form', [])
             }
         };
         // change事件
-        $form.onChange = (item) => {
+        $form.onChange = (item, from='front') => {
+            // input限制输入
+            if (item.type === 'input' && item.inputLimit) {
+                let reg = INPUTLIMIT[item.inputLimit.limit];
+                item.value = item.value.replace(reg, '').trim();
+                if (item.inputLimit.maxlength && item.value.length > item.inputLimit.maxlength) {
+                    item.value = item.value.slice(0, item.inputLimit.maxlength);
+                }
+            }
             if (item.key) {
                 $scope.finalValue[item.key] = item.value;
             }
             if (item.onChange) {
                 item.onChange(item.value);
             }
-            $form.validor(item, 'onChange').then(() => {
-                $form.updateConfirmState();
-            });
+            // 校验
+            if ((item.checkTiming && item.checkTiming.includes('change')) || from === 'relatedCheck') {
+                $form.validor(item).then(() => {
+                    $form.updateConfirmState();
+                });
+            }
+            // 关联校验项
+            $form.relatedCheck(item, 'onChange');
         };
+        // Focus
+        $form.onFocus = (item) => {
+            if (item.onFocus) {
+                item.onFocus(item.value);
+            }
+            if (item.checkTiming && item.checkTiming.includes('focus')) {
+                $form.validor(item).then(() => {
+                    $form.updateConfirmState();
+                });
+            }
+            // 关联校验项
+            $form.relatedCheck(item, 'onFocus');
+        };
+        // blur
+        $form.onBlur = (item) => {
+            if (item.onBlur) {
+                item.onBlur(item.value);
+            }
+            // 格式化输入
+            if (item.formatValue) {
+                if(INNERFORMAT.includes(item.formatValue)) {
+                    item.value = $filter('currency')(item.value);
+                } else {
+                    item.value = item.value.replace(item.formatValue[0], item.formatValue[1]);
+                }
+            }
+            if (item.checkTiming && item.checkTiming.includes('blur')) {
+                $form.validor(item).then(() => {
+                    $form.updateConfirmState();
+                });
+            }
+            // 关联校验项
+            $form.relatedCheck(item, 'onBlur');
+        };
+
         // 校验
-        $form.validor = (item, type) => {
+        $form.validor = (item) => {
             return $q((resolve)=>{
                 // 自定义校验覆盖默认的必填和publicCheck校验
                 if (item.validor) {
-                    item.validor(item.value).then((res) => {
-                        if (type === 'onChange' && !item.immediateCheck) {
-                            item.tipInfo = true;
-                        } else {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        item.validor(item.value).then((res) => {
                             item.tipInfo = res;
-                        }
-                        resolve(item);
-                    });
+                            resolve(item);
+                        });
+                    }, 300);
                 } else {
                     if (item.value) {
                         item.tipInfo = true;
                     }
                     if (item.necessary && !item.value) {
-                        if (type === 'onChange' && !item.immediateCheck) {
-                            item.tipInfo = true;
-                        } else {
-                            item.tipInfo = {message: `${item.text}必填`, type: 'error'};
-                        }
+                        item.tipInfo = {message: `${item.text}必填`, type: 'error'};
                     } else {
                         item.tipInfo = true;
                     }
-                    if(item.publicCheck) {
-                        if (!commonRegUtil[item.publicCheck].test(item.value)) {
-                            if (type === 'onChange' && !item.immediateCheck) {
-                                item.tipInfo = true;
-                            } else {
+                    if(item.publicCheck && item.publicCheck.length) {
+                        item.publicCheck.some((list) => {
+                            if (!commonRegUtil[list].test(item.value)) {
                                 item.tipInfo = {message: `${item.text}输入不正确`, type: 'error'};
+                                return true;
+                            } else {
+                                item.tipInfo = true;
+                                return false;
                             }
-                        } else {
-                            item.tipInfo = true;
-                        }
+                        });
                     }
                     resolve(item);
                 }
@@ -208,6 +259,21 @@ angular.module('ui.xg.form', [])
                 $scope.disabled = false;
             }
         };
+        // aitem校验调用bitem的校验方法（关联校验）
+        $form.relatedCheck = (item, eventType) => {
+            if (item.relatedCheckKeys && item.relatedCheckKeys.length) {
+                item.relatedCheckItems = item.relatedCheckKeys.reduce((res, relatedKey) => {
+                    let relatedItem = $scope.data.find(({key}) => (key === relatedKey));
+                    if (relatedItem && relatedItem.key) {
+                        res.push(relatedItem);
+                    }
+                    return res;
+                }, []);
+                item.relatedCheckItems.forEach((relatedItem) => {
+                    $form[eventType](relatedItem, 'relatedCheck');
+                });
+            }
+        }
     }])
     .directive('uixForm', function () {
         return {
