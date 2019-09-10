@@ -1338,6 +1338,17 @@
                     }, 0);
                 };
 
+                $table.handlePageChange = () => {
+                    if ($scope.onPageChange) {
+                        let pageNo = parseInt($table.pagination.pageNo, 10);
+                        let pageSize = parseInt($table.pagination.pageSize, 10);
+                        $scope.onPageChange({
+                            $pageNo: pageNo,
+                            $pageSize: pageSize,
+                        });
+                    }
+                };
+
                 function handleMainBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
                     let scrollLeft = event.target.scrollLeft;
@@ -1828,8 +1839,7 @@
                 }
 
                 function updateFixedRowHeight() {
-                    let tableWrap = $element.find('.uix-datatable-wrap');
-                    let allRows = tableWrap.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
+                    let allRows = $element.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
                     if (allRows.length) {
                         $table.rebuildData.forEach((row, index) => {
                             let tr = allRows.get(index);
@@ -1904,7 +1914,7 @@
                     }
                     $compile(template)(compileScope, (clonedElement) => {
                         let tableWrap = angular.element($element[0]
-                            .querySelector('.uix-datatable-wrap'));
+                            .querySelector('.uix-datatable-content'));
                         tableWrap.empty().append(clonedElement);
                         $timeout(() => {
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
@@ -2001,11 +2011,14 @@
                     onRowClick: '&',
                     onSelectionChange: '&',
                     onCurrentChange: '&',
+                    onPageChange: '&',
                     height: '=',
                     maxHeight: '=',
                     expandTemplate: '@',
                     disabledRowClickSelect: '=',
-                    scrollX: '='
+                    scrollX: '=',
+                    pageSizes: '=',
+                    pagination: '='
                 },
                 controllerAs: '$table',
                 controller: 'uixDatatableCtrl',
@@ -2017,7 +2030,22 @@
                     $table.isStriped = 'striped' in $attrs;
                     $table.isBordered = 'bordered' in $attrs;
 
-                    $table.showFooter = false; // TODO footer
+
+                    $table.showPagination = 'pagination' in $attrs;
+                    if ($table.showPagination) {
+                        $table.pagination = scope.pagination;
+                        scope.$watch('pagination', (val) => {
+                            $table.pagination = {
+                                pageNo: val && val.pageNo ? val.pageNo : 1,
+                                pageSize: val && val.pageSize ? val.pageSize : 20,
+                                totalCount: val && val.totalCount ? val.totalCount : 0,
+                            };
+                        }, true);
+                    }
+                    $table.showSizer = 'pageSizes' in $attrs;
+                    if ($table.showSizer) {
+                        $table.pageSizes = scope.pageSizes;
+                    }
 
                     $table.isLoading = false;
                     $table.isEmpty = false;
@@ -2097,7 +2125,7 @@
                 }
             };
         }])
-        .directive('uixDatatableFoot', function () {
+        .directive('uixDatatableFoot', ['$timeout', function ($timeout) {
             return {
                 restrict: 'E',
                 templateUrl: 'templates/datatable-foot.html',
@@ -2107,7 +2135,20 @@
                 },
                 link: function (scope, el, attrs, $table) {
                     scope.$table = $table;
+                    scope.pageSizes = $table.pageSizes || [20, 40, 50, 100, 200];
+                    scope.handlePageChange = () => {
+                        $table.handlePageChange();
+                    };
+                    scope.handleSizerChange = () => {
+                        let cachePageNo = $table.pagination.pageNo;
+                        $timeout(() => {
+                            if ($table.pagination.pageNo === cachePageNo) {
+                                scope.handlePageChange();
+                            }
+                        }, 0);
+                    };
+
                 }
             };
-        });
+        }]);
 })();

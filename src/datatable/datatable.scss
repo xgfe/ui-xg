@@ -1,5 +1,5 @@
 $text-color: #515a6e; // 默认字体颜色
-$text-size: 12px; // 默认字号
+$text-size : 12px; // 默认字号
 
 $border-color  : #ddd; // 边框颜色
 $primary-color : #2d8cf0; // 主颜色
@@ -285,6 +285,26 @@ $state-text-size: 16px; // 状态提示文本大小
 
     .uix-datatable-row-hover td {
         background-color: $hover-bg-color;
+    }
+
+    .uix-datatable-foot {
+        text-align: right;
+    }
+
+    .uix-datatable-page-sizer {
+        width  : 90px;
+        display: inline-block;
+        margin : 20px 10px;
+    }
+
+    .uix-datatable-pagination {
+        vertical-align: top;
+    }
+
+    &.uix-datatable-has-status {
+        .uix-datatable-wrap {
+            overflow: hidden;
+        }
     }
 }
 

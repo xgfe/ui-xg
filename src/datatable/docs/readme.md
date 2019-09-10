@@ -25,6 +25,8 @@
 | scrollX | 滚动宽度 | Number / String | - |
 | rowClassName | 行的 className 的回调方法，传入参数：row-当前行数据；rowIndex：当前行的索引 | Function | - |
 | expandTemplate | 自定义行展开模板，需要配合column的`type:expand`使用 | String | - |
+| pagination | 分页配置 | Object&lt;pageNo,pageSize,totalCount&gt; | {pageNo:1,pageSize:20,totalCount:0} |
+| pageSizes | 调整每页显示条数 | Array&lt;Number&gt; | [20, 40, 50, 100, 200] |
 | status | 表格状态，可选值<ul><li>`1/loading`：加载状态</li><li>`2/empty`：数据为空</li><li>`-1/error`：加载失败状态</li></ul> | String | - |
 | loadingText | 加载中状态提示文案，也可通过全局的`uixDatatableProvider`设置，属性优先级高于全局设置| String| `'数据加载中'` |
 | emptyText | 数据为空状态提示文案，配置方式同`loadingText`| String| `'数据为空'` |
@@ -38,6 +40,7 @@
 |on-row-click|单击某一行时触发|<ul><li>`$row`：当前行数据</li><li>`$rowIndex`：行索引</li></ul> |
 |on-selection-change|开启多选时，选择内容变化时触发|<ul><li>`$newRows`：当前选中的行，类型为数组</li><li>`$newRows`：上一次选中的行</li></ul> |
 |on-current-change|开启单选时，选择内容发生变化时触发|<ul><li>`$newRow`：当前选中</li><li>`$oldRow`：上次选中</li><li>`$newInex`：当前选中的行索引</li><li>`$oldIndex`：上次选中的行索引</li></ul> |
+|on-page-change|修改页码的时候触发|<ul><li>`$pageNo`：当前页码</li><li>`$pageSize`：当前每页条数</li></ul> |
 
 ### uixDatatableProvider 
 
@@ -68,7 +71,7 @@
 | fixed | 列是否固定在左侧或者右侧，可选值为 `left` 左侧和 `right` 右侧 | String | - |
 | sortable | 对应列是否可以排序 | boolean | `false` |
 | children | 分组表头 | Array<Column> | - |
-| template | 自定义单元格模板，可以是字符串，也可是函数，函数参数为<ul><li>`row`：当前行数据</li><li>`index`：行索引</li></ul> | String / Function | - |
-| templateUrl | 自定义列模板ID，指定模板的ID，函数的参数同上，使用方式参考[自定义列模板](#datatable_customTemplate) | String / Function | - |
-| headerTemplate | 自定义表头，可以是模板，也可是函数，函数参数为<ul><li>`column`：当前列数据</li><li>`index`：列索引</li></ul> | String / Function | - |
-| headerTemplateUrl | 自定义列模板ID，指定模板的ID，函数的参数同上，使用方式参考[自定义列模板](#datatable_customHeader) | String / Function | - |
+| template | 自定义单元格模板，可以是字符串，也可是函数，函数参数为<ul><li>`row`：当前行数据</li><li>`index`：行索引</li></ul> | String | - |
+| templateUrl | 自定义列模板ID，指定模板的ID，函数的参数同上，使用方式参考[自定义列模板](#datatable_customTemplate) | String | - |
+| headerTemplate | 自定义表头，可以是模板，也可是函数，函数参数为<ul><li>`column`：当前列数据</li><li>`index`：列索引</li></ul> | String | - |
+| headerTemplateUrl | 自定义列模板ID，指定模板的ID，函数的参数同上，使用方式参考[自定义列模板](#datatable_customHeader) | String | - |

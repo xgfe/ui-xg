@@ -1,1 +1,19 @@
-<div></div>
+<div class="uix-datatable-foot">
+  <select
+    class="form-control input-sm uix-datatable-page-sizer"
+    ng-change="handleSizerChange()"
+    ng-model="$table.pagination.pageSize"
+    ng-if="$table.showSizer"
+  >
+    <option value="{{pagesize}}" ng-repeat="pagesize in pageSizes track by $index">
+        {{pagesize}}条/页
+    </option>
+  </select>
+  <uix-pager
+    total-items="$table.pagination.totalCount"
+    ng-model="$table.pagination.pageNo"
+    items-per-page="$table.pagination.pageSize"
+    class="pagination-sm uix-datatable-pagination"
+    ng-change="handlePageChange()"
+  ></uix-pager>
+</div>
