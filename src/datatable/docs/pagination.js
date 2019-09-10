@@ -14,7 +14,7 @@ export default class {
     }
     constructor($timeout) {
         this.$timeout = $timeout;
-        this.handlePageChange(this.pager.pageNo, this.pager.pageSize);
+        this.handlePageChange(1, 20);
     }
     handlePageChange($pageNo, $pageSize) {
         this.status = 'loading';

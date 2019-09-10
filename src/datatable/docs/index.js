@@ -282,7 +282,8 @@ export const demos = {
     pagination: {
         title: '带分页',
         description: `
-        分页目前没有封装到表格内部，可以和<a ui-sref="app.components.pager">pager</a>搭配使用
+        通过配置属性<code>pagination</code>可以开启分页，<code>pagination</code>是一个对象，包括三个参数，分别是<code>pageSize</code>：每页条数、<code>pageNo</code>：页码、<code>totalCount</code>：总条目。<br>
+        配置属性<code>page-sizes</code>可以调整每页显示条数，传入一个数字数组。当切换页码或者切换每页显示条数时都会触发<code>on-page-change</code>事件，回调包括<code>$pageSize</code>和<code>$pageNo</code>
         `,
         controller: pagination,
         template: paginationTemplate,
