@@ -1,22 +1,27 @@
 import { baseColumns, baseData } from './data';
 export default class {
     static $inject = ['$timeout'];
-    constructor($timeout) {
-        this.$timeout = $timeout;
-    }
     columns = angular.copy(baseColumns);
-    data = angular.copy(baseData);
-    page = {
-        totalItems: 150,
+    data = angular.copy(baseData).concat(baseData);
+    status = '';
+    pager = {
+        totalCount: 0,
+    };
+    pager2 = {
+        totalCount: 200,
         pageSize: 20,
         pageNo: 1
-    };
-    status = '';
-    pageChanged() {
+    }
+    constructor($timeout) {
+        this.$timeout = $timeout;
+        this.handlePageChange(1, 20);
+    }
+    handlePageChange($pageNo, $pageSize) {
         this.status = 'loading';
-        console.log('pageSize:%s，pageNo:%s', this.page.pageSize, this.page.pageNo);
+        console.log('pageSize:%s，pageNo:%s', $pageSize, $pageNo);
         this.$timeout(() => {
             this.status = '';
+            this.pager.totalCount = Math.random() > 0.5 ? 200 : 150;
         }, 2000);
     }
 }

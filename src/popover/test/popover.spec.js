@@ -3,6 +3,7 @@ describe('uix-popover', function () {
         elmBody,
         scope,
         elmScope,
+        $timeout,
         tooltipScope,
         $document;
 
@@ -16,7 +17,8 @@ describe('uix-popover', function () {
         module('popover/templates/popover-html-popup.html');
     });
 
-    beforeEach(inject(function ($rootScope, $compile, _$document_) {
+    beforeEach(inject(function ($rootScope, $compile, _$document_, _$timeout_) {
+        $timeout = _$timeout_;
         $document = _$document_;
         elmBody = angular.element(
             '<div><span uix-popover="popover text">Selector Text</span></div>'
@@ -58,7 +60,9 @@ describe('uix-popover', function () {
         expect(tooltipScope.isOpen).toBe(true);
         elm.trigger('click');
         tooltipScope.$digest();
-        expect(tooltipScope.isOpen).toBe(false);
+        $timeout(() => {
+            expect(tooltipScope.isOpen).toBe(false);
+        }, tooltipScope.popupCloseDelay);
     }));
 
     it('should not unbind event handlers created by other directives - issue 456', inject(function ($compile) {
@@ -170,7 +174,9 @@ describe('uix-popover', function () {
                 expect(tooltipScope.isOpen).toBe(true);
                 elmScope.isOpen = false;
                 elmScope.$digest();
-                expect(tooltipScope.isOpen).toBe(false);
+                $timeout(() => {
+                    expect(tooltipScope.isOpen).toBe(false);
+                }, tooltipScope.popupCloseDelay);
             });
 
             it('should update the controller value', function () {
@@ -179,7 +185,9 @@ describe('uix-popover', function () {
                 expect(elmScope.isOpen).toBe(true);
                 elm.trigger('click');
                 tooltipScope.$digest();
-                expect(elmScope.isOpen).toBe(false);
+                $timeout(() => {
+                    expect(elmScope.isOpen).toBe(false);
+                }, tooltipScope.popupCloseDelay);
             });
         });
     });

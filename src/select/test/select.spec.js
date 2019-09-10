@@ -665,7 +665,7 @@ describe('uix-select tests', function () {
             var el = createUiSelect();
             expect(el.find('.uix-select-choices-group .uix-select-choices-group-label').map(function () {
                 return this.textContent;
-            }).toArray()).toEqual(['Foo', 'Baz', 'bar']);
+            }).toArray()).toEqual(['Foo', 'bar', 'Baz']);
         });
     });
 

@@ -4,3 +4,15 @@
   data="vm.data"
   on-sort-change="vm.onSortChange($column, $order, $key)"
 ></uix-datatable>
+<h4>多列同时排序</h4>
+<p>多列排序时，如果需要清除排序效果，可以通过在外部作用域广播事件<code>uix-datatable-clear-sort</code>，
+广播事件的参数是组件id，组件id是必填项且只有当事件参数id与组件参数一致时才会生效</p>
+<button type="button" class="btn btn-sm btn-success" ng-click="vm.clearSort()">清空排序效果</button>
+<uix-datatable
+  bordered
+  id="multi-sort"
+  columns="vm.columns2"
+  data="vm.data2"
+  on-columns-sort="vm.onColumnsSort($sorts)"
+  multi-sort
+></uix-datatable>

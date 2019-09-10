@@ -101,7 +101,7 @@ describe('ui.xg.timepicker', function () {
         expect(val).toEqual(date(dt, timepickerConfig.format));
     });
 
-    it('should toggle timepanel when click input and button', function (done) {
+    it('should toggle timepanel when click input and button', function () {
         var el = '<uix-timepicker ng-model="time"></uix-timepicker>';
         scope.time = getDate();
         createTimepicker(el);
@@ -109,11 +109,9 @@ describe('ui.xg.timepicker', function () {
         clickInput();
         expect(getTimepanel().length).toBe(1);
         clickButton();
-        setTimeout(function () {
-            $timeout.flush();
+        $timeout(function () {
             expect(getTimepanel().length).toBe(0);
-            done();
-        }, 200);
+        }, 201);
     });
 
     it('ngModel should be two-way data binding', function () {
