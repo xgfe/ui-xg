@@ -1,28 +1,25 @@
-<style>
-    .sizer{
-        width: 90px;
-        display: inline-block;
-        height: 30px;
-        margin: 20px;
-    }
-    .my-pager{
-        vertical-align: top;
-    }
-</style>
-<uix-datatable status="vm.status" height="400" columns="vm.columns" data="vm.data"></uix-datatable>
-
-<div style="text-align: right;">
-  <select class="form-control sizer" ng-change="vm.pageChanged()" ng-model="vm.page.pageSize">
-    <option value="20">20条/页</option>
-    <option value="40">40条/页</option>
-    <option value="100">100条/页</option>
-  </select>
-  <uix-pager
-    total-items="vm.page.totalItems"
-    ng-model="vm.page.pageNo"
-    items-per-page="vm.page.pageSize"
-    class="pagination-sm my-pager"
-    ng-change="vm.pageChanged()"
-    rotate="false"
-  ></uix-pager>
-</div>
+<uix-datatable
+  pagination="vm.pager"
+  on-page-change="vm.handlePageChange($pageNo,$pageSize)"
+  status="vm.status"
+  height="400"
+  columns="vm.columns"
+  data="vm.data"
+></uix-datatable>
+<h4>调整每页显示条数</h4>
+<p>默认可选择的是:[20, 40, 50, 100, 200]</p>
+<uix-datatable
+  page-sizes
+  height="300"
+  pagination="vm.pager2"
+  columns="vm.columns"
+  data="vm.data"
+></uix-datatable>
+<h4>自定义每页显示条数</h4>
+<uix-datatable
+  page-sizes="[20,50,100]"
+  height="300"
+  pagination="vm.pager2"
+  columns="vm.columns"
+  data="vm.data"
+></uix-datatable>

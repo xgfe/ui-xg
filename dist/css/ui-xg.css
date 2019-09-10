@@ -648,9 +648,6 @@ img {
     .uix-calendar .uix-cal-month-select:hover {
       background: #3498db; }
 
-.uix-carousel {
-  position: relative; }
-
 .uix-cityselect-container {
   max-height: 280px;
   overflow-y: scroll; }
@@ -758,6 +755,9 @@ img {
     text-overflow: ellipsis;
     cursor: pointer; }
 
+.uix-carousel {
+  position: relative; }
+
 .uix-datatable {
   position: relative;
   width: inherit;
@@ -774,7 +774,7 @@ img {
     background-color: #fff;
     transition: background-color .2s ease-in-out; }
   .uix-datatable th {
-    background-color: #f8f8f9; }
+    background-color: #f5f0f0; }
   .uix-datatable td,
   .uix-datatable th {
     min-width: 0;
@@ -786,7 +786,7 @@ img {
     position: relative; }
   .uix-datatable.uix-datatable-striped .uix-datatable-tbody > tbody > tr:nth-child(even) > td,
   .uix-datatable.uix-datatable-striped .uix-datatable-tbody > tbody > tr:nth-child(even) > th {
-    background-color: #f9f9f9; }
+    background-color: #fbf9f9; }
   .uix-datatable.uix-datatable-bordered table {
     border: 1px solid #ddd; }
     .uix-datatable.uix-datatable-bordered table > thead > tr > th,
@@ -808,7 +808,7 @@ img {
   .uix-datatable .uix-datatable-thead > thead > tr > th,
   .uix-datatable .uix-datatable-thead > thead > tr > td {
     border-bottom: 0;
-    background-color: #f8f8f9; }
+    background-color: #f5f0f0; }
   .uix-datatable .uix-datatable-main-body {
     overflow-x: auto;
     overflow-y: auto; }
@@ -909,7 +909,7 @@ img {
     position: absolute;
     right: 0;
     top: 0;
-    background-color: #f8f8f9; }
+    background-color: #f5f0f0; }
   .uix-datatable .uix-datatable-loading,
   .uix-datatable .uix-datatable-empty,
   .uix-datatable .uix-datatable-error {
@@ -939,7 +939,17 @@ img {
       left: 0;
       right: 0; }
   .uix-datatable .uix-datatable-row-hover td {
-    background-color: #f9f9f9; }
+    background-color: #fbf9f9; }
+  .uix-datatable .uix-datatable-foot {
+    text-align: right; }
+  .uix-datatable .uix-datatable-page-sizer {
+    width: 90px;
+    display: inline-block;
+    margin: 20px 10px; }
+  .uix-datatable .uix-datatable-pagination {
+    vertical-align: top; }
+  .uix-datatable.uix-datatable-has-status .uix-datatable-wrap {
+    overflow: hidden; }
 
 @media screen and (max-width: 768px) {
   .uix-datatable .uix-datatable-fixed {
@@ -1217,6 +1227,32 @@ fieldset[disabled] .btn-primary:active,
 fieldset[disabled] .btn-primary.active {
   background-color: #7266ba;
   border-color: #7266ba; }
+
+.uix-loader {
+  word-wrap: break-word;
+  position: relative; }
+  .uix-loader .loading {
+    position: relative;
+    background: rgba(96, 96, 96, 0.05);
+    min-height: 200px; }
+  .uix-loader .loading-icon {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    margin-left: -15px; }
+  .uix-loader .error-tip {
+    position: relative;
+    min-height: 200px; }
+  .uix-loader .error-text {
+    font-size: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -90px;
+    margin-top: -30px; }
+  .uix-loader .empty-text {
+    margin-left: -64px; }
 
 .uix-grid {
   box-sizing: border-box;
@@ -3134,32 +3170,6 @@ fieldset[disabled] .btn-primary.active {
       padding-right: 15px;
       padding-left: 15px; } }
 
-.uix-loader {
-  word-wrap: break-word;
-  position: relative; }
-  .uix-loader .loading {
-    position: relative;
-    background: rgba(96, 96, 96, 0.05);
-    min-height: 200px; }
-  .uix-loader .loading-icon {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 45%;
-    margin-left: -15px; }
-  .uix-loader .error-tip {
-    position: relative;
-    min-height: 200px; }
-  .uix-loader .error-text {
-    font-size: 30px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -90px;
-    margin-top: -30px; }
-  .uix-loader .empty-text {
-    margin-left: -64px; }
-
 @media (min-width: 1200px) {
   .modal-xl {
     min-width: 900px;
@@ -3831,26 +3841,6 @@ body > .uix-select.open {
 .timeline.timeline-pending.timeline-reverse .timeline-item:nth-last-child(2) .timeline-item-tail {
   border-left: 2px solid #e8e8e8; }
 
-.uix-timepicker {
-  position: relative; }
-  .uix-timepicker .uix-timepicker-input {
-    cursor: pointer;
-    background: transparent;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none; }
-  .uix-timepicker .uix-timepicker-input.disabled,
-  .uix-timepicker .uix-timepicker-input[disabled] {
-    cursor: not-allowed; }
-  .uix-timepicker button {
-    outline: none; }
-
-.uix-timepicker-popover .popover-content {
-  padding: 0; }
-
-.uix-timepicker-popover .uix-timepanel {
-  border: 0; }
-
 .uix-timepanel {
   display: inline-block;
   border-radius: 3px;
@@ -3900,6 +3890,26 @@ body > .uix-select.open {
     right: 0;
     top: 0;
     font-size: 10px; }
+
+.uix-timepicker {
+  position: relative; }
+  .uix-timepicker .uix-timepicker-input {
+    cursor: pointer;
+    background: transparent;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none; }
+  .uix-timepicker .uix-timepicker-input.disabled,
+  .uix-timepicker .uix-timepicker-input[disabled] {
+    cursor: not-allowed; }
+  .uix-timepicker button {
+    outline: none; }
+
+.uix-timepicker-popover .popover-content {
+  padding: 0; }
+
+.uix-timepicker-popover .uix-timepanel {
+  border: 0; }
 
 [uix-typeahead-popup].dropdown-menu {
   display: block; }

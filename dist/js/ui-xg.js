@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.12 - 2019-09-04
+ * Version: 2.1.12 - 2019-09-10
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -3994,6 +3994,8 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 };
 "use strict";
 
+/* eslint-disable wrap-iife */
+
 /* eslint-disable angular/di-unused */
 
 /**
@@ -4005,6 +4007,1057 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
  * Author: yjy972080142@gmail.com
  * Date:2019-08-13
  */
+(function () {
+  (function (global, factory) {
+    global.ResizeObserver = factory();
+  })(window, function () {
+    'use strict';
+    /**
+     * A collection of shims that provide minimal functionality of the ES6 collections.
+     *
+     * These implementations are not meant to be used outside of the ResizeObserver
+     * modules as they cover only a limited range of use cases.
+     */
+
+    /* eslint-disable require-jsdoc, valid-jsdoc */
+
+    var MapShim = function () {
+      if (typeof Map !== 'undefined') {
+        return Map;
+      }
+      /**
+       * Returns index in provided array that matches the specified key.
+       *
+       * @param {Array<Array>} arr
+       * @param {*} key
+       * @returns {number}
+       */
+
+
+      function getIndex(arr, key) {
+        var result = -1;
+        arr.some(function (entry, index) {
+          if (entry[0] === key) {
+            result = index;
+            return true;
+          }
+
+          return false;
+        });
+        return result;
+      }
+
+      return function () {
+        function anonymous() {
+          this.__entries__ = [];
+        }
+
+        var prototypeAccessors = {
+          size: {
+            configurable: true
+          }
+        };
+        /**
+         * @returns {boolean}
+         */
+
+        prototypeAccessors.size.get = function () {
+          return this.__entries__.length;
+        };
+        /**
+         * @param {*} key
+         * @returns {*}
+         */
+
+
+        anonymous.prototype.get = function (key) {
+          var index = getIndex(this.__entries__, key);
+          var entry = this.__entries__[index];
+          return entry && entry[1];
+        };
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.set = function (key, value) {
+          var index = getIndex(this.__entries__, key);
+
+          if (~index) {
+            this.__entries__[index][1] = value;
+          } else {
+            this.__entries__.push([key, value]);
+          }
+        };
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+
+
+        anonymous.prototype["delete"] = function (key) {
+          var entries = this.__entries__;
+          var index = getIndex(entries, key);
+
+          if (~index) {
+            entries.splice(index, 1);
+          }
+        };
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.has = function (key) {
+          return !!~getIndex(this.__entries__, key);
+        };
+        /**
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.clear = function () {
+          this.__entries__.splice(0);
+        };
+        /**
+         * @param {Function} callback
+         * @param {*} [ctx=null]
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.forEach = function (callback, ctx) {
+          var this$1 = this;
+          if (ctx === void 0) ctx = null;
+
+          for (var i = 0, list = this$1.__entries__; i < list.length; i += 1) {
+            var entry = list[i];
+            callback.call(ctx, entry[1], entry[0]);
+          }
+        };
+
+        Object.defineProperties(anonymous.prototype, prototypeAccessors);
+        return anonymous;
+      }();
+    }();
+    /**
+     * Detects whether window and document objects are available in current environment.
+     */
+
+
+    var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document; // Returns global object of a current environment.
+
+    var global$1 = function () {
+      if (typeof global !== 'undefined' && global.Math === Math) {
+        return global;
+      }
+
+      if (typeof self !== 'undefined' && self.Math === Math) {
+        return self;
+      }
+
+      if (typeof window !== 'undefined' && window.Math === Math) {
+        return window;
+      } // eslint-disable-next-line no-new-func
+
+
+      return Function('return this')();
+    }();
+    /**
+     * A shim for the requestAnimationFrame which falls back to the setTimeout if
+     * first one is not supported.
+     *
+     * @returns {number} Requests' identifier.
+     */
+
+
+    var requestAnimationFrame$1 = function () {
+      if (typeof requestAnimationFrame === 'function') {
+        // It's required to use a bounded function because IE sometimes throws
+        // an "Invalid calling object" error if rAF is invoked without the global
+        // object on the left hand side.
+        return requestAnimationFrame.bind(global$1);
+      }
+
+      return function (callback) {
+        return setTimeout(function () {
+          return callback(Date.now());
+        }, 1000 / 60);
+      };
+    }(); // Defines minimum timeout before adding a trailing call.
+
+
+    var trailingTimeout = 2;
+    /**
+     * Creates a wrapper function which ensures that provided callback will be
+     * invoked only once during the specified delay period.
+     *
+     * @param {Function} callback - Function to be invoked after the delay period.
+     * @param {number} delay - Delay after which to invoke callback.
+     * @returns {Function}
+     */
+
+    var throttle = function throttle(callback, delay) {
+      var leadingCall = false,
+          trailingCall = false,
+          lastCallTime = 0;
+      /**
+       * Invokes the original callback function and schedules new invocation if
+       * the "proxy" was called during current request.
+       *
+       * @returns {void}
+       */
+
+      function resolvePending() {
+        if (leadingCall) {
+          leadingCall = false;
+          callback();
+        }
+
+        if (trailingCall) {
+          proxy();
+        }
+      }
+      /**
+       * Callback invoked after the specified delay. It will further postpone
+       * invocation of the original function delegating it to the
+       * requestAnimationFrame.
+       *
+       * @returns {void}
+       */
+
+
+      function timeoutCallback() {
+        requestAnimationFrame$1(resolvePending);
+      }
+      /**
+       * Schedules invocation of the original function.
+       *
+       * @returns {void}
+       */
+
+
+      function proxy() {
+        var timeStamp = Date.now();
+
+        if (leadingCall) {
+          // Reject immediately following calls.
+          if (timeStamp - lastCallTime < trailingTimeout) {
+            return;
+          } // Schedule new call to be in invoked when the pending one is resolved.
+          // This is important for "transitions" which never actually start
+          // immediately so there is a chance that we might miss one if change
+          // happens amids the pending invocation.
+
+
+          trailingCall = true;
+        } else {
+          leadingCall = true;
+          trailingCall = false;
+          setTimeout(timeoutCallback, delay);
+        }
+
+        lastCallTime = timeStamp;
+      }
+
+      return proxy;
+    }; // Minimum delay before invoking the update of observers.
+
+
+    var REFRESH_DELAY = 20; // A list of substrings of CSS properties used to find transition events that
+    // might affect dimensions of observed elements.
+
+    var transitionKeys = ['top', 'right', 'bottom', 'left', 'width', 'height', 'size', 'weight']; // Check if MutationObserver is available.
+
+    var mutationObserverSupported = typeof MutationObserver !== 'undefined';
+    /**
+     * Singleton controller class which handles updates of ResizeObserver instances.
+     */
+
+    var ResizeObserverController = function ResizeObserverController() {
+      this.connected_ = false;
+      this.mutationEventsAdded_ = false;
+      this.mutationsObserver_ = null;
+      this.observers_ = [];
+      this.onTransitionEnd_ = this.onTransitionEnd_.bind(this);
+      this.refresh = throttle(this.refresh.bind(this), REFRESH_DELAY);
+    };
+    /**
+     * Adds observer to observers list.
+     *
+     * @param {ResizeObserverSPI} observer - Observer to be added.
+     * @returns {void}
+     */
+
+    /**
+     * Holds reference to the controller's instance.
+     *
+     * @private {ResizeObserverController}
+     */
+
+    /**
+     * Keeps reference to the instance of MutationObserver.
+     *
+     * @private {MutationObserver}
+     */
+
+    /**
+     * Indicates whether DOM listeners have been added.
+     *
+     * @private {boolean}
+     */
+
+
+    ResizeObserverController.prototype.addObserver = function (observer) {
+      if (!~this.observers_.indexOf(observer)) {
+        this.observers_.push(observer);
+      } // Add listeners if they haven't been added yet.
+
+
+      if (!this.connected_) {
+        this.connect_();
+      }
+    };
+    /**
+     * Removes observer from observers list.
+     *
+     * @param {ResizeObserverSPI} observer - Observer to be removed.
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.removeObserver = function (observer) {
+      var observers = this.observers_;
+      var index = observers.indexOf(observer); // Remove observer if it's present in registry.
+
+      if (~index) {
+        observers.splice(index, 1);
+      } // Remove listeners if controller has no connected observers.
+
+
+      if (!observers.length && this.connected_) {
+        this.disconnect_();
+      }
+    };
+    /**
+     * Invokes the update of observers. It will continue running updates insofar
+     * it detects changes.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.refresh = function () {
+      var changesDetected = this.updateObservers_(); // Continue running updates if changes have been detected as there might
+      // be future ones caused by CSS transitions.
+
+      if (changesDetected) {
+        this.refresh();
+      }
+    };
+    /**
+     * Updates every observer from observers list and notifies them of queued
+     * entries.
+     *
+     * @private
+     * @returns {boolean} Returns "true" if any observer has detected changes in
+     *  dimensions of it's elements.
+     */
+
+
+    ResizeObserverController.prototype.updateObservers_ = function () {
+      // Collect observers that have active observations.
+      var activeObservers = this.observers_.filter(function (observer) {
+        return observer.gatherActive(), observer.hasActive();
+      }); // Deliver notifications in a separate cycle in order to avoid any
+      // collisions between observers, e.g. when multiple instances of
+      // ResizeObserver are tracking the same element and the callback of one
+      // of them changes content dimensions of the observed target. Sometimes
+      // this may result in notifications being blocked for the rest of observers.
+
+      activeObservers.forEach(function (observer) {
+        return observer.broadcastActive();
+      });
+      return activeObservers.length > 0;
+    };
+    /**
+     * Initializes DOM listeners.
+     *
+     * @private
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.connect_ = function () {
+      // Do nothing if running in a non-browser environment or if listeners
+      // have been already added.
+      if (!isBrowser || this.connected_) {
+        return;
+      } // Subscription to the "Transitionend" event is used as a workaround for
+      // delayed transitions. This way it's possible to capture at least the
+      // final state of an element.
+
+
+      document.addEventListener('transitionend', this.onTransitionEnd_);
+      window.addEventListener('resize', this.refresh);
+
+      if (mutationObserverSupported) {
+        this.mutationsObserver_ = new MutationObserver(this.refresh);
+        this.mutationsObserver_.observe(document, {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
+      } else {
+        document.addEventListener('DOMSubtreeModified', this.refresh);
+        this.mutationEventsAdded_ = true;
+      }
+
+      this.connected_ = true;
+    };
+    /**
+     * Removes DOM listeners.
+     *
+     * @private
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.disconnect_ = function () {
+      // Do nothing if running in a non-browser environment or if listeners
+      // have been already removed.
+      if (!isBrowser || !this.connected_) {
+        return;
+      }
+
+      document.removeEventListener('transitionend', this.onTransitionEnd_);
+      window.removeEventListener('resize', this.refresh);
+
+      if (this.mutationsObserver_) {
+        this.mutationsObserver_.disconnect();
+      }
+
+      if (this.mutationEventsAdded_) {
+        document.removeEventListener('DOMSubtreeModified', this.refresh);
+      }
+
+      this.mutationsObserver_ = null;
+      this.mutationEventsAdded_ = false;
+      this.connected_ = false;
+    };
+    /**
+     * "Transitionend" event handler.
+     *
+     * @private
+     * @param {TransitionEvent} event
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.onTransitionEnd_ = function (ref) {
+      var propertyName = ref.propertyName;
+      if (propertyName === void 0) propertyName = ''; // Detect whether transition may affect dimensions of an element.
+
+      var isReflowProperty = transitionKeys.some(function (key) {
+        return !!~propertyName.indexOf(key);
+      });
+
+      if (isReflowProperty) {
+        this.refresh();
+      }
+    };
+    /**
+     * Returns instance of the ResizeObserverController.
+     *
+     * @returns {ResizeObserverController}
+     */
+
+
+    ResizeObserverController.getInstance = function () {
+      if (!this.instance_) {
+        this.instance_ = new ResizeObserverController();
+      }
+
+      return this.instance_;
+    };
+
+    ResizeObserverController.instance_ = null;
+    /**
+     * Defines non-writable/enumerable properties of the provided target object.
+     *
+     * @param {Object} target - Object for which to define properties.
+     * @param {Object} props - Properties to be defined.
+     * @returns {Object} Target object.
+     */
+
+    var defineConfigurable = function defineConfigurable(target, props) {
+      for (var i = 0, list = Object.keys(props); i < list.length; i += 1) {
+        var key = list[i];
+        Object.defineProperty(target, key, {
+          value: props[key],
+          enumerable: false,
+          writable: false,
+          configurable: true
+        });
+      }
+
+      return target;
+    };
+    /**
+     * Returns the global object associated with provided element.
+     *
+     * @param {Object} target
+     * @returns {Object}
+     */
+
+
+    var getWindowOf = function getWindowOf(target) {
+      // Assume that the element is an instance of Node, which means that it
+      // has the "ownerDocument" property from which we can retrieve a
+      // corresponding global object.
+      var ownerGlobal = target && target.ownerDocument && target.ownerDocument.defaultView; // Return the local global object if it's not possible extract one from
+      // provided element.
+
+      return ownerGlobal || global$1;
+    }; // Placeholder of an empty content rectangle.
+
+
+    var emptyRect = createRectInit(0, 0, 0, 0);
+    /**
+     * Converts provided string to a number.
+     *
+     * @param {number|string} value
+     * @returns {number}
+     */
+
+    function toFloat(value) {
+      return parseFloat(value) || 0;
+    }
+    /**
+     * Extracts borders size from provided styles.
+     *
+     * @param {CSSStyleDeclaration} styles
+     * @param {...string} positions - Borders positions (top, right, ...)
+     * @returns {number}
+     */
+
+
+    function getBordersSize(styles) {
+      var positions = [],
+          len = arguments.length - 1;
+
+      while (len-- > 0) {
+        positions[len] = arguments[len + 1];
+      }
+
+      return positions.reduce(function (size, position) {
+        var value = styles['border-' + position + '-width'];
+        return size + toFloat(value);
+      }, 0);
+    }
+    /**
+     * Extracts paddings sizes from provided styles.
+     *
+     * @param {CSSStyleDeclaration} styles
+     * @returns {Object} Paddings box.
+     */
+
+
+    function getPaddings(styles) {
+      var positions = ['top', 'right', 'bottom', 'left'];
+      var paddings = {};
+
+      for (var i = 0, list = positions; i < list.length; i += 1) {
+        var position = list[i];
+        var value = styles['padding-' + position];
+        paddings[position] = toFloat(value);
+      }
+
+      return paddings;
+    }
+    /**
+     * Calculates content rectangle of provided SVG element.
+     *
+     * @param {SVGGraphicsElement} target - Element content rectangle of which needs
+     *      to be calculated.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getSVGContentRect(target) {
+      var bbox = target.getBBox();
+      return createRectInit(0, 0, bbox.width, bbox.height);
+    }
+    /**
+     * Calculates content rectangle of provided HTMLElement.
+     *
+     * @param {HTMLElement} target - Element for which to calculate the content rectangle.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getHTMLElementContentRect(target) {
+      // Client width & height properties can't be
+      // used exclusively as they provide rounded values.
+      var clientWidth = target.clientWidth;
+      var clientHeight = target.clientHeight; // By this condition we can catch all non-replaced inline, hidden and
+      // detached elements. Though elements with width & height properties less
+      // than 0.5 will be discarded as well.
+      //
+      // Without it we would need to implement separate methods for each of
+      // those cases and it's not possible to perform a precise and performance
+      // effective test for hidden elements. E.g. even jQuery's ':visible' filter
+      // gives wrong results for elements with width & height less than 0.5.
+
+      if (!clientWidth && !clientHeight) {
+        return emptyRect;
+      }
+
+      var styles = getWindowOf(target).getComputedStyle(target);
+      var paddings = getPaddings(styles);
+      var horizPad = paddings.left + paddings.right;
+      var vertPad = paddings.top + paddings.bottom; // Computed styles of width & height are being used because they are the
+      // only dimensions available to JS that contain non-rounded values. It could
+      // be possible to utilize the getBoundingClientRect if only it's data wasn't
+      // affected by CSS transformations let alone paddings, borders and scroll bars.
+
+      var width = toFloat(styles.width),
+          height = toFloat(styles.height); // Width & height include paddings and borders when the 'border-box' box
+      // model is applied (except for IE).
+
+      if (styles.boxSizing === 'border-box') {
+        // Following conditions are required to handle Internet Explorer which
+        // doesn't include paddings and borders to computed CSS dimensions.
+        //
+        // We can say that if CSS dimensions + paddings are equal to the "client"
+        // properties then it's either IE, and thus we don't need to subtract
+        // anything, or an element merely doesn't have paddings/borders styles.
+        if (Math.round(width + horizPad) !== clientWidth) {
+          width -= getBordersSize(styles, 'left', 'right') + horizPad;
+        }
+
+        if (Math.round(height + vertPad) !== clientHeight) {
+          height -= getBordersSize(styles, 'top', 'bottom') + vertPad;
+        }
+      } // Following steps can't be applied to the document's root element as its
+      // client[Width/Height] properties represent viewport area of the window.
+      // Besides, it's as well not necessary as the <html> itself neither has
+      // rendered scroll bars nor it can be clipped.
+
+
+      if (!isDocumentElement(target)) {
+        // In some browsers (only in Firefox, actually) CSS width & height
+        // include scroll bars size which can be removed at this step as scroll
+        // bars are the only difference between rounded dimensions + paddings
+        // and "client" properties, though that is not always true in Chrome.
+        var vertScrollbar = Math.round(width + horizPad) - clientWidth;
+        var horizScrollbar = Math.round(height + vertPad) - clientHeight; // Chrome has a rather weird rounding of "client" properties.
+        // E.g. for an element with content width of 314.2px it sometimes gives
+        // the client width of 315px and for the width of 314.7px it may give
+        // 314px. And it doesn't happen all the time. So just ignore this delta
+        // as a non-relevant.
+
+        if (Math.abs(vertScrollbar) !== 1) {
+          width -= vertScrollbar;
+        }
+
+        if (Math.abs(horizScrollbar) !== 1) {
+          height -= horizScrollbar;
+        }
+      }
+
+      return createRectInit(paddings.left, paddings.top, width, height);
+    }
+    /**
+     * Checks whether provided element is an instance of the SVGGraphicsElement.
+     *
+     * @param {Element} target - Element to be checked.
+     * @returns {boolean}
+     */
+
+
+    var isSVGGraphicsElement = function () {
+      // Some browsers, namely IE and Edge, don't have the SVGGraphicsElement
+      // interface.
+      if (typeof SVGGraphicsElement !== 'undefined') {
+        return function (target) {
+          return target instanceof getWindowOf(target).SVGGraphicsElement;
+        };
+      } // If it's so, then check that element is at least an instance of the
+      // SVGElement and that it has the "getBBox" method.
+      // eslint-disable-next-line no-extra-parens
+
+
+      return function (target) {
+        return target instanceof getWindowOf(target).SVGElement && typeof target.getBBox === 'function';
+      };
+    }();
+    /**
+     * Checks whether provided element is a document element (<html>).
+     *
+     * @param {Element} target - Element to be checked.
+     * @returns {boolean}
+     */
+
+
+    function isDocumentElement(target) {
+      return target === getWindowOf(target).document.documentElement;
+    }
+    /**
+     * Calculates an appropriate content rectangle for provided html or svg element.
+     *
+     * @param {Element} target - Element content rectangle of which needs to be calculated.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getContentRect(target) {
+      if (!isBrowser) {
+        return emptyRect;
+      }
+
+      if (isSVGGraphicsElement(target)) {
+        return getSVGContentRect(target);
+      }
+
+      return getHTMLElementContentRect(target);
+    }
+    /**
+     * Creates rectangle with an interface of the DOMRectReadOnly.
+     * Spec: https://drafts.fxtf.org/geometry/#domrectreadonly
+     *
+     * @param {DOMRectInit} rectInit - Object with rectangle's x/y coordinates and dimensions.
+     * @returns {DOMRectReadOnly}
+     */
+
+
+    function createReadOnlyRect(ref) {
+      var x = ref.x;
+      var y = ref.y;
+      var width = ref.width;
+      var height = ref.height; // If DOMRectReadOnly is available use it as a prototype for the rectangle.
+
+      var Constr = typeof DOMRectReadOnly !== 'undefined' ? DOMRectReadOnly : Object;
+      var rect = Object.create(Constr.prototype); // Rectangle's properties are not writable and non-enumerable.
+
+      defineConfigurable(rect, {
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        top: y,
+        right: x + width,
+        bottom: height + y,
+        left: x
+      });
+      return rect;
+    }
+    /**
+     * Creates DOMRectInit object based on the provided dimensions and the x/y coordinates.
+     * Spec: https://drafts.fxtf.org/geometry/#dictdef-domrectinit
+     *
+     * @param {number} x - X coordinate.
+     * @param {number} y - Y coordinate.
+     * @param {number} width - Rectangle's width.
+     * @param {number} height - Rectangle's height.
+     * @returns {DOMRectInit}
+     */
+
+
+    function createRectInit(x, y, width, height) {
+      return {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      };
+    }
+    /**
+     * Class that is responsible for computations of the content rectangle of
+     * provided DOM element and for keeping track of it's changes.
+     */
+
+
+    var ResizeObservation = function ResizeObservation(target) {
+      this.broadcastWidth = 0;
+      this.broadcastHeight = 0;
+      this.contentRect_ = createRectInit(0, 0, 0, 0);
+      this.target = target;
+    };
+    /**
+     * Updates content rectangle and tells whether it's width or height properties
+     * have changed since the last broadcast.
+     *
+     * @returns {boolean}
+     */
+
+    /**
+     * Reference to the last observed content rectangle.
+     *
+     * @private {DOMRectInit}
+     */
+
+    /**
+     * Broadcasted width of content rectangle.
+     *
+     * @type {number}
+     */
+
+
+    ResizeObservation.prototype.isActive = function () {
+      var rect = getContentRect(this.target);
+      this.contentRect_ = rect;
+      return rect.width !== this.broadcastWidth || rect.height !== this.broadcastHeight;
+    };
+    /**
+     * Updates 'broadcastWidth' and 'broadcastHeight' properties with a data
+     * from the corresponding properties of the last observed content rectangle.
+     *
+     * @returns {DOMRectInit} Last observed content rectangle.
+     */
+
+
+    ResizeObservation.prototype.broadcastRect = function () {
+      var rect = this.contentRect_;
+      this.broadcastWidth = rect.width;
+      this.broadcastHeight = rect.height;
+      return rect;
+    };
+
+    var ResizeObserverEntry = function ResizeObserverEntry(target, rectInit) {
+      var contentRect = createReadOnlyRect(rectInit); // According to the specification following properties are not writable
+      // and are also not enumerable in the native implementation.
+      //
+      // Property accessors are not being used as they'd require to define a
+      // private WeakMap storage which may cause memory leaks in browsers that
+      // don't support this type of collections.
+
+      defineConfigurable(this, {
+        target: target,
+        contentRect: contentRect
+      });
+    };
+
+    var ResizeObserverSPI = function ResizeObserverSPI(callback, controller, callbackCtx) {
+      this.activeObservations_ = [];
+      this.observations_ = new MapShim();
+
+      if (typeof callback !== 'function') {
+        throw new TypeError('The callback provided as parameter 1 is not a function.');
+      }
+
+      this.callback_ = callback;
+      this.controller_ = controller;
+      this.callbackCtx_ = callbackCtx;
+    };
+    /**
+     * Starts observing provided element.
+     *
+     * @param {Element} target - Element to be observed.
+     * @returns {void}
+     */
+
+    /**
+     * Registry of the ResizeObservation instances.
+     *
+     * @private {Map<Element, ResizeObservation>}
+     */
+
+    /**
+     * Public ResizeObserver instance which will be passed to the callback
+     * function and used as a value of it's "this" binding.
+     *
+     * @private {ResizeObserver}
+     */
+
+    /**
+     * Collection of resize observations that have detected changes in dimensions
+     * of elements.
+     *
+     * @private {Array<ResizeObservation>}
+     */
+
+
+    ResizeObserverSPI.prototype.observe = function (target) {
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      } // Do nothing if current environment doesn't have the Element interface.
+
+
+      if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+      }
+
+      if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+      }
+
+      var observations = this.observations_; // Do nothing if element is already being observed.
+
+      if (observations.has(target)) {
+        return;
+      }
+
+      observations.set(target, new ResizeObservation(target));
+      this.controller_.addObserver(this); // Force the update of observations.
+
+      this.controller_.refresh();
+    };
+    /**
+     * Stops observing provided element.
+     *
+     * @param {Element} target - Element to stop observing.
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.unobserve = function (target) {
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      } // Do nothing if current environment doesn't have the Element interface.
+
+
+      if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+      }
+
+      if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+      }
+
+      var observations = this.observations_; // Do nothing if element is not being observed.
+
+      if (!observations.has(target)) {
+        return;
+      }
+
+      observations["delete"](target);
+
+      if (!observations.size) {
+        this.controller_.removeObserver(this);
+      }
+    };
+    /**
+     * Stops observing all elements.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.disconnect = function () {
+      this.clearActive();
+      this.observations_.clear();
+      this.controller_.removeObserver(this);
+    };
+    /**
+     * Collects observation instances the associated element of which has changed
+     * it's content rectangle.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.gatherActive = function () {
+      var this$1 = this;
+      this.clearActive();
+      this.observations_.forEach(function (observation) {
+        if (observation.isActive()) {
+          this$1.activeObservations_.push(observation);
+        }
+      });
+    };
+    /**
+     * Invokes initial callback function with a list of ResizeObserverEntry
+     * instances collected from active resize observations.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.broadcastActive = function () {
+      // Do nothing if observer doesn't have active observations.
+      if (!this.hasActive()) {
+        return;
+      }
+
+      var ctx = this.callbackCtx_; // Create ResizeObserverEntry instance for every active observation.
+
+      var entries = this.activeObservations_.map(function (observation) {
+        return new ResizeObserverEntry(observation.target, observation.broadcastRect());
+      });
+      this.callback_.call(ctx, entries, ctx);
+      this.clearActive();
+    };
+    /**
+     * Clears the collection of active observations.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.clearActive = function () {
+      this.activeObservations_.splice(0);
+    };
+    /**
+     * Tells whether observer has active observations.
+     *
+     * @returns {boolean}
+     */
+
+
+    ResizeObserverSPI.prototype.hasActive = function () {
+      return this.activeObservations_.length > 0;
+    }; // Registry of internal observers. If WeakMap is not available use current shim
+    // for the Map collection as it has all required methods and because WeakMap
+    // can't be fully polyfilled anyway.
+
+
+    var observers = typeof WeakMap !== 'undefined' ? new WeakMap() : new MapShim();
+    /**
+     * ResizeObserver API. Encapsulates the ResizeObserver SPI implementation
+     * exposing only those methods and properties that are defined in the spec.
+     */
+
+    var ResizeObserver = function ResizeObserver(callback) {
+      if (!(this instanceof ResizeObserver)) {
+        throw new TypeError('Cannot call a class as a function.');
+      }
+
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      }
+
+      var controller = ResizeObserverController.getInstance();
+      var observer = new ResizeObserverSPI(callback, controller, this);
+      observers.set(this, observer);
+    }; // Expose public methods of ResizeObserver.
+
+
+    ['observe', 'unobserve', 'disconnect'].forEach(function (method) {
+      ResizeObserver.prototype[method] = function () {
+        return (ref = observers.get(this))[method].apply(ref, arguments);
+        var ref;
+      };
+    });
+
+    var index = function () {
+      // Export existing implementation if available.
+      if (typeof global$1.ResizeObserver !== 'undefined') {
+        return global$1.ResizeObserver;
+      }
+
+      global$1.ResizeObserver = ResizeObserver;
+      return ResizeObserver;
+    }();
+
+    return index;
+  });
+})();
+
 (function () {
   // set forTableHead to true when convertToRows, false in normal cases like table.vue
   var getDataColumns = function getDataColumns(cols) {
@@ -4040,7 +5093,6 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
   var convertColumnOrder = function convertColumnOrder(columns, fixedType) {
     var list = [];
-    var others = [];
     columns.forEach(function (col) {
       if (fixedType) {
         if (col.fixed && col.fixed === fixedType) {
@@ -4050,7 +5102,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         list.push(col);
       }
     });
-    return list.concat(others);
+    return list;
   };
 
   function getScrollBarSize() {
@@ -4127,6 +5179,8 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
     $table.headerHeight = 0; // initial header height
 
     $table.containerHeight = null;
+    $table.scrollX = null; // 滚动宽度
+
     var compileScope = $scope.$parent.$new();
     compileScope.$table = $table;
 
@@ -4145,7 +5199,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
           newRow._rowClassName = $scope.rowClassName({
             $row: newRow,
-            $index: index
+            $rowIndex: index
           });
         }
 
@@ -4235,7 +5289,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       if ($scope.onRowClick) {
         $scope.onRowClick({
           $row: row,
-          $index: row._index
+          $rowIndex: row._index
         });
       } // 禁用通过点击行选择
 
@@ -4272,24 +5326,54 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       }
     };
 
-    $table.handleSort = function (column, type) {
+    $table.handleSort = function (column, type, event) {
+      if (event) {
+        event.stopPropagation();
+      }
+
       if (column._sortType === type) {
         type = 'normal';
       }
 
+      if ($table.multiSort) {
+        column._sortType = type;
+
+        if (angular.isFunction($scope.onColumnsSort)) {
+          var sorts = $table.allDataColumns.filter(function (col) {
+            return col.sortable;
+          }).map(function (column) {
+            return {
+              column: column,
+              key: column.key,
+              order: column._sortType
+            };
+          });
+          $scope.onColumnsSort({
+            $sorts: sorts
+          });
+        }
+      } else {
+        $table.allDataColumns.forEach(function (col) {
+          col._sortType = 'normal';
+        });
+        column._sortType = type;
+        var key = column.key;
+
+        if (angular.isFunction($scope.onSortChange)) {
+          $scope.onSortChange({
+            $column: column,
+            $key: key,
+            $order: type
+          });
+        }
+      }
+    }; // 清空排序效果
+
+
+    $table.clearSort = function () {
       $table.allDataColumns.forEach(function (col) {
         col._sortType = 'normal';
       });
-      var key = column.key;
-      column._sortType = type;
-
-      if (angular.isFunction($scope.onSortChange)) {
-        $scope.onSortChange({
-          $column: column,
-          $key: key,
-          $order: type
-        });
-      }
     }; // 展开行响应事件，对外可调用
 
 
@@ -4319,6 +5403,17 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
           }
         }
       }, 0);
+    };
+
+    $table.handlePageChange = function () {
+      if ($scope.onPageChange) {
+        var pageNo = parseInt($table.pagination.pageNo, 10);
+        var pageSize = parseInt($table.pagination.pageSize, 10);
+        $scope.onPageChange({
+          $pageNo: pageNo,
+          $pageSize: pageSize
+        });
+      }
     };
 
     function handleMainBodyScroll(event) {
@@ -4369,6 +5464,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         $table.updateHorizontalScroll();
         $table.updateVerticalScroll();
         updateFixedRowHeight();
+        updateFixedHeadHeight();
       }, 0);
     }
 
@@ -4376,7 +5472,12 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
       findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
       findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
-      angular.element(window).on('resize', handleResize);
+      angular.element(window).on('resize', handleResize); // 处理外部容器发生变化时的回调
+
+      $table.resizeObserver = new ResizeObserver(function () {
+        handleResize();
+      });
+      $table.resizeObserver.observe($element.get(0));
     }
 
     function unbindEvents() {
@@ -4384,6 +5485,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
       findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
       angular.element(window).off('resize', handleResize);
+      $table.resizeObserver.disconnect();
     } // 更新阴影
 
 
@@ -4410,6 +5512,11 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
     function calcColumnsWidth() {
       var tableWidth = $element[0].offsetWidth - 1;
+
+      if ($table.scrollX && tableWidth < $table.scrollX) {
+        tableWidth = $table.scrollX;
+      }
+
       var columnsWidth = {};
       var sumMinWidth = 0;
       var hasWidthColumns = [];
@@ -4551,8 +5658,8 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       });
     }
 
-    function makeColumnRows(colsWithId, position) {
-      var originColumns = convertColumnOrder(colsWithId, position);
+    function makeColumnRows(colsWithId) {
+      var originColumns = colsWithId;
       var maxLevel = 1;
 
       var traverse = function traverse(column, parent) {
@@ -4596,7 +5703,37 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
         rows[column.level - 1].push(column);
       });
-      return rows;
+      var left = [];
+      var right = []; // 从所有的表头行中找到固定表头
+      // 需要要求固定列的表头不管是否有多级，必须设置fixed
+
+      var _loop = function _loop(rowIndex) {
+        if (rows[rowIndex].length) {
+          rows[rowIndex].forEach(function (item) {
+            if (item.fixed) {
+              if (item.fixed === 'left') {
+                left[rowIndex] = left[rowIndex] || [];
+                left[rowIndex].push(item);
+              }
+
+              if (item.fixed === 'right') {
+                right[rowIndex] = right[rowIndex] || [];
+                right[rowIndex].push(item);
+              }
+            }
+          });
+        }
+      };
+
+      for (var rowIndex in rows) {
+        _loop(rowIndex);
+      }
+
+      return {
+        left: left,
+        center: rows,
+        right: right
+      };
     }
 
     $table.updateVerticalScroll = function () {
@@ -4794,8 +5931,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
     }
 
     function updateFixedRowHeight() {
-      var tableWrap = $element.find('.uix-datatable-wrap');
-      var allRows = tableWrap.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
+      var allRows = $element.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
 
       if (allRows.length) {
         $table.rebuildData.forEach(function (row, index) {
@@ -4805,6 +5941,58 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
             row._height = tr.offsetHeight;
           }
         });
+      }
+    } // 当固定列与主表格行相同时，直接匹配
+    // 当固定列行少于主表格时，由上往下进行匹配，多余的行高补充到最下一行
+    // 当固定列行多于主表格时，不用处理
+
+
+    function fitDiffColumnsRows(mainRows, fixedRows) {
+      var mainLength = mainRows.length;
+      var fixedLength = fixedRows.length;
+      var headerHeight = $table.headerHeight;
+
+      if (mainLength === fixedLength) {
+        // 表头行相同
+        mainRows.each(function (index, row) {
+          fixedRows.eq(index).css({
+            height: row.offsetHeight
+          });
+        });
+      } else if (mainLength > fixedLength) {
+        var restHeight = headerHeight;
+        fixedRows.each(function (index, row) {
+          var height = mainRows.get(index).offsetHeight;
+          restHeight -= height;
+          angular.element(row).css({
+            height: height
+          });
+        });
+
+        if (restHeight > 0) {
+          fixedRows.eq(fixedLength - 1).css({
+            height: restHeight + fixedRows.get(fixedLength - 1).offsetHeight
+          });
+        }
+      }
+    } // 计算固定列的表头高度
+
+
+    function updateFixedHeadHeight() {
+      var allRows = $element.find('.uix-datatable-main-header > table tr');
+
+      if (!allRows.length) {
+        return;
+      }
+
+      if ($table.isLeftFixed) {
+        var leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
+        fitDiffColumnsRows(allRows, leftHeadRows);
+      }
+
+      if ($table.isRightFixed) {
+        var rightHeadRows = $element.find('.uix-datatable-right-header > table tr');
+        fitDiffColumnsRows(allRows, rightHeadRows);
       }
     }
 
@@ -4831,7 +6019,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       }
 
       $compile(template)(compileScope, function (clonedElement) {
-        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-wrap'));
+        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-content'));
         tableWrap.empty().append(clonedElement);
         console.log(tableWrap, 567);
         $timeout(function () {
@@ -4841,6 +6029,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
           $table.updateVerticalScroll();
           updateFixedTableShadow();
           updateFixedRowHeight();
+          updateFixedHeadHeight();
         }, 0);
       });
     }
@@ -4875,9 +6064,10 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       $table.leftColumns = columsObj.left;
       $table.rightColumns = columsObj.right;
       $table.centerColumns = columsObj.center;
-      $table.allColumnRows = makeColumnRows(colsWithId);
-      $table.leftColumnRows = makeColumnRows(colsWithId, 'left');
-      $table.rightColumnRows = makeColumnRows(colsWithId, 'right');
+      var columnRowsObj = makeColumnRows(colsWithId);
+      $table.allColumnRows = columnRowsObj.center;
+      $table.leftColumnRows = columnRowsObj.left;
+      $table.rightColumnRows = columnRowsObj.right;
       $table.leftTableWidth = getFixedColumnsWidth('left');
       $table.rightTableWidth = getFixedColumnsWidth('right');
       $table.isLeftFixed = hasFixedColumns('left');
@@ -4908,6 +6098,13 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       unbindEvents();
       compileScope.$destroy();
     });
+    $scope.$on('uix-datatable-clear-sort', function (evt, id) {
+      if (id !== $scope.id) {
+        return;
+      }
+
+      $table.clearSort();
+    });
   }]).directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', '$timeout', function (uixDatatable, uixDatatableConfig, $timeout) {
     return {
       restrict: 'E',
@@ -4921,13 +6118,19 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         disabledHover: '=',
         rowClassName: '&',
         onSortChange: '&',
+        onColumnsSort: '&',
         onRowClick: '&',
         onSelectionChange: '&',
         onCurrentChange: '&',
+        onPageChange: '&',
         height: '=',
         maxHeight: '=',
         expandTemplate: '@',
-        disabledRowClickSelect: '='
+        disabledRowClickSelect: '=',
+        scrollX: '=',
+        pageSizes: '=',
+        pagination: '=',
+        id: '@'
       },
       controllerAs: '$table',
       controller: 'uixDatatableCtrl',
@@ -4937,8 +6140,26 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         $table.data = scope.data;
         $table.isStriped = 'striped' in $attrs;
         $table.isBordered = 'bordered' in $attrs;
-        $table.showFooter = false; // TODO footer
+        $table.showPagination = 'pagination' in $attrs;
 
+        if ($table.showPagination) {
+          $table.pagination = scope.pagination;
+          scope.$watch('pagination', function (val) {
+            $table.pagination = {
+              pageNo: val && val.pageNo ? val.pageNo : $table.pagination.pageNo || 1,
+              pageSize: val && val.pageSize ? val.pageSize : $table.pagination.pageSize || 20,
+              totalCount: val && val.totalCount ? val.totalCount : $table.pagination.totalCount || 0
+            };
+          }, true);
+        }
+
+        $table.showSizer = 'pageSizes' in $attrs;
+
+        if ($table.showSizer) {
+          $table.pageSizes = scope.pageSizes;
+        }
+
+        $table.multiSort = 'multiSort' in $attrs;
         $table.isLoading = false;
         $table.isEmpty = false;
         $table.isError = false;
@@ -4975,6 +6196,15 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         scope.$watch('disabledRowClickSelect', function (val) {
           $table.disabledRowClickSelect = val;
         });
+        scope.$watch('scrollX', function (val) {
+          val = parseFloat(val, 10);
+
+          if (isNaN(val)) {
+            $table.scrollX = 0;
+          } else {
+            $table.scrollX = val;
+          }
+        });
         scope.$watch('data', function (val, old) {
           if (val !== old && angular.isDefined(val)) {
             $table.data = val;
@@ -5001,7 +6231,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         $table.init();
       }
     };
-  }]).directive('uixDatatableFoot', function () {
+  }]).directive('uixDatatableFoot', ['$timeout', function ($timeout) {
     return {
       restrict: 'E',
       templateUrl: 'templates/datatable-foot.html',
@@ -5010,9 +6240,31 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       scope: {},
       link: function link(scope, el, attrs, $table) {
         scope.$table = $table;
+        var pageSizes = $table.pageSizes || [20, 40, 50, 100, 200];
+
+        if ($table.pagination.pageSize && pageSizes.indexOf($table.pagination.pageSize) === -1) {
+          pageSizes.push($table.pagination.pageSize);
+        }
+
+        scope.pageSizes = pageSizes.sort(function (prev, next) {
+          return prev - next;
+        });
+
+        scope.handlePageChange = function () {
+          $table.handlePageChange();
+        };
+
+        scope.handleSizerChange = function () {
+          var cachePageNo = $table.pagination.pageNo;
+          $timeout(function () {
+            if ($table.pagination.pageNo === cachePageNo) {
+              scope.handlePageChange();
+            }
+          }, 0);
+        };
       }
     };
-  });
+  }]);
 })();
 "use strict";
 
@@ -8151,7 +9403,8 @@ angular.module('ui.xg.select', []).constant('uixSelectConfig', {
 
             if (!skipFocusser) {
               //Check if target is input, button or textarea
-              skipFocusser = focusableControls.indexOf(evt.target.tagName.toLowerCase()) !== -1;
+              var tagName = evt.target.tagName ? evt.target.tagName.toLowerCase() : '';
+              skipFocusser = focusableControls.indexOf(tagName) !== -1;
             }
 
             $select.close(skipFocusser);
@@ -10366,12 +11619,12 @@ angular.module("datatable/templates/datatable-body-tpl.html", []).run(["$templat
 "use strict";
 
 angular.module("datatable/templates/datatable-foot.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable-foot.html", "<div></div>" + "");
+  $templateCache.put("templates/datatable-foot.html", "<div class=\"uix-datatable-foot\">" + "  <select" + "    class=\"form-control input-sm uix-datatable-page-sizer\"" + "    ng-change=\"handleSizerChange()\"" + "    ng-model=\"$table.pagination.pageSize\"" + "    ng-if=\"$table.showSizer\"" + "  >" + "    <option value=\"{{pagesize}}\" ng-repeat=\"pagesize in pageSizes track by $index\">" + "        {{pagesize}}条/页" + "    </option>" + "  </select>" + "  <uix-pager" + "    total-items=\"$table.pagination.totalCount\"" + "    ng-model=\"$table.pagination.pageNo\"" + "    items-per-page=\"$table.pagination.pageSize\"" + "    class=\"pagination-sm uix-datatable-pagination\"" + "    ng-change=\"handlePageChange()\"" + "  ></uix-pager>" + "</div>" + "");
 }]);
 "use strict";
 
 angular.module("datatable/templates/datatable-head-tpl.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable-head-tpl.html", "<table" + "  class=\"uix-datatable-thead\"" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{ col._width }}\"" + "    />" + "  </colgroup>" + "  <thead>" + "    <tr" + "      ng-repeat=\"(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex\"" + "    >" + "      <th" + "        ng-repeat=\"(colIndex, column) in cols track by colIndex\"" + "        colspan=\"{{:: column.colSpan }}\"" + "        rowspan=\"{{:: column.rowSpan }}\"" + "        ng-class=\"$table.alignCls(column)\"" + "      >" + "        <div ng-class=\"{'uix-datatable-sort-cell':column.sortable}\" class=\"uix-datatable-cell\"  ng-click=\"$table.handleSortByHead(column)\">" + "          <div ng-if=\"column.__renderHeadType==='normal'\">" + "            <span>{{:: column.title || '#' }}</span>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='expand'\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='selection'\">" + "              <input type=\"checkbox\" ng-change=\"$table.handleSelectAll()\" ng-if=\"!column.singleSelect\" ng-model=\"$table.isSelectedAll\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType === 'template'\">" + "            <%template%>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='format'\">" + "            {{ ::column.headerFormat(column) }}" + "          </div>" + "          <span class=\"uix-datatable-sort\" ng-if=\"column.sortable\">" + "            <i" + "              class=\"uix-datatable-sort-up\"" + "              ng-class=\"{on: column._sortType === 'asc'}\"" + "              ng-click=\"$table.handleSort(column, 'asc')\"" + "            ></i>" + "            <i" + "              class=\"uix-datatable-sort-down\"" + "              ng-class=\"{on: column._sortType === 'desc'}\"" + "              ng-click=\"$table.handleSort(column, 'desc')\"" + "            ></i>" + "          </span>" + "        </div>" + "      </th>" + "    </tr>" + "  </thead>" + "</table>" + "");
+  $templateCache.put("templates/datatable-head-tpl.html", "<table" + "  class=\"uix-datatable-thead\"" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{ col._width }}\"" + "    />" + "  </colgroup>" + "  <thead>" + "    <tr" + "      ng-repeat=\"(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex\"" + "    >" + "      <th" + "        ng-repeat=\"(colIndex, column) in cols track by colIndex\"" + "        colspan=\"{{:: column.colSpan }}\"" + "        rowspan=\"{{:: column.rowSpan }}\"" + "        ng-class=\"$table.alignCls(column)\"" + "      >" + "        <div ng-class=\"{'uix-datatable-sort-cell':column.sortable}\" class=\"uix-datatable-cell\"  ng-click=\"$table.handleSortByHead(column)\">" + "          <div ng-if=\"column.__renderHeadType==='normal'\">" + "            <span>{{:: column.title || '#' }}</span>" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='expand'\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='selection'\">" + "              <input type=\"checkbox\" ng-change=\"$table.handleSelectAll()\" ng-if=\"!column.singleSelect\" ng-model=\"$table.isSelectedAll\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType === 'template'\">" + "            <%template%>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='format'\">" + "            {{ ::column.headerFormat(column) }}" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <span class=\"uix-datatable-sort\" ng-if=\"column.sortable\">" + "            <i" + "              class=\"uix-datatable-sort-up\"" + "              ng-class=\"{on: column._sortType === 'asc'}\"" + "              ng-click=\"$table.handleSort(column, 'asc', $event)\"" + "            ></i>" + "            <i" + "              class=\"uix-datatable-sort-down\"" + "              ng-class=\"{on: column._sortType === 'desc'}\"" + "              ng-click=\"$table.handleSort(column, 'desc', $event)\"" + "            ></i>" + "          </span>" + "        </div>" + "      </th>" + "    </tr>" + "  </thead>" + "</table>" + "");
 }]);
 "use strict";
 
@@ -10391,7 +11644,7 @@ angular.module("datatable/templates/datatable-table-right.html", []).run(["$temp
 "use strict";
 
 angular.module("datatable/templates/datatable.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped" + "  }\"" + "  ng-style=\"{height:$table.containerHeight}\"" + ">" + "  <div class=\"uix-datatable-wrap\"></div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "  <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "    <span class=\"inner-text\">{{ emptyText }}</span>" + "  </div>" + "  <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "    <span class=\"inner-text\">" + "      <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "      <span>{{ loadingText }}</span>" + "    </span>" + "  </div>" + "  <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "    <span class=\"inner-text\">" + "      <span>{{ errorText }}</span>" + "    </span>" + "  </div>" + "</div>" + "");
+  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped," + "    'uix-datatable-has-status':$table.isEmpty||$table.isLoading||$table.isError," + "  }\"" + ">" + "  <div class=\"uix-datatable-wrap\" ng-style=\"{height:$table.containerHeight}\">" + "      <div class=\"uix-datatable-content\"></div>" + "      <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "        <span class=\"inner-text\">{{ emptyText }}</span>" + "      </div>" + "      <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "        <span class=\"inner-text\">" + "          <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "          <span>{{ loadingText }}</span>" + "        </span>" + "      </div>" + "      <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "        <span class=\"inner-text\">" + "          <span>{{ errorText }}</span>" + "        </span>" + "      </div>" + "  </div>" + "  <div class=\"uix-datatable-footer\" ng-if=\"$table.showPagination\">" + "    <uix-datatable-foot></uix-datatable-foot>" + "  </div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "</div>" + "");
 }]);
 "use strict";
 
