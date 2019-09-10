@@ -28,7 +28,8 @@
     "karma.conf.js",
     "build",
     "examples",
-    "scripts"
+    "scripts",
+    "package-lock.json"
   ],
   "dependencies": {
     "angular": ">=1.2.20 <1.4.0",
