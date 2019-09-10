@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.12 - 2019-09-05
+ * Version: 2.1.12 - 2019-09-10
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -5179,6 +5179,8 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
     $table.headerHeight = 0; // initial header height
 
     $table.containerHeight = null;
+    $table.scrollX = null; // 滚动宽度
+
     var compileScope = $scope.$parent.$new();
     compileScope.$table = $table;
 
@@ -5197,7 +5199,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
           newRow._rowClassName = $scope.rowClassName({
             $row: newRow,
-            $index: index
+            $rowIndex: index
           });
         }
 
@@ -5287,7 +5289,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       if ($scope.onRowClick) {
         $scope.onRowClick({
           $row: row,
-          $index: row._index
+          $rowIndex: row._index
         });
       } // 禁用通过点击行选择
 
@@ -5333,19 +5335,45 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         type = 'normal';
       }
 
+      if ($table.multiSort) {
+        column._sortType = type;
+
+        if (angular.isFunction($scope.onColumnsSort)) {
+          var sorts = $table.allDataColumns.filter(function (col) {
+            return col.sortable;
+          }).map(function (column) {
+            return {
+              column: column,
+              key: column.key,
+              order: column._sortType
+            };
+          });
+          $scope.onColumnsSort({
+            $sorts: sorts
+          });
+        }
+      } else {
+        $table.allDataColumns.forEach(function (col) {
+          col._sortType = 'normal';
+        });
+        column._sortType = type;
+        var key = column.key;
+
+        if (angular.isFunction($scope.onSortChange)) {
+          $scope.onSortChange({
+            $column: column,
+            $key: key,
+            $order: type
+          });
+        }
+      }
+    }; // 清空排序效果
+
+
+    $table.clearSort = function () {
       $table.allDataColumns.forEach(function (col) {
         col._sortType = 'normal';
       });
-      var key = column.key;
-      column._sortType = type;
-
-      if (angular.isFunction($scope.onSortChange)) {
-        $scope.onSortChange({
-          $column: column,
-          $key: key,
-          $order: type
-        });
-      }
     }; // 展开行响应事件，对外可调用
 
 
@@ -5375,6 +5403,17 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
           }
         }
       }, 0);
+    };
+
+    $table.handlePageChange = function () {
+      if ($scope.onPageChange) {
+        var pageNo = parseInt($table.pagination.pageNo, 10);
+        var pageSize = parseInt($table.pagination.pageSize, 10);
+        $scope.onPageChange({
+          $pageNo: pageNo,
+          $pageSize: pageSize
+        });
+      }
     };
 
     function handleMainBodyScroll(event) {
@@ -5473,6 +5512,11 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
     function calcColumnsWidth() {
       var tableWidth = $element[0].offsetWidth - 1;
+
+      if ($table.scrollX && tableWidth < $table.scrollX) {
+        tableWidth = $table.scrollX;
+      }
+
       var columnsWidth = {};
       var sumMinWidth = 0;
       var hasWidthColumns = [];
@@ -5886,8 +5930,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
     }
 
     function updateFixedRowHeight() {
-      var tableWrap = $element.find('.uix-datatable-wrap');
-      var allRows = tableWrap.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
+      var allRows = $element.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
 
       if (allRows.length) {
         $table.rebuildData.forEach(function (row, index) {
@@ -5975,7 +6018,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       }
 
       $compile(template)(compileScope, function (clonedElement) {
-        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-wrap'));
+        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-content'));
         tableWrap.empty().append(clonedElement);
         $timeout(function () {
           var headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
@@ -6053,6 +6096,13 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       unbindEvents();
       compileScope.$destroy();
     });
+    $scope.$on('uix-datatable-clear-sort', function (evt, id) {
+      if (id !== $scope.id) {
+        return;
+      }
+
+      $table.clearSort();
+    });
   }]).directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', '$timeout', function (uixDatatable, uixDatatableConfig, $timeout) {
     return {
       restrict: 'E',
@@ -6066,13 +6116,19 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         disabledHover: '=',
         rowClassName: '&',
         onSortChange: '&',
+        onColumnsSort: '&',
         onRowClick: '&',
         onSelectionChange: '&',
         onCurrentChange: '&',
+        onPageChange: '&',
         height: '=',
         maxHeight: '=',
         expandTemplate: '@',
-        disabledRowClickSelect: '='
+        disabledRowClickSelect: '=',
+        scrollX: '=',
+        pageSizes: '=',
+        pagination: '=',
+        id: '@'
       },
       controllerAs: '$table',
       controller: 'uixDatatableCtrl',
@@ -6082,8 +6138,26 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         $table.data = scope.data;
         $table.isStriped = 'striped' in $attrs;
         $table.isBordered = 'bordered' in $attrs;
-        $table.showFooter = false; // TODO footer
+        $table.showPagination = 'pagination' in $attrs;
 
+        if ($table.showPagination) {
+          $table.pagination = scope.pagination;
+          scope.$watch('pagination', function (val) {
+            $table.pagination = {
+              pageNo: val && val.pageNo ? val.pageNo : $table.pagination.pageNo || 1,
+              pageSize: val && val.pageSize ? val.pageSize : $table.pagination.pageSize || 20,
+              totalCount: val && val.totalCount ? val.totalCount : $table.pagination.totalCount || 0
+            };
+          }, true);
+        }
+
+        $table.showSizer = 'pageSizes' in $attrs;
+
+        if ($table.showSizer) {
+          $table.pageSizes = scope.pageSizes;
+        }
+
+        $table.multiSort = 'multiSort' in $attrs;
         $table.isLoading = false;
         $table.isEmpty = false;
         $table.isError = false;
@@ -6120,6 +6194,15 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         scope.$watch('disabledRowClickSelect', function (val) {
           $table.disabledRowClickSelect = val;
         });
+        scope.$watch('scrollX', function (val) {
+          val = parseFloat(val, 10);
+
+          if (isNaN(val)) {
+            $table.scrollX = 0;
+          } else {
+            $table.scrollX = val;
+          }
+        });
         scope.$watch('data', function (val, old) {
           if (val !== old && angular.isDefined(val)) {
             $table.data = val;
@@ -6146,7 +6229,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         $table.init();
       }
     };
-  }]).directive('uixDatatableFoot', function () {
+  }]).directive('uixDatatableFoot', ['$timeout', function ($timeout) {
     return {
       restrict: 'E',
       templateUrl: 'templates/datatable-foot.html',
@@ -6155,9 +6238,31 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       scope: {},
       link: function link(scope, el, attrs, $table) {
         scope.$table = $table;
+        var pageSizes = $table.pageSizes || [20, 40, 50, 100, 200];
+
+        if ($table.pagination.pageSize && pageSizes.indexOf($table.pagination.pageSize) === -1) {
+          pageSizes.push($table.pagination.pageSize);
+        }
+
+        scope.pageSizes = pageSizes.sort(function (prev, next) {
+          return prev - next;
+        });
+
+        scope.handlePageChange = function () {
+          $table.handlePageChange();
+        };
+
+        scope.handleSizerChange = function () {
+          var cachePageNo = $table.pagination.pageNo;
+          $timeout(function () {
+            if ($table.pagination.pageNo === cachePageNo) {
+              scope.handlePageChange();
+            }
+          }, 0);
+        };
       }
     };
-  });
+  }]);
 })();
 "use strict";
 
@@ -9070,7 +9175,8 @@ angular.module('ui.xg.select', []).constant('uixSelectConfig', {
 
             if (!skipFocusser) {
               //Check if target is input, button or textarea
-              skipFocusser = focusableControls.indexOf(evt.target.tagName.toLowerCase()) !== -1;
+              var tagName = evt.target.tagName ? evt.target.tagName.toLowerCase() : '';
+              skipFocusser = focusableControls.indexOf(tagName) !== -1;
             }
 
             $select.close(skipFocusser);
@@ -11285,7 +11391,7 @@ angular.module("datatable/templates/datatable-body-tpl.html", []).run(["$templat
 "use strict";
 
 angular.module("datatable/templates/datatable-foot.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable-foot.html", "<div></div>" + "");
+  $templateCache.put("templates/datatable-foot.html", "<div class=\"uix-datatable-foot\">" + "  <select" + "    class=\"form-control input-sm uix-datatable-page-sizer\"" + "    ng-change=\"handleSizerChange()\"" + "    ng-model=\"$table.pagination.pageSize\"" + "    ng-if=\"$table.showSizer\"" + "  >" + "    <option value=\"{{pagesize}}\" ng-repeat=\"pagesize in pageSizes track by $index\">" + "        {{pagesize}}条/页" + "    </option>" + "  </select>" + "  <uix-pager" + "    total-items=\"$table.pagination.totalCount\"" + "    ng-model=\"$table.pagination.pageNo\"" + "    items-per-page=\"$table.pagination.pageSize\"" + "    class=\"pagination-sm uix-datatable-pagination\"" + "    ng-change=\"handlePageChange()\"" + "  ></uix-pager>" + "</div>" + "");
 }]);
 "use strict";
 
@@ -11310,7 +11416,7 @@ angular.module("datatable/templates/datatable-table-right.html", []).run(["$temp
 "use strict";
 
 angular.module("datatable/templates/datatable.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped" + "  }\"" + "  ng-style=\"{height:$table.containerHeight}\"" + ">" + "  <div class=\"uix-datatable-wrap\"></div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "  <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "    <span class=\"inner-text\">{{ emptyText }}</span>" + "  </div>" + "  <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "    <span class=\"inner-text\">" + "      <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "      <span>{{ loadingText }}</span>" + "    </span>" + "  </div>" + "  <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "    <span class=\"inner-text\">" + "      <span>{{ errorText }}</span>" + "    </span>" + "  </div>" + "</div>" + "");
+  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped," + "    'uix-datatable-has-status':$table.isEmpty||$table.isLoading||$table.isError," + "  }\"" + ">" + "  <div class=\"uix-datatable-wrap\" ng-style=\"{height:$table.containerHeight}\">" + "      <div class=\"uix-datatable-content\"></div>" + "      <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "        <span class=\"inner-text\">{{ emptyText }}</span>" + "      </div>" + "      <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "        <span class=\"inner-text\">" + "          <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "          <span>{{ loadingText }}</span>" + "        </span>" + "      </div>" + "      <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "        <span class=\"inner-text\">" + "          <span>{{ errorText }}</span>" + "        </span>" + "      </div>" + "  </div>" + "  <div class=\"uix-datatable-footer\" ng-if=\"$table.showPagination\">" + "    <uix-datatable-foot></uix-datatable-foot>" + "  </div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "</div>" + "");
 }]);
 "use strict";
 
