@@ -2066,9 +2066,9 @@
                         $table.pagination = scope.pagination;
                         scope.$watch('pagination', (val) => {
                             $table.pagination = {
-                                pageNo: val && val.pageNo ? val.pageNo : 1,
-                                pageSize: val && val.pageSize ? val.pageSize : 20,
-                                totalCount: val && val.totalCount ? val.totalCount : 0,
+                                pageNo: val && val.pageNo ? val.pageNo : ($table.pagination.pageNo || 1),
+                                pageSize: val && val.pageSize ? val.pageSize : ($table.pagination.pageSize || 20),
+                                totalCount: val && val.totalCount ? val.totalCount : ($table.pagination.totalCount || 0),
                             };
                         }, true);
                     }
@@ -2179,7 +2179,6 @@
                             }
                         }, 0);
                     };
-
                 }
             };
         }]);
