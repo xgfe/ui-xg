@@ -4,6 +4,7 @@ describe('popover', function () {
         scope,
         elmScope,
         $document,
+        $timeout,
         tooltipScope;
 
     // load the popover code
@@ -16,8 +17,9 @@ describe('popover', function () {
         module('popover/templates/popover-html-popup.html');
     });
 
-    beforeEach(inject(function ($rootScope, $compile, $sce, _$document_) {
+    beforeEach(inject(function ($rootScope, $compile, $sce, _$document_, _$timeout_) {
         $document = _$document_;
+        $timeout = _$timeout_;
         elmBody = angular.element(
             '<div><span uix-popover-html="template">Selector Text</span></div>'
         );
@@ -59,7 +61,9 @@ describe('popover', function () {
         expect(tooltipScope.isOpen).toBe(true);
         elm.trigger('click');
         tooltipScope.$digest();
-        expect(tooltipScope.isOpen).toBe(false);
+        $timeout(() => {
+            expect(tooltipScope.isOpen).toBe(false);
+        }, tooltipScope.popupCloseDelay);
     }));
 
     it('should not open on click if template is empty', inject(function () {
