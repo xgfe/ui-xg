@@ -2167,7 +2167,11 @@
                 },
                 link: function (scope, el, attrs, $table) {
                     scope.$table = $table;
-                    scope.pageSizes = $table.pageSizes || [20, 40, 50, 100, 200];
+                    let pageSizes = $table.pageSizes || [20, 40, 50, 100, 200];
+                    if ($table.pagination.pageSize && pageSizes.indexOf($table.pagination.pageSize) === -1) {
+                        pageSizes.push($table.pagination.pageSize);
+                    }
+                    scope.pageSizes = pageSizes.sort((prev, next) => prev - next);
                     scope.handlePageChange = () => {
                         $table.handlePageChange();
                     };
