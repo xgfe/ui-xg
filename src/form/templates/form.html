@@ -1,0 +1,144 @@
+<div class="panel-body" >
+    <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}">
+        <!-- search -->
+          <div class="col-md-{{item.divWidth?item.divWidth:3}}" ng-repeat="item in data" ng-if="$form.layout==='vertical'">
+            <label class="text-{{textalign}} uix-form-necessary">{{item.text}}</label>
+            <div ng-if="!item.tplUrl" class="pos-rlt m-b-md">
+                <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}">
+                <div class="row" ng-if="item.type==='dateRange'">
+                    <div class="col-md-6">
+                        <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime" ng-change="$form.checkChange(item)"></uix-datepicker>
+                    </div>
+                    <div class="row pull-left text-center m-t-xs m-l-n-xs">至</div>
+                    <div class="col-md-6">
+                        <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime" ng-change="$form.checkChange(item)"></uix-datepicker>
+                    </div>
+                </div>
+                <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}"></uix-datepicker>
+                <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.checkChange(item)">
+                    <uix-select-match placeholder="{{item.placeholder}}">{{$select.selected.desc}}</uix-select-match>
+                    <uix-select-choices repeat="option in item.options | filter:$select.search">
+                        <span>{{option.desc}}</span>
+                    </uix-select-choices>
+                </uix-select>
+                <uix-select ng-model="item.value" ng-if="item.type==='multipleSelect'" ng-change="$form.checkChange(item)" multiple>
+                    <uix-select-match placeholder="{{item.placeholder}}">{{$item.desc}}</uix-select-match>
+                    <uix-select-choices repeat="option in item.options | filter:$select.search">
+                        <span>{{option.desc}}</span>
+                    </uix-select-choices>
+                </uix-select>
+                <label class="i-checks m-r" ng-repeat="option in item.options" ng-if="item.type==='checkbox'">
+                    <input type="checkbox" ng-model="item.value[option]" ng-change="$form.checkChange(item)">
+                    <i></i>{{option}}
+                </label>
+                <label class="control-label i-checks" ng-if="item.type==='radio'">
+                    <input type="radio" ng-model="item.value[option]" ng-value="1" ng-change="$form.checkChange(item)"><i></i>{{option}}
+                </label>
+                <!-- 校验提示文案 -->
+            <div ng-if="item.tipInfo" class="pos-abt text-xs text-{{item.tipInfo.type}}">{{item.tipInfo.message}}</div>
+            </div>
+            <div ng-if="item.tplUrl" class="tplHtml pos-rlt m-b-md">{{item.tplUrl}}
+               {{$form.renderTpl(item.tplUrl)}}
+            </div>
+            
+        </div>
+        <!-- form -->
+        <div class="form-horizontal" ng-if="layout==='horizontal'">
+                <div class="form-group row m-b-md" ng-repeat="item in data">
+                    <label class="col-md-{{item.labelWidth?item.labelWidth:2}} text-{{textalign}}" ng-class="{true: 'uix-form-necessary', false: ''}[item.necessary]" >{{item.text}}</label>
+                    <div class="col-md-{{item.divWidth?item.divWidth:4}} pos-rlt" ng-if="!item.tplUrl" >
+                        <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled">
+                        <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'" ng-disabled="item.disabled"></uix-datepicker>
+                        <div class="row pos-rlt" ng-if="item.type==='dateRange'">
+                            <div class="col-md-6">
+                                <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled"> </uix-datepicker>
+                            </div>
+                            <div class="row pull-left text-center m-t-xs m-l-n-xs">至</div>
+                            <div class="col-md-6">
+                                <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled"></uix-datepicker>
+                            </div>
+                        </div>
+                        <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.checkChange(item)" ng-disabled="item.disabled">
+                            <uix-select-match placeholder="{{item.placeholder}}">{{$select.selected.desc}}</uix-select-match>
+                            <uix-select-choices repeat="option in item.options | filter:$select.search">
+                                <span>{{option.desc}}</span>
+                            </uix-select-choices>
+                        </uix-select>
+                        <uix-select ng-model="item.value" ng-if="item.type==='multipleSelect'" ng-change="$form.checkChange(item)" multiple ng-disabled="item.disabled">
+                                <uix-select-match placeholder="{{item.placeholder}}">{{$item.desc}}</uix-select-match>
+                                <uix-select-choices repeat="option in item.options | filter:$select.search">
+                                    <span>{{option.desc}}</span>
+                                </uix-select-choices>
+                            </uix-select>
+                        <label class="i-checks m-r" ng-repeat="option in item.options" ng-if="item.type==='checkbox'" ng-disabled="item.disabled">
+                            <input type="checkbox" ng-model="item.value[option]" ng-change="$form.checkChange(item)">
+                            <i></i>{{option}}
+                        </label>
+                        <label class="control-label i-checks m-r" ng-repeat="option in item.options" ng-if="item.type==='radio'" ng-disabled="item.disabled">
+                            <input type="radio" ng-model="item.value" ng-value="option.value" ng-change="$form.checkChange(item)"><i></i>{{option.label}}
+                        </label>
+                         <!-- 校验提示文案 -->
+                        <div ng-if="item.tipInfo" class="pos-abt text-xs text-{{item.tipInfo.type}}">{{item.tipInfo.message}}</div>
+                    </div>
+                    <!-- 自定义模板 -->
+                    <div ng-if="item.tplUrl" class="col-md-{{item.divWidth?item.divWidth:4}} pos-rlt tplHtml" value="item.value">
+                        {{$form.renderTpl(item.tplUrl)}}
+                    </div>
+                </div>
+        </div>
+        <!-- other -->
+        <div class="row" ng-if="$form.layout==='inline'">
+                <div class="col-md-6 m-b-md" ng-repeat="item in data">
+                    <label class="col-md-{{item.labelWidth?item.labelWidth:4}} text-{{textalign}}" ng-class="{true: 'uix-form-necessary', false: ''}[item.necessary]" >{{item.text}}</label>
+                    <div class="col-md-{{item.divWidth?item.divWidth:8}} pos-rlt" ng-if="!item.tplUrl" >
+                        <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled">
+                        <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'" placeholder="{{item.placeholder}}" ng-disabled="item.disabled"></uix-datepicker>
+                        <div class="row pos-rlt" ng-if="item.type==='dateRange'">
+                            <div class="col-md-6">
+                                <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled"></uix-datepicker>
+                            </div>
+                            <div class="row pull-left text-center m-t-xs m-l-n-xs">至</div>
+                            <div class="col-md-6">
+                                <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime" ng-change="$form.checkChange(item)" placeholder="{{item.placeholder}}" ng-disabled="item.disabled"></uix-datepicker>
+                            </div>
+                        </div>
+                        <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.checkChange(item)" ng-disabled="item.disabled">
+                            <uix-select-match placeholder="{{item.placeholder}}">{{$select.selected.desc}}</uix-select-match>
+                            <uix-select-choices repeat="option in item.options | filter:$select.search">
+                                <span>{{option.desc}}</span>
+                            </uix-select-choices>
+                        </uix-select>
+                        <uix-select ng-model="item.value" ng-if="item.type==='multipleSelect'" ng-change="$form.checkChange(item)" multiple ng-disabled="item.disabled">
+                            <uix-select-match placeholder="{{item.placeholder}}">{{$item.desc}}</uix-select-match>
+                            <uix-select-choices repeat="option in item.options | filter:$select.search">
+                                <span>{{option.desc}}</span>
+                            </uix-select-choices>
+                        </uix-select>
+                        <label class="i-checks m-r" ng-repeat="option in item.options" ng-if="item.type==='checkbox'">
+                            <input type="checkbox" ng-model="item.value[option]" ng-change="$form.checkChange(item)">
+                            <i></i>{{option}}
+                        </label>
+                        <label class="control-label i-checks m-r" ng-repeat="option in item.options" ng-if="item.type==='radio'">
+                            <input type="radio" ng-model="item.value" ng-value="option.value" ng-change="$form.checkChange(item)"><i></i>{{option.label}}
+                        </label>
+                         <!-- 校验提示文案 -->
+                        <div ng-if="item.tipInfo" class="pos-abt text-xs text-{{item.tipInfo.type}}">{{item.tipInfo.message}}</div>
+                    </div>
+                    <!-- 自定义模板 -->
+                    <div ng-if="item.tplUrl" class="col-md-{{item.divWidth?item.divWidth:8}} pos-rlt tplHtml" value="item.value">
+                        {{$form.renderTpl(item.tplUrl)}}
+                    </div>
+                </div>
+        </div>
+        <!-- other end -->
+    </div>
+    <div ng-class="{row: !buttonInline, 'm-t-md':buttonInline}" class="text-center" ng-if="showBtn">
+        <button type="button" class="btn btn-sm w-sm btn-default btn-primary" ng-click="$form.confirm()">
+            {{confirmText?confirmText:'提交'}}
+        </button>
+        <button type="button" class="m-l-md btn btn-sm w-sm btn-default" ng-click="$form.cancle()">
+            {{cancelText?cancelText:'取消'}}
+        </button>
+    </div>
+        
+</div>

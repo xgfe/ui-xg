@@ -1745,6 +1745,7 @@
                             content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].format(row, rowIndex)}}';
                         } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
                             content = column.template || $templateCache.get(column.templateUrl) || '';
+                            console.log(content, 9090)
                         } else {
                             content = '{{';
                             content += `row['${column.key}']`;
@@ -1939,6 +1940,7 @@
                         let tableWrap = angular.element($element[0]
                             .querySelector('.uix-datatable-content'));
                         tableWrap.empty().append(clonedElement);
+                        console.log(tableWrap, 567);
                         $timeout(() => {
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;

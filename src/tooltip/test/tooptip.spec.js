@@ -4,6 +4,7 @@ describe('uix-tooltip', function () {
         scope,
         elmScope,
         tooltipScope,
+        $timeout,
         $document;
 
     // load the tooltip code
@@ -15,12 +16,13 @@ describe('uix-tooltip', function () {
         module('tooltip/templates/tooltip-html-popup.html');
     });
 
-    beforeEach(inject(function ($rootScope, $compile, _$document_) {
+    beforeEach(inject(function ($rootScope, $compile, _$document_, _$timeout_) {
         elmBody = angular.element(
             '<div><span uix-tooltip="tooltip text" tooltip-animation="false">Selector Text</span></div>'
         );
 
         $document = _$document_;
+        $timeout = _$timeout_;
         scope = $rootScope;
         $compile(elmBody)(scope);
         scope.$digest();
@@ -60,7 +62,9 @@ describe('uix-tooltip', function () {
     it('should close on mouseleave', inject(function () {
         trigger(elm, 'mouseenter');
         trigger(elm, 'mouseleave');
-        expect(tooltipScope.isOpen).toBe(false);
+        $timeout(() => {
+            expect(tooltipScope.isOpen).toBe(false);
+        }, tooltipScope.popupCloseDelay);
     }));
 
     it('should not animate on animation set to false', inject(function () {
@@ -112,7 +116,7 @@ describe('uix-tooltip', function () {
         ))(scope);
 
         scope.items = [
-            {name: 'One', tooltip: 'First Tooltip'}
+            { name: 'One', tooltip: 'First Tooltip' }
         ];
 
         scope.$digest();
@@ -126,7 +130,9 @@ describe('uix-tooltip', function () {
         expect(tooltipScope.content).toBe(scope.items[0].tooltip);
 
         trigger(tt, 'mouseleave');
-        expect(tooltipScope.isOpen).toBeFalsy();
+        $timeout(() => {
+            expect(tooltipScope.isOpen).toBeFalsy();
+        }, tooltipScope.popupCloseDelay);
     }));
 
     it('should show correct text when in an ngRepeat', inject(function ($compile, $timeout) {
@@ -139,8 +145,8 @@ describe('uix-tooltip', function () {
         ))(scope);
 
         scope.items = [
-            {name: 'One', tooltip: 'First Tooltip'},
-            {name: 'Second', tooltip: 'Second Tooltip'}
+            { name: 'One', tooltip: 'First Tooltip' },
+            { name: 'Second', tooltip: 'Second Tooltip' }
         ];
 
         scope.$digest();
@@ -160,9 +166,11 @@ describe('uix-tooltip', function () {
 
         tooltipScope = tooltip2.scope().$$childTail;
         expect(tooltipScope.content).toBe(scope.items[1].tooltip);
-        expect(elm.find('.tooltip-inner').text()).toBe(scope.items[1].tooltip);
+        $timeout(() => {
+            expect(elm.find('.tooltip-inner').text()).toBe(scope.items[1].tooltip);
 
-        trigger(tooltip2, 'mouseleave');
+            trigger(tooltip2, 'mouseleave');
+        }, tooltipScope.popupCloseDelay);
     }));
 
     it('should only have an isolate scope on the popup', inject(function ($compile) {
@@ -403,7 +411,7 @@ describe('uix-tooltip', function () {
             scope.delay = 'text1000';
             scope.$digest();
             trigger(elm, 'mouseenter');
-            expect(tooltipScope.popupCloseDelay).toBe(0);
+            expect(tooltipScope.popupCloseDelay).toBe(200);
             expect(tooltipScope.isOpen).toBe(true);
             trigger(elm, 'mouseleave');
             $timeout.flush();
@@ -474,14 +482,18 @@ describe('uix-tooltip', function () {
             expect(tooltipScope.isOpen).toBe(true);
             elmScope.isOpen = false;
             elmScope.$digest();
-            expect(tooltipScope.isOpen).toBe(false);
+            $timeout(() => {
+                expect(tooltipScope.isOpen).toBe(false);
+            }, tooltipScope.popupCloseDelay);
         });
 
         it('should update the controller value', function () {
             trigger(elm, 'mouseenter');
             expect(elmScope.isOpen).toBe(true);
             trigger(elm, 'mouseleave');
-            expect(elmScope.isOpen).toBe(false);
+            $timeout(() => {
+                expect(elmScope.isOpen).toBe(false);
+            }, tooltipScope.popupCloseDelay);
         });
     });
 
@@ -503,7 +515,9 @@ describe('uix-tooltip', function () {
             expect(tooltipScope.isOpen).toBe(true);
             elmScope.isOpen = false;
             elmScope.$digest();
-            expect(tooltipScope.isOpen).toBe(false);
+            $timeout(() => {
+                expect(tooltipScope.isOpen).toBe(false);
+            }, tooltipScope.popupCloseDelay);
         });
     });
 
@@ -529,7 +543,9 @@ describe('uix-tooltip', function () {
                 trigger(elm, 'focus');
                 expect(tooltipScope.isOpen).toBeTruthy();
                 trigger(elm, 'blur');
-                expect(tooltipScope.isOpen).toBeFalsy();
+                $timeout(() => {
+                    expect(tooltipScope.isOpen).toBeFalsy();
+                }, tooltipScope.popupCloseDelay);
             })
         );
 
@@ -547,7 +563,9 @@ describe('uix-tooltip', function () {
             trigger(elm, 'fakeTriggerAttr');
             expect(tooltipScope.isOpen).toBeTruthy();
             trigger(elm, 'fakeTriggerAttr');
-            expect(tooltipScope.isOpen).toBeFalsy();
+            $timeout(() => {
+                expect(tooltipScope.isOpen).toBeFalsy();
+            }, tooltipScope.popupCloseDelay);
         }));
 
         it('should only set up triggers once', inject(function ($compile) {
@@ -590,11 +608,13 @@ describe('uix-tooltip', function () {
             trigger(elm, 'focus');
             expect(tooltipScope.isOpen).toBeTruthy();
             trigger(elm, 'blur');
-            expect(tooltipScope.isOpen).toBeFalsy();
-            trigger(elm, 'fakeTriggerAttr');
-            expect(tooltipScope.isOpen).toBeTruthy();
-            trigger(elm, 'fakeTriggerAttr');
-            expect(tooltipScope.isOpen).toBeFalsy();
+            $timeout(() => {
+                expect(tooltipScope.isOpen).toBeFalsy();
+                trigger(elm, 'fakeTriggerAttr');
+                expect(tooltipScope.isOpen).toBeTruthy();
+                trigger(elm, 'fakeTriggerAttr');
+                expect(tooltipScope.isOpen).toBeFalsy();
+            }, tooltipScope.popupCloseDelay);
         }));
 
         it('should not show when trigger is set to "none"', inject(function ($compile) {
@@ -627,14 +647,16 @@ describe('uix-tooltip', function () {
                 trigger(elm, 'click');
                 expect(tooltipScope.isOpen).toBeTruthy();
                 trigger(elm, 'click');
-                expect(tooltipScope.isOpen).toBeFalsy();
+                $timeout(() => {
+                    expect(tooltipScope.isOpen).toBeFalsy();
 
-                // click on, outsideClick off
-                trigger(elm, 'click');
-                expect(tooltipScope.isOpen).toBeTruthy();
-                angular.element($document[0].body).trigger('click');
-                tooltipScope.$digest();
-                expect(tooltipScope.isOpen).toBeFalsy();
+                    // click on, outsideClick off
+                    trigger(elm, 'click');
+                    expect(tooltipScope.isOpen).toBeTruthy();
+                    angular.element($document[0].body).trigger('click');
+                    tooltipScope.$digest();
+                    expect(tooltipScope.isOpen).toBeFalsy();
+                }, tooltipScope.popupCloseDelay);
             })
         );
     });
@@ -793,7 +815,7 @@ describe('tooltip positioning', function () {
     // load the tooltip code
     beforeEach(function () {
         module('ui.xg.tooltip', function ($uixTooltipProvider) {
-            $uixTooltipProvider.options({animation: false});
+            $uixTooltipProvider.options({ animation: false });
         });
         module('ui.xg.position');
         module('ui.xg.stackedMap');
@@ -849,12 +871,12 @@ describe('tooltip positioning', function () {
 });
 
 describe('tooltipHtml', function () {
-    var elm, elmBody, elmScope, tooltipScope, scope;
+    var elm, elmBody, elmScope, tooltipScope, scope, $timeout;
 
     // load the tooltip code
     beforeEach(function () {
         module('ui.xg.tooltip', function ($uixTooltipProvider) {
-            $uixTooltipProvider.options({animation: false});
+            $uixTooltipProvider.options({ animation: false });
         });
         module('ui.xg.position');
         module('ui.xg.stackedMap');
@@ -862,7 +884,8 @@ describe('tooltipHtml', function () {
         module('tooltip/templates/tooltip-html-popup.html');
     });
 
-    beforeEach(inject(function ($rootScope, $compile, $sce) {
+    beforeEach(inject(function ($rootScope, $compile, $sce, _$timeout_) {
+        $timeout = _$timeout_;
         scope = $rootScope;
         scope.html = 'I say: <strong class="hello">Hello!</strong>';
         scope.safeHtml = $sce.trustAsHtml(scope.html);
@@ -905,8 +928,10 @@ describe('tooltipHtml', function () {
         expect($sce.getTrustedHtml(tooltipScope.contentExp())).toEqual(scope.html);
 
         trigger(elm, 'mouseleave');
-        expect(tooltipScope.isOpen).toBe(false);
-        expect(elmBody.children().length).toBe(1);
+        $timeout(() => {
+            expect(tooltipScope.isOpen).toBe(false);
+            expect(elmBody.children().length).toBe(1);
+        }, tooltipScope.popupCloseDelay);
     }));
 });
 
@@ -915,6 +940,7 @@ describe('$uixTooltipProvider', function () {
         elmBody,
         scope,
         elmScope,
+        $timeout,
         tooltipScope;
 
     function trigger(element, evt) {
@@ -927,7 +953,7 @@ describe('$uixTooltipProvider', function () {
     describe('popupDelay', function () {
         beforeEach(function () {
             module('ui.xg.tooltip', function ($uixTooltipProvider) {
-                $uixTooltipProvider.options({popupDelay: 1000});
+                $uixTooltipProvider.options({ popupDelay: 1000 });
             });
             module('ui.xg.position');
             module('ui.xg.stackedMap');
@@ -935,10 +961,11 @@ describe('$uixTooltipProvider', function () {
             module('tooltip/templates/tooltip-html-popup.html');
         });
 
-        beforeEach(inject(function ($rootScope, $compile) {
+        beforeEach(inject(function ($rootScope, $compile, _$timeout_) {
             elmBody = angular.element(
                 '<div><span uix-tooltip="tooltip text">Selector Text</span></div>'
             );
+            $timeout = _$timeout_;
 
             scope = $rootScope;
             $compile(elmBody)(scope);
@@ -962,7 +989,7 @@ describe('$uixTooltipProvider', function () {
 
         beforeEach(function () {
             module('ui.xg.tooltip', function ($uixTooltipProvider) {
-                $uixTooltipProvider.options({appendToBody: true});
+                $uixTooltipProvider.options({ appendToBody: true });
             });
             module('ui.xg.position');
             module('ui.xg.stackedMap');
@@ -1064,7 +1091,7 @@ describe('$uixTooltipProvider', function () {
         describe('triggers with a mapped value', function () {
             beforeEach(function () {
                 module('ui.xg.tooltip', function ($uixTooltipProvider) {
-                    $uixTooltipProvider.options({trigger: 'focus'});
+                    $uixTooltipProvider.options({ trigger: 'focus' });
                 });
                 module('ui.xg.position');
                 module('ui.xg.stackedMap');
@@ -1089,7 +1116,9 @@ describe('$uixTooltipProvider', function () {
                     trigger(elm, 'focus');
                     expect(tooltipScope.isOpen).toBeTruthy();
                     trigger(elm, 'blur');
-                    expect(tooltipScope.isOpen).toBeFalsy();
+                    $timeout(() => {
+                        expect(tooltipScope.isOpen).toBeFalsy();
+                    }, tooltipScope.popupCloseDelay);
                 })
             );
 
@@ -1110,7 +1139,9 @@ describe('$uixTooltipProvider', function () {
                     trigger(elm, 'mouseenter');
                     expect(tooltipScope.isOpen).toBeTruthy();
                     trigger(elm, 'mouseleave');
-                    expect(tooltipScope.isOpen).toBeFalsy();
+                    $timeout(() => {
+                        expect(tooltipScope.isOpen).toBeFalsy();
+                    }, tooltipScope.popupCloseDelay);
                 })
             );
         });
@@ -1118,8 +1149,8 @@ describe('$uixTooltipProvider', function () {
         describe('triggers with a custom mapped value', function () {
             beforeEach(function () {
                 module('ui.xg.tooltip', function ($uixTooltipProvider) {
-                    $uixTooltipProvider.setTriggers({customOpenTrigger: 'foo bar'});
-                    $uixTooltipProvider.options({trigger: 'customOpenTrigger'});
+                    $uixTooltipProvider.setTriggers({ customOpenTrigger: 'foo bar' });
+                    $uixTooltipProvider.options({ trigger: 'customOpenTrigger' });
                 });
                 module('ui.xg.position');
                 module('ui.xg.stackedMap');
@@ -1144,11 +1175,15 @@ describe('$uixTooltipProvider', function () {
                     trigger(elm, 'customOpenTrigger');
                     expect(tooltipScope.isOpen).toBeTruthy();
                     trigger(elm, 'foo');
-                    expect(tooltipScope.isOpen).toBeFalsy();
-                    trigger(elm, 'customOpenTrigger');
-                    expect(tooltipScope.isOpen).toBeTruthy();
-                    trigger(elm, 'bar');
-                    expect(tooltipScope.isOpen).toBeFalsy();
+                    $timeout(() => {
+                        expect(tooltipScope.isOpen).toBeFalsy();
+                        trigger(elm, 'customOpenTrigger');
+                        expect(tooltipScope.isOpen).toBeTruthy();
+                        trigger(elm, 'bar');
+                        $timeout(() => {
+                            expect(tooltipScope.isOpen).toBeFalsy();
+                        }, tooltipScope.popupCloseDelay);
+                    }, tooltipScope.popupCloseDelay);
                 })
             );
         });
@@ -1156,7 +1191,7 @@ describe('$uixTooltipProvider', function () {
         describe('triggers without a mapped value', function () {
             beforeEach(function () {
                 module('ui.xg.tooltip', function ($uixTooltipProvider) {
-                    $uixTooltipProvider.options({trigger: 'fakeTrigger'});
+                    $uixTooltipProvider.options({ trigger: 'fakeTrigger' });
                 });
                 module('ui.xg.position');
                 module('ui.xg.stackedMap');
@@ -1181,7 +1216,9 @@ describe('$uixTooltipProvider', function () {
                 trigger(elm, 'fakeTrigger');
                 expect(tooltipScope.isOpen).toBeTruthy();
                 trigger(elm, 'fakeTrigger');
-                expect(tooltipScope.isOpen).toBeFalsy();
+                $timeout(() => {
+                    expect(tooltipScope.isOpen).toBeFalsy();
+                }, 300);
             }));
         });
     });

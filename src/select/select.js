@@ -234,8 +234,8 @@ angular.module('ui.xg.select', [])
             ctrl.resetSearchInput = true;
             ctrl.multiple = null; // Initialized inside uixSelect directive link function
             ctrl.disableChoiceExpression = null; // Initialized inside uixSelectChoices directive link function
-            ctrl.tagging = {isActivated: false, fct: null};
-            ctrl.taggingTokens = {isActivated: false, tokens: null};
+            ctrl.tagging = { isActivated: false, fct: null };
+            ctrl.taggingTokens = { isActivated: false, tokens: null };
             ctrl.lockChoiceExpression = null; // Initialized inside uixSelectMatch directive link function
             ctrl.clickTriggeredSelect = false;
             ctrl.$filter = $filter;
@@ -318,7 +318,7 @@ angular.module('ui.xg.select', [])
                             group.items.push(item);
                         }
                         else {
-                            ctrl.groups.push({name: groupName, items: [item]});
+                            ctrl.groups.push({ name: groupName, items: [item] });
                         }
                     });
                     if (groupFilterExp) {
@@ -856,7 +856,7 @@ angular.module('ui.xg.select', [])
                                     fct: taggingEval !== true ? taggingEval : null
                                 };
                             } else {
-                                $select.tagging = {isActivated: false};
+                                $select.tagging = { isActivated: false };
                             }
                         });
 
@@ -878,7 +878,7 @@ angular.module('ui.xg.select', [])
                             if (angular.isDefined(attrs.tagging)) {
                                 var tokens = angular.isDefined(attrs.taggingTokens)
                                     ? attrs.taggingTokens.split('|') : [',', 'ENTER'];
-                                $select.taggingTokens = {isActivated: true, tokens: tokens};
+                                $select.taggingTokens = { isActivated: true, tokens: tokens };
                             }
                         });
 
@@ -922,7 +922,8 @@ angular.module('ui.xg.select', [])
                                 var skipFocusser = targetScope && targetScope.$select &&
                                     targetScope.$select !== $select;
                                 if (!skipFocusser) {//Check if target is input, button or textarea
-                                    skipFocusser = focusableControls.indexOf(evt.target.tagName.toLowerCase()) !== -1;
+                                    let tagName = evt.target.tagName ? evt.target.tagName.toLowerCase() : '';
+                                    skipFocusser = focusableControls.indexOf(tagName) !== -1;
                                 }
                                 $select.close(skipFocusser);
                                 scope.$digest();
@@ -1276,7 +1277,7 @@ angular.module('ui.xg.select', [])
 
                     // From model --> view
                     ngModel.$formatters.unshift(function (inputValue) {
-                        var data = $select.parserResult.source(scope, {$select: {search: ''}}), //Overwrite $search
+                        var data = $select.parserResult.source(scope, { $select: { search: '' } }), //Overwrite $search
                             locals = {},
                             result;
                         if (!data) {
@@ -1493,7 +1494,7 @@ angular.module('ui.xg.select', [])
 
                             // case for object tagging via transform `$select.tagging.fct` function
                             if ($select.tagging.fct !== null || angular.isDefined($select.tagging.fct)) {
-                                tagItems = $select.$filter('filter')(items, {'isTag': true});
+                                tagItems = $select.$filter('filter')(items, { 'isTag': true });
                                 if (tagItems.length > 0) {
                                     tagItem = tagItems[0];
                                 }
@@ -1635,7 +1636,7 @@ angular.module('ui.xg.select', [])
 
                 //From model --> view
                 ngModel.$formatters.unshift(function (inputValue) {
-                    var data = $select.parserResult.source(scope, {$select: {search: ''}}), //Overwrite $search
+                    var data = $select.parserResult.source(scope, { $select: { search: '' } }), //Overwrite $search
                         locals = {},
                         result;
                     if (data) {
