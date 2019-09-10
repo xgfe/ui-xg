@@ -1,59 +1,35 @@
-<div class="uix-datatable" ng-class="'uix-datatable-scroll-position-'+$table.scrollPosition" ng-style="$table.getStyles()">
-    <div class="uix-datatable-wrap">
-        <div class="uix-datatable-header middle-header">
-            <uix-datatable-head 
-            columns="$table.cloneColumns"
-            style-obj="$table.tableHeaderStyle()"></uix-datatable-head>
-        </div>
-        <div class="uix-datatable-body" ng-style="$table.bodyStyle()">
-            <uix-datatable-body
-            columns="$table.cloneColumns"
-             style-obj="$table.tableStyle()"></uix-datatable-body>
-        </div>
-        <div class="uix-datatable-fixed uix-datatable-fixed-left"
-            ng-style="$table.fixedLeftTableStyle()"
-             ng-if="$table.isLeftFixed()">
-            <div class="uix-datatable-header uix-datatable-fixed-header">
-                <uix-datatable-head fixed="left"
-                fixed-column-rows="leftFixedColumnRows"
-                columns="$table.leftFixedColumns"
-                 style-obj="$table.fixedLeftTableStyle()">
-
-                </uix-datatable-head>
-            </div>
-            <div class="uix-datatable-fixed-body" ng-style="$table.fixedBodyStyle()">
-                <uix-datatable-body 
-                columns="$table.leftFixedColumns"
-                fixed="left" style-obj="$table.fixedLeftTableStyle()">
-
-                </uix-datatable-body>
-            </div>
-        </div>
-        <div class="uix-datatable-fixed uix-datatable-fixed-right"
-        ng-style="$table.fixedRightTableStyle()"
-         ng-if="$table.isRightFixed()">
-            <div class="uix-datatable-header uix-datatable-fixed-header">
-                <uix-datatable-head fixed="right" 
-                columns="$table.rightFixedColumns"
-                fixed-column-rows="rightFixedColumnRows"
-                style-obj="$table.fixedRightTableStyle()">
-
-                </uix-datatable-head>
-            </div>
-            <div class="uix-datatable-fixed-body" ng-style="$table.fixedBodyStyle()">
-                <uix-datatable-body
-                columns="$table.rightFixedColumns"
-                 fixed="right" style-obj="$table.fixedRightTableStyle()">
-                </uix-datatable-body>
-            </div>
-        </div>
-        <div class="uix-datatable-footer">
-            <uix-datatable-foot>
-
-            </uix-datatable-foot>
-        </div>
-    </div>
-    <div class="uix-datatable-loading" ng-show="loading">
-        数据加载中
-    </div>
+<div
+  class="uix-datatable"
+  ng-class="{
+    'uix-datatable-bordered':$table.isBordered,
+    'uix-datatable-striped':$table.isStriped,
+    'uix-datatable-has-status':$table.isEmpty||$table.isLoading||$table.isError,
+  }"
+>
+  <div class="uix-datatable-wrap" ng-style="{height:$table.containerHeight}">
+      <div class="uix-datatable-content"></div>
+      <div class="uix-datatable-empty" ng-if="$table.isEmpty">
+        <span class="inner-text">{{ emptyText }}</span>
+      </div>
+      <div class="uix-datatable-loading" ng-show="$table.isLoading">
+        <span class="inner-text">
+          <i class="loading-icon glyphicon glyphicon-refresh"></i>
+          <span>{{ loadingText }}</span>
+        </span>
+      </div>
+      <div class="uix-datatable-error" ng-show="$table.isError">
+        <span class="inner-text">
+          <span>{{ errorText }}</span>
+        </span>
+      </div>
+  </div>
+  <div class="uix-datatable-footer" ng-if="$table.showPagination">
+    <uix-datatable-foot></uix-datatable-foot>
+  </div>
+  <!-- 横纵向同时滚动时填充右上角 -->
+  <div
+    class="uix-datatable-right-header-block"
+    ng-if="$table.showVerticalScrollBar"
+    ng-style="{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}"
+  ></div>
 </div>

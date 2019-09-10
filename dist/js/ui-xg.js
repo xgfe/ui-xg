@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 2.1.12 - 2019-08-16
+ * Version: 2.1.12 - 2019-09-05
  * License: MIT
  */
-angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datepicker","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","avatar/templates/avatar.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timeline/templates/timeline.html","timeline/templates/timelineItem.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","avatar/templates/avatar.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datatable/templates/datatable-body-tpl.html","datatable/templates/datatable-foot.html","datatable/templates/datatable-head-tpl.html","datatable/templates/datatable-table-left.html","datatable/templates/datatable-table-main.html","datatable/templates/datatable-table-right.html","datatable/templates/datatable.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timeline/templates/timeline.html","timeline/templates/timelineItem.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 "use strict";
 
 /**
@@ -3992,6 +3992,2173 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
     vm.ngModelController.$setViewValue(vm.cityInfo);
   }
 };
+"use strict";
+
+/* eslint-disable wrap-iife */
+
+/* eslint-disable angular/di-unused */
+
+/**
+ * 数据表格 - datatable
+ * 数据表格指令
+ * 主要用于展示大量结构化数据。
+ * 支持排序、固定列、固定表头、分页、自定义操作、单选多选等复杂功能。
+ *
+ * Author: yjy972080142@gmail.com
+ * Date:2019-08-13
+ */
+(function () {
+  (function (global, factory) {
+    global.ResizeObserver = factory();
+  })(window, function () {
+    'use strict';
+    /**
+     * A collection of shims that provide minimal functionality of the ES6 collections.
+     *
+     * These implementations are not meant to be used outside of the ResizeObserver
+     * modules as they cover only a limited range of use cases.
+     */
+
+    /* eslint-disable require-jsdoc, valid-jsdoc */
+
+    var MapShim = function () {
+      if (typeof Map !== 'undefined') {
+        return Map;
+      }
+      /**
+       * Returns index in provided array that matches the specified key.
+       *
+       * @param {Array<Array>} arr
+       * @param {*} key
+       * @returns {number}
+       */
+
+
+      function getIndex(arr, key) {
+        var result = -1;
+        arr.some(function (entry, index) {
+          if (entry[0] === key) {
+            result = index;
+            return true;
+          }
+
+          return false;
+        });
+        return result;
+      }
+
+      return function () {
+        function anonymous() {
+          this.__entries__ = [];
+        }
+
+        var prototypeAccessors = {
+          size: {
+            configurable: true
+          }
+        };
+        /**
+         * @returns {boolean}
+         */
+
+        prototypeAccessors.size.get = function () {
+          return this.__entries__.length;
+        };
+        /**
+         * @param {*} key
+         * @returns {*}
+         */
+
+
+        anonymous.prototype.get = function (key) {
+          var index = getIndex(this.__entries__, key);
+          var entry = this.__entries__[index];
+          return entry && entry[1];
+        };
+        /**
+         * @param {*} key
+         * @param {*} value
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.set = function (key, value) {
+          var index = getIndex(this.__entries__, key);
+
+          if (~index) {
+            this.__entries__[index][1] = value;
+          } else {
+            this.__entries__.push([key, value]);
+          }
+        };
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+
+
+        anonymous.prototype["delete"] = function (key) {
+          var entries = this.__entries__;
+          var index = getIndex(entries, key);
+
+          if (~index) {
+            entries.splice(index, 1);
+          }
+        };
+        /**
+         * @param {*} key
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.has = function (key) {
+          return !!~getIndex(this.__entries__, key);
+        };
+        /**
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.clear = function () {
+          this.__entries__.splice(0);
+        };
+        /**
+         * @param {Function} callback
+         * @param {*} [ctx=null]
+         * @returns {void}
+         */
+
+
+        anonymous.prototype.forEach = function (callback, ctx) {
+          var this$1 = this;
+          if (ctx === void 0) ctx = null;
+
+          for (var i = 0, list = this$1.__entries__; i < list.length; i += 1) {
+            var entry = list[i];
+            callback.call(ctx, entry[1], entry[0]);
+          }
+        };
+
+        Object.defineProperties(anonymous.prototype, prototypeAccessors);
+        return anonymous;
+      }();
+    }();
+    /**
+     * Detects whether window and document objects are available in current environment.
+     */
+
+
+    var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && window.document === document; // Returns global object of a current environment.
+
+    var global$1 = function () {
+      if (typeof global !== 'undefined' && global.Math === Math) {
+        return global;
+      }
+
+      if (typeof self !== 'undefined' && self.Math === Math) {
+        return self;
+      }
+
+      if (typeof window !== 'undefined' && window.Math === Math) {
+        return window;
+      } // eslint-disable-next-line no-new-func
+
+
+      return Function('return this')();
+    }();
+    /**
+     * A shim for the requestAnimationFrame which falls back to the setTimeout if
+     * first one is not supported.
+     *
+     * @returns {number} Requests' identifier.
+     */
+
+
+    var requestAnimationFrame$1 = function () {
+      if (typeof requestAnimationFrame === 'function') {
+        // It's required to use a bounded function because IE sometimes throws
+        // an "Invalid calling object" error if rAF is invoked without the global
+        // object on the left hand side.
+        return requestAnimationFrame.bind(global$1);
+      }
+
+      return function (callback) {
+        return setTimeout(function () {
+          return callback(Date.now());
+        }, 1000 / 60);
+      };
+    }(); // Defines minimum timeout before adding a trailing call.
+
+
+    var trailingTimeout = 2;
+    /**
+     * Creates a wrapper function which ensures that provided callback will be
+     * invoked only once during the specified delay period.
+     *
+     * @param {Function} callback - Function to be invoked after the delay period.
+     * @param {number} delay - Delay after which to invoke callback.
+     * @returns {Function}
+     */
+
+    var throttle = function throttle(callback, delay) {
+      var leadingCall = false,
+          trailingCall = false,
+          lastCallTime = 0;
+      /**
+       * Invokes the original callback function and schedules new invocation if
+       * the "proxy" was called during current request.
+       *
+       * @returns {void}
+       */
+
+      function resolvePending() {
+        if (leadingCall) {
+          leadingCall = false;
+          callback();
+        }
+
+        if (trailingCall) {
+          proxy();
+        }
+      }
+      /**
+       * Callback invoked after the specified delay. It will further postpone
+       * invocation of the original function delegating it to the
+       * requestAnimationFrame.
+       *
+       * @returns {void}
+       */
+
+
+      function timeoutCallback() {
+        requestAnimationFrame$1(resolvePending);
+      }
+      /**
+       * Schedules invocation of the original function.
+       *
+       * @returns {void}
+       */
+
+
+      function proxy() {
+        var timeStamp = Date.now();
+
+        if (leadingCall) {
+          // Reject immediately following calls.
+          if (timeStamp - lastCallTime < trailingTimeout) {
+            return;
+          } // Schedule new call to be in invoked when the pending one is resolved.
+          // This is important for "transitions" which never actually start
+          // immediately so there is a chance that we might miss one if change
+          // happens amids the pending invocation.
+
+
+          trailingCall = true;
+        } else {
+          leadingCall = true;
+          trailingCall = false;
+          setTimeout(timeoutCallback, delay);
+        }
+
+        lastCallTime = timeStamp;
+      }
+
+      return proxy;
+    }; // Minimum delay before invoking the update of observers.
+
+
+    var REFRESH_DELAY = 20; // A list of substrings of CSS properties used to find transition events that
+    // might affect dimensions of observed elements.
+
+    var transitionKeys = ['top', 'right', 'bottom', 'left', 'width', 'height', 'size', 'weight']; // Check if MutationObserver is available.
+
+    var mutationObserverSupported = typeof MutationObserver !== 'undefined';
+    /**
+     * Singleton controller class which handles updates of ResizeObserver instances.
+     */
+
+    var ResizeObserverController = function ResizeObserverController() {
+      this.connected_ = false;
+      this.mutationEventsAdded_ = false;
+      this.mutationsObserver_ = null;
+      this.observers_ = [];
+      this.onTransitionEnd_ = this.onTransitionEnd_.bind(this);
+      this.refresh = throttle(this.refresh.bind(this), REFRESH_DELAY);
+    };
+    /**
+     * Adds observer to observers list.
+     *
+     * @param {ResizeObserverSPI} observer - Observer to be added.
+     * @returns {void}
+     */
+
+    /**
+     * Holds reference to the controller's instance.
+     *
+     * @private {ResizeObserverController}
+     */
+
+    /**
+     * Keeps reference to the instance of MutationObserver.
+     *
+     * @private {MutationObserver}
+     */
+
+    /**
+     * Indicates whether DOM listeners have been added.
+     *
+     * @private {boolean}
+     */
+
+
+    ResizeObserverController.prototype.addObserver = function (observer) {
+      if (!~this.observers_.indexOf(observer)) {
+        this.observers_.push(observer);
+      } // Add listeners if they haven't been added yet.
+
+
+      if (!this.connected_) {
+        this.connect_();
+      }
+    };
+    /**
+     * Removes observer from observers list.
+     *
+     * @param {ResizeObserverSPI} observer - Observer to be removed.
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.removeObserver = function (observer) {
+      var observers = this.observers_;
+      var index = observers.indexOf(observer); // Remove observer if it's present in registry.
+
+      if (~index) {
+        observers.splice(index, 1);
+      } // Remove listeners if controller has no connected observers.
+
+
+      if (!observers.length && this.connected_) {
+        this.disconnect_();
+      }
+    };
+    /**
+     * Invokes the update of observers. It will continue running updates insofar
+     * it detects changes.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.refresh = function () {
+      var changesDetected = this.updateObservers_(); // Continue running updates if changes have been detected as there might
+      // be future ones caused by CSS transitions.
+
+      if (changesDetected) {
+        this.refresh();
+      }
+    };
+    /**
+     * Updates every observer from observers list and notifies them of queued
+     * entries.
+     *
+     * @private
+     * @returns {boolean} Returns "true" if any observer has detected changes in
+     *  dimensions of it's elements.
+     */
+
+
+    ResizeObserverController.prototype.updateObservers_ = function () {
+      // Collect observers that have active observations.
+      var activeObservers = this.observers_.filter(function (observer) {
+        return observer.gatherActive(), observer.hasActive();
+      }); // Deliver notifications in a separate cycle in order to avoid any
+      // collisions between observers, e.g. when multiple instances of
+      // ResizeObserver are tracking the same element and the callback of one
+      // of them changes content dimensions of the observed target. Sometimes
+      // this may result in notifications being blocked for the rest of observers.
+
+      activeObservers.forEach(function (observer) {
+        return observer.broadcastActive();
+      });
+      return activeObservers.length > 0;
+    };
+    /**
+     * Initializes DOM listeners.
+     *
+     * @private
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.connect_ = function () {
+      // Do nothing if running in a non-browser environment or if listeners
+      // have been already added.
+      if (!isBrowser || this.connected_) {
+        return;
+      } // Subscription to the "Transitionend" event is used as a workaround for
+      // delayed transitions. This way it's possible to capture at least the
+      // final state of an element.
+
+
+      document.addEventListener('transitionend', this.onTransitionEnd_);
+      window.addEventListener('resize', this.refresh);
+
+      if (mutationObserverSupported) {
+        this.mutationsObserver_ = new MutationObserver(this.refresh);
+        this.mutationsObserver_.observe(document, {
+          attributes: true,
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
+      } else {
+        document.addEventListener('DOMSubtreeModified', this.refresh);
+        this.mutationEventsAdded_ = true;
+      }
+
+      this.connected_ = true;
+    };
+    /**
+     * Removes DOM listeners.
+     *
+     * @private
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.disconnect_ = function () {
+      // Do nothing if running in a non-browser environment or if listeners
+      // have been already removed.
+      if (!isBrowser || !this.connected_) {
+        return;
+      }
+
+      document.removeEventListener('transitionend', this.onTransitionEnd_);
+      window.removeEventListener('resize', this.refresh);
+
+      if (this.mutationsObserver_) {
+        this.mutationsObserver_.disconnect();
+      }
+
+      if (this.mutationEventsAdded_) {
+        document.removeEventListener('DOMSubtreeModified', this.refresh);
+      }
+
+      this.mutationsObserver_ = null;
+      this.mutationEventsAdded_ = false;
+      this.connected_ = false;
+    };
+    /**
+     * "Transitionend" event handler.
+     *
+     * @private
+     * @param {TransitionEvent} event
+     * @returns {void}
+     */
+
+
+    ResizeObserverController.prototype.onTransitionEnd_ = function (ref) {
+      var propertyName = ref.propertyName;
+      if (propertyName === void 0) propertyName = ''; // Detect whether transition may affect dimensions of an element.
+
+      var isReflowProperty = transitionKeys.some(function (key) {
+        return !!~propertyName.indexOf(key);
+      });
+
+      if (isReflowProperty) {
+        this.refresh();
+      }
+    };
+    /**
+     * Returns instance of the ResizeObserverController.
+     *
+     * @returns {ResizeObserverController}
+     */
+
+
+    ResizeObserverController.getInstance = function () {
+      if (!this.instance_) {
+        this.instance_ = new ResizeObserverController();
+      }
+
+      return this.instance_;
+    };
+
+    ResizeObserverController.instance_ = null;
+    /**
+     * Defines non-writable/enumerable properties of the provided target object.
+     *
+     * @param {Object} target - Object for which to define properties.
+     * @param {Object} props - Properties to be defined.
+     * @returns {Object} Target object.
+     */
+
+    var defineConfigurable = function defineConfigurable(target, props) {
+      for (var i = 0, list = Object.keys(props); i < list.length; i += 1) {
+        var key = list[i];
+        Object.defineProperty(target, key, {
+          value: props[key],
+          enumerable: false,
+          writable: false,
+          configurable: true
+        });
+      }
+
+      return target;
+    };
+    /**
+     * Returns the global object associated with provided element.
+     *
+     * @param {Object} target
+     * @returns {Object}
+     */
+
+
+    var getWindowOf = function getWindowOf(target) {
+      // Assume that the element is an instance of Node, which means that it
+      // has the "ownerDocument" property from which we can retrieve a
+      // corresponding global object.
+      var ownerGlobal = target && target.ownerDocument && target.ownerDocument.defaultView; // Return the local global object if it's not possible extract one from
+      // provided element.
+
+      return ownerGlobal || global$1;
+    }; // Placeholder of an empty content rectangle.
+
+
+    var emptyRect = createRectInit(0, 0, 0, 0);
+    /**
+     * Converts provided string to a number.
+     *
+     * @param {number|string} value
+     * @returns {number}
+     */
+
+    function toFloat(value) {
+      return parseFloat(value) || 0;
+    }
+    /**
+     * Extracts borders size from provided styles.
+     *
+     * @param {CSSStyleDeclaration} styles
+     * @param {...string} positions - Borders positions (top, right, ...)
+     * @returns {number}
+     */
+
+
+    function getBordersSize(styles) {
+      var positions = [],
+          len = arguments.length - 1;
+
+      while (len-- > 0) {
+        positions[len] = arguments[len + 1];
+      }
+
+      return positions.reduce(function (size, position) {
+        var value = styles['border-' + position + '-width'];
+        return size + toFloat(value);
+      }, 0);
+    }
+    /**
+     * Extracts paddings sizes from provided styles.
+     *
+     * @param {CSSStyleDeclaration} styles
+     * @returns {Object} Paddings box.
+     */
+
+
+    function getPaddings(styles) {
+      var positions = ['top', 'right', 'bottom', 'left'];
+      var paddings = {};
+
+      for (var i = 0, list = positions; i < list.length; i += 1) {
+        var position = list[i];
+        var value = styles['padding-' + position];
+        paddings[position] = toFloat(value);
+      }
+
+      return paddings;
+    }
+    /**
+     * Calculates content rectangle of provided SVG element.
+     *
+     * @param {SVGGraphicsElement} target - Element content rectangle of which needs
+     *      to be calculated.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getSVGContentRect(target) {
+      var bbox = target.getBBox();
+      return createRectInit(0, 0, bbox.width, bbox.height);
+    }
+    /**
+     * Calculates content rectangle of provided HTMLElement.
+     *
+     * @param {HTMLElement} target - Element for which to calculate the content rectangle.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getHTMLElementContentRect(target) {
+      // Client width & height properties can't be
+      // used exclusively as they provide rounded values.
+      var clientWidth = target.clientWidth;
+      var clientHeight = target.clientHeight; // By this condition we can catch all non-replaced inline, hidden and
+      // detached elements. Though elements with width & height properties less
+      // than 0.5 will be discarded as well.
+      //
+      // Without it we would need to implement separate methods for each of
+      // those cases and it's not possible to perform a precise and performance
+      // effective test for hidden elements. E.g. even jQuery's ':visible' filter
+      // gives wrong results for elements with width & height less than 0.5.
+
+      if (!clientWidth && !clientHeight) {
+        return emptyRect;
+      }
+
+      var styles = getWindowOf(target).getComputedStyle(target);
+      var paddings = getPaddings(styles);
+      var horizPad = paddings.left + paddings.right;
+      var vertPad = paddings.top + paddings.bottom; // Computed styles of width & height are being used because they are the
+      // only dimensions available to JS that contain non-rounded values. It could
+      // be possible to utilize the getBoundingClientRect if only it's data wasn't
+      // affected by CSS transformations let alone paddings, borders and scroll bars.
+
+      var width = toFloat(styles.width),
+          height = toFloat(styles.height); // Width & height include paddings and borders when the 'border-box' box
+      // model is applied (except for IE).
+
+      if (styles.boxSizing === 'border-box') {
+        // Following conditions are required to handle Internet Explorer which
+        // doesn't include paddings and borders to computed CSS dimensions.
+        //
+        // We can say that if CSS dimensions + paddings are equal to the "client"
+        // properties then it's either IE, and thus we don't need to subtract
+        // anything, or an element merely doesn't have paddings/borders styles.
+        if (Math.round(width + horizPad) !== clientWidth) {
+          width -= getBordersSize(styles, 'left', 'right') + horizPad;
+        }
+
+        if (Math.round(height + vertPad) !== clientHeight) {
+          height -= getBordersSize(styles, 'top', 'bottom') + vertPad;
+        }
+      } // Following steps can't be applied to the document's root element as its
+      // client[Width/Height] properties represent viewport area of the window.
+      // Besides, it's as well not necessary as the <html> itself neither has
+      // rendered scroll bars nor it can be clipped.
+
+
+      if (!isDocumentElement(target)) {
+        // In some browsers (only in Firefox, actually) CSS width & height
+        // include scroll bars size which can be removed at this step as scroll
+        // bars are the only difference between rounded dimensions + paddings
+        // and "client" properties, though that is not always true in Chrome.
+        var vertScrollbar = Math.round(width + horizPad) - clientWidth;
+        var horizScrollbar = Math.round(height + vertPad) - clientHeight; // Chrome has a rather weird rounding of "client" properties.
+        // E.g. for an element with content width of 314.2px it sometimes gives
+        // the client width of 315px and for the width of 314.7px it may give
+        // 314px. And it doesn't happen all the time. So just ignore this delta
+        // as a non-relevant.
+
+        if (Math.abs(vertScrollbar) !== 1) {
+          width -= vertScrollbar;
+        }
+
+        if (Math.abs(horizScrollbar) !== 1) {
+          height -= horizScrollbar;
+        }
+      }
+
+      return createRectInit(paddings.left, paddings.top, width, height);
+    }
+    /**
+     * Checks whether provided element is an instance of the SVGGraphicsElement.
+     *
+     * @param {Element} target - Element to be checked.
+     * @returns {boolean}
+     */
+
+
+    var isSVGGraphicsElement = function () {
+      // Some browsers, namely IE and Edge, don't have the SVGGraphicsElement
+      // interface.
+      if (typeof SVGGraphicsElement !== 'undefined') {
+        return function (target) {
+          return target instanceof getWindowOf(target).SVGGraphicsElement;
+        };
+      } // If it's so, then check that element is at least an instance of the
+      // SVGElement and that it has the "getBBox" method.
+      // eslint-disable-next-line no-extra-parens
+
+
+      return function (target) {
+        return target instanceof getWindowOf(target).SVGElement && typeof target.getBBox === 'function';
+      };
+    }();
+    /**
+     * Checks whether provided element is a document element (<html>).
+     *
+     * @param {Element} target - Element to be checked.
+     * @returns {boolean}
+     */
+
+
+    function isDocumentElement(target) {
+      return target === getWindowOf(target).document.documentElement;
+    }
+    /**
+     * Calculates an appropriate content rectangle for provided html or svg element.
+     *
+     * @param {Element} target - Element content rectangle of which needs to be calculated.
+     * @returns {DOMRectInit}
+     */
+
+
+    function getContentRect(target) {
+      if (!isBrowser) {
+        return emptyRect;
+      }
+
+      if (isSVGGraphicsElement(target)) {
+        return getSVGContentRect(target);
+      }
+
+      return getHTMLElementContentRect(target);
+    }
+    /**
+     * Creates rectangle with an interface of the DOMRectReadOnly.
+     * Spec: https://drafts.fxtf.org/geometry/#domrectreadonly
+     *
+     * @param {DOMRectInit} rectInit - Object with rectangle's x/y coordinates and dimensions.
+     * @returns {DOMRectReadOnly}
+     */
+
+
+    function createReadOnlyRect(ref) {
+      var x = ref.x;
+      var y = ref.y;
+      var width = ref.width;
+      var height = ref.height; // If DOMRectReadOnly is available use it as a prototype for the rectangle.
+
+      var Constr = typeof DOMRectReadOnly !== 'undefined' ? DOMRectReadOnly : Object;
+      var rect = Object.create(Constr.prototype); // Rectangle's properties are not writable and non-enumerable.
+
+      defineConfigurable(rect, {
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        top: y,
+        right: x + width,
+        bottom: height + y,
+        left: x
+      });
+      return rect;
+    }
+    /**
+     * Creates DOMRectInit object based on the provided dimensions and the x/y coordinates.
+     * Spec: https://drafts.fxtf.org/geometry/#dictdef-domrectinit
+     *
+     * @param {number} x - X coordinate.
+     * @param {number} y - Y coordinate.
+     * @param {number} width - Rectangle's width.
+     * @param {number} height - Rectangle's height.
+     * @returns {DOMRectInit}
+     */
+
+
+    function createRectInit(x, y, width, height) {
+      return {
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      };
+    }
+    /**
+     * Class that is responsible for computations of the content rectangle of
+     * provided DOM element and for keeping track of it's changes.
+     */
+
+
+    var ResizeObservation = function ResizeObservation(target) {
+      this.broadcastWidth = 0;
+      this.broadcastHeight = 0;
+      this.contentRect_ = createRectInit(0, 0, 0, 0);
+      this.target = target;
+    };
+    /**
+     * Updates content rectangle and tells whether it's width or height properties
+     * have changed since the last broadcast.
+     *
+     * @returns {boolean}
+     */
+
+    /**
+     * Reference to the last observed content rectangle.
+     *
+     * @private {DOMRectInit}
+     */
+
+    /**
+     * Broadcasted width of content rectangle.
+     *
+     * @type {number}
+     */
+
+
+    ResizeObservation.prototype.isActive = function () {
+      var rect = getContentRect(this.target);
+      this.contentRect_ = rect;
+      return rect.width !== this.broadcastWidth || rect.height !== this.broadcastHeight;
+    };
+    /**
+     * Updates 'broadcastWidth' and 'broadcastHeight' properties with a data
+     * from the corresponding properties of the last observed content rectangle.
+     *
+     * @returns {DOMRectInit} Last observed content rectangle.
+     */
+
+
+    ResizeObservation.prototype.broadcastRect = function () {
+      var rect = this.contentRect_;
+      this.broadcastWidth = rect.width;
+      this.broadcastHeight = rect.height;
+      return rect;
+    };
+
+    var ResizeObserverEntry = function ResizeObserverEntry(target, rectInit) {
+      var contentRect = createReadOnlyRect(rectInit); // According to the specification following properties are not writable
+      // and are also not enumerable in the native implementation.
+      //
+      // Property accessors are not being used as they'd require to define a
+      // private WeakMap storage which may cause memory leaks in browsers that
+      // don't support this type of collections.
+
+      defineConfigurable(this, {
+        target: target,
+        contentRect: contentRect
+      });
+    };
+
+    var ResizeObserverSPI = function ResizeObserverSPI(callback, controller, callbackCtx) {
+      this.activeObservations_ = [];
+      this.observations_ = new MapShim();
+
+      if (typeof callback !== 'function') {
+        throw new TypeError('The callback provided as parameter 1 is not a function.');
+      }
+
+      this.callback_ = callback;
+      this.controller_ = controller;
+      this.callbackCtx_ = callbackCtx;
+    };
+    /**
+     * Starts observing provided element.
+     *
+     * @param {Element} target - Element to be observed.
+     * @returns {void}
+     */
+
+    /**
+     * Registry of the ResizeObservation instances.
+     *
+     * @private {Map<Element, ResizeObservation>}
+     */
+
+    /**
+     * Public ResizeObserver instance which will be passed to the callback
+     * function and used as a value of it's "this" binding.
+     *
+     * @private {ResizeObserver}
+     */
+
+    /**
+     * Collection of resize observations that have detected changes in dimensions
+     * of elements.
+     *
+     * @private {Array<ResizeObservation>}
+     */
+
+
+    ResizeObserverSPI.prototype.observe = function (target) {
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      } // Do nothing if current environment doesn't have the Element interface.
+
+
+      if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+      }
+
+      if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+      }
+
+      var observations = this.observations_; // Do nothing if element is already being observed.
+
+      if (observations.has(target)) {
+        return;
+      }
+
+      observations.set(target, new ResizeObservation(target));
+      this.controller_.addObserver(this); // Force the update of observations.
+
+      this.controller_.refresh();
+    };
+    /**
+     * Stops observing provided element.
+     *
+     * @param {Element} target - Element to stop observing.
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.unobserve = function (target) {
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      } // Do nothing if current environment doesn't have the Element interface.
+
+
+      if (typeof Element === 'undefined' || !(Element instanceof Object)) {
+        return;
+      }
+
+      if (!(target instanceof getWindowOf(target).Element)) {
+        throw new TypeError('parameter 1 is not of type "Element".');
+      }
+
+      var observations = this.observations_; // Do nothing if element is not being observed.
+
+      if (!observations.has(target)) {
+        return;
+      }
+
+      observations["delete"](target);
+
+      if (!observations.size) {
+        this.controller_.removeObserver(this);
+      }
+    };
+    /**
+     * Stops observing all elements.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.disconnect = function () {
+      this.clearActive();
+      this.observations_.clear();
+      this.controller_.removeObserver(this);
+    };
+    /**
+     * Collects observation instances the associated element of which has changed
+     * it's content rectangle.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.gatherActive = function () {
+      var this$1 = this;
+      this.clearActive();
+      this.observations_.forEach(function (observation) {
+        if (observation.isActive()) {
+          this$1.activeObservations_.push(observation);
+        }
+      });
+    };
+    /**
+     * Invokes initial callback function with a list of ResizeObserverEntry
+     * instances collected from active resize observations.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.broadcastActive = function () {
+      // Do nothing if observer doesn't have active observations.
+      if (!this.hasActive()) {
+        return;
+      }
+
+      var ctx = this.callbackCtx_; // Create ResizeObserverEntry instance for every active observation.
+
+      var entries = this.activeObservations_.map(function (observation) {
+        return new ResizeObserverEntry(observation.target, observation.broadcastRect());
+      });
+      this.callback_.call(ctx, entries, ctx);
+      this.clearActive();
+    };
+    /**
+     * Clears the collection of active observations.
+     *
+     * @returns {void}
+     */
+
+
+    ResizeObserverSPI.prototype.clearActive = function () {
+      this.activeObservations_.splice(0);
+    };
+    /**
+     * Tells whether observer has active observations.
+     *
+     * @returns {boolean}
+     */
+
+
+    ResizeObserverSPI.prototype.hasActive = function () {
+      return this.activeObservations_.length > 0;
+    }; // Registry of internal observers. If WeakMap is not available use current shim
+    // for the Map collection as it has all required methods and because WeakMap
+    // can't be fully polyfilled anyway.
+
+
+    var observers = typeof WeakMap !== 'undefined' ? new WeakMap() : new MapShim();
+    /**
+     * ResizeObserver API. Encapsulates the ResizeObserver SPI implementation
+     * exposing only those methods and properties that are defined in the spec.
+     */
+
+    var ResizeObserver = function ResizeObserver(callback) {
+      if (!(this instanceof ResizeObserver)) {
+        throw new TypeError('Cannot call a class as a function.');
+      }
+
+      if (!arguments.length) {
+        throw new TypeError('1 argument required, but only 0 present.');
+      }
+
+      var controller = ResizeObserverController.getInstance();
+      var observer = new ResizeObserverSPI(callback, controller, this);
+      observers.set(this, observer);
+    }; // Expose public methods of ResizeObserver.
+
+
+    ['observe', 'unobserve', 'disconnect'].forEach(function (method) {
+      ResizeObserver.prototype[method] = function () {
+        return (ref = observers.get(this))[method].apply(ref, arguments);
+        var ref;
+      };
+    });
+
+    var index = function () {
+      // Export existing implementation if available.
+      if (typeof global$1.ResizeObserver !== 'undefined') {
+        return global$1.ResizeObserver;
+      }
+
+      global$1.ResizeObserver = ResizeObserver;
+      return ResizeObserver;
+    }();
+
+    return index;
+  });
+})();
+
+(function () {
+  // set forTableHead to true when convertToRows, false in normal cases like table.vue
+  var getDataColumns = function getDataColumns(cols) {
+    var forTableHead = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    var columns = cols;
+    var result = [];
+    columns.forEach(function (column) {
+      if (column.children) {
+        if (forTableHead) {
+          result.push(column);
+        }
+
+        result.push.apply(result, getDataColumns(column.children, forTableHead));
+      } else {
+        result.push(column);
+      }
+    });
+    return result;
+  };
+
+  var getRandomStr = function getRandomStr() {
+    var len = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 32;
+    var $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    var maxPos = $chars.length;
+    var str = '';
+
+    for (var i = 0; i < len; i++) {
+      str += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+
+    return str;
+  };
+
+  var convertColumnOrder = function convertColumnOrder(columns, fixedType) {
+    var list = [];
+    columns.forEach(function (col) {
+      if (fixedType) {
+        if (col.fixed && col.fixed === fixedType) {
+          list.push(col);
+        }
+      } else {
+        list.push(col);
+      }
+    });
+    return list;
+  };
+
+  function getScrollBarSize() {
+    // eslint-disable-next-line angular/document-service
+    var inner = document.createElement('div');
+    inner.style.width = '100%';
+    inner.style.height = '200px'; // eslint-disable-next-line angular/document-service
+
+    var outer = document.createElement('div');
+    var outerStyle = outer.style;
+    outerStyle.position = 'absolute';
+    outerStyle.top = 0;
+    outerStyle.left = 0;
+    outerStyle.pointerEvents = 'none';
+    outerStyle.visibility = 'hidden';
+    outerStyle.width = '200px';
+    outerStyle.height = '150px';
+    outerStyle.overflow = 'hidden';
+    outer.appendChild(inner); // eslint-disable-next-line angular/document-service
+
+    document.body.appendChild(outer);
+    var widthContained = inner.offsetWidth;
+    outer.style.overflow = 'scroll';
+    var widthScroll = inner.offsetWidth;
+
+    if (widthContained === widthScroll) {
+      widthScroll = outer.clientWidth;
+    } // eslint-disable-next-line angular/document-service
+
+
+    document.body.removeChild(outer);
+    return widthContained - widthScroll;
+  }
+
+  angular.module('ui.xg.datatable', []).constant('uixDatatableConfig', {
+    loadingText: '数据加载中',
+    emptyText: '数据为空',
+    errorText: '加载失败',
+    emptyDataHeight: 350 // 没有数据时，提示文案占据高度
+
+  }).provider('uixDatatable', ['uixDatatableConfig', function (uixDatatableConfig) {
+    var statusText = {
+      loading: uixDatatableConfig.loadingText,
+      empty: uixDatatableConfig.emptyText,
+      error: uixDatatableConfig.errorText
+    };
+
+    this.setStatusText = function (options) {
+      statusText = angular.extend(statusText, options);
+    };
+
+    this.$get = function () {
+      return {
+        getStatusText: function getStatusText(type) {
+          if (angular.isDefined(type)) {
+            return statusText[type];
+          }
+
+          return statusText;
+        }
+      };
+    };
+  }]).controller('uixDatatableCtrl', ['$scope', '$timeout', '$element', 'uixDatatableConfig', '$templateCache', '$compile', function ($scope, $timeout, $element, uixDatatableConfig, $templateCache, $compile) {
+    var $table = this;
+    $table.columnsWidth = {}; // 列宽
+
+    $table.bodyStyle = {};
+    $table.currentChecked = null;
+    $table.selections = {};
+    $table.isSelectedAll = false;
+    $table.scrollBarWidth = getScrollBarSize();
+    $table.showVerticalScrollBar = false;
+    $table.showHorizontalScrollBar = false;
+    $table.headerHeight = 0; // initial header height
+
+    $table.containerHeight = null;
+    var compileScope = $scope.$parent.$new();
+    compileScope.$table = $table;
+
+    function findEl(selector) {
+      return angular.element($element[0].querySelector(selector));
+    }
+
+    function makeRebuildData() {
+      return $scope.data.map(function (row, index) {
+        var newRow = angular.copy(row);
+        newRow._index = index;
+        newRow._isHover = false;
+        newRow._isExpand = false;
+        newRow.disabled = !!row.disabled;
+
+        if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
+          newRow._rowClassName = $scope.rowClassName({
+            $row: newRow,
+            $index: index
+          });
+        }
+
+        if (row.checked) {
+          $table.currentChecked = index;
+          $table.selections[index] = true;
+        }
+
+        return newRow;
+      });
+    }
+
+    $scope.$watch('$table.currentChecked', function (newIndex, oldIndex) {
+      if (newIndex !== null && $scope.onCurrentChange) {
+        var newRow = $table.rebuildData[newIndex];
+        var oldRow = $table.rebuildData[oldIndex];
+        $scope.onCurrentChange({
+          $newRow: newRow,
+          $oldRow: oldRow,
+          $newIndex: newIndex,
+          $oldIndex: oldIndex
+        });
+      }
+    });
+    $scope.$watch('$table.selections', function (newVal, oldVal) {
+      var currentSelect = [];
+      var oldSelect = [];
+
+      for (var index in newVal) {
+        if (newVal[index]) {
+          currentSelect.push($table.rebuildData[index]);
+        }
+      }
+
+      for (var _index in oldVal) {
+        if (oldVal[_index]) {
+          oldSelect.push($table.rebuildData[_index]);
+        }
+      }
+
+      if ($scope.onSelectionChange) {
+        $table.isSelectedAll = currentSelect.length >= $table.rebuildData.length;
+        $scope.onSelectionChange({
+          $newRows: currentSelect,
+          $oldRows: oldSelect
+        });
+      }
+    }, true);
+
+    $table.handleSelectAll = function () {
+      $table.rebuildData.forEach(function (row, index) {
+        if (row.disabled) {
+          return;
+        }
+
+        $table.selections[index] = $table.isSelectedAll;
+      });
+    };
+
+    $table.handleMouseIn = function (event, row) {
+      event.stopPropagation();
+
+      if ($table.disabledHover) {
+        return;
+      }
+
+      if (row._isHover) {
+        return;
+      }
+
+      row._isHover = true;
+    };
+
+    $table.handleMouseOut = function (event, row) {
+      event.stopPropagation();
+
+      if ($table.disabledHover) {
+        return;
+      }
+
+      row._isHover = false;
+    };
+
+    $table.handleClickRow = function (event, row) {
+      event.stopPropagation();
+
+      if ($scope.onRowClick) {
+        $scope.onRowClick({
+          $row: row,
+          $index: row._index
+        });
+      } // 禁用通过点击行选择
+
+
+      if ($table.disabledRowClickSelect) {
+        return;
+      }
+
+      if (row.disabled) {
+        return;
+      } // 单选
+
+
+      $table.currentChecked = row._index; // 多选
+
+      $table.selections[row._index] = !$table.selections[row._index];
+    };
+
+    $table.handleSelect = function ($event) {
+      $event.stopPropagation();
+    };
+
+    $table.handleSortByHead = function (column) {
+      if (column.sortable) {
+        var type = column._sortType;
+
+        if (type === 'normal') {
+          $table.handleSort(column, 'asc');
+        } else if (type === 'asc') {
+          $table.handleSort(column, 'desc');
+        } else {
+          $table.handleSort(column, 'normal');
+        }
+      }
+    };
+
+    $table.handleSort = function (column, type, event) {
+      if (event) {
+        event.stopPropagation();
+      }
+
+      if (column._sortType === type) {
+        type = 'normal';
+      }
+
+      $table.allDataColumns.forEach(function (col) {
+        col._sortType = 'normal';
+      });
+      var key = column.key;
+      column._sortType = type;
+
+      if (angular.isFunction($scope.onSortChange)) {
+        $scope.onSortChange({
+          $column: column,
+          $key: key,
+          $order: type
+        });
+      }
+    }; // 展开行响应事件，对外可调用
+
+
+    $table.handleRowExpand = function (row) {
+      if (!row) {
+        return;
+      }
+
+      var rowIndex = row._index;
+      row._isExpand = !row._isExpand;
+      $timeout(function () {
+        var currentRow = findEl('.uix-datatable-main-body table').find('.uix-datatable-expand-row').get(rowIndex);
+
+        if (currentRow) {
+          var expandHeight = currentRow.offsetHeight;
+
+          if ($table.isLeftFixed) {
+            findEl('.uix-datatable-left-body table').find('.uix-datatable-expand-row').eq(rowIndex).css({
+              height: expandHeight + 'px'
+            });
+          }
+
+          if ($table.isRightFixed) {
+            findEl('.uix-datatable-right-body table').find('.uix-datatable-expand-row').eq(rowIndex).css({
+              height: expandHeight + 'px'
+            });
+          }
+        }
+      }, 0);
+    };
+
+    function handleMainBodyScroll(event) {
+      var scrollTop = event.target.scrollTop;
+      var scrollLeft = event.target.scrollLeft;
+      findEl('.uix-datatable-main-table .uix-datatable-thead').css({
+        transform: "translateX(-".concat(scrollLeft, "px)")
+      });
+
+      if ($table.isLeftFixed) {
+        findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+      }
+
+      if ($table.isRightFixed) {
+        findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+      }
+
+      updateFixedTableShadow();
+    }
+
+    function handleFixedBodyScroll(event) {
+      var scrollTop = event.target.scrollTop;
+      findEl('.uix-datatable-main-body')[0].scrollTop = scrollTop;
+
+      if ($table.isLeftFixed) {
+        findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
+      }
+
+      if ($table.isRightFixed) {
+        findEl('.uix-datatable-right-body')[0].scrollTop = scrollTop;
+      }
+    }
+
+    $table.updateContainerByStatus = function () {
+      // 数据为空
+      if ($table.isEmpty || $table.isError || $table.isLoading) {
+        $table.containerHeight = "".concat(uixDatatableConfig.emptyDataHeight, "px");
+      } else {
+        $table.containerHeight = null;
+      }
+    };
+
+    function handleResize() {
+      calcColumnsWidth();
+      updateFixedTableShadow();
+      $scope.$digest();
+      $timeout(function () {
+        $table.updateHorizontalScroll();
+        $table.updateVerticalScroll();
+        updateFixedRowHeight();
+        updateFixedHeadHeight();
+      }, 0);
+    }
+
+    function bindEvents() {
+      findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
+      findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+      findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+      angular.element(window).on('resize', handleResize); // 处理外部容器发生变化时的回调
+
+      $table.resizeObserver = new ResizeObserver(function () {
+        handleResize();
+      });
+      $table.resizeObserver.observe($element.get(0));
+    }
+
+    function unbindEvents() {
+      findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
+      findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+      findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+      angular.element(window).off('resize', handleResize);
+      $table.resizeObserver.disconnect();
+    } // 更新阴影
+
+
+    function updateFixedTableShadow() {
+      var scrollLeft = findEl('.uix-datatable-main-body')[0].scrollLeft;
+      var leftClass = 'uix-datatable-scroll-left';
+      var rightClass = 'uix-datatable-scroll-right';
+
+      if (scrollLeft === 0) {
+        $element.addClass(leftClass);
+
+        if ($element[0].offsetWidth >= $table.tableWidth) {
+          // 无滚动条
+          $element.addClass(rightClass);
+        } else {
+          $element.removeClass(rightClass);
+        }
+      } else if (scrollLeft >= $table.tableWidth - $element[0].offsetWidth) {
+        $element.addClass(rightClass).removeClass(leftClass);
+      } else {
+        $element.removeClass(leftClass).removeClass(rightClass);
+      }
+    }
+
+    function calcColumnsWidth() {
+      var tableWidth = $element[0].offsetWidth - 1;
+      var columnsWidth = {};
+      var sumMinWidth = 0;
+      var hasWidthColumns = [];
+      var noWidthColumns = [];
+      var maxWidthColumns = [];
+      var noMaxWidthColumns = [];
+      $table.allDataColumns.forEach(function (col) {
+        if (col.width) {
+          hasWidthColumns.push(col);
+        } else {
+          noWidthColumns.push(col);
+
+          if (col.minWidth) {
+            sumMinWidth += col.minWidth;
+          }
+
+          if (col.maxWidth) {
+            maxWidthColumns.push(col);
+          } else {
+            noMaxWidthColumns.push(col);
+          }
+        }
+
+        col._width = null;
+      });
+      var unUsableWidth = hasWidthColumns.map(function (cell) {
+        return cell.width;
+      }).reduce(function (prev, next) {
+        return prev + next;
+      }, 0);
+      var usableWidth = tableWidth - unUsableWidth - sumMinWidth - ($table.showVerticalScrollBar ? $table.scrollBarWidth : 0) - 1;
+      var usableLength = noWidthColumns.length;
+      var columnWidth = 0;
+
+      if (usableWidth > 0 && usableLength > 0) {
+        columnWidth = parseInt(usableWidth / usableLength, 10);
+      }
+
+      for (var i = 0; i < $table.allDataColumns.length; i++) {
+        var column = $table.allDataColumns[i];
+        var width = columnWidth + (column.minWidth ? column.minWidth : 0);
+
+        if (column.width) {
+          width = column.width;
+        } else {
+          if (column._width) {
+            width = column._width;
+          } else {
+            if (column.minWidth > width) {
+              width = column.minWidth;
+            } else if (column.maxWidth < width) {
+              width = column.maxWidth;
+            }
+
+            if (usableWidth > 0) {
+              usableWidth -= width - (column.minWidth ? column.minWidth : 0);
+              usableLength--;
+
+              if (usableLength > 0) {
+                columnWidth = parseInt(usableWidth / usableLength, 10);
+              } else {
+                columnWidth = 0;
+              }
+            } else {
+              columnWidth = 0;
+            }
+          }
+        }
+
+        column._width = width;
+        columnsWidth[column._index] = {
+          width: width
+        };
+      }
+
+      if (usableWidth > 0) {
+        usableLength = noMaxWidthColumns.length;
+        columnWidth = parseInt(usableWidth / usableLength, 10);
+
+        for (var _i = 0; _i < noMaxWidthColumns.length; _i++) {
+          var _column = noMaxWidthColumns[_i];
+
+          var _width = _column._width + columnWidth;
+
+          if (usableLength > 1) {
+            usableLength--;
+            usableWidth -= columnWidth;
+            columnWidth = parseInt(usableWidth / usableLength, 10);
+          } else {
+            columnWidth = 0;
+          }
+
+          _column._width = _width;
+          columnsWidth[_column._index] = {
+            width: _width
+          };
+        }
+      }
+
+      $table.tableWidth = $table.allDataColumns.map(function (cell) {
+        return cell._width;
+      }).reduce(function (item, prev) {
+        return item + prev;
+      }, 0) + 1;
+      $table.columnsWidth = columnsWidth;
+    }
+
+    function prepareColumns(columns) {
+      return columns.filter(function (column) {
+        return !column.hidden;
+      }).map(function (column) {
+        if ('children' in column) {
+          prepareColumns(column.children);
+        }
+
+        column.__id = getRandomStr(6);
+        column.width = parseFloat(column.width, 10);
+        column._width = column.width ? column.width : '';
+        column._sortType = 'normal';
+
+        if ('sortType' in column) {
+          column._sortType = column.sortType;
+        }
+
+        if (angular.isDefined(column.headerTemplate) || angular.isDefined(column.headerTemplateUrl)) {
+          column.__renderHeadType = 'template';
+          column.__headTemplate = column.headerTemplate || $templateCache.get(column.headerTemplateUrl) || '';
+        } else if (angular.isFunction(column.headerFormat)) {
+          column.__renderHeadType = 'format';
+        } else if (column.type === 'expand') {
+          column.__renderHeadType = 'expand';
+        } else if (column.type === 'selection') {
+          column.__renderHeadType = 'selection';
+        } else {
+          column.__renderHeadType = 'normal';
+        }
+
+        return column;
+      });
+    }
+
+    function makeColumnRows(colsWithId) {
+      var originColumns = colsWithId;
+      var maxLevel = 1;
+
+      var traverse = function traverse(column, parent) {
+        if (parent) {
+          column.level = parent.level + 1;
+
+          if (maxLevel < column.level) {
+            maxLevel = column.level;
+          }
+        }
+
+        if (column.children) {
+          var colSpan = 0;
+          column.children.forEach(function (subColumn) {
+            traverse(subColumn, column);
+            colSpan += subColumn.colSpan;
+          });
+          column.colSpan = colSpan;
+        } else {
+          column.colSpan = 1;
+        }
+      };
+
+      originColumns.forEach(function (column) {
+        column.level = 1;
+        traverse(column);
+      });
+      var rows = [];
+
+      for (var i = 0; i < maxLevel; i++) {
+        rows.push([]);
+      }
+
+      var allColumns = getDataColumns(originColumns, true);
+      allColumns.forEach(function (column) {
+        if (!column.children) {
+          column.rowSpan = maxLevel - column.level + 1;
+        } else {
+          column.rowSpan = 1;
+        }
+
+        rows[column.level - 1].push(column);
+      });
+      var left = [];
+      var right = []; // 从所有的表头行中找到固定表头
+      // 需要要求固定列的表头不管是否有多级，必须设置fixed
+
+      var _loop = function _loop(rowIndex) {
+        if (rows[rowIndex].length) {
+          rows[rowIndex].forEach(function (item) {
+            if (item.fixed) {
+              if (item.fixed === 'left') {
+                left[rowIndex] = left[rowIndex] || [];
+                left[rowIndex].push(item);
+              }
+
+              if (item.fixed === 'right') {
+                right[rowIndex] = right[rowIndex] || [];
+                right[rowIndex].push(item);
+              }
+            }
+          });
+        }
+      };
+
+      for (var rowIndex in rows) {
+        _loop(rowIndex);
+      }
+
+      return {
+        left: left,
+        center: rows,
+        right: right
+      };
+    }
+
+    $table.updateVerticalScroll = function () {
+      var mainTableHeight = $element.find('.uix-datatable-main-body > table').get(0).offsetHeight;
+
+      if ($table.height) {
+        $table.showVerticalScrollBar = mainTableHeight > $table.height;
+      } else if ($table.maxHeight) {
+        $table.showVerticalScrollBar = mainTableHeight > $table.maxHeight;
+      }
+    };
+
+    $table.updateHorizontalScroll = function () {
+      var mainTableWidth = $element.find('.uix-datatable-main-body').get(0).offsetWidth;
+      $table.showHorizontalScrollBar = $table.tableWidth > mainTableWidth;
+    }; // 获取固定列的宽度
+
+
+    function getFixedColumnsWidth(fixedType) {
+      var width = 0;
+      ($table.allDataColumns || []).forEach(function (col) {
+        if (col.fixed && col.fixed === fixedType) {
+          width += col._width;
+        }
+      });
+      return width;
+    }
+
+    $table.alignCls = function (column) {
+      var row = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var cellClassName = '';
+
+      if (row.cellClassName && column.key && row.cellClassName[column.key]) {
+        cellClassName = row.cellClassName[column.key];
+      }
+
+      return [cellClassName, column.className, column.align ? "uix-datatable-align-".concat(column.align) : ''];
+    };
+
+    function hasFixedColumns(fixedType) {
+      return $table.allDataColumns.some(function (col) {
+        return col.fixed && col.fixed === fixedType;
+      });
+    }
+
+    function getHeadTpls() {
+      var tpls = '';
+      $table.allColumnRows.forEach(function (rows) {
+        rows.forEach(function (column, colIndex) {
+          if (column.__renderHeadType === 'template') {
+            tpls += "\n                                    <div ng-if=\"colIndex===".concat(colIndex, "\">\n                                        ").concat(column.__headTemplate, "\n                                    </div>\n                                ");
+          }
+        });
+      });
+      return tpls;
+    }
+
+    function getBodyRowsTemplate(position) {
+      var columnsKey = '';
+
+      if (position === 'left') {
+        columnsKey = 'leftColumns';
+      } else if (position === 'right') {
+        columnsKey = 'rightColumns';
+      } else {
+        columnsKey = 'allDataColumns';
+      }
+
+      return $table[columnsKey].map(function (column, colIndex) {
+        var classes = [column.className, column.align ? "uix-datatable-align-".concat(column.align) : ''].join(' ');
+        var ngClass = ["row.cellClassName['".concat(column.key, "']")];
+        var content = '';
+        var enableTooltip = false;
+
+        if (column.type === 'index') {
+          if (column.indexMethod) {
+            content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].indexMethod(row, rowIndex)}}';
+          } else {
+            content = '{{rowIndex+1}}';
+          }
+        } else if (column.type === 'selection') {
+          content = column.singleSelect ? '<input type="radio" ng-disabled="row.disabled" ng-value="row._index" ng-model="$table.currentChecked">' : '<input type="checkbox" ng-click="$table.handleSelect($event)" ng-disabled="row.disabled" ng-model="$table.selections[row._index]">';
+        } else if (column.type === 'expand') {
+          content = "\n                            <div class=\"uix-datatable-expand-trigger\" ng-click=\"$table.handleRowExpand(row, rowIndex)\">\n                                <i ng-show=\"!row._isExpand\" class=\"glyphicon glyphicon-chevron-right\"></i>\n                                <i ng-show=\"row._isExpand\" class=\"glyphicon glyphicon-chevron-down\"></i>\n                            </div>\n                            ";
+        } else if (angular.isFunction(column.format)) {
+          content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].format(row, rowIndex)}}';
+        } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
+          content = column.template || $templateCache.get(column.templateUrl) || '';
+        } else {
+          content = '{{';
+          content += "row['".concat(column.key, "']");
+
+          if (column.filter) {
+            content += " | ".concat(column.filter);
+          }
+
+          content += '}}';
+          enableTooltip = column.ellipsis;
+
+          if (enableTooltip) {
+            content = content.replace(/"/g, '\'');
+          }
+        }
+
+        if (enableTooltip) {
+          content = "<span tooltip-append-to-body=\"true\" uix-tooltip=\"".concat(content, "\">").concat(content, "</span>");
+        }
+
+        return "\n                            <td class=\"".concat(classes, "\" ng-class=\"").concat(ngClass, "\">\n                                <div class=\"").concat(column.fixed ? 'uix-datatable-cell-fixed' : '', " uix-datatable-cell ").concat(enableTooltip ? 'uix-datatable-cell-ellipsis' : '', "\">\n                                    ").concat(content, "\n                                </div>\n                            </td>\n                        ");
+      }).join('');
+    }
+
+    var columnsKeyMap = {
+      main: 'allDataColumns',
+      left: 'leftColumns',
+      right: 'rightColumns'
+    };
+
+    function hasExpandTemplate() {
+      var expandTemplate = $templateCache.get($table.expandTemplate) || '';
+      return !!expandTemplate;
+    } // 获取展开行模板
+    // 当具有左右固定列时，只展开中间表格
+
+
+    function getExpandTemplate() {
+      var position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'main';
+
+      if (!hasExpandTemplate()) {
+        return '';
+      }
+
+      var expandTemplate = $templateCache.get($table.expandTemplate) || '';
+
+      if (position === 'left' || position === 'right') {
+        return "\n                            <tr ng-repeat-end ng-show=\"row._isExpand\" class=\"uix-datatable-expand-row\">\n                                <td colspan=\"".concat($table[columnsKeyMap[position]].length, "\"></td>\n                            </tr>\n                        ");
+      }
+
+      var leftTd = '';
+      var rightTd = '';
+
+      if ($table.isLeftFixed) {
+        leftTd = "<td colspan=\"".concat($table[columnsKeyMap.left].length, "\"></td>");
+      }
+
+      if ($table.isRightFixed) {
+        rightTd = "<td colspan=\"".concat($table[columnsKeyMap.right].length, "\"></td>");
+      }
+
+      return "\n                        <tr ng-repeat-end ng-show=\"row._isExpand\" class=\"uix-datatable-expand-row\">\n                            ".concat(leftTd, "\n                            <td colspan=\"").concat($table.centerColumns.length, "\">\n                                <div class=\"uix-datatable-expand-cell\">\n                                    ").concat(expandTemplate, "\n                                </div>\n                            </td>\n                            ").concat(rightTd, "\n                        </tr>\n                    ");
+    }
+
+    function getTemplate() {
+      var position = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'main';
+      var template = $templateCache.get("templates/datatable-table-".concat(position, ".html"));
+      return template.replace('<%head%>', getHeadTemplate(position)).replace('<%body%>', getBodyTemplate(position));
+    }
+
+    function getBodyTemplate(position) {
+      var template = $templateCache.get('templates/datatable-body-tpl.html') || '';
+      var columnsKey = columnsKeyMap[position];
+      var widthKey = '';
+
+      if (position === 'left') {
+        widthKey = 'leftTableWidth';
+      } else if (position === 'right') {
+        widthKey = 'rightTableWidth';
+      } else {
+        widthKey = 'tableWidth';
+      }
+
+      var hasExpand = hasExpandTemplate();
+      return template.replace('<%repeatExp%>', hasExpand ? 'ng-repeat-start' : 'ng-repeat').replace('<%widthKey%>', widthKey).replace('<%columnsKey%>', columnsKey).replace('<%columnsLength%>', $table[columnsKey].length).replace('<%expand%>', getExpandTemplate(position)).replace('<%rowHeightExp%>', position === 'left' || position === 'right' ? 'ng-style="{height:row._height+\'px\'}"' : '').replace('<%template%>', getBodyRowsTemplate(position));
+    }
+
+    function getHeadTemplate(position) {
+      var template = $templateCache.get('templates/datatable-head-tpl.html') || '';
+      var widthKey = '';
+      var columnsKey = columnsKeyMap[position];
+      var columnRowsKey = '';
+
+      if (position === 'left') {
+        columnRowsKey = 'leftColumnRows';
+        widthKey = 'leftTableWidth';
+      } else if (position === 'right') {
+        columnRowsKey = 'rightColumnRows';
+        widthKey = 'rightTableWidth';
+      } else {
+        columnRowsKey = 'allColumnRows';
+        widthKey = 'tableWidth';
+      }
+
+      return template.replace('<%columnsKey%>', columnsKey).replace('<%columnRowsKey%>', columnRowsKey).replace('<%widthKey%>', widthKey).replace('<%template%>', getHeadTpls());
+    }
+
+    function updateFixedRowHeight() {
+      var tableWrap = $element.find('.uix-datatable-wrap');
+      var allRows = tableWrap.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
+
+      if (allRows.length) {
+        $table.rebuildData.forEach(function (row, index) {
+          var tr = allRows.get(index);
+
+          if (tr) {
+            row._height = tr.offsetHeight;
+          }
+        });
+      }
+    } // 当固定列与主表格行相同时，直接匹配
+    // 当固定列行少于主表格时，由上往下进行匹配，多余的行高补充到最下一行
+    // 当固定列行多于主表格时，不用处理
+
+
+    function fitDiffColumnsRows(mainRows, fixedRows) {
+      var mainLength = mainRows.length;
+      var fixedLength = fixedRows.length;
+      var headerHeight = $table.headerHeight;
+
+      if (mainLength === fixedLength) {
+        // 表头行相同
+        mainRows.each(function (index, row) {
+          fixedRows.eq(index).css({
+            height: row.offsetHeight
+          });
+        });
+      } else if (mainLength > fixedLength) {
+        var restHeight = headerHeight;
+        fixedRows.each(function (index, row) {
+          var height = mainRows.get(index).offsetHeight;
+          restHeight -= height;
+          angular.element(row).css({
+            height: height
+          });
+        });
+
+        if (restHeight > 0) {
+          fixedRows.eq(fixedLength - 1).css({
+            height: restHeight + fixedRows.get(fixedLength - 1).offsetHeight
+          });
+        }
+      }
+    } // 计算固定列的表头高度
+
+
+    function updateFixedHeadHeight() {
+      var allRows = $element.find('.uix-datatable-main-header > table tr');
+
+      if (!allRows.length) {
+        return;
+      }
+
+      if ($table.isLeftFixed) {
+        var leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
+        fitDiffColumnsRows(allRows, leftHeadRows);
+      }
+
+      if ($table.isRightFixed) {
+        var rightHeadRows = $element.find('.uix-datatable-right-header > table tr');
+        fitDiffColumnsRows(allRows, rightHeadRows);
+      }
+    }
+
+    $scope.$watch('$table.showVerticalScrollBar', function (val, oldVal) {
+      if (val !== oldVal) {
+        calcColumnsWidth();
+      }
+    });
+    $scope.$watch('$table.tableWidth', function (val, oldVal) {
+      if (val !== oldVal) {
+        $table.updateHorizontalScroll();
+      }
+    });
+
+    function renderTableBody() {
+      var template = getTemplate('main');
+
+      if ($table.isLeftFixed) {
+        template += getTemplate('left');
+      }
+
+      if ($table.isRightFixed) {
+        template += getTemplate('right');
+      }
+
+      $compile(template)(compileScope, function (clonedElement) {
+        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-wrap'));
+        tableWrap.empty().append(clonedElement);
+        $timeout(function () {
+          var headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
+          $table.headerHeight = headerHeight;
+          $table.updateHorizontalScroll();
+          $table.updateVerticalScroll();
+          updateFixedTableShadow();
+          updateFixedRowHeight();
+          updateFixedHeadHeight();
+        }, 0);
+      });
+    }
+
+    function splitColumns() {
+      var columns = $table.allDataColumns;
+      var left = [];
+      var right = [];
+      var center = [];
+      columns.forEach(function (column, index) {
+        column._index = index;
+
+        if (column.fixed && column.fixed === 'left') {
+          left.push(column);
+        } else if (column.fixed && column.fixed === 'right') {
+          right.push(column);
+        } else {
+          center.push(column);
+        }
+      });
+      return {
+        left: left,
+        center: center,
+        right: right
+      };
+    }
+
+    $table.initColums = function () {
+      var colsWithId = prepareColumns($scope.columns);
+      $table.allDataColumns = getDataColumns(colsWithId);
+      var columsObj = splitColumns(colsWithId);
+      $table.leftColumns = columsObj.left;
+      $table.rightColumns = columsObj.right;
+      $table.centerColumns = columsObj.center;
+      var columnRowsObj = makeColumnRows(colsWithId);
+      $table.allColumnRows = columnRowsObj.center;
+      $table.leftColumnRows = columnRowsObj.left;
+      $table.rightColumnRows = columnRowsObj.right;
+      $table.leftTableWidth = getFixedColumnsWidth('left');
+      $table.rightTableWidth = getFixedColumnsWidth('right');
+      $table.isLeftFixed = hasFixedColumns('left');
+      $table.isRightFixed = hasFixedColumns('right');
+    };
+
+    $table.initData = function () {
+      $table.rebuildData = makeRebuildData();
+      $timeout(function () {
+        updateFixedRowHeight();
+      }, 0);
+    };
+
+    $table.render = function () {
+      calcColumnsWidth();
+      renderTableBody();
+    }; // 初始化
+
+
+    $table.init = function () {
+      $table.initColums();
+      $table.initData();
+      $table.render();
+      bindEvents();
+    };
+
+    $scope.$on('$destroy', function () {
+      unbindEvents();
+      compileScope.$destroy();
+    });
+  }]).directive('uixDatatable', ['uixDatatable', 'uixDatatableConfig', '$timeout', function (uixDatatable, uixDatatableConfig, $timeout) {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/datatable.html',
+      replace: true,
+      require: ['uixDatatable'],
+      scope: {
+        columns: '=',
+        data: '=',
+        status: '=',
+        disabledHover: '=',
+        rowClassName: '&',
+        onSortChange: '&',
+        onRowClick: '&',
+        onSelectionChange: '&',
+        onCurrentChange: '&',
+        height: '=',
+        maxHeight: '=',
+        expandTemplate: '@',
+        disabledRowClickSelect: '='
+      },
+      controllerAs: '$table',
+      controller: 'uixDatatableCtrl',
+      link: function link(scope, el, $attrs, ctrls) {
+        var $table = ctrls[0];
+        $table.columns = scope.columns;
+        $table.data = scope.data;
+        $table.isStriped = 'striped' in $attrs;
+        $table.isBordered = 'bordered' in $attrs;
+        $table.showFooter = false; // TODO footer
+
+        $table.isLoading = false;
+        $table.isEmpty = false;
+        $table.isError = false;
+        $table.expandTemplate = scope.expandTemplate || '';
+        ['loading', 'empty', 'error'].forEach(function (type) {
+          scope["".concat(type, "Text")] = $attrs["".concat(type, "Text")] || uixDatatable.getStatusText(type) || uixDatatableConfig["".concat(type, "Text")];
+        });
+        scope.$watch('height', function (val) {
+          val = parseFloat(val, 10);
+
+          if (!isNaN(val)) {
+            $table.height = val;
+            $table.bodyStyle = {
+              height: $table.height + 'px'
+            };
+          }
+        });
+        scope.$watch('maxHeight', function (val) {
+          val = parseFloat(val, 10);
+
+          if (!isNaN(val)) {
+            $table.maxHeight = val;
+
+            if (!$table.height) {
+              $table.bodyStyle = {
+                maxHeight: val + 'px'
+              };
+            }
+          }
+        });
+        scope.$watch('disabledHover', function (val) {
+          $table.disabledHover = val;
+        });
+        scope.$watch('disabledRowClickSelect', function (val) {
+          $table.disabledRowClickSelect = val;
+        });
+        scope.$watch('data', function (val, old) {
+          if (val !== old && angular.isDefined(val)) {
+            $table.data = val;
+            $table.initData(); // 当内容发生变化时，重新计算是否有纵向滚动
+
+            $timeout(function () {
+              $table.updateVerticalScroll();
+            }, 0);
+          }
+        });
+        scope.$watch('columns', function (val, old) {
+          if (val !== old && angular.isDefined(val)) {
+            $table.columns = val;
+            $table.initColums();
+            $table.render();
+          }
+        });
+        scope.$watch('status', function (val) {
+          $table.isLoading = val === 1 || val === 'loading';
+          $table.isEmpty = val === 2 || val === 'empty';
+          $table.isError = val === -1 || val === 'error';
+          $table.updateContainerByStatus();
+        });
+        $table.init();
+      }
+    };
+  }]).directive('uixDatatableFoot', function () {
+    return {
+      restrict: 'E',
+      templateUrl: 'templates/datatable-foot.html',
+      replace: true,
+      require: '^uixDatatable',
+      scope: {},
+      link: function link(scope, el, attrs, $table) {
+        scope.$table = $table;
+      }
+    };
+  });
+})();
 "use strict";
 
 /**
@@ -9109,6 +11276,41 @@ angular.module("popover/templates/popover-template-popup.html", []).run(["$templ
 
 angular.module("cityselect/templates/citypanel.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("templates/citypanel.html", "<div >" + "  <div class=\"uix-cityselect-border1 uix-cityselect-padding5 bg-white\">" + "    <div class=>" + "      <div class=\"modal-header uix-cityselect-padding5\">" + "        <h5 class=\"modal-title\">已选中{{vm.cityInfo.chosedCity.length}}个城市<span class=\"modal-title pull-right uix-cityselect-seeChosedCity\" ng-click=\"vm.showSelected()\">{{vm.cityInfo.isShowSelected?\"收起 \":\"查看已选城市\"}}<i class=\"glyphicon\" ng-class=\"{'glyphicon-chevron-down':(!vm.cityInfo.isShowSelected), 'glyphicon-chevron-up':(vm.cityInfo.isShowSelected&&vm.initSee)}\"></i></span></h5>" + "      </div>" + "      <div class=\"modal-body uix-cityselect-initheight uix-cityselect-haveChosed\"  ng-class=\"{uixCityselectCityBarOpen: (vm.cityInfo.isShowSelected&&vm.initSee), uixCityselectCityBarClose: (!vm.cityInfo.isShowSelected&&vm.initSee)}\">" + "        <div class=\"col-sm-8\">" + "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-all\" ng-click=\"vm.choseAll()\" ng-if=\"vm.cityInfo.supportChoseAll\">全选</button>" + "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-clean\" ng-click=\"vm.resetAll()\" ng-if=\"vm.cityInfo.supportChoseClear\">清空</button>" + "          <button class=\"btn m-b-xs w-xs btn-default btn-sm chose-reverse\" ng-click=\"vm.reverseAll()\" ng-if=\"vm.cityInfo.supportChoseReverse\">反选</button>" + "        </div>" + "        <div class=\"input-group  col-sm-4\">" + "          <form action=\"#\" class=\"m-b-md ng-pristine ng-valid\" ng-if=\"vm.cityInfo.supportSearch\">" + "            <div class=\"input-group\" uix-dropdown cols-num=\"1\" on-toggle=\"vm.setCityList(open)\">" + "              <input type=\"text\" class=\"form-control input-sm city-search\" uix-dropdown-toggle placeholder=\"城市搜索\" ng-model=\"vm.searchedCity\" ng-change=\"vm.changeSearchCity()\">" + "              <span class=\"input-group-btn\"><button class=\"btn btn-sm btn-default bootstrap-touchspin-up\" type=\"button\"><i class=\"glyphicon glyphicon-search\"></i></button></span>" + "              <ul class=\"dropdown-menu uix-cityselect-dropdown-menu\" role=\"menu\" class=\"uix-cityselect-searchList\">" + "                <li ng-repeat=\"item in vm.searchList\" ng-click=\"vm.searchCityChose(item)\" ng-class=\"{'uix-cityselect-chosecity': vm.checkChosed(item)}\"><a title=\"{{item.cityName}}\">{{item.cityName}}</a></li>" + "              </ul>" + "            </div>" + "          </form>" + "        </div>" + "        <div class=\"col-sm-12 uix-cityselect-container\">" + "          <ul>" + "            <li class=\"uix-cityselect-cityselected\" ng-repeat=\"city in vm.cityInfo.chosedCity track by $index\" ng-if=\"vm.checkCityBelong(city)\">{{city.cityName}} <i class=\"glyphicon glyphicon-remove\" ng-click=\"vm.toggleChose(city)\" ng-if=\"!city.initChose\"></i></li>" + "          </ul>" + "        </div>" + "      </div>" + "    </div>" + "    <div>" + "      <div class=\"modal-header uix-cityselect-padding5\" ng-if=\"vm.cityInfo.isShowHot\">" + "        <h5 class=\"modal-title\">热门城市</h5>" + "      </div>" + "      <div  ng-if=\"vm.cityInfo.isShowHot\" class=\"modal-body\">" + "        <div class=\"uix-cityselect-showHot\">" + "          <button class=\"btn m-b-xs btn-sm  btn-addon hot-city\" style=\" \" ng-repeat=\"city in vm.cityInfo.hotCity track by $index\" ng-class=\"{'btn-success': vm.checkChosed(city), 'btn-default': !(vm.checkChosed(city))}\" ng-click=\"vm.toggleChose(city)\" ng-if=\"vm.checkCityBelong(city)\"><i class=\" pull-right glyphicon\"  ng-class=\"{'glyphicon-minus': vm.checkChosed(city), 'glyphicon-plus': !(vm.checkChosed(city))}\"></i>{{city.cityName}}</button>" + "        </div>" + "      </div>" + "      <div class=\"uix-cityselect-tab-container ng-isolate-scope\" ng-if=\"vm.cityInfo.supportGroup\">" + "        <ul class=\"nav nav-tabs\">" + "          <li class=\"city-tab\" role=\"presentation\" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.innerTab}\" ng-click=\"vm.changeTab($index)\"><a>{{item}}</a></li>" + "        </ul>" + "        <div class=\"uix-cityselect-tab-content\">" + "          <div class=\"tab-pane col-sm-12 \" ng-repeat=\"item in vm.tabName track by $index\" ng-class=\"{active: $index===vm.cityInfo.innerTab}\">" + "            <div ng-repeat=\"word in vm.cityInfo.allCity[item] track by $index\">" + "              <h4>{{word.name}}</h4>" + "              <div>" + "                <button class=\"btn btn-sm m-b-xs w-xs btn-default uix-cityselect-cityButton\" ng-repeat=\"city in word.data track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>" + "              </div>" + "            </div>" + "          </div>" + "        </div>" + "      </div>" + "      <div ng-if=\"!vm.cityInfo.supportGroup\">" + "        <div class=\"modal-header uix-cityselect-padding5\" >" + "          <h5 class=\"modal-title\">全部城市</h5>" + "        </div>" + "        <div class=\"modal-body\">" + "          <button class=\"btn btn-sm m-b-xs w-xs btn-default uix-cityselect-cityButton\" ng-repeat=\"city in vm.cityInfo.allCity track by $index\" city-id=\"city.cityId\" ng-class=\"{'btn-success': vm.checkChosed(city)}\" ng-disable=\"city.initChose\" ng-click=\"vm.toggleChose(city)\">{{city.cityName}}</button>" + "        </div>" + "      </div>" + "    </div>" + "  </div>" + "</div>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-body-tpl.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-body-tpl.html", "<table" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  class=\"uix-datatable-tbody\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{col._width}}\"" + "    />" + "  </colgroup>" + "  <tbody>" + "    <tr" + "      <%repeatExp%>=\"(rowIndex, row) in $table.rebuildData\"" + "      class=\"uix-datatable-normal-row\"" + "      ng-mouseenter=\"$table.handleMouseIn($event,row)\"" + "      ng-mouseleave=\"$table.handleMouseOut($event,row)\"" + "      ng-class=\"[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']\"" + "      ng-click=\"$table.handleClickRow($event,row)\"" + "      <%rowHeightExp%>" + "    >" + "     <%template%>" + "    </tr>" + "    <%expand%>" + "  </tbody>" + "</table>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-foot.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-foot.html", "<div></div>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-head-tpl.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-head-tpl.html", "<table" + "  class=\"uix-datatable-thead\"" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{ col._width }}\"" + "    />" + "  </colgroup>" + "  <thead>" + "    <tr" + "      ng-repeat=\"(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex\"" + "    >" + "      <th" + "        ng-repeat=\"(colIndex, column) in cols track by colIndex\"" + "        colspan=\"{{:: column.colSpan }}\"" + "        rowspan=\"{{:: column.rowSpan }}\"" + "        ng-class=\"$table.alignCls(column)\"" + "      >" + "        <div ng-class=\"{'uix-datatable-sort-cell':column.sortable}\" class=\"uix-datatable-cell\"  ng-click=\"$table.handleSortByHead(column)\">" + "          <div ng-if=\"column.__renderHeadType==='normal'\">" + "            <span>{{:: column.title || '#' }}</span>" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='expand'\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='selection'\">" + "              <input type=\"checkbox\" ng-change=\"$table.handleSelectAll()\" ng-if=\"!column.singleSelect\" ng-model=\"$table.isSelectedAll\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType === 'template'\">" + "            <%template%>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='format'\">" + "            {{ ::column.headerFormat(column) }}" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <span class=\"uix-datatable-sort\" ng-if=\"column.sortable\">" + "            <i" + "              class=\"uix-datatable-sort-up\"" + "              ng-class=\"{on: column._sortType === 'asc'}\"" + "              ng-click=\"$table.handleSort(column, 'asc', $event)\"" + "            ></i>" + "            <i" + "              class=\"uix-datatable-sort-down\"" + "              ng-class=\"{on: column._sortType === 'desc'}\"" + "              ng-click=\"$table.handleSort(column, 'desc', $event)\"" + "            ></i>" + "          </span>" + "        </div>" + "      </th>" + "    </tr>" + "  </thead>" + "</table>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-table-left.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-table-left.html", "<div" + "  class=\"uix-datatable-fixed uix-datatable-fixed-left\"" + "  ng-style=\"{width:$table.leftTableWidth}\"" + ">" + "  <div class=\"uix-datatable-left-header\"><%head%></div>" + "  <div" + "    class=\"uix-datatable-left-body\"" + "    ng-style=\"{top:$table.headerHeight+'px',bottom:$table.showHorizontalScrollBar?$table.scrollBarWidth+'px':0}\"" + "  >" + "  <%body%>" + "  </div>" + "</div>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-table-main.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-table-main.html", "<div class=\"uix-datatable-main-table\">" + "  <div class=\"uix-datatable-main-header\"><%head%></div>" + "  <div class=\"uix-datatable-main-body\" ng-style=\"$table.bodyStyle\">" + "    <%body%>" + "  </div>" + "</div>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable-table-right.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable-table-right.html", "<div" + "  class=\"uix-datatable-fixed uix-datatable-fixed-right\"" + "  ng-style=\"{width:$table.rightTableWidth,right:$table.showVerticalScrollBar?$table.scrollBarWidth+'px':0}\"" + ">" + "  <div" + "    class=\"uix-datatable-right-header\"" + "  ><%head%></div>" + "  <div" + "    class=\"uix-datatable-right-body\"" + "    ng-style=\"{top:$table.headerHeight+'px',bottom:$table.showHorizontalScrollBar?$table.scrollBarWidth+'px':0}\"" + "  >" + "  <%body%>" + "  </div>" + "</div>" + "");
+}]);
+"use strict";
+
+angular.module("datatable/templates/datatable.html", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped" + "  }\"" + "  ng-style=\"{height:$table.containerHeight}\"" + ">" + "  <div class=\"uix-datatable-wrap\"></div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "  <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "    <span class=\"inner-text\">{{ emptyText }}</span>" + "  </div>" + "  <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "    <span class=\"inner-text\">" + "      <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "      <span>{{ loadingText }}</span>" + "    </span>" + "  </div>" + "  <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "    <span class=\"inner-text\">" + "      <span>{{ errorText }}</span>" + "    </span>" + "  </div>" + "</div>" + "");
 }]);
 "use strict";
 

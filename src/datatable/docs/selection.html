@@ -1,0 +1,10 @@
+禁用点击行选择：<uix-switch ng-model="vm.disabledRowClickSelect" size="sm" type="success"></uix-switch>
+<uix-datatable
+  bordered
+  columns="vm.columns"
+  data="vm.data"
+  disabled-row-click-select="vm.disabledRowClickSelect"
+  on-selection-change="
+    vm.onSelectionChange($newRows, $oldRows)
+  "
+></uix-datatable>

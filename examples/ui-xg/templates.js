@@ -10,6 +10,13 @@ import calendarTpl from 'src/calendar/templates/calendar.html';
 import carouselItemTpl from 'src/carousel/templates/carousel-item.html';
 import carouselTpl from 'src/carousel/templates/carousel.html';
 import citypanelTpl from 'src/cityselect/templates/citypanel.html';
+import datatableBodyTplTpl from 'src/datatable/templates/datatable-body-tpl.html';
+import datatableFootTpl from 'src/datatable/templates/datatable-foot.html';
+import datatableHeadTplTpl from 'src/datatable/templates/datatable-head-tpl.html';
+import datatableTableLeftTpl from 'src/datatable/templates/datatable-table-left.html';
+import datatableTableMainTpl from 'src/datatable/templates/datatable-table-main.html';
+import datatableTableRightTpl from 'src/datatable/templates/datatable-table-right.html';
+import datatableTpl from 'src/datatable/templates/datatable.html';
 import datepickerCalendarTpl from 'src/datepicker/templates/datepicker-calendar.html';
 import datepickerTpl from 'src/datepicker/templates/datepicker.html';
 import backdropTpl from 'src/modal/templates/backdrop.html';
@@ -54,6 +61,13 @@ export default [
     { filename: 'carousel-item.html', template: carouselItemTpl },
     { filename: 'carousel.html', template: carouselTpl },
     { filename: 'citypanel.html', template: citypanelTpl },
+    { filename: 'datatable-body-tpl.html', template: datatableBodyTplTpl },
+    { filename: 'datatable-foot.html', template: datatableFootTpl },
+    { filename: 'datatable-head-tpl.html', template: datatableHeadTplTpl },
+    { filename: 'datatable-table-left.html', template: datatableTableLeftTpl },
+    { filename: 'datatable-table-main.html', template: datatableTableMainTpl },
+    { filename: 'datatable-table-right.html', template: datatableTableRightTpl },
+    { filename: 'datatable.html', template: datatableTpl },
     { filename: 'datepicker-calendar.html', template: datepickerCalendarTpl },
     { filename: 'datepicker.html', template: datepickerTpl },
     { filename: 'backdrop.html', template: backdropTpl },

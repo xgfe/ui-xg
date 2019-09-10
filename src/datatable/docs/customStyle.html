@@ -1,0 +1,32 @@
+<style>
+.uix-datatable .demo-table-info-row td{
+    background-color: #2db7f5 !important;
+    color: #fff;
+}
+.uix-datatable .demo-table-error-row td{
+    background-color: #ff6600 !important;
+    color: #fff;
+}
+.uix-datatable td.demo-table-info-column{
+    background-color: #2db7f5 !important;
+    color: #fff;
+}
+.uix-datatable .demo-table-info-cell-name {
+    background-color: #2db7f5 !important;
+    color: #fff;
+}
+.uix-datatable .demo-table-info-cell-age {
+    background-color: #ff6600 !important;
+    color: #fff;
+}
+.uix-datatable .demo-table-info-cell-address {
+    background-color: #187 !important;
+    color: #fff;
+}
+</style>
+<h4>自定义行样式</h4>
+<uix-datatable row-class-name="vm.rowClassName($row,$rowIndex)" columns="vm.columns1" data="vm.data1"></uix-datatable>
+<h4>自定义列样式</h4>
+<uix-datatable columns="vm.columns2" data="vm.data1"></uix-datatable>
+<h4>自定义单元格样式</h4>
+<uix-datatable columns="vm.columns1" data="vm.data2"></uix-datatable>

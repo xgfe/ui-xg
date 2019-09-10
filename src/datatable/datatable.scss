@@ -1,18 +1,28 @@
-.uix-datatable-head>thead>tr>th,
-.uix-datatable-head>thead>tr>td {
-    border-bottom   : 0;
-    background-color: #f8f8f9;
-}
+$text-color: #515a6e; // 默认字体颜色
+$text-size : 12px; // 默认字号
+
+$border-color  : #ddd; // 边框颜色
+$primary-color : #2d8cf0; // 主颜色
+
+$thead-bg-color  : #f5f0f0; // 表头背景颜色
+$hover-bg-color  : #fbf9f9; // 悬浮颜色
+$striped-bg-color: $hover-bg-color; // 斑马纹颜色
+
+$cell-padding: 12px; // 单元格内边距
+
+$sort-icon-size : 6px; // 排序箭头图标大小
+$sort-icon-color: #c5c8ce; // 排序箭头图标颜色
+
+$state-text-size: 16px; // 状态提示文本大小
 
 .uix-datatable {
     position        : relative;
-    overflow        : hidden;
     width           : inherit;
     height          : 100%;
     max-width       : 100%;
     overflow        : hidden;
-    color           : #515a6e;
-    font-size       : 12px;
+    color           : $text-color;
+    font-size       : $text-size;
     background-color: #fff;
     box-sizing      : border-box;
 
@@ -26,44 +36,113 @@
     }
 
     th {
-        height          : 40px;
-        white-space     : nowrap;
-        overflow        : hidden;
-        background-color: #f8f8f9;
+        background-color: $thead-bg-color;
     }
 
     td,
     th {
         min-width     : 0;
-        padding       : 12px 0;
         box-sizing    : border-box;
         text-align    : left;
-        text-overflow : ellipsis;
         vertical-align: middle;
-        border-bottom : 1px solid #e8eaec;
+        border-bottom : 1px solid $border-color;
     }
 
-    .uix-datatable-header {
+    .uix-datatable-wrap {
+        position: relative;
+    }
+
+    &.uix-datatable-striped .uix-datatable-tbody {
+
+        &>tbody>tr:nth-child(even)>td,
+        &>tbody>tr:nth-child(even)>th {
+            background-color: $striped-bg-color;
+        }
+    }
+
+    &.uix-datatable-bordered {
+        table {
+            border: 1px solid $border-color;
+
+            &>thead>tr>th,
+            &>tbody>tr>th,
+            &>tfoot>tr>th,
+            &>thead>tr>td,
+            &>tbody>tr>td,
+            &>tfoot>tr>td {
+                border: 1px solid $border-color
+            }
+
+            &>thead>tr>th,
+            &>thead>tr>td {
+                border-bottom-width: 2px;
+            }
+        }
+
+        .uix-datatable-thead {
+            border-bottom: 0;
+
+            &>thead>tr>th,
+            &>thead>tr>td,
+            &>tbody>tr>td {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .uix-datatable-thead>thead>tr>th,
+    .uix-datatable-thead>thead>tr>td {
+        border-bottom   : 0;
+        background-color: $thead-bg-color;
+    }
+
+    .uix-datatable-main-body {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    .uix-datatable-fixed {
         overflow: hidden;
     }
 
-    .uix-datatable-overflowX {
-        overflow-x: scroll;
+    .uix-datatable-left-body,
+    .uix-datatable-right-body {
+        position: absolute;
+        bottom  : 0;
+        top     : 0;
+
+        overflow-y     : auto;
+        overflow-x     : hidden;
+        z-index        : 3;
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+
+        /* IE 10+ */
+        &::-webkit-scrollbar {
+            /* WebKit */
+            width : 0;
+            height: 0;
+        }
     }
 
-    .uix-datatable-overflowY {
-        overflow-y: scroll;
+    .uix-datatable-align-left {
+        text-align: left;
     }
 
-    .uix-datatable-hidden {
-        visibility: hidden;
+    .uix-datatable-align-center {
+        text-align: center;
+    }
+
+    .uix-datatable-align-right {
+        text-align: right;
     }
 
     .uix-datatable-fixed {
         position: absolute;
         top     : 0;
+        bottom  : 0;
     }
-    
 
     .uix-datatable-fixed-left {
         top       : 0;
@@ -76,50 +155,210 @@
         right     : 0;
         box-shadow: -2px 0 6px -2px rgba(0, 0, 0, .2);
     }
-    &.uix-datatable-scroll-position-left .uix-datatable-fixed-left{
-        box-shadow: none;
-    }
-    &.uix-datatable-scroll-position-right .uix-datatable-fixed-right{
-        box-shadow: none;
+
+    &.uix-datatable-scroll-left {
+        .uix-datatable-fixed-left {
+            box-shadow: none;
+        }
     }
 
-    .uix-datatable-fixed-left:before,
-    .uix-datatable-fixed-right:before {
-        content         : "";
-        width           : 100%;
-        height          : 1px;
-        background-color: #dcdee2;
-        position        : absolute;
-        left            : 0;
-        bottom          : 0;
-        z-index         : 4;
-    }
-
-    .uix-datatable-fixed-body {
-        overflow: hidden;
-        position: relative;
-        z-index : 3;
+    &.uix-datatable-scroll-right {
+        .uix-datatable-fixed-right {
+            box-shadow: none;
+        }
     }
 
     .uix-datatable-cell {
-        padding-left : 18px;
-        padding-right: 18px;
-        overflow     : hidden;
-        text-overflow: ellipsis;
-        white-space  : normal;
-        word-break   : break-all;
-        box-sizing   : border-box;
+        padding   : $cell-padding $cell-padding;
+        box-sizing: border-box;
+        position  : relative;
+        word-break: break-all;
+
+        &.uix-datatable-cell-ellipsis {
+            word-break   : normal;
+            white-space  : nowrap;
+            overflow     : hidden;
+            text-overflow: ellipsis;
+        }
+
+        &.uix-datatable-sort-cell {
+            padding-right: $cell-padding + $sort-icon-size * 2;
+        }
+    }
+
+    .uix-datatable-expand-cell {
+        padding: 18px;
+    }
+
+    .uix-datatable-expand-trigger {
+        text-align: center;
+        cursor    : pointer;
+    }
+
+    .uix-datatable-main-table .uix-datatable-cell-fixed {
+        visibility: hidden;
+    }
+
+    .uix-datatable-sort {
+        display       : inline-block;
+        width         : $sort-icon-size * 2;
+        height        : $sort-icon-size * 2 + 2;
+        margin-top    : -1px;
+        vertical-align: middle;
+        overflow      : hidden;
+        cursor        : pointer;
+        position      : absolute;
+        right         : 10px;
+        top           : 50%;
+        margin-top    : - $sort-icon-size - 1;
+
+        i {
+            display     : block;
+            border-width: $sort-icon-size;
+            border-style: solid;
+            overflow    : hidden;
+            position    : absolute;
+            left        : 0;
+
+            &:hover {
+                color: $primary-color;
+            }
+        }
+
+        .uix-datatable-sort-up {
+            top             : 0;
+            border-top-width: 0;
+            border-color    : transparent transparent $sort-icon-color transparent;
+
+            &.on {
+                border-bottom-color: $primary-color;
+            }
+        }
+
+        .uix-datatable-sort-down {
+            bottom             : 0;
+            border-bottom-width: 0;
+            border-color       : $sort-icon-color transparent transparent transparent;
+
+            &.on {
+                border-top-color: $primary-color;
+            }
+        }
+    }
+
+    .uix-datatable-right-header-block {
+        position        : absolute;
+        right           : 0;
+        top             : 0;
+        background-color: $thead-bg-color;
+    }
+
+    .uix-datatable-loading,
+    .uix-datatable-empty,
+    .uix-datatable-error {
+        position  : absolute;
+        left      : 0;
+        top       : 0;
+        right     : 0;
+        bottom    : 0;
+        background: rgba(255, 255, 255, 0.5);
+        text-align: center;
+
+        .loading-icon {
+            -webkit-animation: spin 2s infinite linear;
+            -moz-animation   : spin 2s infinite linear;
+            -o-animation     : spin 2s infinite linear;
+            animation        : spin 2s infinite linear
+        }
+
+        .inner-text {
+            font-size  : $state-text-size;
+            position   : absolute;
+            top        : 50%;
+            height     : 30px;
+            line-height: 30px;
+            margin-top : -15px;
+            left       : 0;
+            right      : 0;
+        }
+    }
+
+    .uix-datatable-row-hover td {
+        background-color: $hover-bg-color;
+    }
+
+    .uix-datatable-foot {
+        text-align: right;
+    }
+
+    .uix-datatable-page-sizer {
+        width  : 90px;
+        display: inline-block;
+        margin : 20px 10px;
+    }
+
+    .uix-datatable-pagination {
+        vertical-align: top;
+    }
+
+    &.uix-datatable-has-status {
+        .uix-datatable-wrap {
+            overflow: hidden;
+        }
     }
 }
 
-.uix-datatable .table {
-    margin-bottom: 0;
+// 移动端不显示固定列
+@media screen and (max-width: 768px) {
+    .uix-datatable {
+        .uix-datatable-fixed {
+            display: none;
+        }
+
+        .uix-datatable-main-table .uix-datatable-cell-fixed {
+            visibility: visible;
+        }
+    }
 }
 
-.uix-datatable-head.table-bordered {
-    border-bottom: 0;
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg)
+    }
+
+    100% {
+        -moz-transform: rotate(359deg)
+    }
 }
 
-.uix-datatable-row-hover td{
-    background-color: #f9f9f9;
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg)
+    }
+}
+
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg)
+    }
+
+    100% {
+        -o-transform: rotate(359deg)
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform        : rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform        : rotate(359deg)
+    }
 }

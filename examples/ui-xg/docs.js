@@ -9,6 +9,7 @@ import * as uiCalendar from 'src/calendar/docs';
 import * as uiCarousel from 'src/carousel/docs';
 import * as uiCityselect from 'src/cityselect/docs';
 import * as uiCollapse from 'src/collapse/docs';
+import * as uiDatatable from 'src/datatable/docs';
 import * as uiDatepicker from 'src/datepicker/docs';
 import * as uiDropdown from 'src/dropdown/docs';
 import * as uiGrid from 'src/grid/docs';
@@ -45,6 +46,7 @@ export default [
     uiCarousel,
     uiCityselect,
     uiCollapse,
+    uiDatatable,
     uiDatepicker,
     uiDropdown,
     uiGrid,

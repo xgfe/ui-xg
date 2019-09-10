@@ -1,0 +1,15 @@
+<style>
+  .custom-disabled-checked {
+    cursor: not-allowed;
+  }
+</style>
+当前选中的是第 {{ vm.selectRow }} 行
+<uix-datatable
+  bordered
+  columns="vm.columns"
+  data="vm.data"
+  row-class-name="vm.rowClassName($row,$index)"
+  on-current-change="
+    vm.handleCurrentChange($newRow, $oldRow, $newIndex, $oldIndex)
+  "
+></uix-datatable>

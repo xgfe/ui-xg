@@ -1,0 +1,7 @@
+<div class="demo-affix">
+    <ul>
+        <li ng-class="{'actived':demo.active}" ng-repeat="demo in cloneDemos track by $index">
+            <a ng-href="#{{demo.id}}">{{demo.title}}</a>
+        </li>
+    </ul>
+</div>
