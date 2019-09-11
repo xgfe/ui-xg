@@ -12,6 +12,7 @@ import 'src/collapse/collapse.js';
 import 'src/datatable/datatable.js';
 import 'src/datepicker/datepicker.js';
 import 'src/dropdown/dropdown.js';
+import 'src/form/form.js';
 import 'src/grid/grid.js';
 import 'src/loader/loader.js';
 import 'src/modal/modal.js';
@@ -51,6 +52,7 @@ export default [
     'datatable',
     'datepicker',
     'dropdown',
+    'form',
     'grid',
     'loader',
     'modal',
