@@ -66,17 +66,20 @@ data = [{
 | dateFormat | 日期格式化,仅在type为,'datepicker','dateRange'情况下生效 | String | - |
 | rowWidth | 行宽，只对vertical布局有效 | Number | 6 |
 | labelWidth | label栅格化列数，horizontal和vertical布局生效 | Number | horizontal：2，vertical：6 |
-| divWidth | div栅格化列数 | Number | inline:3,horizontal:4,vertical:8 |
-| options | 单选多选下拉框列表 | Array[{desc:'',value:''}] | - |
-| checkTiming | 校验触发条件可选值为：change，blur，focus | [] | - |
+| colWidth | div栅格化列数 | Number | inline:3,horizontal:4,vertical:8 |
+| options | 单选多选下拉框列表[{desc:'',value:''}] | Array | - |
+| checkTiming | 校验触发条件,可选值为：change，blur，focus | [] | - |
 | relatedCheckKeys | 关联校验，配置关联项的key值，eg:项目a的更改触发b校验，则在a中设置此配置项值为b的key值即可 | [] | - |
 | publicCheck | 默认常用校验规则可选范围,'emailReg'，'validCharacterReg'，'letterNumberReg'，'mobileRegTwelveNum'具体可参考regUtil文件 | [] | - |
-| validor | 自定义校验方法,异步,校验通过返回true或者空对象，校验不通过返回{message:'',type:''},type可选值为error,warning,success | Function |  |
-| inputLimit | 只对type=input有效，input输入限制 | {} | - |
+| validor | 自定义校验方法,异步,校验通过返回true，校验不通过返回{message:'',type:''},type可选值为error,warning,success | Function |  |
+| tipInfo | 提示文案，用于展示报错信息，可手动设置{message:'',type:''} | {} | - |
+| tooltip | label旁边的tip,eg:tooltip: {message: 'tooltip message',color: '#ff552e',icon: 'glyphicon glyphicon-ok-sign'}默认为红色问号提示 | Object | - |
+| inputLimit | 只对type=input有效，input输入限制,不满足limit设置的将不能输入 | {} | - |
 | limit | 只对type=input有效，inputLimit属性，可选值：number, letter,letterNumber | String | - |
 | maxlength | 只对type=input有效,inputLimit属性 输入最大长度 | Number | - |
 | template | 自定义模板 | String | - |
 | templateUrl | 自定义模板ID | String | - |
 | templateName | 自定义模板名称，当使用自定义模板时此项必填，且名称在当前uixForm组件中唯一 | String | - |
 | onChange | ng-change 事件 | Function | -tooltip |
-| tooltip | label旁边的tip,eg:tooltip: {message: 'tooltip message',color: '#ff552e',icon: 'glyphicon glyphicon-ok-sign'}默认为红色问号提示 | Object | - |
+| onFocus | ng-focus 事件 |  |  |
+| onBlur | ng-blur 事件 |  |  |

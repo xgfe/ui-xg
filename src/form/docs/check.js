@@ -1,20 +1,27 @@
 
 export default class {
-    static $inject = ['$scope', '$q'];
-    constructor($scope, $q) {
-        this.result = {};
-        this.submit = this.submit.bind(this);
-        this.cancel = this.cancel.bind(this);
+    static $inject = ['$q'];
+    constructor($q) {
+        this.result = 8989;
         this.data = [{
             key: 'email',
             text: 'email',
-            type: 'input'
+            type: 'input',
+            value: '',
+            checkTiming: ['change'],
+            publicCheck: ['intOrFloatOneDecimalReg','firstNotZeroIntReg']
         }, {
             key: 'condition',
             text: '自定义校验',
             type: 'input',
             value: '',
-            immediateCheck: true,
+            inputLimit: {
+                limit: 'letterNumber',
+                maxlength: 12
+            },
+            onChange: (val) => {
+                this.conditionChange(val);
+            },
             validor: (val) => {
                 return $q((resolve)=> {
                     if (val === 1) {
@@ -34,10 +41,11 @@ export default class {
         },
         {
             key: 'check',
-            text: '默认空值校验',
+            text: '关联email校验',
             type: 'input',
             value: '',
-            necessary: true
+            necessary: true,
+            relatedCheckKeys: ['email']
         },{
             key: 'condition',
             text: '自定义校验',
@@ -45,7 +53,7 @@ export default class {
             value: '',
             validor: (val) => {
                 return $q((resolve)=> {
-                    if (val === 1) {
+                    if (+val === 1) {
                         resolve({message: '请重新输入', type: 'error'});
                     }
                     resolve({});
@@ -56,9 +64,12 @@ export default class {
        
     }
     submit() {
-        console.log(this.result, 'submit');
+        console.log(this,this.result, 'submit');
     }
     cancel() {
         console.log('cancel');
+    }
+    conditionChange(val) {
+        console.log(val);
     }
 }

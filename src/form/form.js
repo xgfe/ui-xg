@@ -4,7 +4,6 @@
  * Author: your_email@gmail.com
  * Date:2019-09-02
  */
-// const {commonRegUtil} = require('./commonRegUtil')
 const commonRegUtil = {
 
     // url的正则表达式
@@ -97,27 +96,29 @@ const commonRegUtil = {
 
 angular.module('ui.xg.form', [])
     .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$filter', function ($scope, $compile, $templateCache, $element, $q, $filter) {
-        $scope.layout = $scope.layout || 'horizontal';
-        $scope.finalValue = $scope.finalValue || {};
-        $scope.showBtn = $scope.showBtn || true;
-        let timer = null;
-        const $form = this;
         const INPUTLIMIT = {
             number: /\D/g,
             letter: /[^a-zA-Z]/g,
             letterNumber: /[^A-Za-z\d]/g
         };
-        const INNERFORMAT = ['currency', 'number', 'date', 'json', 'lowercase', 'uppercase', 'limitTo', 'orderBy'];
-        $form.copyData = angular.copy($scope.data);
-        $form.html = '';
-        $form.layout = $scope.layout;
-        $form.tplObj = {};
+        let timer = null;
         let compileScope = $scope.$parent.$new();
+
+        $scope.finalValue = $scope.finalValue || {};
+        $scope.showBtn = $scope.showBtn || true;
         $scope.data.map((item) => {
             if (item.key) {
                 $scope.finalValue[item.key] = item.value;
             }
+            item.passCheck = true;
         });
+
+        const $form = this;
+        $form.layout = $scope.layout || 'horizontal';
+        $form.copyData = angular.copy($scope.data);
+        $form.html = '';
+        $form.tplObj = {};
+        
         // 渲染模板dom
         $form.renderTpl = (item) => {
             if ($form.tplObj[item.templateName]) {
@@ -172,7 +173,7 @@ angular.module('ui.xg.form', [])
                 item.onChange(item.value);
             }
             // 校验
-            if ((item.checkTiming && item.checkTiming.includes('change')) || from === 'relatedCheck') {
+            if ((item.checkTiming && item.checkTiming.includes('change')) || from === 'relatedCheck' || $scope.checkAll) {
                 $form.validor(item).then(() => {
                     $form.updateConfirmState();
                 });
@@ -198,14 +199,6 @@ angular.module('ui.xg.form', [])
             if (item.onBlur) {
                 item.onBlur(item.value);
             }
-            // 格式化输入
-            if (item.formatValue) {
-                if(INNERFORMAT.includes(item.formatValue)) {
-                    item.value = $filter('currency')(item.value);
-                } else {
-                    item.value = item.value.replace(item.formatValue[0], item.formatValue[1]);
-                }
-            }
             if (item.checkTiming && item.checkTiming.includes('blur')) {
                 $form.validor(item).then(() => {
                     $form.updateConfirmState();
@@ -224,6 +217,7 @@ angular.module('ui.xg.form', [])
                     timer = setTimeout(() => {
                         item.validor(item.value).then((res) => {
                             item.tipInfo = res;
+                            item.passCheck = res.message ? false : true;
                             resolve(item);
                         });
                     }, 300);
@@ -247,12 +241,13 @@ angular.module('ui.xg.form', [])
                             }
                         });
                     }
+                    item.passCheck = item.tipInfo.message ? false : true;
                     resolve(item);
                 }
             });
         };
         $form.updateConfirmState = () => {
-            let result = $scope.data.filter((item) => item.tipInfo && item.tipInfo.message);
+            let result = $scope.data.filter((item) => !item.passCheck);
             if(result && result.length) {
                 $scope.disabled = true;
             } else {
@@ -283,14 +278,13 @@ angular.module('ui.xg.form', [])
             require: ['uixForm'],
             scope: {
                 data: '=', layout: '@?', textalign: '@?', buttonInline: '@?',
-                confirmText: '@?', onConfirm: '=?', showBtn: '@?',
-                cancelText: '@?', onCancel: '=?', resetData: '@?', checkAll: '@?',
+                confirmText: '@?', onConfirm: '&?', showBtn: '@?',
+                cancelText: '@?', onCancel: '&?', resetData: '@?', checkAll: '@?',
                 finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '@?'
             },
             controller: 'uixFormCtrl',
             controllerAs: '$form',
-            link: function ($scope) {
-                $scope.layout = $scope.layout ? $scope.layout : 'search';
+            link: function () {
             }
         };
     })

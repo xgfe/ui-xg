@@ -2,17 +2,9 @@ export default class {
     constructor() {
         this.result = {};
         this.data = [{
-                key: 'input',
-                text: 'input',
-                type: 'input',
-                value: '',
-                checkTiming: ['change'],
-                publicCheck: ['intOrFloatOneDecimalReg','firstNotZeroIntReg'],
-                inputLimit: {
-                    limit: 'letterNumber',
-                    maxlength: 12
-                },
-                relatedCheckKeys: ['select']
+                key: 'email',
+                text: 'email',
+                type: 'input'
             }, {
                 key: 'date',
                 text: 'test',

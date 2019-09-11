@@ -1,7 +1,7 @@
 <div class="panel-body" >
     <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}">
         <div ng-class="{
-            'col-md-{{item.divWidth?item.divWidth:3}}': $form.layout==='inline',
+            'col-md-{{item.colWidth?item.colWidth:3}}': $form.layout==='inline',
             'form-group row uix-form-m-b-md': $form.layout==='horizontal',
             'col-md-{{item.rowWidth?item.rowWidth:6}} uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'
         }" ng-repeat="item in data">
@@ -16,8 +16,8 @@
         </labe>
         <div ng-class="{
             'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline',
-            'col-md-{{item.divWidth?item.divWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal',
-            'col-md-{{item.divWidth?item.divWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'
+            'col-md-{{item.colWidth?item.colWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal',
+            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'
         }" ng-if="!item.template&&!item.templateUrl&&item.type!=='tpl'">
             <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" placeholder="{{item.placeholder}}"
                 ng-change="$form.onChange(item)" ng-blur="$form.onBlur(item)" ng-focus="$form.onFocus(item)">
@@ -58,7 +58,7 @@
         </div>
         <!-- 自定义模板 -->
         <div ng-class="{
-            'col-md-{{item.divWidth?item.divWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl',
+            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl',
             'tplHtml': item.type==='tpl'
         }" ng-if="item.templateUrl||item.template">
             <div class="tplHtml{{item.templateName}}"></div>
