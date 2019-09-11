@@ -1,10 +1,10 @@
 /*
  * ui-xg
- * Version: 2.1.12 - 2019-09-10
+ * Version: 2.1.15 - 2019-09-11
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
-angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","avatar/templates/avatar.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datatable/templates/datatable-body-tpl.html","datatable/templates/datatable-foot.html","datatable/templates/datatable-head-tpl.html","datatable/templates/datatable-table-left.html","datatable/templates/datatable-table-main.html","datatable/templates/datatable-table-right.html","datatable/templates/datatable.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","form/templates/customizeTpl.html","form/templates/form-item.html","form/templates/form.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timeline/templates/timeline.html","timeline/templates/timelineItem.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
+angular.module("ui.xg.tpls", ["accordion/templates/accordion.html","accordion/templates/group.html","alert/templates/alert.html","avatar/templates/avatar.html","button/templates/button.html","buttonGroup/templates/buttonGroup.html","timepanel/templates/timepanel.html","calendar/templates/calendar.html","carousel/templates/carousel-item.html","carousel/templates/carousel.html","tooltip/templates/tooltip-html-popup.html","tooltip/templates/tooltip-popup.html","tooltip/templates/tooltip-template-popup.html","popover/templates/popover-html-popup.html","popover/templates/popover-popup.html","popover/templates/popover-template-popup.html","cityselect/templates/citypanel.html","datatable/templates/datatable-body-tpl.html","datatable/templates/datatable-foot.html","datatable/templates/datatable-head-tpl.html","datatable/templates/datatable-table-left.html","datatable/templates/datatable-table-main.html","datatable/templates/datatable-table-right.html","datatable/templates/datatable.html","datepicker/templates/datepicker-calendar.html","datepicker/templates/datepicker.html","form/templates/form.html","modal/templates/backdrop.html","modal/templates/confirm.html","modal/templates/window.html","notify/templates/notify.html","pager/templates/pager.html","progressbar/templates/bar.html","progressbar/templates/progress.html","progressbar/templates/progressbar.html","rate/templates/rate.html","searchBox/templates/searchBox.html","select/templates/choices.html","select/templates/match-multiple.html","select/templates/match.html","select/templates/select-multiple.html","select/templates/select.html","step/templates/step.html","switch/templates/switch.html","tabs/templates/tab.html","tabs/templates/tabs.html","timeline/templates/timeline.html","timeline/templates/timelineItem.html","timepicker/templates/timepicker-timepanel.html","timepicker/templates/timepicker.html","typeahead/templates/typeaheadTpl.html"]);
 "use strict";
 
 /**
@@ -5822,7 +5822,6 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
           content = '{{::$table[\'' + columnsKey + '\'][' + colIndex + '].format(row, rowIndex)}}';
         } else if (angular.isDefined(column.template) || angular.isDefined(column.templateUrl)) {
           content = column.template || $templateCache.get(column.templateUrl) || '';
-          console.log(content, 9090);
         } else {
           content = '{{';
           content += "row['".concat(column.key, "']");
@@ -6021,7 +6020,6 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       $compile(template)(compileScope, function (clonedElement) {
         var tableWrap = angular.element($element[0].querySelector('.uix-datatable-content'));
         tableWrap.empty().append(clonedElement);
-        console.log(tableWrap, 567);
         $timeout(function () {
           var headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
           $table.headerHeight = headerHeight;
@@ -6469,230 +6467,313 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
 });
 "use strict";
 
-var commonRegUtil = {
-  // url的正则表达式
-  // urlObj: new RegExp(urlStr),
-  // 邮箱
-  emailReg: /^\w+([\-_\.]\w+)*@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*$/,
-  // 字母数字下划线,中横线等合法字符
-  validCharacterReg: /[A-Za-z0-9-_]+/,
-  // 字母数字
-  letterNumberReg: /^[A-Za-z\d]+$/,
-  // 手机号,1-12位的数字即可
-  mobileRegTwelveNum: /^\d{1,12}$/,
-  // 手机号,首位为1,后面十位为数字
-  mobileRegFirstOneTenNum: /^1[0-9]{10}$/,
-  // 手机号,首位为1,第二位为3,4,5,7,8即可
-  mobileRegFirstOneSecondLimit: /^1[3|4|5|7|8]\d{9}$/,
-  // 固定电话,带区号010-12345678
-  telReg: /^((0\d{2,3})-)(\d{7,8})$/,
-  // http或者https开头
-  httpFrontReg: /^http:([\s\S]*)|^https:([\s\S]*)/,
-  // 首位可以为0的整数数字
-  firstCanBeZeroIntReg: /^[0-9]\d*$/,
-  // 首位不能为0的整数数字
-  firstNotZeroIntReg: /^[1-9]\d*$/,
-  // 八位整数,一般用于发票信息验证
-  eightIntNumReg: /^\d{8}$/,
-  // 单个数字
-  singleIntNumReg: /^\d$/,
-  // 多个整数数字
-  multiIntNumReg: /^\d+$/,
-  // 两个数字的整数,首位不能为0
-  twoIntNumReg: /^[1-9]\d$/,
-  // 1-99之间任意整数
-  oneToNinetyNineNumReg: /[1-9][0-9]?$/,
-  // 0-99之间任意整数
-  zeroToNinetyNineNumReg: /^[1-9]\d$|^\d$/,
-  // 数字,可以是整数,也可以是最多保留两位小数的浮点数
-  intOrFloatMaxTwoDecimalReg: /^\d+(\.\d{1,2})?$/,
-  // 数字,可以是整数,也可以是负数，也可以是最多保留两位小数的浮点数
-  intOrFloatMaxTwocanNegativeDecimalReg: /^(-)?\d+(\.\d{1,2})?$/,
-  // 数字,可以是整数,也可以是只保留一位小数的浮点数
-  intOrFloatOneDecimalReg: /^\d+(\.\d{1})?$/,
-  // 数字,可以是整数,也可以是最多保留四位小数的浮点数
-  intOrFloatMaxFourDecimalReg: /^\d+(\.\d{1,4})?$/,
-  // 数字,可以是整数,也可以是最多保留六位小数的浮点数,一般用于经纬度判断
-  longitudeLatitudeReg: /^\d+(\.\d{1,6})?$/,
-  // 正浮点型数字
-  positiveFloatReg: /^\d+\.\d+$/,
-  // 两位小数的浮点数
-  twoDecimalsNumReg: /^\d+\.\d{2}$/,
-  // 5-20位字母数字下划线,一般用户账号校验
-  validCharacterFiveToTwenty: /^[0-9a-zA-Z_]{5,20}$/,
-  // 整数或者浮点型数字
-  floatNumReg: /^\d+(\.\d+)?$/,
-  // 汉字数字和字母
-  chineseNumberCharacterReg: /^[\u4e00-\u9fa5|a-zA-Z|0-9]+$/,
-  // 非零的两位小数浮点数，可为负数
-  nonZeroTwoDecimalsCanNegativeNumReg: /^-?([1-9]\d*\.\d{2}$|0\.\d[1-9]$|0\.[1-9]\d$)/,
-  // 两位小数浮点数，可为负数
-  twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
-}; // export {
-//     commonRegUtil
-// }
-// export  {commonRegUtil}
-"use strict";
-
 /**
  * form
  * form directive
  * Author: your_email@gmail.com
  * Date:2019-09-02
  */
-// const {commonRegUtil} = require('./commonRegUtil')
-var commonRegUtil = {
-  // url的正则表达式
-  // urlObj: new RegExp(urlStr),
-  // 邮箱
-  emailReg: /^\w+([\-_\.]\w+)*@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*$/,
-  // 字母数字下划线,中横线等合法字符
-  validCharacterReg: /[A-Za-z0-9-_]+/,
-  // 字母数字
-  letterNumberReg: /^[A-Za-z\d]+$/,
-  // 手机号,1-12位的数字即可
-  mobileRegTwelveNum: /^\d{1,12}$/,
-  // 手机号,首位为1,后面十位为数字
-  mobileRegFirstOneTenNum: /^1[0-9]{10}$/,
-  // 手机号,首位为1,第二位为3,4,5,7,8即可
-  mobileRegFirstOneSecondLimit: /^1[3|4|5|7|8]\d{9}$/,
-  // 固定电话,带区号010-12345678
-  telReg: /^((0\d{2,3})-)(\d{7,8})$/,
-  // http或者https开头
-  httpFrontReg: /^http:([\s\S]*)|^https:([\s\S]*)/,
-  // 首位可以为0的整数数字
-  firstCanBeZeroIntReg: /^[0-9]\d*$/,
-  // 首位不能为0的整数数字
-  firstNotZeroIntReg: /^[1-9]\d*$/,
-  // 八位整数,一般用于发票信息验证
-  eightIntNumReg: /^\d{8}$/,
-  // 单个数字
-  singleIntNumReg: /^\d$/,
-  // 多个整数数字
-  multiIntNumReg: /^\d+$/,
-  // 两个数字的整数,首位不能为0
-  twoIntNumReg: /^[1-9]\d$/,
-  // 1-99之间任意整数
-  oneToNinetyNineNumReg: /[1-9][0-9]?$/,
-  // 0-99之间任意整数
-  zeroToNinetyNineNumReg: /^[1-9]\d$|^\d$/,
-  // 数字,可以是整数,也可以是最多保留两位小数的浮点数
-  intOrFloatMaxTwoDecimalReg: /^\d+(\.\d{1,2})?$/,
-  // 数字,可以是整数,也可以是负数，也可以是最多保留两位小数的浮点数
-  intOrFloatMaxTwocanNegativeDecimalReg: /^(-)?\d+(\.\d{1,2})?$/,
-  // 数字,可以是整数,也可以是只保留一位小数的浮点数
-  intOrFloatOneDecimalReg: /^\d+(\.\d{1})?$/,
-  // 数字,可以是整数,也可以是最多保留四位小数的浮点数
-  intOrFloatMaxFourDecimalReg: /^\d+(\.\d{1,4})?$/,
-  // 数字,可以是整数,也可以是最多保留六位小数的浮点数,一般用于经纬度判断
-  longitudeLatitudeReg: /^\d+(\.\d{1,6})?$/,
-  // 正浮点型数字
-  positiveFloatReg: /^\d+\.\d+$/,
-  // 两位小数的浮点数
-  twoDecimalsNumReg: /^\d+\.\d{2}$/,
-  // 5-20位字母数字下划线,一般用户账号校验
-  validCharacterFiveToTwenty: /^[0-9a-zA-Z_]{5,20}$/,
-  // 整数或者浮点型数字
-  floatNumReg: /^\d+(\.\d+)?$/,
-  // 汉字数字和字母
-  chineseNumberCharacterReg: /^[\u4e00-\u9fa5|a-zA-Z|0-9]+$/,
-  // 非零的两位小数浮点数，可为负数
-  nonZeroTwoDecimalsCanNegativeNumReg: /^-?([1-9]\d*\.\d{2}$|0\.\d[1-9]$|0\.[1-9]\d$)/,
-  // 两位小数浮点数，可为负数
-  twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
-};
-angular.module('ui.xg.form', []).controller('uixFormCtrl', ['$scope', '$attrs', '$compile', '$templateCache', '$element', function ($scope, $attrs, $compile, $templateCache, $element) {
-  var $form = this;
-  $form.copyData = angular.copy($scope.data);
-  $form.html = '';
-  $form.layout = $scope.layout;
-  $form.tplObj = {};
-  var compileScope = $scope.$parent.$new();
-
-  $form.getTpl = function () {
-    $compile($form.html)($scope, function (clonedElement) {
-      var tableWrap = angular.element($element[0].querySelector('.uix-form'));
-      tableWrap.empty().append(clonedElement);
-    });
-  }; // 循环渲染dom
-
-
-  $form.renderTpl = function (tpl) {
-    if ($form.tplObj[tpl]) {
-      return;
-    }
-
-    $form.tplObj[tpl] = 1;
-    tpl = $templateCache.get(tpl);
-    $compile(tpl)(compileScope, function (clonedElement) {
-      var tableWrap = angular.element($element[0].querySelector('.tplHtml'));
-      tableWrap.empty().append(clonedElement);
-    });
+(function () {
+  var commonRegUtil = {
+    // url的正则表达式
+    // urlObj: new RegExp(urlStr),
+    // 邮箱
+    emailReg: /^\w+([\-_\.]\w+)*@\w+([\-\.]\w+)*\.\w+([\-\.]\w+)*$/,
+    // 字母数字下划线,中横线等合法字符
+    validCharacterReg: /[A-Za-z0-9-_]+/,
+    // 字母数字
+    letterNumberReg: /^[A-Za-z\d]+$/,
+    // 手机号,1-12位的数字即可
+    mobileRegTwelveNum: /^\d{1,12}$/,
+    // 手机号,首位为1,后面十位为数字
+    mobileRegFirstOneTenNum: /^1[0-9]{10}$/,
+    // 手机号,首位为1,第二位为3,4,5,7,8即可
+    mobileRegFirstOneSecondLimit: /^1[3|4|5|7|8]\d{9}$/,
+    // 固定电话,带区号010-12345678
+    telReg: /^((0\d{2,3})-)(\d{7,8})$/,
+    // http或者https开头
+    httpFrontReg: /^http:([\s\S]*)|^https:([\s\S]*)/,
+    // 首位可以为0的整数数字
+    firstCanBeZeroIntReg: /^[0-9]\d*$/,
+    // 首位不能为0的整数数字
+    firstNotZeroIntReg: /^[1-9]\d*$/,
+    // 八位整数,一般用于发票信息验证
+    eightIntNumReg: /^\d{8}$/,
+    // 单个数字
+    singleIntNumReg: /^\d$/,
+    // 多个整数数字
+    multiIntNumReg: /^\d+$/,
+    // 两个数字的整数,首位不能为0
+    twoIntNumReg: /^[1-9]\d$/,
+    // 1-99之间任意整数
+    oneToNinetyNineNumReg: /[1-9][0-9]?$/,
+    // 0-99之间任意整数
+    zeroToNinetyNineNumReg: /^[1-9]\d$|^\d$/,
+    // 数字,可以是整数,也可以是最多保留两位小数的浮点数
+    intOrFloatMaxTwoDecimalReg: /^\d+(\.\d{1,2})?$/,
+    // 数字,可以是整数,也可以是负数，也可以是最多保留两位小数的浮点数
+    intOrFloatMaxTwocanNegativeDecimalReg: /^(-)?\d+(\.\d{1,2})?$/,
+    // 数字,可以是整数,也可以是只保留一位小数的浮点数
+    intOrFloatOneDecimalReg: /^\d+(\.\d{1})?$/,
+    // 数字,可以是整数,也可以是最多保留四位小数的浮点数
+    intOrFloatMaxFourDecimalReg: /^\d+(\.\d{1,4})?$/,
+    // 数字,可以是整数,也可以是最多保留六位小数的浮点数,一般用于经纬度判断
+    longitudeLatitudeReg: /^\d+(\.\d{1,6})?$/,
+    // 正浮点型数字
+    positiveFloatReg: /^\d+\.\d+$/,
+    // 两位小数的浮点数
+    twoDecimalsNumReg: /^\d+\.\d{2}$/,
+    // 5-20位字母数字下划线,一般用户账号校验
+    validCharacterFiveToTwenty: /^[0-9a-zA-Z_]{5,20}$/,
+    // 整数或者浮点型数字
+    floatNumReg: /^\d+(\.\d+)?$/,
+    // 汉字数字和字母
+    chineseNumberCharacterReg: /^[\u4e00-\u9fa5|a-zA-Z|0-9]+$/,
+    // 非零的两位小数浮点数，可为负数
+    nonZeroTwoDecimalsCanNegativeNumReg: /^-?([1-9]\d*\.\d{2}$|0\.\d[1-9]$|0\.[1-9]\d$)/,
+    // 两位小数浮点数，可为负数
+    twoDecimalsCanNegativeNumReg: /^-?([1-9]\d*|0)\.\d{2}$/
   };
-
-  $form.confirm = function () {
-    if ($scope.onConfirm) {
-      $scope.onConfirm();
-    }
-  };
-
-  $form.cancle = function () {
-    if ($scope.resetData) {
-      $form.tplObj = {};
-      $scope.data = $form.copyData;
-    }
-
-    $scope.onCancel && $scope.onCancel();
-  };
-
-  $form.checkChange = function (item) {
-    if (item.onChange) {
-      item.onChange(item.value);
-    }
-
-    if (item.immediateCheck && item.validor) {
-      item.tipInfo = item.validor(item.value);
-      return;
-    }
-
-    if (item.immediateCheck && item.publicCheck) {
-      if (!commonRegUtil[item.publicCheck].test(item.value)) {
-        item.tipInfo = {
-          message: "".concat(item.text, "\u8F93\u5165\u4E0D\u6B63\u786E"),
-          type: 'error'
-        };
-      } else {
-        item.tipInfo = {};
+  angular.module('ui.xg.form', []).controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$timeout', function ($scope, $compile, $templateCache, $element, $q, $timeout) {
+    var INPUTLIMIT = {
+      number: /\D/g,
+      letter: /[^a-zA-Z]/g,
+      letterNumber: /[^A-Za-z\d]/g
+    };
+    var timer = null;
+    var compileScope = $scope.$parent.$new();
+    $scope.finalValue = $scope.finalValue || {};
+    $scope.showBtn = $scope.showBtn || true;
+    $scope.data.map(function (item) {
+      if (item.key) {
+        $scope.finalValue[item.key] = item.value;
       }
-    }
-  };
-}]).directive('uixForm', function () {
-  return {
-    restrict: 'AE',
-    templateUrl: 'templates/form.html',
-    replace: true,
-    require: ['uixForm'],
-    scope: {
-      data: '=',
-      layout: '@?',
-      textalign: '@?',
-      buttonInline: '@?',
-      confirmText: '@?',
-      onConfirm: '=?',
-      showBtn: '@?',
-      cancelText: '@?',
-      onCancel: '=?',
-      resetData: '@?'
-    },
-    controller: 'uixFormCtrl',
-    controllerAs: '$form',
-    link: function link($scope, el, attrs, ctrls) {
-      // var formCtrl = ctrls[0];
-      // formCtrl.init();
-      $scope.layout = $scope.layout ? $scope.layout : 'search';
-    }
-  };
-});
+
+      item.passCheck = true;
+    });
+    var $form = this;
+    $form.layout = $scope.layout || 'horizontal';
+    $form.copyData = angular.copy($scope.data);
+    $form.html = '';
+    $form.tplObj = {}; // 渲染模板dom
+
+    $form.renderTpl = function (item) {
+      if ($form.tplObj[item.templateName]) {
+        return;
+      }
+
+      $form.tplObj[item.templateName] = 1;
+      var tpl = item.template || $templateCache.get(item.templateUrl);
+      $compile(tpl)(compileScope, function (clonedElement) {
+        var tableWrap = angular.element($element[0].querySelector(".tplHtml".concat(item.templateName)));
+        tableWrap.empty().append(clonedElement);
+      });
+    }; // 提交时校验
+
+
+    $form.confirm = function () {
+      if ($scope.checkAll) {
+        var arr = [];
+        $scope.data.map(function (item) {
+          arr.push($form.validor(item));
+        });
+        $q.all(arr).then(function () {
+          $form.updateConfirmState();
+        });
+      }
+
+      if ($scope.onConfirm) {
+        $scope.onConfirm({
+          AllPassCheck: !$scope.disabled
+        });
+      }
+    };
+
+    $form.cancle = function () {
+      if ($scope.resetData) {
+        $form.tplObj = {};
+        $scope.data = $form.copyData;
+      }
+
+      if ($scope.onCancel) {
+        $scope.onCancel();
+      }
+    }; // change事件
+
+
+    $form.onChange = function (item) {
+      var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'front';
+
+      // input限制输入
+      if (item.type === 'input' && item.inputLimit) {
+        var reg = INPUTLIMIT[item.inputLimit.limit];
+        item.value = item.value.replace(reg, '').trim();
+
+        if (item.inputLimit.maxlength && item.value.length > item.inputLimit.maxlength) {
+          item.value = item.value.slice(0, item.inputLimit.maxlength);
+        }
+      }
+
+      if (item.key) {
+        $scope.finalValue[item.key] = item.value;
+      }
+
+      if (item.onChange) {
+        item.onChange(item.value);
+      } // 校验
+
+
+      if (item.checkTiming && item.checkTiming.includes('change') || from === 'relatedCheck' || $scope.checkAll) {
+        $form.validor(item).then(function () {
+          $form.updateConfirmState();
+        });
+      } // 关联校验项
+
+
+      $form.relatedCheck(item, 'onChange');
+    }; // Focus
+
+
+    $form.onFocus = function (item) {
+      if (item.onFocus) {
+        item.onFocus(item.value);
+      }
+
+      if (item.checkTiming && item.checkTiming.includes('focus')) {
+        $form.validor(item).then(function () {
+          $form.updateConfirmState();
+        });
+      } // 关联校验项
+
+
+      $form.relatedCheck(item, 'onFocus');
+    }; // blur
+
+
+    $form.onBlur = function (item) {
+      if (item.onBlur) {
+        item.onBlur(item.value);
+      }
+
+      if (item.checkTiming && item.checkTiming.includes('blur')) {
+        $form.validor(item).then(function () {
+          $form.updateConfirmState();
+        });
+      } // 关联校验项
+
+
+      $form.relatedCheck(item, 'onBlur');
+    }; // 校验
+
+
+    $form.validor = function (item) {
+      return $q(function (resolve) {
+        // 自定义校验覆盖默认的必填和publicCheck校验
+        if (item.validor) {
+          clearTimeout(timer);
+          timer = $timeout(function () {
+            item.validor(item.value).then(function (res) {
+              item.tipInfo = res;
+              item.passCheck = res.message ? false : true;
+              resolve(item);
+            });
+          }, 300);
+        } else {
+          if (item.value) {
+            item.tipInfo = true;
+          }
+
+          if (item.necessary && !item.value) {
+            item.tipInfo = {
+              message: "".concat(item.text, "\u5FC5\u586B"),
+              type: 'error'
+            };
+          } else {
+            item.tipInfo = true;
+          }
+
+          if (item.publicCheck && item.publicCheck.length) {
+            item.publicCheck.some(function (list) {
+              if (!commonRegUtil[list].test(item.value)) {
+                item.tipInfo = {
+                  message: "".concat(item.text, "\u8F93\u5165\u4E0D\u6B63\u786E"),
+                  type: 'error'
+                };
+                return true;
+              } else {
+                item.tipInfo = true;
+                return false;
+              }
+            });
+          }
+
+          item.passCheck = item.tipInfo.message ? false : true;
+          resolve(item);
+        }
+      });
+    };
+
+    $form.updateConfirmState = function () {
+      var result = $scope.data.filter(function (item) {
+        return !item.passCheck;
+      });
+
+      if (result && result.length) {
+        $scope.disabled = true;
+      } else {
+        $scope.disabled = false;
+      }
+    }; // aitem校验调用bitem的校验方法（关联校验）
+
+
+    $form.relatedCheck = function (item, eventType) {
+      if (item.relatedCheckKeys && item.relatedCheckKeys.length) {
+        item.relatedCheckItems = item.relatedCheckKeys.reduce(function (res, relatedKey) {
+          var relatedItem = $scope.data.find(function (_ref) {
+            var key = _ref.key;
+            return key === relatedKey;
+          });
+
+          if (relatedItem && relatedItem.key) {
+            res.push(relatedItem);
+          }
+
+          return res;
+        }, []);
+        item.relatedCheckItems.forEach(function (relatedItem) {
+          $form[eventType](relatedItem, 'relatedCheck');
+        });
+      }
+    };
+  }]).directive('uixForm', function () {
+    return {
+      restrict: 'AE',
+      templateUrl: 'templates/form.html',
+      replace: true,
+      require: ['uixForm'],
+      scope: {
+        data: '=',
+        layout: '@?',
+        textalign: '@?',
+        buttonInline: '@?',
+        confirmText: '@?',
+        onConfirm: '&?',
+        showBtn: '@?',
+        cancelText: '@?',
+        onCancel: '&?',
+        resetData: '@?',
+        checkAll: '@?',
+        finalValue: '=?',
+        colon: '@?',
+        cancelButton: '@?',
+        disabled: '@?'
+      },
+      controller: 'uixFormCtrl',
+      controllerAs: '$form',
+      link: function link() {}
+    };
+  });
+})();
 "use strict";
 
 /**
@@ -11658,18 +11739,8 @@ angular.module("datepicker/templates/datepicker.html", []).run(["$templateCache"
 }]);
 "use strict";
 
-angular.module("form/templates/customizeTpl.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/customizeTpl.html", "<div>" + "     <%template%>" + "</div>");
-}]);
-"use strict";
-
-angular.module("form/templates/form-item.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/form-item.html", "<div class=\"col-md-3 tplHtml\" ng-if=\"vm.layout==='search'\">" + "    <label>{{item.text}}</label>" + "    <div ng-if=\"!item.tpl\">" + "        <input type=\"text\" class=\"form-control input-sm\">" + "    </div>" + "    <div ng-if=\"item.tpl\">" + "        <!-- <%template%> -->" + "    </div>" + "</div>" + "<!-- form -->" + "<div class=\"form-group row\" ng-if=\"vm.layout==='form'\">" + "    <label class=\"col-md-{{item.labelWith?item.labelWith:2}}\">{{item.text}}</label>" + "    <div class=\"col-md-{{item.divWith?item.divWith:4}}\">" + "        <input type=\"text\" class=\"form-control input-sm\">" + "    </div>" + "</div>" + "<!-- <div class=\"form-group col-md-{{item.divWidth?item.divWidth:3}}\" ng-repeat=\"item in data\">" + "            <label class=\"text-{{item.textalign}} uix-form-necessary\">{{item.text}}</label>" + "            <div ng-if=\"!item.tplUrl\">" + "               " + "                <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\">" + "                <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\"></uix-datepicker>" + "            </div>" + "            <div ng-if=\"item.tplUrl\" class=\"tplHtml\">" + "               {{vm.renderTpl(item.tplUrl)}}" + "            </div>" + "        </div> -->" + "        <div class=\"form-horizontal\" ng-if=\"layout==='form'\">" + "                <div class=\"form-group row\" ng-repeat=\"item in data\">" + "                        <label class=\"col-md-{{item.labelWidth?item.labelWidth:2}} text-{{item.textalign}}\" ng-class=\"{true: 'uix-form-necessary', false: ''}[item.necessary]\" >{{item.text}}{{item.necessary}}</label>" + "                        <div class=\"col-md-{{item.divWidth?item.divWidth:4}}\" ng-if=\"!item.tplUrl\">" + "                            <input type=\"text\" class=\"form-control input-sm\">" + "                        </div>" + "                        <!-- 自定义模板 -->" + "                        <div ng-if=\"item.tplUrl\" class=\"tplHtml\">" + "                            {{vm.renderTpl(item.tplUrl)}}" + "                        </div>" + "                    </div>" + "            <!-- <uix-form-item ng-repeat=\"item in data\" item=\"item\" layout=\"layout\"></uix-form-item> -->" + "        </div>" + "");
-}]);
-"use strict";
-
 angular.module("form/templates/form.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/form.html", "<div class=\"panel-body\" >" + "    <div class=\"uix-form\" ng-class=\"{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}\">" + "        <!-- search -->" + "          <div class=\"col-md-{{item.divWidth?item.divWidth:3}}\" ng-repeat=\"item in data\" ng-if=\"$form.layout==='vertical'\">" + "            <label class=\"text-{{textalign}} uix-form-necessary\">{{item.text}}</label>" + "            <div ng-if=\"!item.tplUrl\" class=\"pos-rlt m-b-md\">" + "                <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\">" + "                <div class=\"row\" ng-if=\"item.type==='dateRange'\">" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\" ng-change=\"$form.checkChange(item)\"></uix-datepicker>" + "                    </div>" + "                    <div class=\"row pull-left text-center m-t-xs m-l-n-xs\">至</div>" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\" ng-change=\"$form.checkChange(item)\"></uix-datepicker>" + "                    </div>" + "                </div>" + "                <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\"></uix-datepicker>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.checkChange(item)\">" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$select.selected.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.checkChange(item)\" multiple>" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <label class=\"i-checks m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\">" + "                    <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.checkChange(item)\">" + "                    <i></i>{{option}}" + "                </label>" + "                <label class=\"control-label i-checks\" ng-if=\"item.type==='radio'\">" + "                    <input type=\"radio\" ng-model=\"item.value[option]\" ng-value=\"1\" ng-change=\"$form.checkChange(item)\"><i></i>{{option}}" + "                </label>" + "                <!-- 校验提示文案 -->" + "            <div ng-if=\"item.tipInfo\" class=\"pos-abt text-xs text-{{item.tipInfo.type}}\">{{item.tipInfo.message}}</div>" + "            </div>" + "            <div ng-if=\"item.tplUrl\" class=\"tplHtml pos-rlt m-b-md\">{{item.tplUrl}}" + "               {{$form.renderTpl(item.tplUrl)}}" + "            </div>" + "            " + "        </div>" + "        <!-- form -->" + "        <div class=\"form-horizontal\" ng-if=\"layout==='horizontal'\">" + "                <div class=\"form-group row m-b-md\" ng-repeat=\"item in data\">" + "                    <label class=\"col-md-{{item.labelWidth?item.labelWidth:2}} text-{{textalign}}\" ng-class=\"{true: 'uix-form-necessary', false: ''}[item.necessary]\" >{{item.text}}</label>" + "                    <div class=\"col-md-{{item.divWidth?item.divWidth:4}} pos-rlt\" ng-if=\"!item.tplUrl\" >" + "                        <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\">" + "                        <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\" ng-disabled=\"item.disabled\"></uix-datepicker>" + "                        <div class=\"row pos-rlt\" ng-if=\"item.type==='dateRange'\">" + "                            <div class=\"col-md-6\">" + "                                <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\"> </uix-datepicker>" + "                            </div>" + "                            <div class=\"row pull-left text-center m-t-xs m-l-n-xs\">至</div>" + "                            <div class=\"col-md-6\">" + "                                <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\"></uix-datepicker>" + "                            </div>" + "                        </div>" + "                        <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.checkChange(item)\" ng-disabled=\"item.disabled\">" + "                            <uix-select-match placeholder=\"{{item.placeholder}}\">{{$select.selected.desc}}</uix-select-match>" + "                            <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                                <span>{{option.desc}}</span>" + "                            </uix-select-choices>" + "                        </uix-select>" + "                        <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.checkChange(item)\" multiple ng-disabled=\"item.disabled\">" + "                                <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                                <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                                    <span>{{option.desc}}</span>" + "                                </uix-select-choices>" + "                            </uix-select>" + "                        <label class=\"i-checks m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\" ng-disabled=\"item.disabled\">" + "                            <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.checkChange(item)\">" + "                            <i></i>{{option}}" + "                        </label>" + "                        <label class=\"control-label i-checks m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='radio'\" ng-disabled=\"item.disabled\">" + "                            <input type=\"radio\" ng-model=\"item.value\" ng-value=\"option.value\" ng-change=\"$form.checkChange(item)\"><i></i>{{option.label}}" + "                        </label>" + "                         <!-- 校验提示文案 -->" + "                        <div ng-if=\"item.tipInfo\" class=\"pos-abt text-xs text-{{item.tipInfo.type}}\">{{item.tipInfo.message}}</div>" + "                    </div>" + "                    <!-- 自定义模板 -->" + "                    <div ng-if=\"item.tplUrl\" class=\"col-md-{{item.divWidth?item.divWidth:4}} pos-rlt tplHtml\" value=\"item.value\">" + "                        {{$form.renderTpl(item.tplUrl)}}" + "                    </div>" + "                </div>" + "        </div>" + "        <!-- other -->" + "        <div class=\"row\" ng-if=\"$form.layout==='inline'\">" + "                <div class=\"col-md-6 m-b-md\" ng-repeat=\"item in data\">" + "                    <label class=\"col-md-{{item.labelWidth?item.labelWidth:4}} text-{{textalign}}\" ng-class=\"{true: 'uix-form-necessary', false: ''}[item.necessary]\" >{{item.text}}</label>" + "                    <div class=\"col-md-{{item.divWidth?item.divWidth:8}} pos-rlt\" ng-if=\"!item.tplUrl\" >" + "                        <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\">" + "                        <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\"></uix-datepicker>" + "                        <div class=\"row pos-rlt\" ng-if=\"item.type==='dateRange'\">" + "                            <div class=\"col-md-6\">" + "                                <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\"></uix-datepicker>" + "                            </div>" + "                            <div class=\"row pull-left text-center m-t-xs m-l-n-xs\">至</div>" + "                            <div class=\"col-md-6\">" + "                                <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\" ng-change=\"$form.checkChange(item)\" placeholder=\"{{item.placeholder}}\" ng-disabled=\"item.disabled\"></uix-datepicker>" + "                            </div>" + "                        </div>" + "                        <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.checkChange(item)\" ng-disabled=\"item.disabled\">" + "                            <uix-select-match placeholder=\"{{item.placeholder}}\">{{$select.selected.desc}}</uix-select-match>" + "                            <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                                <span>{{option.desc}}</span>" + "                            </uix-select-choices>" + "                        </uix-select>" + "                        <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.checkChange(item)\" multiple ng-disabled=\"item.disabled\">" + "                            <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                            <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                                <span>{{option.desc}}</span>" + "                            </uix-select-choices>" + "                        </uix-select>" + "                        <label class=\"i-checks m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\">" + "                            <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.checkChange(item)\">" + "                            <i></i>{{option}}" + "                        </label>" + "                        <label class=\"control-label i-checks m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='radio'\">" + "                            <input type=\"radio\" ng-model=\"item.value\" ng-value=\"option.value\" ng-change=\"$form.checkChange(item)\"><i></i>{{option.label}}" + "                        </label>" + "                         <!-- 校验提示文案 -->" + "                        <div ng-if=\"item.tipInfo\" class=\"pos-abt text-xs text-{{item.tipInfo.type}}\">{{item.tipInfo.message}}</div>" + "                    </div>" + "                    <!-- 自定义模板 -->" + "                    <div ng-if=\"item.tplUrl\" class=\"col-md-{{item.divWidth?item.divWidth:8}} pos-rlt tplHtml\" value=\"item.value\">" + "                        {{$form.renderTpl(item.tplUrl)}}" + "                    </div>" + "                </div>" + "        </div>" + "        <!-- other end -->" + "    </div>" + "    <div ng-class=\"{row: !buttonInline, 'm-t-md':buttonInline}\" class=\"text-center\" ng-if=\"showBtn\">" + "        <button type=\"button\" class=\"btn btn-sm w-sm btn-default btn-primary\" ng-click=\"$form.confirm()\">" + "            {{confirmText?confirmText:'提交'}}" + "        </button>" + "        <button type=\"button\" class=\"m-l-md btn btn-sm w-sm btn-default\" ng-click=\"$form.cancle()\">" + "            {{cancelText?cancelText:'取消'}}" + "        </button>" + "    </div>" + "        " + "</div>" + "");
+  $templateCache.put("templates/form.html", "<div class=\"panel-body\" >" + "    <div class=\"uix-form\" ng-class=\"{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}\">" + "        <div ng-class=\"{" + "            'col-md-{{item.colWidth?item.colWidth:3}}': $form.layout==='inline'," + "            'form-group row uix-form-m-b-md': $form.layout==='horizontal'," + "            'col-md-{{item.rowWidth?item.rowWidth:6}} uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'" + "        }\" ng-repeat=\"item in data\">" + "        <labe ng-class=\"{" + "                'uix-form-necessary':item.necessary," + "                'text-right':textalign==='right'," + "                'col-md-{{item.labelWidth?item.labelWidth:2}}': $form.layout==='horizontal'," + "                'col-md-{{item.labelWidth?item.labelWidth:4}}': $form.layout==='vertical'" + "            }\" ng-if=\"item.type!=='tpl'\">" + "            {{item.text}}{{colon?':':''}}" + "            <i ng-class=\"item.tooltip.icon?item.tooltip.icon:'glyphicon glyphicon-question-sign'\" ng-style=\"{'color':'{{item.tooltip.color?item.tooltip.color:red}}','cursor':'pointer'}\" uix-tooltip=\"{{item.tooltip.message}}\" tooltip-placement=\"top\" ng-if=\"item.tooltip\"></i>" + "        </labe>" + "        <div ng-class=\"{" + "            'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline'," + "            'col-md-{{item.colWidth?item.colWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal'," + "            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'" + "        }\" ng-if=\"!item.template&&!item.templateUrl&&item.type!=='tpl'\">" + "            <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" placeholder=\"{{item.placeholder}}\"" + "                ng-change=\"$form.onChange(item)\" ng-blur=\"$form.onBlur(item)\" ng-focus=\"$form.onFocus(item)\">" + "                <div class=\"row\" ng-if=\"item.type==='dateRange'\">" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\"" + "                        ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                    </div>" + "                    <div class=\"row pull-left text-center uix-form-m-l\">至</div>" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\"" + "                        ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                    </div>" + "                </div>" + "                <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\"  placeholder=\"{{item.placeholder}}\" format=\"item.dateFormat\"" + "                ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.onChange(item)\">" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$select.selected.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.onChange(item)\" multiple>" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\">" + "                    <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.onChange(item)\">" + "                    <i></i>{{option}}" + "                </label>" + "                <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='radio'\" ng-disabled=\"item.disabled\">" + "                    <input type=\"radio\" ng-model=\"item.value\" ng-value=\"option.value\" ng-change=\"$form.onChange(item)\"><i></i>{{option.label}}" + "                </label>" + "                <!-- 校验提示文案 -->" + "                <div ng-if=\"item.tipInfo\" class=\"uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.tipInfo.type}}\">{{item.tipInfo.message}}</div>" + "        </div>" + "        <!-- 自定义模板 -->" + "        <div ng-class=\"{" + "            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl'," + "            'tplHtml': item.type==='tpl'" + "        }\" ng-if=\"item.templateUrl||item.template\">" + "            <div class=\"tplHtml{{item.templateName}}\"></div>" + "            {{$form.renderTpl(item)}}" + "        </div>" + "    </div>" + "    </div>" + "    <div ng-class=\"{row: !buttonInline, 'uix-form-m-t-md':buttonInline}\" class=\"text-center\" ng-if=\"showBtn\">" + "        <button type=\"button\" class=\"uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default uix-form-btn-primary\" ng-click=\"$form.confirm()\" ng-disabled=\"disabled\">" + "            {{confirmText?confirmText:'提交'}}" + "        </button>" + "        <button type=\"button\" class=\"uix-form-m-l-md uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default\" ng-click=\"$form.cancle()\" ng-if=\"cancelButton\">" + "            {{cancelText?cancelText:'取消'}}" + "        </button>" + "    </div>" + "</div>" + "");
 }]);
 "use strict";
 

@@ -21,7 +21,8 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
         .state(componentDoc);
 
     $urlRouterProvider.otherwise(`/app${home.url}`);
-    $locationProvider.html5Mode(true);
+    // eslint-disable-next-line no-undef
+    $locationProvider.html5Mode(!PUBLISH_TO_GITHUB);
 }]);
 
 ROUTES.forEach(addRoutes);
