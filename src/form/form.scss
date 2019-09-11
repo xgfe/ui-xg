@@ -118,6 +118,18 @@
     font-weight: 500;
     border-radius: 2px;
     outline: 0 !important;
+    border: 1px solid transparent;
+    &[disabled]{
+        pointer-events: none;
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        opacity: .65;
+    }
+    &.active,&:active {
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    }
 }
 
 .uix-form-btn-default {
@@ -137,14 +149,16 @@
     &[disabled],&[disabled]:hover,&[disabled]:active{
         background-color: #fcfdfd;
         border-color: #dee5e7;
-        border: none;
+    }
+    &:active,&.active,.open .dropdown-toggle.btn-default {
+        background-image: none;
     }
 }
 
 .uix-form-btn-primary {
     color: #fff !important;
-    background-color: #6254b2;
-    border-color: #6254b2;
+    background-color:  #7266ba;
+    border-color:  #7266ba;
 }
 
 .uix-form-btn-primary{
