@@ -19,6 +19,7 @@ import datatableTableRightTpl from 'src/datatable/templates/datatable-table-righ
 import datatableTpl from 'src/datatable/templates/datatable.html';
 import datepickerCalendarTpl from 'src/datepicker/templates/datepicker-calendar.html';
 import datepickerTpl from 'src/datepicker/templates/datepicker.html';
+import formTpl from 'src/form/templates/form.html';
 import backdropTpl from 'src/modal/templates/backdrop.html';
 import confirmTpl from 'src/modal/templates/confirm.html';
 import windowTpl from 'src/modal/templates/window.html';
@@ -70,6 +71,7 @@ export default [
     { filename: 'datatable.html', template: datatableTpl },
     { filename: 'datepicker-calendar.html', template: datepickerCalendarTpl },
     { filename: 'datepicker.html', template: datepickerTpl },
+    { filename: 'form.html', template: formTpl },
     { filename: 'backdrop.html', template: backdropTpl },
     { filename: 'confirm.html', template: confirmTpl },
     { filename: 'window.html', template: windowTpl },
