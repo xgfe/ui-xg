@@ -1,8 +1,6 @@
 export default class {
     constructor() {
         this.result = {};
-        this.submit = this.submit.bind(this);
-        this.cancel = this.cancel.bind(this);
         this.data = [{
             key: 'input',
             text: 'input',
