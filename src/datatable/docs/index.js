@@ -131,6 +131,7 @@ export const demos = {
         title: '表头提示',
         description: `
         <code>column</code>设置属性<code>hint:''</code>可以使用tooltip对当前列展示提示信息<br>
+        可以通过配置<code>hintIcon</code>自定义提示图标<br>
         <b>只有当设置纯文本表头或者使用<code>headerFormat</code>设置表头时生效</b>
         `,
         controller: hint,

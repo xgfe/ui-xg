@@ -1,17 +1,18 @@
-$text-color: #515a6e; // 默认字体颜色
-$text-size : 12px; // 默认字号
+$text-color: #222222; // 默认字体颜色
+$text-size : 14px; // 默认字号
 
-$border-color  : #ddd; // 边框颜色
-$primary-color : #2d8cf0; // 主颜色
+$border-color  : rgba(0, 0, 0, 0.07); // 边框颜色
+$primary-color : #0057FF; // 主颜色
 
-$thead-bg-color  : #f5f0f0; // 表头背景颜色
-$hover-bg-color  : #fbf9f9; // 悬浮颜色
+$thead-bg-color  : #F8F8F8; // 表头背景颜色
+$hover-bg-color  : #FCFCFC; // 悬浮颜色
 $striped-bg-color: $hover-bg-color; // 斑马纹颜色
 
 $cell-padding: 12px; // 单元格内边距
 
-$sort-icon-size : 6px; // 排序箭头图标大小
-$sort-icon-color: #c5c8ce; // 排序箭头图标颜色
+$sort-icon-width : 7px; // 排序箭头图标宽度
+$sort-icon-height : 6px; // 排序箭头图标高度
+$sort-icon-color: rgba(138,143,153,0.60); // 排序箭头图标颜色
 
 $state-text-size: 16px; // 状态提示文本大小
 
@@ -182,7 +183,7 @@ $state-text-size: 16px; // 状态提示文本大小
         }
 
         &.uix-datatable-sort-cell {
-            padding-right: $cell-padding + $sort-icon-size * 2;
+            padding-right: $cell-padding + $sort-icon-width;
         }
     }
 
@@ -201,20 +202,19 @@ $state-text-size: 16px; // 状态提示文本大小
 
     .uix-datatable-sort {
         display       : inline-block;
-        width         : $sort-icon-size * 2;
-        height        : $sort-icon-size * 2 + 2;
-        margin-top    : -1px;
+        width         : $sort-icon-width;
+        height        : $sort-icon-height * 2 + 2;
         vertical-align: middle;
         overflow      : hidden;
         cursor        : pointer;
         position      : absolute;
         right         : 10px;
         top           : 50%;
-        margin-top    : - $sort-icon-size - 1;
+        margin-top    : - $sort-icon-height - 1;
 
         i {
             display     : block;
-            border-width: $sort-icon-size;
+            border-width: $sort-icon-height $sort-icon-width / 2 ;
             border-style: solid;
             overflow    : hidden;
             position    : absolute;
