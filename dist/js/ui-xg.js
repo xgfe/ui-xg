@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.15 - 2019-09-11
+ * Version: 2.1.15 - 2019-09-15
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -5468,10 +5468,19 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       }, 0);
     }
 
-    function bindEvents() {
+    function bindScrollEvents() {
       findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
       findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
       findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+    }
+
+    function unBindScrollEvents() {
+      findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
+      findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+      findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+    }
+
+    function bindResizeEvents() {
       angular.element(window).on('resize', handleResize); // 处理外部容器发生变化时的回调
 
       $table.resizeObserver = new ResizeObserver(function () {
@@ -5480,10 +5489,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       $table.resizeObserver.observe($element.get(0));
     }
 
-    function unbindEvents() {
-      findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
-      findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
-      findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+    function unbindResizeEvents() {
       angular.element(window).off('resize', handleResize);
       $table.resizeObserver.disconnect();
     } // 更新阴影
@@ -5982,7 +5988,11 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
 
       if (!allRows.length) {
         return;
-      }
+      } // 当窗口大小改变时，重新设置左右固定表格的top值
+
+
+      var headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
+      $table.headerHeight = headerHeight;
 
       if ($table.isLeftFixed) {
         var leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
@@ -6018,8 +6028,11 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       }
 
       $compile(template)(compileScope, function (clonedElement) {
-        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-content'));
+        var tableWrap = angular.element($element[0].querySelector('.uix-datatable-content')); // 在empty之前把绑定的滚动事件清除重新绑定
+
+        unBindScrollEvents();
         tableWrap.empty().append(clonedElement);
+        bindScrollEvents();
         $timeout(function () {
           var headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
           $table.headerHeight = headerHeight;
@@ -6089,11 +6102,12 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
       $table.initColums();
       $table.initData();
       $table.render();
-      bindEvents();
+      bindResizeEvents();
     };
 
     $scope.$on('$destroy', function () {
-      unbindEvents();
+      unbindResizeEvents();
+      unBindScrollEvents();
       compileScope.$destroy();
     });
     $scope.$on('uix-datatable-clear-sort', function (evt, id) {
@@ -11705,7 +11719,7 @@ angular.module("datatable/templates/datatable-foot.html", []).run(["$templateCac
 "use strict";
 
 angular.module("datatable/templates/datatable-head-tpl.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable-head-tpl.html", "<table" + "  class=\"uix-datatable-thead\"" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{ col._width }}\"" + "    />" + "  </colgroup>" + "  <thead>" + "    <tr" + "      ng-repeat=\"(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex\"" + "    >" + "      <th" + "        ng-repeat=\"(colIndex, column) in cols track by colIndex\"" + "        colspan=\"{{:: column.colSpan }}\"" + "        rowspan=\"{{:: column.rowSpan }}\"" + "        ng-class=\"$table.alignCls(column)\"" + "      >" + "        <div ng-class=\"{'uix-datatable-sort-cell':column.sortable}\" class=\"uix-datatable-cell\"  ng-click=\"$table.handleSortByHead(column)\">" + "          <div ng-if=\"column.__renderHeadType==='normal'\">" + "            <span>{{:: column.title || '#' }}</span>" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='expand'\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='selection'\">" + "              <input type=\"checkbox\" ng-change=\"$table.handleSelectAll()\" ng-if=\"!column.singleSelect\" ng-model=\"$table.isSelectedAll\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType === 'template'\">" + "            <%template%>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='format'\">" + "            {{ ::column.headerFormat(column) }}" + "            <i class=\"glyphicon glyphicon-question-sign\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <span class=\"uix-datatable-sort\" ng-if=\"column.sortable\">" + "            <i" + "              class=\"uix-datatable-sort-up\"" + "              ng-class=\"{on: column._sortType === 'asc'}\"" + "              ng-click=\"$table.handleSort(column, 'asc', $event)\"" + "            ></i>" + "            <i" + "              class=\"uix-datatable-sort-down\"" + "              ng-class=\"{on: column._sortType === 'desc'}\"" + "              ng-click=\"$table.handleSort(column, 'desc', $event)\"" + "            ></i>" + "          </span>" + "        </div>" + "      </th>" + "    </tr>" + "  </thead>" + "</table>" + "");
+  $templateCache.put("templates/datatable-head-tpl.html", "<table" + "  class=\"uix-datatable-thead\"" + "  ng-style=\"{width:$table.<%widthKey%>+'px'}\"" + "  cellspacing=\"0\"" + "  cellpadding=\"0\"" + "  border=\"0\"" + ">" + "  <colgroup>" + "    <col" + "      ng-repeat=\"col in $table.<%columnsKey%> track by col.__id\"" + "      width=\"{{ col._width }}\"" + "    />" + "  </colgroup>" + "  <thead>" + "    <tr" + "      ng-repeat=\"(rowIndex, cols) in $table.<%columnRowsKey%> track by rowIndex\"" + "    >" + "      <th" + "        ng-repeat=\"(colIndex, column) in cols track by colIndex\"" + "        colspan=\"{{:: column.colSpan }}\"" + "        rowspan=\"{{:: column.rowSpan }}\"" + "        ng-class=\"$table.alignCls(column)\"" + "      >" + "        <div ng-class=\"{'uix-datatable-sort-cell':column.sortable}\" class=\"uix-datatable-cell\"  ng-click=\"$table.handleSortByHead(column)\">" + "          <div ng-if=\"column.__renderHeadType==='normal'\">" + "            <span>{{:: column.title || '#' }}</span>" + "            <i ng-class=\"column.hintIcon||'glyphicon glyphicon-question-sign'\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" tooltip-placement=\"bottom\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='expand'\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='selection'\">" + "              <input type=\"checkbox\" ng-change=\"$table.handleSelectAll()\" ng-if=\"!column.singleSelect\" ng-model=\"$table.isSelectedAll\">" + "          </div>" + "          <div ng-if=\"column.__renderHeadType === 'template'\">" + "            <%template%>" + "          </div>" + "          <div ng-if=\"column.__renderHeadType==='format'\">" + "            {{ ::column.headerFormat(column) }}" + "            <i ng-class=\"column.hintIcon||'glyphicon glyphicon-question-sign'\" ng-if=\"column.hint\"" + "            tooltip-append-to-body=\"true\" tooltip-placement=\"bottom\" uix-tooltip=\"{{column.hint}}\"></i> " + "          </div>" + "          <span class=\"uix-datatable-sort\" ng-if=\"column.sortable\">" + "            <i" + "              class=\"uix-datatable-sort-up\"" + "              ng-class=\"{on: column._sortType === 'asc'}\"" + "              ng-click=\"$table.handleSort(column, 'asc', $event)\"" + "            ></i>" + "            <i" + "              class=\"uix-datatable-sort-down\"" + "              ng-class=\"{on: column._sortType === 'desc'}\"" + "              ng-click=\"$table.handleSort(column, 'desc', $event)\"" + "            ></i>" + "          </span>" + "        </div>" + "      </th>" + "    </tr>" + "  </thead>" + "</table>" + "");
 }]);
 "use strict";
 

@@ -1420,11 +1420,18 @@
                     }, 0);
                 }
 
-                function bindEvents() {
+                function bindScrollEvents() {
                     findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                }
+                function unBindScrollEvents() {
+                    findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
+                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                }
 
+                function bindResizeEvents() {
                     angular.element(window).on('resize', handleResize);
                     // 处理外部容器发生变化时的回调
                     $table.resizeObserver = new ResizeObserver(() => {
@@ -1432,10 +1439,7 @@
                     });
                     $table.resizeObserver.observe($element.get(0));
                 }
-                function unbindEvents() {
-                    findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
-                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
-                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                function unbindResizeEvents() {
                     angular.element(window).off('resize', handleResize);
                     $table.resizeObserver.disconnect();
                 }
@@ -1907,6 +1911,9 @@
                     if (!allRows.length) {
                         return;
                     }
+                    // 当窗口大小改变时，重新设置左右固定表格的top值
+                    let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
+                    $table.headerHeight = headerHeight;
                     if ($table.isLeftFixed) {
                         let leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
                         fitDiffColumnsRows(allRows, leftHeadRows);
@@ -1938,7 +1945,10 @@
                     $compile(template)(compileScope, (clonedElement) => {
                         let tableWrap = angular.element($element[0]
                             .querySelector('.uix-datatable-content'));
+                        // 在empty之前把绑定的滚动事件清除重新绑定
+                        unBindScrollEvents();
                         tableWrap.empty().append(clonedElement);
+                        bindScrollEvents();
                         $timeout(() => {
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
@@ -2011,10 +2021,11 @@
                     $table.initData();
                     $table.render();
 
-                    bindEvents();
+                    bindResizeEvents();
                 };
                 $scope.$on('$destroy', () => {
-                    unbindEvents();
+                    unbindResizeEvents();
+                    unBindScrollEvents();
                     compileScope.$destroy();
                 });
                 $scope.$on('uix-datatable-clear-sort', (evt, id) => {

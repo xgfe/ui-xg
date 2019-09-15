@@ -1,7 +1,7 @@
 /* data.js start */
 export const baseColumns = [
     { key: 'name', title: '姓名' },
-    { key: 'age', title: '年龄' },
+    { key: 'age', title: '年龄年龄年龄' },
     { key: 'date', title: '日期', filter: 'date:"yyyy-MM-dd HH:mm:ss"' },
     { key: 'province', title: '省份' },
     { key: 'city', title: '城市' },
