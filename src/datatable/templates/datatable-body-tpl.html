@@ -13,12 +13,12 @@
   </colgroup>
   <tbody>
     <tr
-      <%repeatExp%>="(rowIndex, row) in $table.rebuildData"
+      <%repeatExp%>="(rowIndex, row) in $table.data"
       class="uix-datatable-normal-row"
-      ng-mouseenter="$table.handleMouseIn($event,row)"
-      ng-mouseleave="$table.handleMouseOut($event,row)"
-      ng-class="[row._rowClassName,row._isHover?'uix-datatable-row-hover':'']"
-      ng-click="$table.handleClickRow($event,row)"
+      ng-mouseenter="$table.handleMouseIn($event,rowIndex)"
+      ng-mouseleave="$table.handleMouseOut($event,rowIndex)"
+      ng-class="[$table.dataObj[rowIndex]._rowClassName,$table.dataObj[rowIndex]._isHover?'uix-datatable-row-hover':'']"
+      ng-click="$table.handleClickRow($event,row, rowIndex)"
       <%rowHeightExp%>
     >
      <%template%>
