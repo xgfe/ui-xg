@@ -97,6 +97,20 @@ $state-text-size: 16px; // 状态提示文本大小
         background-color: $thead-bg-color;
     }
 
+    .uix-datatable-main-header{
+        overflow-x: auto;
+        scrollbar-width: none;
+        /* Firefox */
+        -ms-overflow-style: none;
+
+        /* IE 10+ */
+        &::-webkit-scrollbar {
+            /* WebKit */
+            width : 0;
+            height: 0;
+        }
+    }
+
     .uix-datatable-main-body {
         overflow-x: auto;
         overflow-y: auto;

@@ -1379,9 +1379,7 @@
                 function handleMainBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
                     let scrollLeft = event.target.scrollLeft;
-                    findEl('.uix-datatable-main-table .uix-datatable-thead').css({
-                        transform: `translateX(-${scrollLeft}px)`
-                    });
+                    findEl('.uix-datatable-main-header')[0].scrollLeft = scrollLeft;
 
                     if ($table.isLeftFixed) {
                         findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
@@ -1391,6 +1389,10 @@
                     }
 
                     updateFixedTableShadow();
+                }
+                function handleMainHeaderScroll(event) {
+                    let scrollLeft = event.target.scrollLeft;
+                    findEl('.uix-datatable-main-body')[0].scrollLeft = scrollLeft;
                 }
                 function handleFixedBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
@@ -1425,11 +1427,13 @@
                 }
 
                 function bindScrollEvents() {
+                    findEl('.uix-datatable-main-header').on('scroll', handleMainHeaderScroll);
                     findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
                 }
                 function unBindScrollEvents() {
+                    findEl('.uix-datatable-main-header').off('scroll', handleMainHeaderScroll);
                     findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
