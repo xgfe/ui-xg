@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.16 - 2019-09-17
+ * Version: 2.1.17 - 2019-09-29
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -5243,7 +5243,7 @@ uixCityselectCtrl.prototype.searchCityChose = function (city) {
         }
       }
 
-      if ($scope.onSelectionChange) {
+      if ($scope.onSelectionChange && $table.data && $table.data.length) {
         $table.isSelectedAll = currentSelect.length >= $table.data.length;
         $scope.onSelectionChange({
           $newRows: currentSelect,
@@ -11747,7 +11747,7 @@ angular.module("datatable/templates/datatable-table-right.html", []).run(["$temp
 "use strict";
 
 angular.module("datatable/templates/datatable.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped," + "    'uix-datatable-has-status':$table.isEmpty||$table.isLoading||$table.isError," + "  }\"" + ">" + "  <div class=\"uix-datatable-wrap\" ng-style=\"{height:$table.containerHeight}\">" + "      <div class=\"uix-datatable-content\"></div>" + "      <div class=\"uix-datatable-empty\" ng-if=\"$table.isEmpty\">" + "        <span class=\"inner-text\">{{ emptyText }}</span>" + "      </div>" + "      <div class=\"uix-datatable-loading\" ng-show=\"$table.isLoading\">" + "        <span class=\"inner-text\">" + "          <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "          <span>{{ loadingText }}</span>" + "        </span>" + "      </div>" + "      <div class=\"uix-datatable-error\" ng-show=\"$table.isError\">" + "        <span class=\"inner-text\">" + "          <span>{{ errorText }}</span>" + "        </span>" + "      </div>" + "  </div>" + "  <div class=\"uix-datatable-footer\" ng-if=\"$table.showPagination\">" + "    <uix-datatable-foot></uix-datatable-foot>" + "  </div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "</div>" + "");
+  $templateCache.put("templates/datatable.html", "<div" + "  class=\"uix-datatable\"" + "  ng-class=\"{" + "    'uix-datatable-bordered':$table.isBordered," + "    'uix-datatable-striped':$table.isStriped," + "    'uix-datatable-has-status':$table.isEmpty||$table.isLoading||$table.isError," + "  }\"" + ">" + "  <div class=\"uix-datatable-wrap\" ng-style=\"{height:$table.containerHeight}\">" + "      <div class=\"uix-datatable-content\"></div>" + "      <div class=\"uix-datatable-empty\" ng-style=\"{top:$table.headerHeight+'px'}\" ng-if=\"$table.isEmpty\">" + "        <span class=\"inner-text\">{{ emptyText }}</span>" + "      </div>" + "      <div class=\"uix-datatable-loading\" ng-style=\"{top:$table.headerHeight+'px'}\" ng-show=\"$table.isLoading\">" + "        <span class=\"inner-text\">" + "          <i class=\"loading-icon glyphicon glyphicon-refresh\"></i>" + "          <span>{{ loadingText }}</span>" + "        </span>" + "      </div>" + "      <div class=\"uix-datatable-error\" ng-style=\"{top:$table.headerHeight+'px'}\" ng-show=\"$table.isError\">" + "        <span class=\"inner-text\">" + "          <span>{{ errorText }}</span>" + "        </span>" + "      </div>" + "  </div>" + "  <div class=\"uix-datatable-footer\" ng-if=\"$table.showPagination\">" + "    <uix-datatable-foot></uix-datatable-foot>" + "  </div>" + "  <!-- 横纵向同时滚动时填充右上角 -->" + "  <div" + "    class=\"uix-datatable-right-header-block\"" + "    ng-if=\"$table.showVerticalScrollBar\"" + "    ng-style=\"{width:$table.scrollBarWidth+'px',height:$table.headerHeight+'px'}\"" + "  ></div>" + "</div>" + "");
 }]);
 "use strict";
 

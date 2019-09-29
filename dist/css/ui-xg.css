@@ -927,8 +927,9 @@ img {
     top: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.5);
-    text-align: center; }
+    background: #fff;
+    text-align: center;
+    z-index: 4; }
     .uix-datatable .uix-datatable-loading .loading-icon,
     .uix-datatable .uix-datatable-empty .loading-icon,
     .uix-datatable .uix-datatable-error .loading-icon {
