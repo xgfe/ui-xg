@@ -10,9 +10,9 @@ $striped-bg-color: $hover-bg-color; // 斑马纹颜色
 
 $cell-padding: 12px; // 单元格内边距
 
-$sort-icon-width : 7px; // 排序箭头图标宽度
+$sort-icon-width  : 7px; // 排序箭头图标宽度
 $sort-icon-height : 6px; // 排序箭头图标高度
-$sort-icon-color: rgba(138,143,153,0.60); // 排序箭头图标颜色
+$sort-icon-color  : rgba(138, 143, 153, 0.60); // 排序箭头图标颜色
 
 $state-text-size: 16px; // 状态提示文本大小
 
@@ -97,8 +97,8 @@ $state-text-size: 16px; // 状态提示文本大小
         background-color: $thead-bg-color;
     }
 
-    .uix-datatable-main-header{
-        overflow-x: auto;
+    .uix-datatable-main-header {
+        overflow-x     : auto;
         scrollbar-width: none;
         /* Firefox */
         -ms-overflow-style: none;
@@ -228,7 +228,7 @@ $state-text-size: 16px; // 状态提示文本大小
 
         i {
             display     : block;
-            border-width: $sort-icon-height $sort-icon-width / 2 ;
+            border-width: $sort-icon-height $sort-icon-width / 2;
             border-style: solid;
             overflow    : hidden;
             position    : absolute;
@@ -275,8 +275,9 @@ $state-text-size: 16px; // 状态提示文本大小
         top       : 0;
         right     : 0;
         bottom    : 0;
-        background: rgba(255, 255, 255, 0.5);
+        background: #fff;
         text-align: center;
+        z-index   : 4;
 
         .loading-icon {
             -webkit-animation: spin 2s infinite linear;

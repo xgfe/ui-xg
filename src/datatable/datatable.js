@@ -1221,7 +1221,7 @@
                             oldSelect.push($table.data[index]);
                         }
                     }
-                    if ($scope.onSelectionChange) {
+                    if ($scope.onSelectionChange && $table.data && $table.data.length) {
                         $table.isSelectedAll = currentSelect.length >= $table.data.length;
                         $scope.onSelectionChange({
                             $newRows: currentSelect,

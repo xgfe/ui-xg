@@ -8,16 +8,16 @@
 >
   <div class="uix-datatable-wrap" ng-style="{height:$table.containerHeight}">
       <div class="uix-datatable-content"></div>
-      <div class="uix-datatable-empty" ng-if="$table.isEmpty">
+      <div class="uix-datatable-empty" ng-style="{top:$table.headerHeight+'px'}" ng-if="$table.isEmpty">
         <span class="inner-text">{{ emptyText }}</span>
       </div>
-      <div class="uix-datatable-loading" ng-show="$table.isLoading">
+      <div class="uix-datatable-loading" ng-style="{top:$table.headerHeight+'px'}" ng-show="$table.isLoading">
         <span class="inner-text">
           <i class="loading-icon glyphicon glyphicon-refresh"></i>
           <span>{{ loadingText }}</span>
         </span>
       </div>
-      <div class="uix-datatable-error" ng-show="$table.isError">
+      <div class="uix-datatable-error" ng-style="{top:$table.headerHeight+'px'}" ng-show="$table.isError">
         <span class="inner-text">
           <span>{{ errorText }}</span>
         </span>
