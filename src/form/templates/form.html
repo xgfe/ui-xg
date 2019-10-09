@@ -8,16 +8,18 @@
         <labe ng-class="{
                 'uix-form-necessary':item.necessary,
                 'text-right':textalign==='right',
-                'col-md-{{item.labelWidth?item.labelWidth:2}}': $form.layout==='horizontal',
-                'col-md-{{item.labelWidth?item.labelWidth:4}}': $form.layout==='vertical'
+                'col-md-2':!item.labelWidth && $form.layout==='horizontal',
+                'col-md-4':!item.labelWidth && $form.layout==='vertical',
+                'col-md-{{item.labelWidth}}': item.labelWidth && $form.layout!=='inline'
             }" ng-if="item.type!=='tpl'">
             {{item.text}}{{colon?':':''}}
             <i ng-class="item.tooltip.icon?item.tooltip.icon:'glyphicon glyphicon-question-sign'" ng-style="{'color':'{{item.tooltip.color?item.tooltip.color:red}}','cursor':'pointer'}" uix-tooltip="{{item.tooltip.message}}" tooltip-placement="top" ng-if="item.tooltip"></i>
         </labe>
-        <div ng-class="{
+        <div ng-class="{'uix-form-pos-rlt': true,
             'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline',
-            'col-md-{{item.colWidth?item.colWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal',
-            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'
+            'col-md-{{item.colWidth}}': item.colWidth && $form.layout!=='inline',
+            'col-md-4': !item.colWidth && $form.layout==='horizontal',
+            'col-md-8': !item.colWidth && $form.layout==='vertical'
         }" ng-if="!item.template&&!item.templateUrl&&item.type!=='tpl'">
             <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" placeholder="{{item.placeholder}}"
             ng-change="$form.onChange(item)" ng-blur="$form.onBlur(item)" ng-focus="$form.onFocus(item)">

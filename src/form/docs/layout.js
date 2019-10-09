@@ -107,12 +107,14 @@ export default class {
             type: 'input',
             value: '',
             necessary: true,
+            labelWidth: 3,
             placeholder: 'placeholder'
         }, {
             key: 'multipleSelect',
             type: 'multipleSelect',
             text: '多选',
             textalign: 'right',
+            labelWidth: 3,
             options: [{
                 desc: '描述',
                 value: 1
@@ -130,6 +132,7 @@ export default class {
             key: 'checkbox',
             type: 'checkbox',
             text: '复选框',
+            labelWidth: 3,
             value: '',
             options: ['app', 'ios', 'android']
         }, {
@@ -137,6 +140,7 @@ export default class {
             type: 'radio',
             text: '单选框',
             value: '1',
+            labelWidth: 3,
             options: [{
                 label: 'app',
                 value: 1
@@ -152,6 +156,7 @@ export default class {
             type: 'datepicker',
             dateFormat: 'yyyy-MM-dd',
             text: '日期',
+            labelWidth: 3,
             necessary: false,
             value: ''
         }];
