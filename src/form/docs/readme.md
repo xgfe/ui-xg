@@ -42,7 +42,7 @@ data = [{
 | colon | 是否展示冒号，设置值为"true"，即可展示 | String | - |
 | textalign | 左侧文案对齐方式 | String[left,right] | Left |
 | layout | 布局 | String[horizontal,vertical,inline] | horizontal |
-| show-btn | 下方是否展示按钮 | String | - |
+| show-btn | 下方是否展示按钮 | Boolean | true |
 | button-inline | 按钮行内展示，默认展示在下方，设置值为"true"，可行内展示 | String | - |
 | confirm-text | 左侧按钮文案 | String | 提交 |
 | on-confirm | 左侧按钮点击事件 | Function | - |
