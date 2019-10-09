@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.13 - 2019-10-09
+ * Version: 2.1.17 - 2019-10-09
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -6832,6 +6832,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         confirmText: '@?',
         onConfirm: '&?',
         showBtn: '=?',
+        cancelText: '@?',
+        onCancel: '&?',
+        resetData: '@?',
         checkAll: '@?',
         finalValue: '=?',
         colon: '@?',
