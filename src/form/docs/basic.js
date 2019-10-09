@@ -1,10 +1,24 @@
 export default class {
     constructor() {
-        this.result = {};
+        this.showBtn = false;
+        this.result1 = {};
+        this.result2 = {};
         this.data = [{
-                key: 'email',
-                text: 'email',
-                type: 'input'
+            key: 'email',
+            text: 'email',
+            type: 'input',
+            checkTiming: 'change',
+            inputLimit: {
+                limitReg: /[^a-zA-Z]/g,
+                limitInfo: {message: '只能输入字母', type: 'warning'}
+            },
+            validor: (val) => {
+                if (val) {
+                    return {isPassed: false, message: '不能随便输入', type: 'error'}
+                } else {
+                    return {isPassed: true}
+                }
+            }
             }, {
                 key: 'date',
                 text: 'test',
@@ -13,29 +27,40 @@ export default class {
                 placeholder: '测试222',
                 checkTiming: ['change'],
                 publicCheck: ['emailReg'],
-                dateFormat: 'yyyy-MM-dd',
-                relatedCheckKeys: ['input']
+                dateFormat: 'yyyy-MM-dd HH:mm:ss',
+                relatedCheckKeys: ['input'],
+                clearBtn: true,
+                showTime: true
+            }, {
+                key: 'date1',
+                text: 'test',
+                value: '',
+                type: 'dateRange',
+                placeholder: '测试222',
+                dateFormat: 'yyyy-MM-dd HH:mm:ss',
+                clearBtn: true,
+                showTime: true
             }, {
                 key: 'select',
                 type: 'select',
                 value: '',
                 publicCheck: ['emailReg'],
+                optionKey: 'name',
                 text: '下拉框',
                 options: [{
-                    desc: '描述',
+                    name: '描述',
                     value: 1
                 }, {
-                    desc: '描述1',
+                    name: '描述1',
                     value: 13
                 }, {
-                    desc: '描述3',
+                    name: '描述3',
                     value: 43
                 }, {
-                    desc: '描述3',
+                    name: '描述4',
                     value: 53
                 }]
-            },
-            {
+            }, {
                 key: 'address',
                 text: 'address',
                 type: 'input',
@@ -47,8 +72,7 @@ export default class {
                     color: '#ff552e',
                     icon: 'glyphicon glyphicon-ok-sign'
                 }
-            }
-        ]
+            }];
         this.data1 = [{
             key: 'input',
             text: 'input',
@@ -68,5 +92,8 @@ export default class {
     };
     datepickerChange(val) {
         console.log(val);
+    };
+    onConfirm() {
+        console.log(this.result1);
     }
 }

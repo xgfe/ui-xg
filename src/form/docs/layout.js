@@ -8,6 +8,27 @@ export default class {
             value: '初始化值',
             placeholder: 'placeholder'
         }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
             key: 'select',
             type: 'multipleSelect',
             text: '多选',

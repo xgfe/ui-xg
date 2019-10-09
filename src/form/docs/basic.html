@@ -1,11 +1,15 @@
 
 <div>
     <!-- 基本配置 -->
-    <uix-form data="vm.data"></uix-form>
+    <uix-form data="vm.data"
+    on-confirm="vm.onConfirm()"
+    final-value="vm.result1"></uix-form>
     <!-- 冒号&&必填 -->
     <uix-form data="vm.data1" 
         layout="horizontal"
         textalign="right"
-        final-value="vm.result"
-        colon='true'></uix-form>
+        final-value="vm.result2"
+        show-btn="vm.showBtn"
+        colon="true"></uix-form>
+        
 </div>
