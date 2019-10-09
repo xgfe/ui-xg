@@ -8,7 +8,6 @@
     .uix-form-m-l {
         margin-left: -5px;
     }
-
     .uix-form-checks {
         padding-left: 20px;
         cursor: pointer;
@@ -106,6 +105,15 @@
         line-height: 20px;
     }
 
+}
+.uix-form-flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: -moz-box;
+    display: -moz-flex;
+    display: flex;
+    flex-wrap: wrap;
 }
 .uix-form-m-l-md {
     margin-left: 20px;

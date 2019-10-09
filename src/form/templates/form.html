@@ -1,5 +1,5 @@
 <div class="panel-body" >
-    <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}">
+    <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout==='vertical'&&!buttonInline,'uix-form-flex': $form.layout==='inline'}">
         <div ng-class="{
             'col-md-{{item.colWidth?item.colWidth:3}}': $form.layout==='inline',
             'form-group row uix-form-m-b-md uix-form-l-h': $form.layout==='horizontal',

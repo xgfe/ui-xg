@@ -26,7 +26,6 @@ export default class {
                 type: 'datepicker',
                 placeholder: '测试222',
                 checkTiming: ['change'],
-                publicCheck: ['emailReg'],
                 dateFormat: 'yyyy-MM-dd HH:mm:ss',
                 relatedCheckKeys: ['input'],
                 clearBtn: true,
@@ -37,9 +36,7 @@ export default class {
                 value: '',
                 type: 'dateRange',
                 placeholder: '测试222',
-                dateFormat: 'yyyy-MM-dd HH:mm:ss',
-                clearBtn: true,
-                showTime: true
+                dateFormat: 'yyyy-MM-dd HH:mm:ss'
             }, {
                 key: 'select',
                 type: 'select',

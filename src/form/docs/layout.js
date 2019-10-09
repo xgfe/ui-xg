@@ -8,27 +8,6 @@ export default class {
             value: '初始化值',
             placeholder: 'placeholder'
         }, {
-            key: 'input',
-            text: 'input',
-            type: 'input',
-            value: '',
-            necessary: true,
-            placeholder: 'placeholder'
-        }, {
-            key: 'input',
-            text: 'input',
-            type: 'input',
-            value: '',
-            necessary: true,
-            placeholder: 'placeholder'
-        }, {
-            key: 'input',
-            text: 'input',
-            type: 'input',
-            value: '',
-            necessary: true,
-            placeholder: 'placeholder'
-        }, {
             key: 'select',
             type: 'multipleSelect',
             text: '多选',
@@ -49,6 +28,27 @@ export default class {
                 desc: '描述3',
                 value: 53
             }]
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
         }];
         this.data1 = [{
             key: 'input',
