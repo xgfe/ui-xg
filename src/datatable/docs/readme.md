@@ -69,6 +69,7 @@
 | hidden | 是否隐藏 | Boolean | `false` |
 | ellipsis | 是否对长文本进行省略且提示tooltip，只有当纯文本或者使用filter时生效 | Boolean | `false` |
 | hint | 表头提示文案，只有当使用title或者`headFormat`时生效 | String | - |
+| hintIcon | 表头提示图标，传入className | String | - |
 | width | 列宽 | Number | - |
 | minWidth | 最小列宽 | Number | - |
 | maxWidth | 最大列宽 | Number | - |

@@ -1165,22 +1165,25 @@
 
                 $table.scrollX = null; // 滚动宽度
 
+                $table.dataObj = {};
+
                 let compileScope = $scope.$parent.$new();
                 compileScope.$table = $table;
                 function findEl(selector) {
                     return angular.element($element[0].querySelector(selector));
                 }
 
-                function makeRebuildData() {
-                    return $scope.data.map((row, index) => {
-                        const newRow = angular.copy(row);
-                        newRow._index = index;
-                        newRow._isHover = false;
-                        newRow._isExpand = false;
-                        newRow.disabled = !!row.disabled;
+                function makeDataObj() {
+                    let dataObj = {};
+                    $scope.data.forEach((row, index) => {
+                        let obj = {};
+                        obj._index = index;
+                        obj._isHover = false;
+                        obj._isExpand = false;
+                        obj.disabled = !!row.disabled;
                         if ($scope.rowClassName && angular.isFunction($scope.rowClassName)) {
-                            newRow._rowClassName = $scope.rowClassName({
-                                $row: newRow,
+                            obj._rowClassName = $scope.rowClassName({
+                                $row: row,
                                 $rowIndex: index
                             });
                         }
@@ -1188,13 +1191,15 @@
                             $table.currentChecked = index;
                             $table.selections[index] = true;
                         }
-                        return newRow;
+                        dataObj[index] = obj;
                     });
+                    return dataObj;
                 }
+
                 $scope.$watch('$table.currentChecked', (newIndex, oldIndex) => {
                     if (newIndex !== null && $scope.onCurrentChange) {
-                        let newRow = $table.rebuildData[newIndex];
-                        let oldRow = $table.rebuildData[oldIndex];
+                        let newRow = $table.data[newIndex];
+                        let oldRow = $table.data[oldIndex];
                         $scope.onCurrentChange({
                             $newRow: newRow,
                             $oldRow: oldRow,
@@ -1208,16 +1213,16 @@
                     let oldSelect = [];
                     for (let index in newVal) {
                         if (newVal[index]) {
-                            currentSelect.push($table.rebuildData[index]);
+                            currentSelect.push($table.data[index]);
                         }
                     }
                     for (let index in oldVal) {
                         if (oldVal[index]) {
-                            oldSelect.push($table.rebuildData[index]);
+                            oldSelect.push($table.data[index]);
                         }
                     }
-                    if ($scope.onSelectionChange) {
-                        $table.isSelectedAll = currentSelect.length >= $table.rebuildData.length;
+                    if ($scope.onSelectionChange && $table.data && $table.data.length) {
+                        $table.isSelectedAll = currentSelect.length >= $table.data.length;
                         $scope.onSelectionChange({
                             $newRows: currentSelect,
                             $oldRows: oldSelect
@@ -1226,7 +1231,7 @@
                 }, true);
 
                 $table.handleSelectAll = () => {
-                    $table.rebuildData.forEach((row, index) => {
+                    $table.data.forEach((row, index) => {
                         if (row.disabled) {
                             return;
                         }
@@ -1234,29 +1239,29 @@
                     });
                 };
 
-                $table.handleMouseIn = (event, row) => {
+                $table.handleMouseIn = (event, rowIndex) => {
                     event.stopPropagation();
                     if ($table.disabledHover) {
                         return;
                     }
-                    if (row._isHover) {
+                    if ($table.dataObj[rowIndex]._isHover) {
                         return;
                     }
-                    row._isHover = true;
+                    $table.dataObj[rowIndex]._isHover = true;
                 };
-                $table.handleMouseOut = (event, row) => {
+                $table.handleMouseOut = (event, rowIndex) => {
                     event.stopPropagation();
                     if ($table.disabledHover) {
                         return;
                     }
-                    row._isHover = false;
+                    $table.dataObj[rowIndex]._isHover = false;
                 };
-                $table.handleClickRow = (event, row) => {
+                $table.handleClickRow = (event, row, rowIndex) => {
                     event.stopPropagation();
                     if ($scope.onRowClick) {
                         $scope.onRowClick({
                             $row: row,
-                            $rowIndex: row._index
+                            $rowIndex: rowIndex
                         });
                     }
                     // 禁用通过点击行选择
@@ -1267,9 +1272,9 @@
                         return;
                     }
                     // 单选
-                    $table.currentChecked = row._index;
+                    $table.currentChecked = rowIndex;
                     // 多选
-                    $table.selections[row._index] = !$table.selections[row._index];
+                    $table.selections[rowIndex] = !$table.selections[rowIndex];
                 };
                 $table.handleSelect = ($event) => {
                     $event.stopPropagation();
@@ -1332,12 +1337,11 @@
                 };
 
                 // 展开行响应事件，对外可调用
-                $table.handleRowExpand = (row) => {
-                    if (!row) {
+                $table.handleRowExpand = (rowIndex) => {
+                    if (angular.isUndefined(rowIndex) || rowIndex < 0) {
                         return;
                     }
-                    let rowIndex = row._index;
-                    row._isExpand = !row._isExpand;
+                    $table.dataObj[rowIndex]._isExpand = !$table.dataObj[rowIndex]._isExpand;
                     $timeout(() => {
                         let currentRow = findEl('.uix-datatable-main-body table')
                             .find('.uix-datatable-expand-row').get(rowIndex);
@@ -1375,9 +1379,7 @@
                 function handleMainBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
                     let scrollLeft = event.target.scrollLeft;
-                    findEl('.uix-datatable-main-table .uix-datatable-thead').css({
-                        transform: `translateX(-${scrollLeft}px)`
-                    });
+                    findEl('.uix-datatable-main-header')[0].scrollLeft = scrollLeft;
 
                     if ($table.isLeftFixed) {
                         findEl('.uix-datatable-left-body')[0].scrollTop = scrollTop;
@@ -1387,6 +1389,10 @@
                     }
 
                     updateFixedTableShadow();
+                }
+                function handleMainHeaderScroll(event) {
+                    let scrollLeft = event.target.scrollLeft;
+                    findEl('.uix-datatable-main-body')[0].scrollLeft = scrollLeft;
                 }
                 function handleFixedBodyScroll(event) {
                     let scrollTop = event.target.scrollTop;
@@ -1420,11 +1426,20 @@
                     }, 0);
                 }
 
-                function bindEvents() {
+                function bindScrollEvents() {
+                    findEl('.uix-datatable-main-header').on('scroll', handleMainHeaderScroll);
                     findEl('.uix-datatable-main-body').on('scroll', handleMainBodyScroll);
                     findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
                     findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                }
+                function unBindScrollEvents() {
+                    findEl('.uix-datatable-main-header').off('scroll', handleMainHeaderScroll);
+                    findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
+                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
+                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                }
 
+                function bindResizeEvents() {
                     angular.element(window).on('resize', handleResize);
                     // 处理外部容器发生变化时的回调
                     $table.resizeObserver = new ResizeObserver(() => {
@@ -1432,10 +1447,7 @@
                     });
                     $table.resizeObserver.observe($element.get(0));
                 }
-                function unbindEvents() {
-                    findEl('.uix-datatable-main-body').off('scroll', handleMainBodyScroll);
-                    findEl('.uix-datatable-left-body').on('scroll', handleFixedBodyScroll);
-                    findEl('.uix-datatable-right-body').on('scroll', handleFixedBodyScroll);
+                function unbindResizeEvents() {
                     angular.element(window).off('resize', handleResize);
                     $table.resizeObserver.disconnect();
                 }
@@ -1732,13 +1744,13 @@
                             }
                         } else if (column.type === 'selection') {
                             content = column.singleSelect
-                                ? '<input type="radio" ng-disabled="row.disabled" ng-value="row._index" ng-model="$table.currentChecked">'
-                                : '<input type="checkbox" ng-click="$table.handleSelect($event)" ng-disabled="row.disabled" ng-model="$table.selections[row._index]">';
+                                ? '<input type="radio" ng-disabled="row.disabled" ng-value="rowIndex" ng-model="$table.currentChecked">'
+                                : '<input type="checkbox" ng-click="$table.handleSelect($event)" ng-disabled="row.disabled" ng-model="$table.selections[rowIndex]">';
                         } else if (column.type === 'expand') {
                             content = `
-                            <div class="uix-datatable-expand-trigger" ng-click="$table.handleRowExpand(row, rowIndex)">
-                                <i ng-show="!row._isExpand" class="glyphicon glyphicon-chevron-right"></i>
-                                <i ng-show="row._isExpand" class="glyphicon glyphicon-chevron-down"></i>
+                            <div class="uix-datatable-expand-trigger" ng-click="$table.handleRowExpand(rowIndex)">
+                                <i ng-show="!$table.dataObj[rowIndex]._isExpand" class="glyphicon glyphicon-chevron-right"></i>
+                                <i ng-show="$table.dataObj[rowIndex]._isExpand" class="glyphicon glyphicon-chevron-down"></i>
                             </div>
                             `;
                         } else if (angular.isFunction(column.format)) {
@@ -1787,7 +1799,7 @@
                     let expandTemplate = $templateCache.get($table.expandTemplate) || '';
                     if (position === 'left' || position === 'right') {
                         return `
-                            <tr ng-repeat-end ng-show="row._isExpand" class="uix-datatable-expand-row">
+                            <tr ng-repeat-end ng-show="$table.dataObj[rowIndex]._isExpand" class="uix-datatable-expand-row">
                                 <td colspan="${$table[columnsKeyMap[position]].length}"></td>
                             </tr>
                         `;
@@ -1801,7 +1813,7 @@
                         rightTd = `<td colspan="${$table[columnsKeyMap.right].length}"></td>`;
                     }
                     return `
-                        <tr ng-repeat-end ng-show="row._isExpand" class="uix-datatable-expand-row">
+                        <tr ng-repeat-end ng-show="$table.dataObj[rowIndex]._isExpand" class="uix-datatable-expand-row">
                             ${leftTd}
                             <td colspan="${$table.centerColumns.length}">
                                 <div class="uix-datatable-expand-cell">
@@ -1836,7 +1848,7 @@
                         .replace('<%columnsKey%>', columnsKey)
                         .replace('<%columnsLength%>', $table[columnsKey].length)
                         .replace('<%expand%>', getExpandTemplate(position))
-                        .replace('<%rowHeightExp%>', position === 'left' || position === 'right' ? 'ng-style="{height:row._height+\'px\'}"' : '')
+                        .replace('<%rowHeightExp%>', position === 'left' || position === 'right' ? 'ng-style="{height:$table.dataObj[rowIndex]._height+\'px\'}"' : '')
                         .replace('<%template%>', getBodyRowsTemplate(position));
                 }
                 function getHeadTemplate(position) {
@@ -1864,10 +1876,10 @@
                 function updateFixedRowHeight() {
                     let allRows = $element.find('.uix-datatable-main-body > table .uix-datatable-normal-row');
                     if (allRows.length) {
-                        $table.rebuildData.forEach((row, index) => {
+                        $table.data.forEach((row, index) => {
                             let tr = allRows.get(index);
                             if (tr) {
-                                row._height = tr.offsetHeight;
+                                $table.dataObj[index]._height = tr.offsetHeight;
                             }
                         });
                     }
@@ -1907,6 +1919,9 @@
                     if (!allRows.length) {
                         return;
                     }
+                    // 当窗口大小改变时，重新设置左右固定表格的top值
+                    let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
+                    $table.headerHeight = headerHeight;
                     if ($table.isLeftFixed) {
                         let leftHeadRows = $element.find('.uix-datatable-left-header > table tr');
                         fitDiffColumnsRows(allRows, leftHeadRows);
@@ -1938,7 +1953,10 @@
                     $compile(template)(compileScope, (clonedElement) => {
                         let tableWrap = angular.element($element[0]
                             .querySelector('.uix-datatable-content'));
+                        // 在empty之前把绑定的滚动事件清除重新绑定
+                        unBindScrollEvents();
                         tableWrap.empty().append(clonedElement);
+                        bindScrollEvents();
                         $timeout(() => {
                             let headerHeight = findEl('.uix-datatable-main-header')[0].offsetHeight;
                             $table.headerHeight = headerHeight;
@@ -1996,7 +2014,8 @@
                     $table.isRightFixed = hasFixedColumns('right');
                 };
                 $table.initData = function () {
-                    $table.rebuildData = makeRebuildData();
+                    $table.data = $scope.data;
+                    $table.dataObj = makeDataObj();
                     $timeout(() => {
                         updateFixedRowHeight();
                     }, 0);
@@ -2011,10 +2030,11 @@
                     $table.initData();
                     $table.render();
 
-                    bindEvents();
+                    bindResizeEvents();
                 };
                 $scope.$on('$destroy', () => {
-                    unbindEvents();
+                    unbindResizeEvents();
+                    unBindScrollEvents();
                     compileScope.$destroy();
                 });
                 $scope.$on('uix-datatable-clear-sort', (evt, id) => {
