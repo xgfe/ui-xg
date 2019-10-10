@@ -6,6 +6,7 @@ export default class {
             text: 'input',
             type: 'input',
             value: '初始化值',
+            colWidth: 4,
             placeholder: 'placeholder'
         }, {
             key: 'select',
@@ -85,11 +86,13 @@ export default class {
             key: 'address',
             text: 'address',
             type: 'input',
+            colWidth: 12,
+            labelWidth: 2,
             value: '',
             necessary: true
         }, {
             key: 'dateRange',
-            rowWidth: 12,
+            colWidth: 12,
             labelWidth: 2,
             type: 'dateRange',
             dateFormat: 'yyyy-MM-dd',
@@ -156,8 +159,8 @@ export default class {
             type: 'datepicker',
             dateFormat: 'yyyy-MM-dd',
             text: '日期',
-            labelWidth: 3,
             necessary: false,
+            labelWidth: 3,
             value: ''
         }];
     }
