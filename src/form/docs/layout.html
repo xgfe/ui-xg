@@ -11,7 +11,8 @@
         on-cancel="vm.cancel()"
         reset-data="true"
         button-inline="true"
-        final-value="vm.result"></uix-form>
+        final-value="vm.result"
+        on-final-value-ready="vm.ready()"></uix-form>
     <uix-form 
         data="vm.data"
         layout="inline"

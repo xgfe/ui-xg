@@ -170,4 +170,7 @@ export default class {
     cancel() {
         console.log('cancel');
     }
+    ready() {
+        console.log(this.result);
+    }
 }

@@ -117,6 +117,7 @@
                     }
                     item.passCheck = true;
                 });
+                $scope.onFinalValueReady && $scope.onFinalValueReady();
             }
 
             const $form = this;
@@ -308,7 +309,7 @@
                 require: ['uixForm'],
                 scope: {
                     data: '=', layout: '@?', textalign: '@?', buttonInline: '@?',
-                    confirmText: '@?', onConfirm: '&?', showBtn: '=?',
+                    confirmText: '@?', onConfirm: '&?', showBtn: '=?', onFinalValueReady: '&?',
                     cancelText: '@?', onCancel: '&?', resetData: '@?', checkAll: '@?',
                     finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '@?'
                 },

@@ -52,6 +52,7 @@ data = [{
 | reset-data | 右侧按钮点击是否重置,仅在配置了右侧按钮时生效 | String | - |
 | check-all | 点击左侧按钮是否校验全部数据 | String | - |
 | final-value | 数据结果集key,value分别为data中每个配置项的key,value | Object | {} |
+| on-final-value-ready | final-value赋值成功后的回调 | Function | - |
 
 ### data中每个数据项 描述
 | 属性 | 说明 | 类型 | 默认值 |
