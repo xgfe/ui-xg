@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.17 - 2019-09-29
+ * Version: 2.1.17 - 2019-10-13
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -6558,21 +6558,30 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
   };
   angular.module('ui.xg.form', []).controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$timeout', function ($scope, $compile, $templateCache, $element, $q, $timeout) {
     var INPUTLIMIT = {
-      number: /\D/g,
-      letter: /[^a-zA-Z]/g,
-      letterNumber: /[^A-Za-z\d]/g
+      number: /\d/g,
+      letter: /[a-zA-Z]/g,
+      letterNumber: /[A-Za-z\d]/g
     };
     var timer = null;
     var compileScope = $scope.$parent.$new();
     $scope.finalValue = $scope.finalValue || {};
-    $scope.showBtn = $scope.showBtn || true;
-    $scope.data.map(function (item) {
-      if (item.key) {
-        $scope.finalValue[item.key] = item.value;
-      }
+    $scope.showBtn = angular.isUndefined($scope.showBtn) ? true : $scope.showBtn;
 
-      item.passCheck = true;
-    });
+    if ($scope.data) {
+      $scope.data.map(function (item) {
+        if (item.key) {
+          $scope.finalValue[item.key] = item.value;
+        }
+
+        if (item.tipInfo) {
+          item.promptInformation = item.tipInfo;
+        }
+
+        item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
+      });
+      $scope.onFinalValueReady && $scope.onFinalValueReady();
+    }
+
     var $form = this;
     $form.layout = $scope.layout || 'horizontal';
     $form.copyData = angular.copy($scope.data);
@@ -6626,13 +6635,24 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
     $form.onChange = function (item) {
       var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'front';
 
-      // input限制输入
+      // input限制输入（包括提示信息，数字字母，长度限制）
       if (item.type === 'input' && item.inputLimit) {
-        var reg = INPUTLIMIT[item.inputLimit.limit];
-        item.value = item.value.replace(reg, '').trim();
+        var _item$inputLimit = item.inputLimit,
+            limit = _item$inputLimit.limit,
+            limitReg = _item$inputLimit.limitReg,
+            maxlength = _item$inputLimit.maxlength; // 输入限制
 
-        if (item.inputLimit.maxlength && item.value.length > item.inputLimit.maxlength) {
-          item.value = item.value.slice(0, item.inputLimit.maxlength);
+        var reg = limit ? INPUTLIMIT[limit] : limitReg ? limitReg : '';
+
+        if (reg && item.value) {
+          item.value = (item.value.toString().match(reg) || []).join('');
+        } // 长度校验
+
+
+        var len = charLengthTrim(item.value);
+
+        if (maxlength && len > maxlength) {
+          item.value = item.value.slice(0, maxlength);
         }
       }
 
@@ -6657,6 +6677,15 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
 
 
     $form.onFocus = function (item) {
+      // 获取焦点展示输入提示信息
+      if (item.type === 'input' && item.inputLimit) {
+        var limitInfo = item.inputLimit.limitInfo;
+
+        if (limitInfo && limitInfo.message) {
+          item.promptInformation = limitInfo;
+        }
+      }
+
       if (item.onFocus) {
         item.onFocus(item.value);
       }
@@ -6673,6 +6702,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
 
 
     $form.onBlur = function (item) {
+      // 失焦去掉limitinfo
+      item.promptInformation = item.tipInfo;
+
       if (item.onBlur) {
         item.onBlur(item.value);
       }
@@ -6694,42 +6726,58 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         if (item.validor) {
           clearTimeout(timer);
           timer = $timeout(function () {
-            item.validor(item.value).then(function (res) {
-              item.tipInfo = res;
-              item.passCheck = res.message ? false : true;
+            var checkResult = item.validor(item.value);
+
+            if (checkResult.then) {
+              checkResult.then(function (res) {
+                item.errorInfo = res;
+                item.passCheck = res.isPassed || false;
+                resolve(item);
+              });
+            } else {
+              item.errorInfo = checkResult;
+              item.passCheck = checkResult.isPassed || false;
               resolve(item);
-            });
+            }
           }, 300);
         } else {
           if (item.value) {
-            item.tipInfo = true;
+            item.errorInfo = {
+              isPassed: true
+            };
           }
 
           if (item.necessary && !item.value) {
-            item.tipInfo = {
+            item.errorInfo = {
+              isPassed: false,
               message: "".concat(item.text, "\u5FC5\u586B"),
               type: 'error'
             };
           } else {
-            item.tipInfo = true;
+            item.errorInfo = {
+              isPassed: true
+            };
           }
 
           if (item.publicCheck && item.publicCheck.length) {
             item.publicCheck.some(function (list) {
               if (!commonRegUtil[list].test(item.value)) {
-                item.tipInfo = {
+                item.errorInfo = {
+                  isPassed: false,
                   message: "".concat(item.text, "\u8F93\u5165\u4E0D\u6B63\u786E"),
                   type: 'error'
                 };
                 return true;
               } else {
-                item.tipInfo = true;
+                item.errorInfo = {
+                  isPassed: true
+                };
                 return false;
               }
             });
           }
 
-          item.passCheck = item.tipInfo.message ? false : true;
+          item.passCheck = item.errorInfo.isPassed || false;
           resolve(item);
         }
       });
@@ -6745,7 +6793,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
       } else {
         $scope.disabled = false;
       }
-    }; // aitem校验调用bitem的校验方法（关联校验）
+    }; // a item校验调用b item的校验方法（关联校验）
 
 
     $form.relatedCheck = function (item, eventType) {
@@ -6767,6 +6815,12 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         });
       }
     };
+
+    function charLengthTrim(input) {
+      if (input) {
+        return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+      }
+    }
   }]).directive('uixForm', function () {
     return {
       restrict: 'AE',
@@ -6780,7 +6834,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         buttonInline: '@?',
         confirmText: '@?',
         onConfirm: '&?',
-        showBtn: '@?',
+        showBtn: '=?',
+        onFinalValueReady: '&?',
         cancelText: '@?',
         onCancel: '&?',
         resetData: '@?',
@@ -6788,7 +6843,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         finalValue: '=?',
         colon: '@?',
         cancelButton: '@?',
-        disabled: '@?'
+        disabled: '=?'
       },
       controller: 'uixFormCtrl',
       controllerAs: '$form',
@@ -11762,7 +11817,7 @@ angular.module("datepicker/templates/datepicker.html", []).run(["$templateCache"
 "use strict";
 
 angular.module("form/templates/form.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/form.html", "<div class=\"panel-body\" >" + "    <div class=\"uix-form\" ng-class=\"{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}\">" + "        <div ng-class=\"{" + "            'col-md-{{item.colWidth?item.colWidth:3}}': $form.layout==='inline'," + "            'form-group row uix-form-m-b-md': $form.layout==='horizontal'," + "            'col-md-{{item.rowWidth?item.rowWidth:6}} uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'" + "        }\" ng-repeat=\"item in data\">" + "        <labe ng-class=\"{" + "                'uix-form-necessary':item.necessary," + "                'text-right':textalign==='right'," + "                'col-md-{{item.labelWidth?item.labelWidth:2}}': $form.layout==='horizontal'," + "                'col-md-{{item.labelWidth?item.labelWidth:4}}': $form.layout==='vertical'" + "            }\" ng-if=\"item.type!=='tpl'\">" + "            {{item.text}}{{colon?':':''}}" + "            <i ng-class=\"item.tooltip.icon?item.tooltip.icon:'glyphicon glyphicon-question-sign'\" ng-style=\"{'color':'{{item.tooltip.color?item.tooltip.color:red}}','cursor':'pointer'}\" uix-tooltip=\"{{item.tooltip.message}}\" tooltip-placement=\"top\" ng-if=\"item.tooltip\"></i>" + "        </labe>" + "        <div ng-class=\"{" + "            'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline'," + "            'col-md-{{item.colWidth?item.colWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal'," + "            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'" + "        }\" ng-if=\"!item.template&&!item.templateUrl&&item.type!=='tpl'\">" + "            <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" placeholder=\"{{item.placeholder}}\"" + "                ng-change=\"$form.onChange(item)\" ng-blur=\"$form.onBlur(item)\" ng-focus=\"$form.onFocus(item)\">" + "                <div class=\"row\" ng-if=\"item.type==='dateRange'\">" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\"" + "                        ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                    </div>" + "                    <div class=\"row pull-left text-center uix-form-m-l\">至</div>" + "                    <div class=\"col-md-6\">" + "                        <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" clear-btn=\"true\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\"" + "                        ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                    </div>" + "                </div>" + "                <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\"  placeholder=\"{{item.placeholder}}\" format=\"item.dateFormat\"" + "                ng-change=\"$form.onChange(item)\"></uix-datepicker>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.onChange(item)\">" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$select.selected.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.onChange(item)\" multiple>" + "                    <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                    <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                        <span>{{option.desc}}</span>" + "                    </uix-select-choices>" + "                </uix-select>" + "                <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\">" + "                    <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.onChange(item)\">" + "                    <i></i>{{option}}" + "                </label>" + "                <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='radio'\" ng-disabled=\"item.disabled\">" + "                    <input type=\"radio\" ng-model=\"item.value\" ng-value=\"option.value\" ng-change=\"$form.onChange(item)\"><i></i>{{option.label}}" + "                </label>" + "                <!-- 校验提示文案 -->" + "                <div ng-if=\"item.tipInfo\" class=\"uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.tipInfo.type}}\">{{item.tipInfo.message}}</div>" + "        </div>" + "        <!-- 自定义模板 -->" + "        <div ng-class=\"{" + "            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl'," + "            'tplHtml': item.type==='tpl'" + "        }\" ng-if=\"item.templateUrl||item.template\">" + "            <div class=\"tplHtml{{item.templateName}}\"></div>" + "            {{$form.renderTpl(item)}}" + "        </div>" + "    </div>" + "    </div>" + "    <div ng-class=\"{row: !buttonInline, 'uix-form-m-t-md':buttonInline}\" class=\"text-center\" ng-if=\"showBtn\">" + "        <button type=\"button\" class=\"uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default uix-form-btn-primary\" ng-click=\"$form.confirm()\" ng-disabled=\"disabled\">" + "            {{confirmText?confirmText:'提交'}}" + "        </button>" + "        <button type=\"button\" class=\"uix-form-m-l-md uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default\" ng-click=\"$form.cancle()\" ng-if=\"cancelButton\">" + "            {{cancelText?cancelText:'取消'}}" + "        </button>" + "    </div>" + "</div>" + "");
+  $templateCache.put("templates/form.html", "<div class=\"panel-body\" >" + "    <div class=\"uix-form\" ng-class=\"{'form-horizontal':$form.layout==='horizontal','row':$form.layout==='vertical'&&!buttonInline,'uix-form-flex': $form.layout==='inline'}\">" + "        <div ng-class=\"{" + "            'col-md-{{item.colWidth}}': item.colWidth && $form.layout!=='horizontal'," + "            'col-md-3': !item.colWidth && $form.layout==='inline'," + "            'col-md-6': !item.colWidth && $form.layout==='vertical'," + "            'form-group row uix-form-m-b-md uix-form-l-h': $form.layout==='horizontal'," + "            'uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'" + "        }\" ng-repeat=\"item in data\">" + "        <labe ng-class=\"{" + "                'uix-form-necessary':item.necessary," + "                'text-right':textalign==='right'," + "                'col-md-2':!item.labelWidth && $form.layout==='horizontal'," + "                'col-md-4':!item.labelWidth && $form.layout==='vertical'," + "                'col-md-{{item.labelWidth}}': item.labelWidth && $form.layout!=='inline'" + "            }\" ng-if=\"item.type!=='tpl'\">" + "            {{item.text}}{{colon?':':''}}" + "            <i ng-class=\"item.tooltip.icon?item.tooltip.icon:'glyphicon glyphicon-question-sign'\" ng-style=\"{'color':'{{item.tooltip.color?item.tooltip.color:red}}','cursor':'pointer'}\" uix-tooltip=\"{{item.tooltip.message}}\" tooltip-placement=\"top\" ng-if=\"item.tooltip\"></i>" + "        </labe>" + "        <div ng-class=\"{" + "            'uix-form-m-l': item.colWidth && $form.layout==='vertical'," + "            'uix-form-pos-rlt': true," + "            'uix-form-m-b-md': $form.layout==='inline'," + "            'col-md-{{item.elementWidth}}': item.elementWidth && $form.layout!=='inline'," + "            'col-md-4': !item.elementWidth && $form.layout==='horizontal'," + "            'col-md-8': !item.elementWidth && $form.layout==='vertical'" + "        }\" ng-if=\"!item.template&&!item.templateUrl&&item.type!=='tpl'\">" + "            <input type=\"text\" class=\"form-control input-sm\" ng-if=\"item.type==='input'\" ng-model=\"item.value\" placeholder=\"{{item.placeholder}}\"" + "            ng-change=\"$form.onChange(item)\" ng-blur=\"$form.onBlur(item)\" ng-focus=\"$form.onFocus(item)\">" + "            <div class=\"row\" ng-if=\"item.type==='dateRange'\">" + "                <div class=\"col-md-6\">" + "                    <uix-datepicker size=\"sm\" max-date=\"item.value.endTime\" format=\"item.dateFormat\" ng-model=\"item.value.startTime\"" + "                    ng-change=\"$form.onChange(item)\" clear-btn=\"item.clearBtn\" show-time=\"item.showTime\"></uix-datepicker>" + "                </div>" + "                <div class=\"row pull-left text-center uix-form-m-l\">至</div>" + "                <div class=\"col-md-6\">" + "                    <uix-datepicker size=\"sm\" min-date=\"item.value.startTime\" format=\"item.dateFormat\" ng-model=\"item.value.endTime\"" + "                    ng-change=\"$form.onChange(item)\" clear-btn=\"item.clearBtn\" show-time=\"item.showTime\"></uix-datepicker>" + "                </div>" + "            </div>" + "            <uix-datepicker size=\"sm\" ng-model=\"item.value\" ng-if=\"item.type==='datepicker'\"  placeholder=\"{{item.placeholder}}\" format=\"item.dateFormat\"" + "            ng-change=\"$form.onChange(item)\" clear-btn=\"item.clearBtn\" show-time=\"item.showTime\"></uix-datepicker>" + "            <uix-select ng-model=\"item.value\" ng-if=\"item.type==='select'\" ng-change=\"$form.onChange(item)\">" + "                <uix-select-match placeholder=\"{{item.placeholder}}\">{{item.optionKey?$select.selected[item.optionKey]:$select.selected.desc}}</uix-select-match>" + "                <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                    <span>{{item.optionKey?option[item.optionKey]:option.desc}}</span>" + "                </uix-select-choices>" + "            </uix-select>" + "            <uix-select ng-model=\"item.value\" ng-if=\"item.type==='multipleSelect'\" ng-change=\"$form.onChange(item)\" multiple>" + "                <uix-select-match placeholder=\"{{item.placeholder}}\">{{$item.desc}}</uix-select-match>" + "                <uix-select-choices repeat=\"option in item.options | filter:$select.search\">" + "                    <span>{{option.desc}}</span>" + "                </uix-select-choices>" + "            </uix-select>" + "            <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='checkbox'\">" + "                <input type=\"checkbox\" ng-model=\"item.value[option]\" ng-change=\"$form.onChange(item)\">" + "                <i></i>{{option}}" + "            </label>" + "            <label class=\"uix-form-checks uix-form-m-r\" ng-repeat=\"option in item.options\" ng-if=\"item.type==='radio'\" ng-disabled=\"item.disabled\">" + "                <input type=\"radio\" ng-model=\"item.value\" ng-value=\"option.value\" ng-change=\"$form.onChange(item)\"><i></i>{{option.label}}" + "            </label>" + "            <!-- 校验提示文案 -->" + "            <div ng-show=\"!item.passCheck\" class=\"uix-form-tipinfo uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.errorInfo.type}}\">{{item.errorInfo.message}}</div>" + "            <!-- 提示文案 -->" + "            <div ng-show=\"item.passCheck&&item.promptInformation\" class=\"uix-form-tipinfo uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.promptInformation.type}}\">{{item.promptInformation.message}}</div>" + "        </div>" + "        <!-- 自定义模板 -->" + "        <div ng-class=\"{" + "            'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline'," + "            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl' && $form.layout!=='inline'," + "            'tplHtml': item.type==='tpl'" + "        }\" ng-if=\"item.templateUrl||item.template\">" + "            <div class=\"tplHtml{{item.templateName}}\"></div>" + "            {{$form.renderTpl(item)}}" + "        </div>" + "    </div>" + "    </div>" + "    <div ng-class=\"{row: !buttonInline}\" class=\"text-center\" ng-if=\"showBtn\">" + "        <button type=\"button\" ng-class=\"{'uix-form-m-t-md':buttonInline}\" class=\"uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default uix-form-btn-primary\" ng-click=\"$form.confirm()\" ng-disabled=\"disabled\">" + "            {{confirmText?confirmText:'提交'}}" + "        </button>" + "        <button type=\"button\" ng-class=\"{'uix-form-m-t-md':buttonInline}\" class=\"uix-form-m-l-md uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default\" ng-click=\"$form.cancle()\" ng-if=\"cancelButton\">" + "            {{cancelText?cancelText:'取消'}}" + "        </button>" + "    </div>" + "</div>" + "");
 }]);
 "use strict";
 

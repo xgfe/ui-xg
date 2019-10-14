@@ -11,7 +11,8 @@
         on-cancel="vm.cancel()"
         reset-data="true"
         button-inline="true"
-        final-value="vm.result"></uix-form>
+        final-value="vm.result"
+        on-final-value-ready="vm.ready()"></uix-form>
     <uix-form 
         data="vm.data"
         layout="inline"
@@ -33,12 +34,11 @@
             cancel-text="取消"
             on-cancel="vm.cancel()"
             final-value="vm.result"
-            colon='true'></uix-form>
+            colon="true"></uix-form>
 
         <uix-form data="vm.data2" 
             layout="horizontal"
             textalign="right"
             final-value="vm.result"
-            show-btn="false"
-            colon='true'></uix-form>
+            colon="true"></uix-form>
 </div>

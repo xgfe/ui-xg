@@ -9,7 +9,7 @@ export default class {
             type: 'input',
             value: '',
             checkTiming: ['change'],
-            publicCheck: ['intOrFloatOneDecimalReg','firstNotZeroIntReg']
+            publicCheck: ['intOrFloatOneDecimalReg', 'firstNotZeroIntReg']
         }, {
             key: 'condition',
             text: '自定义校验',
@@ -19,6 +19,7 @@ export default class {
                 limit: 'letterNumber',
                 maxlength: 12
             },
+            checkTiming: 'change',
             onChange: (val) => {
                 this.conditionChange(val);
             },
@@ -28,8 +29,7 @@ export default class {
                         resolve({message: '请重新输入', type: 'error'});
                     }
                     resolve(true);
-                })
-                
+                });
             }
         }];
         this.data1 = [{
@@ -38,15 +38,14 @@ export default class {
             type: 'input',
             value: '',
             publicCheck: ['emailReg']
-        },
-        {
+        }, {
             key: 'check',
             text: '关联email校验',
             type: 'input',
             value: '',
             necessary: true,
             relatedCheckKeys: ['email']
-        },{
+        }, {
             key: 'condition',
             text: '自定义校验',
             type: 'input',
@@ -57,8 +56,7 @@ export default class {
                         resolve({message: '请重新输入', type: 'error'});
                     }
                     resolve({});
-                })
-                
+                });
             }
         }];
        

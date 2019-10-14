@@ -1,64 +1,73 @@
 <div class="panel-body" >
-    <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout!=='horizontal'&&!buttonInline}">
+    <div class="uix-form" ng-class="{'form-horizontal':$form.layout==='horizontal','row':$form.layout==='vertical'&&!buttonInline,'uix-form-flex': $form.layout==='inline'}">
         <div ng-class="{
-            'col-md-{{item.colWidth?item.colWidth:3}}': $form.layout==='inline',
-            'form-group row uix-form-m-b-md': $form.layout==='horizontal',
-            'col-md-{{item.rowWidth?item.rowWidth:6}} uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'
+            'col-md-{{item.colWidth}}': item.colWidth && $form.layout!=='horizontal',
+            'col-md-3': !item.colWidth && $form.layout==='inline',
+            'col-md-6': !item.colWidth && $form.layout==='vertical',
+            'form-group row uix-form-m-b-md uix-form-l-h': $form.layout==='horizontal',
+            'uix-form-m-b-md uix-form-l-h': $form.layout==='vertical'
         }" ng-repeat="item in data">
         <labe ng-class="{
                 'uix-form-necessary':item.necessary,
                 'text-right':textalign==='right',
-                'col-md-{{item.labelWidth?item.labelWidth:2}}': $form.layout==='horizontal',
-                'col-md-{{item.labelWidth?item.labelWidth:4}}': $form.layout==='vertical'
+                'col-md-2':!item.labelWidth && $form.layout==='horizontal',
+                'col-md-4':!item.labelWidth && $form.layout==='vertical',
+                'col-md-{{item.labelWidth}}': item.labelWidth && $form.layout!=='inline'
             }" ng-if="item.type!=='tpl'">
             {{item.text}}{{colon?':':''}}
             <i ng-class="item.tooltip.icon?item.tooltip.icon:'glyphicon glyphicon-question-sign'" ng-style="{'color':'{{item.tooltip.color?item.tooltip.color:red}}','cursor':'pointer'}" uix-tooltip="{{item.tooltip.message}}" tooltip-placement="top" ng-if="item.tooltip"></i>
         </labe>
         <div ng-class="{
-            'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline',
-            'col-md-{{item.colWidth?item.colWidth:4}} uix-form-pos-rlt': $form.layout==='horizontal',
-            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt': $form.layout==='vertical'
+            'uix-form-m-l': item.colWidth && $form.layout==='vertical',
+            'uix-form-pos-rlt': true,
+            'uix-form-m-b-md': $form.layout==='inline',
+            'col-md-{{item.elementWidth}}': item.elementWidth && $form.layout!=='inline',
+            'col-md-4': !item.elementWidth && $form.layout==='horizontal',
+            'col-md-8': !item.elementWidth && $form.layout==='vertical'
         }" ng-if="!item.template&&!item.templateUrl&&item.type!=='tpl'">
             <input type="text" class="form-control input-sm" ng-if="item.type==='input'" ng-model="item.value" placeholder="{{item.placeholder}}"
-                ng-change="$form.onChange(item)" ng-blur="$form.onBlur(item)" ng-focus="$form.onFocus(item)">
-                <div class="row" ng-if="item.type==='dateRange'">
-                    <div class="col-md-6">
-                        <uix-datepicker size="sm" max-date="item.value.endTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.startTime"
-                        ng-change="$form.onChange(item)"></uix-datepicker>
-                    </div>
-                    <div class="row pull-left text-center uix-form-m-l">至</div>
-                    <div class="col-md-6">
-                        <uix-datepicker size="sm" min-date="item.value.startTime" clear-btn="true" format="item.dateFormat" ng-model="item.value.endTime"
-                        ng-change="$form.onChange(item)"></uix-datepicker>
-                    </div>
+            ng-change="$form.onChange(item)" ng-blur="$form.onBlur(item)" ng-focus="$form.onFocus(item)">
+            <div class="row" ng-if="item.type==='dateRange'">
+                <div class="col-md-6">
+                    <uix-datepicker size="sm" max-date="item.value.endTime" format="item.dateFormat" ng-model="item.value.startTime"
+                    ng-change="$form.onChange(item)" clear-btn="item.clearBtn" show-time="item.showTime"></uix-datepicker>
                 </div>
-                <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'"  placeholder="{{item.placeholder}}" format="item.dateFormat"
-                ng-change="$form.onChange(item)"></uix-datepicker>
-                <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.onChange(item)">
-                    <uix-select-match placeholder="{{item.placeholder}}">{{$select.selected.desc}}</uix-select-match>
-                    <uix-select-choices repeat="option in item.options | filter:$select.search">
-                        <span>{{option.desc}}</span>
-                    </uix-select-choices>
-                </uix-select>
-                <uix-select ng-model="item.value" ng-if="item.type==='multipleSelect'" ng-change="$form.onChange(item)" multiple>
-                    <uix-select-match placeholder="{{item.placeholder}}">{{$item.desc}}</uix-select-match>
-                    <uix-select-choices repeat="option in item.options | filter:$select.search">
-                        <span>{{option.desc}}</span>
-                    </uix-select-choices>
-                </uix-select>
-                <label class="uix-form-checks uix-form-m-r" ng-repeat="option in item.options" ng-if="item.type==='checkbox'">
-                    <input type="checkbox" ng-model="item.value[option]" ng-change="$form.onChange(item)">
-                    <i></i>{{option}}
-                </label>
-                <label class="uix-form-checks uix-form-m-r" ng-repeat="option in item.options" ng-if="item.type==='radio'" ng-disabled="item.disabled">
-                    <input type="radio" ng-model="item.value" ng-value="option.value" ng-change="$form.onChange(item)"><i></i>{{option.label}}
-                </label>
-                <!-- 校验提示文案 -->
-                <div ng-if="item.tipInfo" class="uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.tipInfo.type}}">{{item.tipInfo.message}}</div>
+                <div class="row pull-left text-center uix-form-m-l">至</div>
+                <div class="col-md-6">
+                    <uix-datepicker size="sm" min-date="item.value.startTime" format="item.dateFormat" ng-model="item.value.endTime"
+                    ng-change="$form.onChange(item)" clear-btn="item.clearBtn" show-time="item.showTime"></uix-datepicker>
+                </div>
+            </div>
+            <uix-datepicker size="sm" ng-model="item.value" ng-if="item.type==='datepicker'"  placeholder="{{item.placeholder}}" format="item.dateFormat"
+            ng-change="$form.onChange(item)" clear-btn="item.clearBtn" show-time="item.showTime"></uix-datepicker>
+            <uix-select ng-model="item.value" ng-if="item.type==='select'" ng-change="$form.onChange(item)">
+                <uix-select-match placeholder="{{item.placeholder}}">{{item.optionKey?$select.selected[item.optionKey]:$select.selected.desc}}</uix-select-match>
+                <uix-select-choices repeat="option in item.options | filter:$select.search">
+                    <span>{{item.optionKey?option[item.optionKey]:option.desc}}</span>
+                </uix-select-choices>
+            </uix-select>
+            <uix-select ng-model="item.value" ng-if="item.type==='multipleSelect'" ng-change="$form.onChange(item)" multiple>
+                <uix-select-match placeholder="{{item.placeholder}}">{{$item.desc}}</uix-select-match>
+                <uix-select-choices repeat="option in item.options | filter:$select.search">
+                    <span>{{option.desc}}</span>
+                </uix-select-choices>
+            </uix-select>
+            <label class="uix-form-checks uix-form-m-r" ng-repeat="option in item.options" ng-if="item.type==='checkbox'">
+                <input type="checkbox" ng-model="item.value[option]" ng-change="$form.onChange(item)">
+                <i></i>{{option}}
+            </label>
+            <label class="uix-form-checks uix-form-m-r" ng-repeat="option in item.options" ng-if="item.type==='radio'" ng-disabled="item.disabled">
+                <input type="radio" ng-model="item.value" ng-value="option.value" ng-change="$form.onChange(item)"><i></i>{{option.label}}
+            </label>
+            <!-- 校验提示文案 -->
+            <div ng-show="!item.passCheck" class="uix-form-tipinfo uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.errorInfo.type}}">{{item.errorInfo.message}}</div>
+            <!-- 提示文案 -->
+            <div ng-show="item.passCheck&&item.promptInformation" class="uix-form-tipinfo uix-form-pos-abt uix-form-text-xs uix-form-text-{{item.promptInformation.type}}">{{item.promptInformation.message}}</div>
         </div>
         <!-- 自定义模板 -->
         <div ng-class="{
-            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl',
+            'uix-form-pos-rlt uix-form-m-b-md': $form.layout==='inline',
+            'col-md-{{item.colWidth?item.colWidth:8}} uix-form-pos-rlt tplHtml': item.type!=='tpl' && $form.layout!=='inline',
             'tplHtml': item.type==='tpl'
         }" ng-if="item.templateUrl||item.template">
             <div class="tplHtml{{item.templateName}}"></div>
@@ -66,11 +75,11 @@
         </div>
     </div>
     </div>
-    <div ng-class="{row: !buttonInline, 'uix-form-m-t-md':buttonInline}" class="text-center" ng-if="showBtn">
-        <button type="button" class="uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default uix-form-btn-primary" ng-click="$form.confirm()" ng-disabled="disabled">
+    <div ng-class="{row: !buttonInline}" class="text-center" ng-if="showBtn">
+        <button type="button" ng-class="{'uix-form-m-t-md':buttonInline}" class="uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default uix-form-btn-primary" ng-click="$form.confirm()" ng-disabled="disabled">
             {{confirmText?confirmText:'提交'}}
         </button>
-        <button type="button" class="uix-form-m-l-md uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default" ng-click="$form.cancle()" ng-if="cancelButton">
+        <button type="button" ng-class="{'uix-form-m-t-md':buttonInline}" class="uix-form-m-l-md uix-form-btn btn-sm uix-form-w-sm uix-form-btn-default" ng-click="$form.cancle()" ng-if="cancelButton">
             {{cancelText?cancelText:'取消'}}
         </button>
     </div>

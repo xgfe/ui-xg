@@ -3,10 +3,24 @@
         display: inline-block;
         width: 80px;
     }
+    .m-l-n {
+        margin-left: -15px;
+    }
     </style>
 <div>
     <!-- 基本配置 -->
     <uix-form data="vm.data"
+        layout="inline"
+        textalign="right"
+        confirm-text="查询"
+        on-confirm="vm.submit"
+        cancel-text="取消"
+        on-cancel="vm.cancel"
+        reset-data="true"
+        check-all="true"
+        final-value="vm.result"></uix-form>
+
+    <uix-form data="vm.data1"
         layout="vertical"
         textalign="right"
         confirm-text="查询"
@@ -14,10 +28,42 @@
         cancel-text="取消"
         on-cancel="vm.cancel"
         reset-data="true"
-        show-btn="true"
+        check-all="true"
+        final-value="vm.result"></uix-form>
+
+    <uix-form data="vm.data2"
+        layout="horizontal"
+        textalign="right"
+        confirm-text="查询"
+        on-confirm="vm.submit"
+        cancel-text="取消"
+        on-cancel="vm.cancel"
+        reset-data="true"
         check-all="true"
         final-value="vm.result"></uix-form>
 </div>
+<script type="text/ng-template" id="selectTpl">
+    <uix-select auto-create="select" ng-model="vm.params.adjTypeVal" class="col-sm-4 m-l-n">
+        <uix-select-match>{{ $select.selected.name }}</uix-select-match>
+        <uix-select-choices repeat="item in vm.adjTypeList | filter:$select.search">
+            <span>{{::item.name}}</span>
+        </uix-select-choices>
+    </uix-select>
+    
+    <uix-select auto-create="select" ng-model="vm.params.adjTypeVal" class="col-sm-4">
+        <uix-select-match>{{ $select.selected.name }}</uix-select-match>
+        <uix-select-choices repeat="item in vm.adjTypeList | filter:$select.search">
+            <span>{{::item.name}}</span>
+        </uix-select-choices>
+    </uix-select>
+    
+    <uix-select auto-create="select" ng-model="vm.params.adjTypeVal" class="col-sm-4">
+        <uix-select-match>{{ $select.selected.name }}</uix-select-match>
+        <uix-select-choices repeat="item in vm.adjTypeList | filter:$select.search">
+            <span>{{::item.name}}</span>
+        </uix-select-choices>
+    </uix-select>
+</script>
 <script type="text/ng-template" id="inlineTpl">
     <input type="text" ng-model="vm.inputValue" ng-change="vm.changeInput()" class="form-control col-md-3">
 </script>

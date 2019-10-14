@@ -98,28 +98,33 @@
     angular.module('ui.xg.form', [])
         .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$timeout', function ($scope, $compile, $templateCache, $element, $q, $timeout) {
             const INPUTLIMIT = {
-                number: /\D/g,
-                letter: /[^a-zA-Z]/g,
-                letterNumber: /[^A-Za-z\d]/g
+                number: /\d/g,
+                letter: /[a-zA-Z]/g,
+                letterNumber: /[A-Za-z\d]/g
             };
             let timer = null;
             let compileScope = $scope.$parent.$new();
 
             $scope.finalValue = $scope.finalValue || {};
-            $scope.showBtn = $scope.showBtn || true;
-            $scope.data.map((item) => {
-                if (item.key) {
-                    $scope.finalValue[item.key] = item.value;
-                }
-                item.passCheck = true;
-            });
+            $scope.showBtn = angular.isUndefined($scope.showBtn) ? true : $scope.showBtn;
+            if ($scope.data) {
+                $scope.data.map((item) => {
+                    if (item.key) {
+                        $scope.finalValue[item.key] = item.value;
+                    }
+                    if (item.tipInfo) {
+                        item.promptInformation = item.tipInfo;
+                    }
+                    item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
+                });
+                $scope.onFinalValueReady && $scope.onFinalValueReady();
+            }
 
             const $form = this;
             $form.layout = $scope.layout || 'horizontal';
             $form.copyData = angular.copy($scope.data);
             $form.html = '';
             $form.tplObj = {};
-
             // 渲染模板dom
             $form.renderTpl = (item) => {
                 if ($form.tplObj[item.templateName]) {
@@ -159,12 +164,18 @@
             };
             // change事件
             $form.onChange = (item, from = 'front') => {
-                // input限制输入
+                // input限制输入（包括提示信息，数字字母，长度限制）
                 if (item.type === 'input' && item.inputLimit) {
-                    let reg = INPUTLIMIT[item.inputLimit.limit];
-                    item.value = item.value.replace(reg, '').trim();
-                    if (item.inputLimit.maxlength && item.value.length > item.inputLimit.maxlength) {
-                        item.value = item.value.slice(0, item.inputLimit.maxlength);
+                    let {limit, limitReg, maxlength} = item.inputLimit;
+                    // 输入限制
+                    let reg = limit ? INPUTLIMIT[limit] : limitReg ? limitReg : '';
+                    if (reg && item.value) {
+                        item.value = (item.value.toString().match(reg) || []).join('');
+                    }
+                    // 长度校验
+                    let len = charLengthTrim(item.value);
+                    if (maxlength && len > maxlength) {
+                        item.value = item.value.slice(0, maxlength);
                     }
                 }
                 if (item.key) {
@@ -184,6 +195,13 @@
             };
             // Focus
             $form.onFocus = (item) => {
+                // 获取焦点展示输入提示信息
+                if (item.type === 'input' && item.inputLimit) {
+                    let {limitInfo} = item.inputLimit;
+                    if (limitInfo && limitInfo.message) {
+                        item.promptInformation = limitInfo;
+                    }
+                }
                 if (item.onFocus) {
                     item.onFocus(item.value);
                 }
@@ -197,6 +215,8 @@
             };
             // blur
             $form.onBlur = (item) => {
+                // 失焦去掉limitinfo
+                item.promptInformation = item.tipInfo;
                 if (item.onBlur) {
                     item.onBlur(item.value);
                 }
@@ -216,33 +236,40 @@
                     if (item.validor) {
                         clearTimeout(timer);
                         timer = $timeout(() => {
-                            item.validor(item.value).then((res) => {
-                                item.tipInfo = res;
-                                item.passCheck = res.message ? false : true;
+                            let checkResult = item.validor(item.value);
+                            if (checkResult.then) {
+                                checkResult.then((res) => {
+                                    item.errorInfo = res;
+                                    item.passCheck = res.isPassed || false;
+                                    resolve(item);
+                                });
+                            } else {
+                                item.errorInfo = checkResult;
+                                item.passCheck = checkResult.isPassed || false;
                                 resolve(item);
-                            });
+                            }
                         }, 300);
                     } else {
                         if (item.value) {
-                            item.tipInfo = true;
+                            item.errorInfo = {isPassed: true};
                         }
                         if (item.necessary && !item.value) {
-                            item.tipInfo = {message: `${item.text}必填`, type: 'error'};
+                            item.errorInfo = {isPassed: false, message: `${item.text}必填`, type: 'error'};
                         } else {
-                            item.tipInfo = true;
+                            item.errorInfo = {isPassed: true};
                         }
                         if(item.publicCheck && item.publicCheck.length) {
                             item.publicCheck.some((list) => {
                                 if (!commonRegUtil[list].test(item.value)) {
-                                    item.tipInfo = {message: `${item.text}输入不正确`, type: 'error'};
+                                    item.errorInfo = {isPassed: false, message: `${item.text}输入不正确`, type: 'error'};
                                     return true;
                                 } else {
-                                    item.tipInfo = true;
+                                    item.errorInfo = {isPassed: true};
                                     return false;
                                 }
                             });
                         }
-                        item.passCheck = item.tipInfo.message ? false : true;
+                        item.passCheck = item.errorInfo.isPassed || false;
                         resolve(item);
                     }
                 });
@@ -255,7 +282,7 @@
                     $scope.disabled = false;
                 }
             };
-            // aitem校验调用bitem的校验方法（关联校验）
+            // a item校验调用b item的校验方法（关联校验）
             $form.relatedCheck = (item, eventType) => {
                 if (item.relatedCheckKeys && item.relatedCheckKeys.length) {
                     item.relatedCheckItems = item.relatedCheckKeys.reduce((res, relatedKey) => {
@@ -270,6 +297,11 @@
                     });
                 }
             };
+            function charLengthTrim(input) {
+                if(input) {
+                    return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+                }
+            }
         }])
         .directive('uixForm', function () {
             return {
@@ -279,9 +311,9 @@
                 require: ['uixForm'],
                 scope: {
                     data: '=', layout: '@?', textalign: '@?', buttonInline: '@?',
-                    confirmText: '@?', onConfirm: '&?', showBtn: '@?',
+                    confirmText: '@?', onConfirm: '&?', showBtn: '=?', onFinalValueReady: '&?',
                     cancelText: '@?', onCancel: '&?', resetData: '@?', checkAll: '@?',
-                    finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '@?'
+                    finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '=?'
                 },
                 controller: 'uixFormCtrl',
                 controllerAs: '$form',

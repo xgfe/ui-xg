@@ -6,6 +6,7 @@ export default class {
             text: 'input',
             type: 'input',
             value: '初始化值',
+            colWidth: 4,
             placeholder: 'placeholder'
         }, {
             key: 'select',
@@ -28,6 +29,27 @@ export default class {
                 desc: '描述3',
                 value: 53
             }]
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
+        }, {
+            key: 'input',
+            text: 'input',
+            type: 'input',
+            value: '',
+            necessary: true,
+            placeholder: 'placeholder'
         }];
         this.data1 = [{
             key: 'input',
@@ -64,11 +86,13 @@ export default class {
             key: 'address',
             text: 'address',
             type: 'input',
+            colWidth: 12,
+            labelWidth: 2,
             value: '',
             necessary: true
         }, {
             key: 'dateRange',
-            rowWidth: 12,
+            colWidth: 12,
             labelWidth: 2,
             type: 'dateRange',
             dateFormat: 'yyyy-MM-dd',
@@ -86,12 +110,14 @@ export default class {
             type: 'input',
             value: '',
             necessary: true,
+            labelWidth: 3,
             placeholder: 'placeholder'
         }, {
             key: 'multipleSelect',
             type: 'multipleSelect',
             text: '多选',
             textalign: 'right',
+            labelWidth: 3,
             options: [{
                 desc: '描述',
                 value: 1
@@ -109,6 +135,7 @@ export default class {
             key: 'checkbox',
             type: 'checkbox',
             text: '复选框',
+            labelWidth: 3,
             value: '',
             options: ['app', 'ios', 'android']
         }, {
@@ -116,6 +143,7 @@ export default class {
             type: 'radio',
             text: '单选框',
             value: '1',
+            labelWidth: 3,
             options: [{
                 label: 'app',
                 value: 1
@@ -132,6 +160,7 @@ export default class {
             dateFormat: 'yyyy-MM-dd',
             text: '日期',
             necessary: false,
+            labelWidth: 3,
             value: ''
         }];
     }
@@ -140,5 +169,8 @@ export default class {
     }
     cancel() {
         console.log('cancel');
+    }
+    ready() {
+        console.log(this.result);
     }
 }
