@@ -75,7 +75,7 @@ data = [{
 | optionKey | 单选多选下拉框列表,指定展示文案的key，默认为'desc' |  |  |
 | checkTiming | 校验触发条件,可选值为：change，blur，focus | [] | - |
 | relatedCheckKeys | 关联校验，配置关联项的key值，eg:项目a的更改触发b校验，则在a中设置此配置项值为b的key值即可 | [] | - |
-| publicCheck | 默认常用校验规则可选范围,'emailReg'，'validCharacterReg'，'letterNumberReg'，'mobileRegTwelveNum'具体可参考regUtil文件 | [] | - |
+| publicCheck | 默认常用校验规则可选范围,'emailReg'，'validCharacterReg'，'letterNumberReg'，'mobileRegTwelveNum'具体可参考regUtil文件 | array | - |
 | validor | 自定义校验方法,异步,校验通过返回true，校验不通过返回{isPassed: true/false,message:'',type:''},type可选值为error,warning,success | Function |  |
 | tipInfo | 提示文案，用于展示报错信息，可手动设置{message:'',type:''} | {} | - |
 | tooltip | label旁边的tip,eg:tooltip: {message: 'tooltip message',color: '#ff552e',icon: 'glyphicon glyphicon-ok-sign'}默认为红色问号提示 | Object | - |

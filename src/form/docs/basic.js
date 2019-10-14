@@ -1,8 +1,8 @@
 export default class {
     constructor() {
         this.showBtn = false;
-        this.result1 = {};
-        this.result2 = {};
+        this.baseResult = {};
+        this.colonResult = {};
         this.data = [{
             key: 'email',
             text: 'email',
@@ -14,12 +14,11 @@ export default class {
                 limitReg: /\d|-/g
             },
             validor: (val) => {
-                // if (val) {
-                //     return {isPassed: false, message: '不能随便输入', type: 'error'}
-                // } else {
-                //     return {isPassed: true}
-                // }
-                return {isPassed: true}
+                if (val) {
+                    return {isPassed: false, message: '不能随便输入', type: 'error'}
+                } else {
+                    return {isPassed: true}
+                }
             }
             }, {
                 key: 'date',
@@ -93,6 +92,6 @@ export default class {
         console.log(val);
     };
     onConfirm() {
-        console.log(this.result1);
+        console.log(this.baseResult);
     }
 }
