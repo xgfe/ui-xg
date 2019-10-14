@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.17 - 2019-10-11
+ * Version: 2.1.17 - 2019-10-13
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -6558,9 +6558,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
   };
   angular.module('ui.xg.form', []).controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$timeout', function ($scope, $compile, $templateCache, $element, $q, $timeout) {
     var INPUTLIMIT = {
-      number: /\D/g,
-      letter: /[^a-zA-Z]/g,
-      letterNumber: /[^A-Za-z\d]/g
+      number: /\d/g,
+      letter: /[a-zA-Z]/g,
+      letterNumber: /[A-Za-z\d]/g
     };
     var timer = null;
     var compileScope = $scope.$parent.$new();
@@ -6577,7 +6577,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
           item.promptInformation = item.tipInfo;
         }
 
-        item.passCheck = true;
+        item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
       });
       $scope.onFinalValueReady && $scope.onFinalValueReady();
     }
@@ -6644,8 +6644,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
 
         var reg = limit ? INPUTLIMIT[limit] : limitReg ? limitReg : '';
 
-        if (reg) {
-          item.value = item.value.replace(reg, '').trim();
+        if (reg && item.value) {
+          item.value = (item.value.toString().match(reg) || []).join('');
         } // 长度校验
 
 
@@ -6817,7 +6817,9 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
     };
 
     function charLengthTrim(input) {
-      return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+      if (input) {
+        return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+      }
     }
   }]).directive('uixForm', function () {
     return {
@@ -6841,7 +6843,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         finalValue: '=?',
         colon: '@?',
         cancelButton: '@?',
-        disabled: '@?'
+        disabled: '=?'
       },
       controller: 'uixFormCtrl',
       controllerAs: '$form',

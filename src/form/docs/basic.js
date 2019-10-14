@@ -7,17 +7,19 @@ export default class {
             key: 'email',
             text: 'email',
             type: 'input',
+            tipInfo: {message: '最多20个字符', type: 'error'},
             checkTiming: 'change',
             inputLimit: {
-                limitReg: /[^a-zA-Z]/g,
-                limitInfo: {message: '只能输入字母', type: 'warning'}
+                maxlength: 50,
+                limitReg: /\d|-/g
             },
             validor: (val) => {
-                if (val) {
-                    return {isPassed: false, message: '不能随便输入', type: 'error'}
-                } else {
-                    return {isPassed: true}
-                }
+                // if (val) {
+                //     return {isPassed: false, message: '不能随便输入', type: 'error'}
+                // } else {
+                //     return {isPassed: true}
+                // }
+                return {isPassed: true}
             }
             }, {
                 key: 'date',

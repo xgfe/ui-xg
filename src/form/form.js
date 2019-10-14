@@ -98,9 +98,9 @@
     angular.module('ui.xg.form', [])
         .controller('uixFormCtrl', ['$scope', '$compile', '$templateCache', '$element', '$q', '$timeout', function ($scope, $compile, $templateCache, $element, $q, $timeout) {
             const INPUTLIMIT = {
-                number: /\D/g,
-                letter: /[^a-zA-Z]/g,
-                letterNumber: /[^A-Za-z\d]/g
+                number: /\d/g,
+                letter: /[a-zA-Z]/g,
+                letterNumber: /[A-Za-z\d]/g
             };
             let timer = null;
             let compileScope = $scope.$parent.$new();
@@ -115,7 +115,7 @@
                     if (item.tipInfo) {
                         item.promptInformation = item.tipInfo;
                     }
-                    item.passCheck = true;
+                    item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
                 });
                 $scope.onFinalValueReady && $scope.onFinalValueReady();
             }
@@ -169,8 +169,8 @@
                     let {limit, limitReg, maxlength} = item.inputLimit;
                     // 输入限制
                     let reg = limit ? INPUTLIMIT[limit] : limitReg ? limitReg : '';
-                    if (reg) {
-                        item.value = item.value.replace(reg, '').trim();
+                    if (reg && item.value) {
+                        item.value = (item.value.toString().match(reg) || []).join('');
                     }
                     // 长度校验
                     let len = charLengthTrim(item.value);
@@ -298,7 +298,9 @@
                 }
             };
             function charLengthTrim(input) {
-                return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+                if(input) {
+                    return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;
+                }
             }
         }])
         .directive('uixForm', function () {
@@ -311,7 +313,7 @@
                     data: '=', layout: '@?', textalign: '@?', buttonInline: '@?',
                     confirmText: '@?', onConfirm: '&?', showBtn: '=?', onFinalValueReady: '&?',
                     cancelText: '@?', onCancel: '&?', resetData: '@?', checkAll: '@?',
-                    finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '@?'
+                    finalValue: '=?', colon: '@?', cancelButton: '@?', disabled: '=?'
                 },
                 controller: 'uixFormCtrl',
                 controllerAs: '$form',
