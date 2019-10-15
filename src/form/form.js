@@ -104,23 +104,15 @@
             };
             let timer = null;
             let compileScope = $scope.$parent.$new();
-
+            const $form = this;
             $scope.finalValue = $scope.finalValue || {};
             $scope.showBtn = angular.isUndefined($scope.showBtn) ? true : $scope.showBtn;
             if ($scope.data) {
-                $scope.data.map((item) => {
-                    if (item.key) {
-                        $scope.finalValue[item.key] = item.value;
-                    }
-                    if (item.tipInfo) {
-                        item.promptInformation = item.tipInfo;
-                    }
-                    item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
-                });
-                $scope.onFinalValueReady && $scope.onFinalValueReady();
+                syncFinalValue();
+                if ($scope.onFinalValueReady) {
+                    $scope.onFinalValueReady();
+                }
             }
-
-            const $form = this;
             $form.layout = $scope.layout || 'horizontal';
             $form.copyData = angular.copy($scope.data);
             $form.html = '';
@@ -156,8 +148,9 @@
             $form.cancle = () => {
                 if ($scope.resetData) {
                     $form.tplObj = {};
-                    $scope.data = $form.copyData;
+                    $scope.data = angular.copy($form.copyData);
                 }
+                syncFinalValue();
                 if ($scope.onCancel) {
                     $scope.onCancel();
                 }
@@ -297,6 +290,17 @@
                     });
                 }
             };
+            function syncFinalValue() {
+                $scope.data.map((item) => {
+                    if (item.key) {
+                        $scope.finalValue[item.key] = item.value;
+                    }
+                    if (item.tipInfo) {
+                        item.promptInformation = item.tipInfo;
+                    }
+                    item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
+                });
+            }
             function charLengthTrim(input) {
                 if(input) {
                     return input.toString().replace(/(^\s*)|(\s*$)/g, '').replace(/[^\x00-\xff]/g, 'aa').length;

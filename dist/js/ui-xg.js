@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.17 - 2019-10-13
+ * Version: 2.1.17 - 2019-10-15
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -6564,25 +6564,15 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
     };
     var timer = null;
     var compileScope = $scope.$parent.$new();
+    var $form = this;
     $scope.finalValue = $scope.finalValue || {};
     $scope.showBtn = angular.isUndefined($scope.showBtn) ? true : $scope.showBtn;
 
     if ($scope.data) {
-      $scope.data.map(function (item) {
-        if (item.key) {
-          $scope.finalValue[item.key] = item.value;
-        }
-
-        if (item.tipInfo) {
-          item.promptInformation = item.tipInfo;
-        }
-
-        item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
-      });
+      syncFinalValue();
       $scope.onFinalValueReady && $scope.onFinalValueReady();
     }
 
-    var $form = this;
     $form.layout = $scope.layout || 'horizontal';
     $form.copyData = angular.copy($scope.data);
     $form.html = '';
@@ -6623,8 +6613,10 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
     $form.cancle = function () {
       if ($scope.resetData) {
         $form.tplObj = {};
-        $scope.data = $form.copyData;
+        $scope.data = angular.copy($form.copyData);
       }
+
+      syncFinalValue();
 
       if ($scope.onCancel) {
         $scope.onCancel();
@@ -6815,6 +6807,20 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
         });
       }
     };
+
+    function syncFinalValue() {
+      $scope.data.map(function (item) {
+        if (item.key) {
+          $scope.finalValue[item.key] = item.value;
+        }
+
+        if (item.tipInfo) {
+          item.promptInformation = item.tipInfo;
+        }
+
+        item.passCheck = angular.isDefined(item.passCheck) ? item.passCheck : true;
+      });
+    }
 
     function charLengthTrim(input) {
       if (input) {
