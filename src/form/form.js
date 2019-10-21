@@ -117,6 +117,66 @@
             $form.copyData = angular.copy($scope.data);
             $form.html = '';
             $form.tplObj = {};
+            // colClass
+            $form.getColClass = (item) => {
+                let name = '';
+                if (item.colWidth && $form.layout !== 'horizontal') {
+                    name += ` col-md-${item.colWidth}`;
+                }
+                if (!item.colWidth && $form.layout === 'inline') {
+                    name += ' col-md-3';
+                }
+                if (!item.colWidth && $form.layout === 'vertical') {
+                    name += ' col-md-6';
+                }
+                if ($form.layout === 'horizontal') {
+                    name += ' form-group row uix-form-m-b-md uix-form-l-h';
+                }
+                if ($form.layout === 'vertical') {
+                    name +=  ' uix-form-m-b-md uix-form-l-h';
+                }
+                return name;
+            };
+            // LabelClass
+            $form.getLabelClass = (item) => {
+                let name = '';
+                if (item.necessary) {
+                    name += ' uix-form-necessary';
+                }
+                if ($scope.textalign === 'right') {
+                    name += ' text-right';
+                }
+                if (item.labelWidth && $form.layout !== 'inline') {
+                    name += ` col-md-${item.labelWidth}`;
+                }
+                if (!item.labelWidth && $form.layout === 'horizontal') {
+                    name += ' col-md-2';
+                }
+                if (!item.labelWidth && $form.layout === 'vertical') {
+                    name += ' col-md-4';
+                }
+                return name;
+            };
+            // ElementClass
+            $form.getElementClass = (item) => {
+                let name = 'uix-form-pos-rlt';
+                if (item.colWidth && $form.layout === 'vertical') {
+                    name += ' uix-form-m-l';
+                }
+                if ($form.layout === 'inline') {
+                    name += ' uix-form-m-b-md';
+                }
+                if (item.elementWidth && $form.layout !== 'inline') {
+                    name += ` col-md-${item.elementWidth}`;
+                }
+                if (!item.elementWidth && $form.layout === 'horizontal') {
+                    name += ' col-md-4';
+                }
+                if (!item.elementWidth && $form.layout === 'vertical') {
+                    name += ' col-md-8';
+                }
+                return name;
+            };
             // 渲染模板dom
             $form.renderTpl = (item) => {
                 if ($form.tplObj[item.templateName]) {
