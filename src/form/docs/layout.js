@@ -2,6 +2,19 @@ export default class {
     constructor() {
         this.result = {};
         this.data = [{
+            key: 'dateRange',
+            colWidth: 6,
+            // labelWidth: 7,
+            type: 'dateRange',
+            dateFormat: 'yyyy-MM-dd',
+            text: '日期范围',
+            necessary: true,
+            onChange: this.handel,
+            value: {
+                endTime: '',
+                startTime: ''
+            }
+        }, {
             key: 'input',
             text: 'input',
             type: 'input',
