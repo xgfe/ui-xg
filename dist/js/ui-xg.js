@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.19 - 2019-10-22
+ * Version: 2.1.20 - 2019-11-11
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -937,7 +937,7 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
         $log.warn('Timepicker directive: "min-time" value must be a Date object, ' + 'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' + 'or ISO 8601 date.');
       } else {
         currentTime = buildDate();
-        minTime = buildDate($scope.minTime);
+        minTime = new Date($scope.minTime);
         currentTime[method](value);
         result = currentTime <= minTime;
       }
@@ -952,7 +952,7 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
         $log.warn('Timepicker directive: "max-time" value must be a Date object,' + ' a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' + 'or ISO 8601 date.');
       } else {
         currentTime = buildDate();
-        maxTime = buildDate($scope.maxTime);
+        maxTime = new Date($scope.maxTime);
         currentTime[method](value);
         result = currentTime >= maxTime;
       }

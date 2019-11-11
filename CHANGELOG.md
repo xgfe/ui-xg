@@ -1,3 +1,13 @@
+<a name="2.1.20"></a>
+## [2.1.20](https://github.com/xgfe/ui-xg/compare/v2.1.19...v2.1.20) (2019-11-11)
+
+
+### Bug Fixes
+
+* **timepanel:** fix min and max time ([47bd4a6](https://github.com/xgfe/ui-xg/commit/47bd4a6))
+
+
+
 <a name="2.1.13"></a>
 ## [2.1.13](https://github.com/xgfe/ui-xg/compare/v2.1.12...v2.1.13) (2019-09-10)
 
