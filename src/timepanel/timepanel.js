@@ -264,7 +264,7 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        minTime = buildDate($scope.minTime);
+                        minTime = new Date($scope.minTime);
                         currentTime[method](value);
                         result = currentTime <= minTime;
                     }
@@ -279,7 +279,7 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        maxTime = buildDate($scope.maxTime);
+                        maxTime = new Date($scope.maxTime);
                         currentTime[method](value);
                         result = currentTime >= maxTime;
                     }
