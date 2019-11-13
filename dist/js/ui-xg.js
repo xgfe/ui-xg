@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.20 - 2019-11-11
+ * Version: 2.1.21 - 2019-11-13
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -685,8 +685,12 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
     if (arrowkeys) {
       this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
     }
-  };
+  }; // 外部传入的初试日期
 
+
+  $scope.originDate = null; // 比较时间的时候，是否加上年月日
+
+  $scope.fullTime = angular.isDefined($attrs.fullTime) ? $scope.$parent.$eval($attrs.fullTime) : false;
   $scope.hourStep = angular.isDefined($attrs.hourStep) ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
   $scope.minuteStep = angular.isDefined($attrs.minuteStep) ? $scope.$parent.$eval($attrs.minuteStep) : timepanelConfig.minuteStep;
   $scope.secondStep = angular.isDefined($attrs.secondStep) ? $scope.$parent.$eval($attrs.secondStep) : timepanelConfig.secondStep; // show seconds
@@ -856,6 +860,7 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
       date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
     }
 
+    $scope.originDate = date;
     $scope.hour = date ? addZero(date.getHours()) : null;
     $scope.minute = date ? addZero(date.getMinutes()) : null;
     $scope.second = date ? addZero(date.getSeconds()) : null;
@@ -937,7 +942,7 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
         $log.warn('Timepicker directive: "min-time" value must be a Date object, ' + 'a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' + 'or ISO 8601 date.');
       } else {
         currentTime = buildDate();
-        minTime = new Date($scope.minTime);
+        minTime = buildDate($scope.minTime);
         currentTime[method](value);
         result = currentTime <= minTime;
       }
@@ -952,7 +957,7 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
         $log.warn('Timepicker directive: "max-time" value must be a Date object,' + ' a number of milliseconds since 01.01.1970 or a string representing an RFC2822 ' + 'or ISO 8601 date.');
       } else {
         currentTime = buildDate();
-        maxTime = new Date($scope.maxTime);
+        maxTime = buildDate($scope.maxTime);
         currentTime[method](value);
         result = currentTime >= maxTime;
       }
@@ -973,6 +978,14 @@ angular.module('ui.xg.timepanel', []).constant('uixTimepanelConfig', {
       hour = time.getHours();
       minute = time.getMinutes();
       second = time.getSeconds();
+    }
+
+    if ($scope.fullTime) {
+      dt = $scope.originDate;
+
+      if (time) {
+        dt = time;
+      }
     }
 
     dt.setHours(hour);
@@ -1093,7 +1106,9 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel']).constant('uixCalendarConfi
   });
   $scope.showTime = angular.isDefined($attrs.showTime) ? $scope.$parent.$eval($attrs.showTime) : calendarConfig.showTime; // 是否展示秒
 
-  $scope.showSeconds = angular.isDefined($attrs.showSeconds) ? $scope.$parent.$eval($attrs.showSeconds) : calendarConfig.showSeconds;
+  $scope.showSeconds = angular.isDefined($attrs.showSeconds) ? $scope.$parent.$eval($attrs.showSeconds) : calendarConfig.showSeconds; // 是否在timepanel组件中使用带年月日的时间计算最大最小时间值
+
+  $scope.fullTime = angular.isDefined($attrs.fullTime) ? $scope.$parent.$eval($attrs.fullTime) : false;
 
   if (self.startingDay > 6 || self.startingDay < 0) {
     self.startingDay = calendarConfig.startingDay;
@@ -1249,7 +1264,12 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel']).constant('uixCalendarConfi
       var minDay = new Date(minDate).getDate();
 
       if (sDay !== minDay) {
-        $scope.minTime = createTime();
+        // 如果使用带年月日的时间计算最大最小时间值，将最大最小时间原封不动传入到timepanel组件
+        if ($scope.fullTime) {
+          $scope.minTime = angular.copy(minDate);
+        } else {
+          $scope.minTime = createTime();
+        }
       } else {
         $scope.minTime = angular.copy(minDate);
       }
@@ -1259,7 +1279,12 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel']).constant('uixCalendarConfi
       var maxDay = new Date(maxDate).getDate();
 
       if (sDay !== maxDay) {
-        $scope.maxTime = createTime(23, 59, 59);
+        // 如果使用带年月日的时间计算最大最小时间值，将最大最小时间原封不动传入到timepanel组件
+        if ($scope.fullTime) {
+          $scope.minTime = angular.copy(minDate);
+        } else {
+          $scope.maxTime = createTime(23, 59, 59);
+        }
       } else {
         $scope.maxTime = angular.copy(maxDate);
       }
@@ -6310,7 +6335,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
   showSeconds: true,
   size: 'md',
   appendToBody: false,
-  placement: 'auto bottom-left'
+  placement: 'auto bottom-left',
+  fullTime: false
 }).service('uixDatepickerService', ['$document', function ($document) {
   var openScope = null;
 
@@ -6372,7 +6398,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover']).constant
     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
   };
 
-  angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement', 'showSeconds'], function (key) {
+  angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement', 'showSeconds', 'fullTime'], function (key) {
     $scope[key] = angular.isDefined($attrs[key]) ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
   });
   $scope.dateFilterProp = angular.isDefined($attrs.dateFilter) ? function ($date) {
@@ -11812,7 +11838,7 @@ angular.module("timepanel/templates/timepanel.html", []).run(["$templateCache", 
 "use strict";
 
 angular.module("calendar/templates/calendar.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/calendar.html", "<div class=\"uix-calendar\">" + "    <div class=\"uix-cal-panel-day\" ng-show=\"panels.day\">" + "        <div class=\"uix-cal-month\">" + "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\" ng-click=\"selectPanel('month')\">{{FORMATS.SHORTMONTH[currentMonth]}}</a>" + "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>" + "            </span>" + "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>" + "        </div>" + "        <div class=\"uix-cal-header clearfix\">" + "            <div ng-repeat=\"day in dayNames track by $index\">{{day}}</div>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <div class=\"uix-cal-row\" ng-repeat=\"row in allDays\">" + "                <div ng-class=\"{'uix-cal-select':day.index===currentDay,'uix-cal-outside':!day.inMonth,'uix-cal-weekday':day.isWeekend,'uix-cal-day-today':day.isToday,'uix-cal-day-disabled':day.isDisabled}\"" + "                     class=\"uix-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">" + "                    <span class=\"uix-cal-day-inner\">{{day.day}}</span>" + "                </div>" + "            </div>" + "        </div>" + "        <div class=\"uix-cal-footer\">" + "            <div class=\"uix-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">" + "                <span class=\"glyphicon glyphicon-time\"></span>" + "                {{selectDate | date:'shortTime'}}" + "            </div>" + "            <div class=\"uix-cal-today-btn\" ng-click=\"chooseToday()\" ng-bind=\"FORMATS.TODAY\" ng-disabled=\"disableToday\"></div>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->" + "        <uix-timepanel min-time=\"minTime\" max-time=\"maxTime\" ng-model=\"selectDate\" show-seconds=\"showSeconds\"></uix-timepanel>" + "        <div class=\"btn-group clearfix\">" + "            <button class=\"btn btn-sm btn-default uix-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>" + "            <button class=\"btn btn-sm btn-default uix-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>" + "            <button class=\"btn btn-sm btn-default uix-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-month\" ng-show=\"panels.month\">" + "        <div class=\"uix-cal-month\">" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>" + "            </span>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <table class=\"uix-cal-month-table\">" + "                <tr ng-repeat=\"monthRow in allMonths\">" + "                    <td class=\"uix-cal-month-item\"" + "                        ng-repeat=\"month in monthRow\"" + "                        ng-click=\"chooseMonthHandler(month.index)\"" + "                        ng-class=\"{'uix-cal-month-select':month.index === currentMonth}\">" + "                        <span class=\"uix-cal-month-inner\">{{month.name}}</span>" + "                    </td>" + "                </tr>" + "            </table>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-year\" ng-show=\"panels.year\">" + "        <div class=\"uix-cal-month\">" + "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\">{{allYears[0][0]}}-{{allYears[3][2]}}</a>" + "            </span>" + "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <table class=\"uix-cal-month-table\">" + "                <tr ng-repeat=\"yearRow in allYears track by $index\">" + "                    <td class=\"uix-cal-month-item uix-cal-year-item\"" + "                        ng-repeat=\"year in yearRow track by $index\"" + "                        ng-click=\"chooseYearHandler(year)\"" + "                        ng-class=\"{'uix-cal-month-select':year === currentYear}\">" + "                        <span class=\"uix-cal-month-inner\">{{year}}</span>" + "                    </td>" + "                </tr>" + "            </table>" + "        </div>" + "    </div>" + "</div>");
+  $templateCache.put("templates/calendar.html", "<div class=\"uix-calendar\">" + "    <div class=\"uix-cal-panel-day\" ng-show=\"panels.day\">" + "        <div class=\"uix-cal-month\">" + "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prevMonth()\"></i>" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\" ng-click=\"selectPanel('month')\">{{FORMATS.SHORTMONTH[currentMonth]}}</a>" + "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>" + "            </span>" + "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"nextMonth()\"></i>" + "        </div>" + "        <div class=\"uix-cal-header clearfix\">" + "            <div ng-repeat=\"day in dayNames track by $index\">{{day}}</div>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <div class=\"uix-cal-row\" ng-repeat=\"row in allDays\">" + "                <div ng-class=\"{'uix-cal-select':day.index===currentDay,'uix-cal-outside':!day.inMonth,'uix-cal-weekday':day.isWeekend,'uix-cal-day-today':day.isToday,'uix-cal-day-disabled':day.isDisabled}\"" + "                     class=\"uix-cal-day\" ng-repeat=\"day in row\" ng-click=\"selectDayHandler(day)\">" + "                    <span class=\"uix-cal-day-inner\">{{day.day}}</span>" + "                </div>" + "            </div>" + "        </div>" + "        <div class=\"uix-cal-footer\">" + "            <div class=\"uix-cal-time\" ng-click=\"selectTimePanelHandler()\" ng-if=\"showTime\">" + "                <span class=\"glyphicon glyphicon-time\"></span>" + "                {{selectDate | date:'shortTime'}}" + "            </div>" + "            <div class=\"uix-cal-today-btn\" ng-click=\"chooseToday()\" ng-bind=\"FORMATS.TODAY\" ng-disabled=\"disableToday\"></div>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-time\" ng-show=\"panels.time\"> <!--这里要用ng-show,不能用ng-if-->" + "        <uix-timepanel full-time=\"fullTime\" min-time=\"minTime\" max-time=\"maxTime\" ng-model=\"selectDate\" show-seconds=\"showSeconds\"></uix-timepanel>" + "        <div class=\"btn-group clearfix\">" + "            <button class=\"btn btn-sm btn-default uix-cal-time-cancal\" ng-click=\"timePanelBack()\">返回</button>" + "            <button class=\"btn btn-sm btn-default uix-cal-time-now\" ng-click=\"timePanelSelectNow()\">此刻</button>" + "            <button class=\"btn btn-sm btn-default uix-cal-time-ok\" ng-click=\"timePanelOk()\">确定 </button>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-month\" ng-show=\"panels.month\">" + "        <div class=\"uix-cal-month\">" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\" ng-click=\"selectYearPanelHandler()\">{{currentYear}}</a>" + "            </span>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <table class=\"uix-cal-month-table\">" + "                <tr ng-repeat=\"monthRow in allMonths\">" + "                    <td class=\"uix-cal-month-item\"" + "                        ng-repeat=\"month in monthRow\"" + "                        ng-click=\"chooseMonthHandler(month.index)\"" + "                        ng-class=\"{'uix-cal-month-select':month.index === currentMonth}\">" + "                        <span class=\"uix-cal-month-inner\">{{month.name}}</span>" + "                    </td>" + "                </tr>" + "            </table>" + "        </div>" + "    </div>" + "    <div class=\"uix-cal-panel-year\" ng-show=\"panels.year\">" + "        <div class=\"uix-cal-month\">" + "            <i class=\"uix-cal-pre-button glyphicon glyphicon-chevron-left\" ng-click=\"prev12Years()\"></i>" + "            <span class=\"uix-cal-month-name\">" + "                <a href=\"javascript:;\">{{allYears[0][0]}}-{{allYears[3][2]}}</a>" + "            </span>" + "            <i class=\"uix-cal-next-button glyphicon glyphicon-chevron-right\" ng-click=\"next12Years()\"></i>" + "        </div>" + "        <div class=\"uix-cal-body\">" + "            <table class=\"uix-cal-month-table\">" + "                <tr ng-repeat=\"yearRow in allYears track by $index\">" + "                    <td class=\"uix-cal-month-item uix-cal-year-item\"" + "                        ng-repeat=\"year in yearRow track by $index\"" + "                        ng-click=\"chooseYearHandler(year)\"" + "                        ng-class=\"{'uix-cal-month-select':year === currentYear}\">" + "                        <span class=\"uix-cal-month-inner\">{{year}}</span>" + "                    </td>" + "                </tr>" + "            </table>" + "        </div>" + "    </div>" + "</div>");
 }]);
 "use strict";
 
@@ -11897,7 +11923,7 @@ angular.module("datatable/templates/datatable.html", []).run(["$templateCache", 
 "use strict";
 
 angular.module("datepicker/templates/datepicker-calendar.html", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("templates/datepicker-calendar.html", "<uix-calendar ng-model=\"selectDate\"" + "              on-change=\"changeDateHandler\"" + "              exceptions=\"exceptions\"" + "              min-date=\"minDate\"" + "              max-date=\"maxDate\"" + "              show-time=\"showTime\"" + "              show-seconds=\"showSeconds\"" + "              date-filter=\"dateFilterProp($date)\">" + "</uix-calendar>");
+  $templateCache.put("templates/datepicker-calendar.html", "<uix-calendar ng-model=\"selectDate\"" + "              on-change=\"changeDateHandler\"" + "              exceptions=\"exceptions\"" + "              min-date=\"minDate\"" + "              max-date=\"maxDate\"" + "              show-time=\"showTime\"" + "              show-seconds=\"showSeconds\"" + "              full-time=\"fullTime\"" + "              date-filter=\"dateFilterProp($date)\">" + "</uix-calendar>");
 }]);
 "use strict";
 

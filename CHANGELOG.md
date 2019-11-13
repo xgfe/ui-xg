@@ -1,3 +1,13 @@
+<a name="2.1.21"></a>
+## [2.1.21](https://github.com/xgfe/ui-xg/compare/v2.1.20...v2.1.21) (2019-11-13)
+
+
+### Features
+
+* **timepanel:** add full time attr ([97347a5](https://github.com/xgfe/ui-xg/commit/97347a5))
+
+
+
 <a name="2.1.20"></a>
 ## [2.1.20](https://github.com/xgfe/ui-xg/compare/v2.1.19...v2.1.20) (2019-11-11)
 
