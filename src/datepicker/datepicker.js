@@ -16,7 +16,8 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
         showSeconds: true,
         size: 'md',
         appendToBody: false,
-        placement: 'auto bottom-left'
+        placement: 'auto bottom-left',
+        fullTime: false
     })
     .service('uixDatepickerService', ['$document', function ($document) {
         var openScope = null;
@@ -78,7 +79,7 @@ angular.module('ui.xg.datepicker', ['ui.xg.calendar', 'ui.xg.popover'])
                     $scope.showCalendar = arguments.length ? !!open : !$scope.showCalendar;
                 };
 
-                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement', 'showSeconds'], function (key) {
+                angular.forEach(['exceptions', 'clearBtn', 'showTime', 'appendToBody', 'placement', 'showSeconds', 'fullTime'], function (key) {
                     $scope[key] = angular.isDefined($attrs[key])
                         ? angular.copy($scope.$parent.$eval($attrs[key])) : uixDatepickerConfig[key];
                 });

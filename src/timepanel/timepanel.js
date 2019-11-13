@@ -50,6 +50,13 @@ angular.module('ui.xg.timepanel', [])
                 }
             };
 
+            // 外部传入的初试日期
+            $scope.originDate = null;
+
+            // 比较时间的时候，是否加上年月日
+            $scope.fullTime = angular.isDefined($attrs.fullTime)
+            ? $scope.$parent.$eval($attrs.fullTime) : false;
+
             $scope.hourStep = angular.isDefined($attrs.hourStep)
                 ? $scope.$parent.$eval($attrs.hourStep) : timepanelConfig.hourStep;
             $scope.minuteStep = angular.isDefined($attrs.minuteStep)
@@ -189,6 +196,7 @@ angular.module('ui.xg.timepanel', [])
                         'or ISO 8601 date.');
                     date = new Date(); // fix #1 如果没有传入日期,或者清空的话,设置当前time
                 }
+                $scope.originDate = date;
                 $scope.hour = date ? addZero(date.getHours()) : null;
                 $scope.minute = date ? addZero(date.getMinutes()) : null;
                 $scope.second = date ? addZero(date.getSeconds()) : null;
@@ -264,7 +272,7 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        minTime = new Date($scope.minTime);
+                        minTime = buildDate($scope.minTime);
                         currentTime[method](value);
                         result = currentTime <= minTime;
                     }
@@ -279,7 +287,7 @@ angular.module('ui.xg.timepanel', [])
                             'or ISO 8601 date.');
                     } else {
                         currentTime = buildDate();
-                        maxTime = new Date($scope.maxTime);
+                        maxTime = buildDate($scope.maxTime);
                         currentTime[method](value);
                         result = currentTime >= maxTime;
                     }
@@ -298,6 +306,12 @@ angular.module('ui.xg.timepanel', [])
                     hour = time.getHours();
                     minute = time.getMinutes();
                     second = time.getSeconds();
+                }
+                if ($scope.fullTime) {
+                    dt = $scope.originDate;
+                    if (time) {
+                        dt = time;
+                    }
                 }
                 dt.setHours(hour);
                 dt.setMinutes(minute);

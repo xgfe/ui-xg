@@ -72,6 +72,10 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
             $scope.showSeconds = angular.isDefined($attrs.showSeconds)
                 ? $scope.$parent.$eval($attrs.showSeconds) : calendarConfig.showSeconds;
 
+            // 是否在timepanel组件中使用带年月日的时间计算最大最小时间值
+            $scope.fullTime =  angular.isDefined($attrs.fullTime)
+            ? $scope.$parent.$eval($attrs.fullTime) : false;
+
 
             if (self.startingDay > 6 || self.startingDay < 0) {
                 self.startingDay = calendarConfig.startingDay;
@@ -217,7 +221,12 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 if (minDate) {
                     var minDay = new Date(minDate).getDate();
                     if (sDay !== minDay) {
-                        $scope.minTime = createTime();
+                        // 如果使用带年月日的时间计算最大最小时间值，将最大最小时间原封不动传入到timepanel组件
+                        if($scope.fullTime) {
+                            $scope.minTime = angular.copy(minDate);
+                        } else {
+                            $scope.minTime = createTime();
+                        }
                     } else {
                         $scope.minTime = angular.copy(minDate);
                     }
@@ -226,7 +235,12 @@ angular.module('ui.xg.calendar', ['ui.xg.timepanel'])
                 if (maxDate) {
                     var maxDay = new Date(maxDate).getDate();
                     if (sDay !== maxDay) {
-                        $scope.maxTime = createTime(23, 59, 59);
+                        // 如果使用带年月日的时间计算最大最小时间值，将最大最小时间原封不动传入到timepanel组件
+                        if($scope.fullTime) {
+                            $scope.minTime = angular.copy(minDate);
+                        } else {
+                            $scope.maxTime = createTime(23, 59, 59);
+                        }
                     } else {
                         $scope.maxTime = angular.copy(maxDate);
                     }
