@@ -9800,11 +9800,9 @@ angular.module('ui.xg.select', []).constant('uixSelectConfig', {
                 marginTop: '-1px' // dropdown 原本就有-1px的margin，所以再还原回去
 
               });
-            }, 10);
-          }, 10);
+            }, 50);
+          }, 50);
         }
-
-        ;
 
         scope.calculateDropdownPos = function () {
           if ($select.open) {

@@ -1030,24 +1030,24 @@ angular.module('ui.xg.select', [])
                         scope.$watch('$select.open', function () {
                             scope.calculateDropdownPos();
                         });
-                        /* 
+                        /*
                           重排下拉列表
                           修复在部分Mac air机器中，打开select之后选项无法滚动的情况
                           原因未定位，通过现象发现在open之后，触发一次重排即可
                           by yangjiyuan on 20191206
                         */
-                        function reflowDropdownList (dropdown) {
-                          $timeout(function () {
-                            dropdown.css({
-                              marginTop: '0'
-                            });
+                        function reflowDropdownList(dropdown) {
                             $timeout(function () {
-                              dropdown.css({
-                                marginTop: '-1px' // dropdown 原本就有-1px的margin，所以再还原回去
-                              });
-                            },10);
-                          },10);
-                        };
+                                dropdown.css({
+                                    marginTop: '0'
+                                });
+                                $timeout(function () {
+                                    dropdown.css({
+                                        marginTop: '-1px' // dropdown 原本就有-1px的margin，所以再还原回去
+                                    });
+                                }, 50);
+                            }, 50);
+                        }
 
                         scope.calculateDropdownPos = function () {
                             if ($select.open) {
