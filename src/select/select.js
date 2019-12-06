@@ -298,20 +298,29 @@ angular.module('ui.xg.select', [])
                         ctrl.search = initSearchValue || ctrl.search;
                         ctrl.searchInput[0].focus();
                     });
-                    // 修复在部分Mac air机器中，打开select之后选项无法滚动的情况
-                    // 原因未定位，通过现象发现在open之后，触发一次重绘即可
-                    // by yangjiyuan on 20191203
-                    $timeout(function () {
-                      $element.css({
-                        opacity: 0.99
-                      });
-                      $timeout(function () {
-                        $element.css({
-                          opacity: 1
-                        });
-                      },10);
-                    },10);
+                    ctrl.reflowDropdownList();
                 }
+            };
+            /* 
+             重排下拉列表
+             修复在部分Mac air机器中，打开select之后选项无法滚动的情况
+             原因未定位，通过现象发现在open之后，触发一次重排即可
+             by yangjiyuan on 20191203
+            */
+            ctrl.reflowDropdownList = function () {
+              let choices = angular.element($element[0].querySelector('uix-select-choices'));
+              if(choices){
+                $timeout(function () {
+                  $element.css({
+                    marginTop: '0'
+                  });
+                  $timeout(function () {
+                    $element.css({
+                      marginTop: '-1px'
+                    });
+                  },10);
+                },10);
+              }
             };
 
             ctrl.findGroupByName = function (name) {
