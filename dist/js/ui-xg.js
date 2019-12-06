@@ -1,6 +1,6 @@
 /*
  * ui-xg
- * Version: 2.1.21 - 2019-11-13
+ * Version: 2.1.22 - 2019-12-06
  * License: MIT
  */
 angular.module("ui.xg", ["ui.xg.tpls","ui.xg.transition","ui.xg.collapse","ui.xg.accordion","ui.xg.alert","ui.xg.avatar","ui.xg.button","ui.xg.buttonGroup","ui.xg.timepanel","ui.xg.calendar","ui.xg.carousel","ui.xg.position","ui.xg.stackedMap","ui.xg.tooltip","ui.xg.popover","ui.xg.dropdown","ui.xg.cityselect","ui.xg.datatable","ui.xg.datepicker","ui.xg.form","ui.xg.grid","ui.xg.loader","ui.xg.modal","ui.xg.notify","ui.xg.pager","ui.xg.progressbar","ui.xg.rate","ui.xg.searchBox","ui.xg.select","ui.xg.sortable","ui.xg.step","ui.xg.steps","ui.xg.switch","ui.xg.tableLoader","ui.xg.tabs","ui.xg.timeline","ui.xg.timepicker","ui.xg.typeahead"]);
@@ -9783,6 +9783,26 @@ angular.module('ui.xg.select', []).constant('uixSelectConfig', {
         scope.$watch('$select.open', function () {
           scope.calculateDropdownPos();
         });
+        /* 
+          重排下拉列表
+          修复在部分Mac air机器中，打开select之后选项无法滚动的情况
+          原因未定位，通过现象发现在open之后，触发一次重排即可
+          by yangjiyuan on 20191206
+        */
+
+        function reflowDropdownList(dropdown) {
+          $timeout(function () {
+            dropdown.css({
+              marginTop: '0'
+            });
+            $timeout(function () {
+              dropdown.css({
+                marginTop: '-1px' // dropdown 原本就有-1px的margin，所以再还原回去
+
+              });
+            }, 50);
+          }, 50);
+        }
 
         scope.calculateDropdownPos = function () {
           if ($select.open) {
@@ -9813,6 +9833,7 @@ angular.module('ui.xg.select', []).constant('uixSelectConfig', {
 
 
               dropdown[0].style.opacity = 1;
+              reflowDropdownList(dropdown);
             });
           } else {
             if (dropdown === null) {
