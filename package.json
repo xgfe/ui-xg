@@ -46,7 +46,7 @@
         "font-awesome": "^4.1.0",
         "ghooks": "^2.0.4",
         "glob": "^6.0.3",
-        "gulp": "^3.9.0",
+        "gulp": "^4.0.2",
         "gulp-angular-html2js": "0.0.1",
         "gulp-babel": "^8.0.0",
         "gulp-clean-css": "^2.0.7",
